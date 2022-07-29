@@ -49,21 +49,21 @@ std::string Task::get_frequency(void){
     return this->frequency;
 }
 
-std::string Task::get_datetime(void){
-    return this->datetime;
-}
+//std::string Task::get_datetime(void){
+//    return this->datetime;
+//}
 
 std::string Task::get_output(void){
     return this->output;
 }
 
-bool validate_task_parms(cl::Config* task_config, std::string scripts_dir){
+TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_dir){
     // Check if required fields exist
     if(!task_config->key_exists("Name") ||
        !task_config->key_exists("ScriptFilename") ||
        !task_config->key_exists("Frequency") ||
        !task_config->key_exists("Datetime")){
-           return false;
+           return TaskValidate::MISSING_REQUIRED_KEYVALS;
     }
     
     std::string value;
@@ -71,16 +71,17 @@ bool validate_task_parms(cl::Config* task_config, std::string scripts_dir){
     // Check if script file exists
     value = task_config->get_value("ScriptFilename")->get_data<std::string>();
     if(!std::filesystem::exists(scripts_dir + value)){
-        return false;
+        return TaskValidate::SCRIPT_NOT_FOUND;
     }
 
     // Check if frequency value if valid
     value = task_config->get_value("Frequency")->get_data<std::string>();
     if(value != "Once" || value != "Hourly" || value != "Daily" ||
        value != "Weekly" || value != "Monthly" || value != "Yearly"){
-           return false;
+           return TaskValidate::BAD_FREQUENCY_VALUE;
     }
 
-    return true;
+    return TaskValidate::OK;
 }
+
 } // namespace ts
