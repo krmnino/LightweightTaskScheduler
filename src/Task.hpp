@@ -1,23 +1,34 @@
-#ifndef BTSTASK
-#define BTSTASK
+#ifndef TSTASK
+#define TSTASK
 
 #include <string>
 
-namespace BTS{
+#include "ConfigLoader.hpp"
+
+namespace ts{
 class Task{
 private:
-    std::string title;
-    std::string date;
-    std::string script_path;
+    std::string name;
+    std::string description;
+    std::string script_filename;
+    std::string frequency;
+    std::string datetime;
     std::string output;
     pid_t pid;
-    int priority;
+    int status;
 public:
     Task();
-    Task(std::string, std::string);
+    Task(std::string, std::string, std::string);
     ~Task();
     void launch();
+    std::string get_name(void);
+    std::string get_description(void);
+    std::string get_frequency(void);
+    std::string get_datetime(void);
+    std::string get_output(void);
 };
-} // namespace BTS
 
-#endif // BTSTASK
+bool validate_task_parms(cl::Config*, std::string);
+} // namespace ts
+
+#endif // TSTASK

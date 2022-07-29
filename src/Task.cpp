@@ -1,19 +1,20 @@
 #include <unistd.h>
 #include <array>
 #include <memory>
+#include <exception>
+#include <filesystem>
 
 #include "Task.hpp"
 
-namespace BTS{
-Task::Task(){
-    
-}
+namespace ts{
 
-Task::Task(std::string title, std::string script_path){
-    this->title = title;
-    this->script_path = script_path;
+Task::Task(std::string name, std::string script_filename, std::string frequency){
+    this->name = name;
+    this->script_filename = script_filename;
     this->output = "";
 }
+
+Task::Task(){}
 
 Task::~Task() {}
 
@@ -25,7 +26,7 @@ void Task::launch(){
     else if(pid == 0){
         std::array<char, 128> buffer;
         std::string result;
-        std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(this->script_path.c_str(), "r"), pclose);
+        std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(this->script_filename.c_str(), "r"), pclose);
         if (!pipe) {
             throw std::runtime_error("popen() failed!");
         }
@@ -35,4 +36,51 @@ void Task::launch(){
     }
     this->pid = pid;
 }
-} // namespace BTS
+
+std::string Task::get_name(void){
+    return this->name;
+}
+
+std::string Task::get_description(void){
+    return this->description;
+}
+
+std::string Task::get_frequency(void){
+    return this->frequency;
+}
+
+std::string Task::get_datetime(void){
+    return this->datetime;
+}
+
+std::string Task::get_output(void){
+    return this->output;
+}
+
+bool validate_task_parms(cl::Config* task_config, std::string scripts_dir){
+    // Check if required fields exist
+    if(!task_config->key_exists("Name") ||
+       !task_config->key_exists("ScriptFilename") ||
+       !task_config->key_exists("Frequency") ||
+       !task_config->key_exists("Datetime")){
+           return false;
+    }
+    
+    std::string value;
+
+    // Check if script file exists
+    value = task_config->get_value("ScriptFilename")->get_data<std::string>();
+    if(!std::filesystem::exists(scripts_dir + value)){
+        return false;
+    }
+
+    // Check if frequency value if valid
+    value = task_config->get_value("Frequency")->get_data<std::string>();
+    if(value != "Once" || value != "Hourly" || value != "Daily" ||
+       value != "Weekly" || value != "Monthly" || value != "Yearly"){
+           return false;
+    }
+
+    return true;
+}
+} // namespace ts
