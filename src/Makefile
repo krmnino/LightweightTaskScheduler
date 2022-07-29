@@ -14,3 +14,9 @@ all:
 		Task.cpp				\
 		Main.cpp -o scheduler 	\
 		-lstdc++fs
+
+test: 
+	g++ -g Test.cpp -o test
+
+clean:
+	rm scheduler test
