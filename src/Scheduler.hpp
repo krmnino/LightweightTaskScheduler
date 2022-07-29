@@ -1,5 +1,5 @@
-#ifndef BTSCMD
-#define BTSCMD
+#ifndef TSSSCH
+#define TSSSCH
 
 #include <string>
 #include <iostream>
@@ -9,6 +9,7 @@
 #include "ConfigLoader.hpp"
 
 namespace ts{
+
 class Scheduler{
 private:
     std::string top_level_dir;
@@ -24,6 +25,7 @@ public:
     void run();
     void help();
 };
-}
 
-#endif // BTSCMD
+} // namespace ts
+
+#endif // TSSCH
