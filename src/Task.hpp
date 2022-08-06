@@ -19,12 +19,33 @@ enum class TaskValidate {
 	MISSING_REQUIRED_KEYVALS,
 	SCRIPT_NOT_FOUND,
 	BAD_FREQUENCY_VALUE,
+    BAD_DATETIME
 };
 
+enum class DatetimeValidate{
+    OK,
+    BAD_HMS_LENGTH,
+    BAD_YYYYMMDD_LENGTH,
+    BAD_MMDD_LENGTH,
+    BAD_NUMBER_CHARACTER,
+    BAD_APHABETIC_CHARACTER,
+    MISSING_COLON,
+    MISSING_DASH,
+    BAD_WDAY,
+    YEAR_OUT_OF_RANGE,
+    MONTH_OUT_OF_RANGE,
+    DAY_OUT_OF_RANGE,
+    HOURS_OUT_OF_RANGE,
+    MINUTES_OUT_OF_RANGE,
+    SECONDS_OUT_OF_RANGE,
+    INVALID_DATETIME_INPUT
+};
 
 class Task{
 private:
-    std::tm datetime;
+    time_t starting_date;
+    time_t task_creation_date;
+    time_t execution_date;
     std::string name;
     std::string description;
     std::string script_filename;
@@ -33,19 +54,31 @@ private:
     pid_t pid;
     int status;
 
-    
 public:
     Task();
     Task(std::string, std::string, std::string);
     ~Task();
-    void launch();
+    void launch(void);
     std::string get_name(void);
     std::string get_description(void);
     std::string get_frequency(void);
-    //std::string get_datetime(void);
+    time_t get_starting_date(void);
+    time_t get_task_creation_date(void);
+    time_t get_execution_date(void);
     std::string get_output(void);
+    std::string get_starting_date_fmt(void);
+    std::string get_task_creation_date_fmt(void);
+    std::string get_execution_date_fmt(void);
 };
 
+DatetimeValidate validate_hms(std::string);
+DatetimeValidate validate_wday(std::string);
+DatetimeValidate validate_yyyymmdd(std::string);
+DatetimeValidate validate_mmdd(std::string);
+time_t init_day(void);
+time_t init_day_add_hms(std::string);
+time_t init_day_add_dhms(int, std::string);
+time_t init_day_add_wdhms(std::string, std::string);
 TaskValidate validate_task_parms(cl::Config*, std::string);
 } // namespace ts
 

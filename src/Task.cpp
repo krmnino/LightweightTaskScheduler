@@ -18,7 +18,7 @@ Task::Task(){}
 
 Task::~Task() {}
 
-void Task::launch(){
+void Task::launch(void){
     pid_t pid = fork();
     if(pid < 0){
         throw std::runtime_error("fork() failed!");
@@ -49,12 +49,91 @@ std::string Task::get_frequency(void){
     return this->frequency;
 }
 
-//std::string Task::get_datetime(void){
-//    return this->datetime;
-//}
+time_t Task::get_starting_date(void){
+    return this->starting_date;
+}
+
+time_t Task::get_task_creation_date(void){
+    return this->task_creation_date;
+}
+
+time_t Task::get_execution_date(void){
+    return this->execution_date;
+}
 
 std::string Task::get_output(void){
     return this->output;
+}
+
+std::string Task::get_starting_date_fmt(void){
+    return std::string(ctime(&this->starting_date));
+}
+
+std::string Task::get_task_creation_date_fmt(void){
+    return std::string(ctime(&this->task_creation_date));
+}
+
+std::string Task::get_execution_date_fmt(void){
+    return std::string(ctime(&this->execution_date)); 
+}
+
+DatetimeValidate validate_hms(std::string hms){
+    if(hms.length() != 8){
+        return DatetimeValidate::BAD_HMS_LENGTH;
+    }
+    unsigned int num;
+    unsigned int hours;
+    unsigned int minutes;
+    unsigned int seconds;
+    num = hms.at(0);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
+    }
+    num = hms.at(1);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
+    }
+    // Validate range of hour
+    hours = ((hms.at(0) & 0x0F) * 10) + 
+            (hms.at(1) & 0x0F);
+    if(hours < 0 | hours > 9999){
+        return DatetimeValidate::HOURS_OUT_OF_RANGE;
+    }
+    if(hms.at(2) != ':'){
+        return DatetimeValidate::MISSING_COLON;
+    }
+    num = hms.at(3);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
+    }
+    num = hms.at(4);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
+    }
+    // Validate range of minute
+    hours = ((hms.at(3) & 0x0F) * 10) + 
+            (hms.at(4) & 0x0F);
+    if(hours < 0 | hours > 9999){
+        return DatetimeValidate::MINUTES_OUT_OF_RANGE;
+    }
+    if(hms.at(5) != ':'){
+        return DatetimeValidate::MISSING_COLON;
+    }
+    num = hms.at(6);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
+    }
+    num = hms.at(7);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
+    }
+    // Validate range of second
+    hours = ((hms.at(6) & 0x0F) * 10) + 
+            (hms.at(7) & 0x0F);
+    if(hours < 0 | hours > 9999){
+        return DatetimeValidate::SECONDS_OUT_OF_RANGE;
+    }
+    return DatetimeValidate::OK;
 }
 
 TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_dir){
@@ -76,9 +155,29 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
 
     // Check if frequency value if valid
     value = task_config->get_value("Frequency")->get_data<std::string>();
-    if(value != "Once" || value != "Hourly" || value != "Daily" ||
-       value != "Weekly" || value != "Monthly" || value != "Yearly"){
+    if(value != "Once" && value != "Hourly" && value != "Daily" &&
+       value != "Weekly" && value != "Monthly" && value != "Yearly"){
            return TaskValidate::BAD_FREQUENCY_VALUE;
+    }
+
+    // Validate datetime depending on frequency value
+    if(value == "Once"){
+
+    }
+    else if(value == "Hourly"){
+        
+    }
+    else if(value == "Daily"){
+        
+    }
+    else if(value == "Weekly"){
+        
+    }
+    else if(value == "Monthly"){
+        
+    }
+    else if(value == "Yearly"){
+        
     }
 
     return TaskValidate::OK;
