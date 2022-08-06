@@ -17,6 +17,39 @@
 #define NOVEMBER 11
 #define DECEMBER 12
 
+enum class DatetimeFormat {
+    YYYYMMDD_HHMMSS = 32,
+    WDAY6_HHMMSS = 68,
+    WDAY7_HHMMSS = 76,
+    WDAY8_HHMMSS = 84,
+    WDAY9_HHMMSS = 92,
+    MMDD_HHMMSS = 26,
+    WDAY_HHMMSS = 44,
+    YYYYMMDD = 12,
+    HHMMSS = 14,
+    MMDD = 6,
+    INVALID_DATE_FORMAT = -1,
+};
+
+enum class DatetimeValidate{
+    OK,
+    BAD_HMS_LENGTH,
+    BAD_YYYYMMDD_LENGTH,
+    BAD_MMDD_LENGTH,
+    BAD_NUMBER_CHARACTER,
+    BAD_APHABETIC_CHARACTER,
+    MISSING_COLON,
+    MISSING_DASH,
+    BAD_WDAY,
+    YEAR_OUT_OF_RANGE,
+    MONTH_OUT_OF_RANGE,
+    DAY_OUT_OF_RANGE,
+    HOURS_OUT_OF_RANGE,
+    MINUTES_OUT_OF_RANGE,
+    SECONDS_OUT_OF_RANGE,
+    INVALID_DATETIME_INPUT
+};
+
 time_t init_day(){
     std::time_t time_now;
     std::tm* struct_time_now;
@@ -40,45 +73,66 @@ time_t init_day(){
     return time_now;
 }
 
-bool validate_hms(std::string hms){
+DatetimeValidate validate_hms(std::string hms){
     if(hms.length() != 8){
-        return false;
+        return DatetimeValidate::BAD_HMS_LENGTH;
     }
     unsigned int num;
-    num = hms.at(0) & 0x0F;
-    if(num < 0 | num > 2){
-        return false;
+    unsigned int hours;
+    unsigned int minutes;
+    unsigned int seconds;
+    num = hms.at(0);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
-    num = hms.at(1) & 0x0F;
-    if(num < 0 | num > 9){
-        return false;
+    num = hms.at(1);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
+    }
+    // Validate range of hour
+    hours = ((hms.at(0) & 0x0F) * 10) + 
+            (hms.at(1) & 0x0F);
+    if(hours < 0 | hours > 9999){
+        return DatetimeValidate::HOURS_OUT_OF_RANGE;
     }
     if(hms.at(2) != ':'){
-        return false;
+        return DatetimeValidate::MISSING_COLON;
     }
-    num = hms.at(3) & 0x0F;
-    if(num < 0 | num > 5){
-        return false;
+    num = hms.at(3);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
-    num = hms.at(4) & 0x0F;
-    if(num < 0 | num > 9){
-        return false;
+    num = hms.at(4);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
+    }
+    // Validate range of minute
+    hours = ((hms.at(3) & 0x0F) * 10) + 
+            (hms.at(4) & 0x0F);
+    if(hours < 0 | hours > 9999){
+        return DatetimeValidate::MINUTES_OUT_OF_RANGE;
     }
     if(hms.at(5) != ':'){
-        return false;
+        return DatetimeValidate::MISSING_COLON;
     }
-    num = hms.at(6) & 0x0F;
-    if(num < 0 | num > 5){
-        return false;
+    num = hms.at(6);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
-    num = hms.at(7) & 0x0F;
-    if(num < 0 | num > 9){
-        return false;
+    num = hms.at(7);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
-    return true;
+    // Validate range of second
+    hours = ((hms.at(6) & 0x0F) * 10) + 
+            (hms.at(7) & 0x0F);
+    if(hours < 0 | hours > 9999){
+        return DatetimeValidate::SECONDS_OUT_OF_RANGE;
+    }
+    return DatetimeValidate::OK;
 }
 
-bool validate_wday(std::string wday){
+DatetimeValidate validate_wday(std::string wday){
     if(wday != "Mon" && wday != "Monday" && 
        wday != "Tue" && wday != "Tuesday" &&
        wday != "Wed" && wday != "Wednesday" &&
@@ -86,35 +140,35 @@ bool validate_wday(std::string wday){
        wday != "Fri" && wday != "Friday" &&
        wday != "Sat" && wday != "Saturday" &&
        wday != "Sun" && wday != "Sunday"){
-        return 0;
+        return DatetimeValidate::BAD_WDAY;
     }
-    return true;
+    return DatetimeValidate::OK;
 }
 
-bool validate_yyyymmdd(std::string yyyymmdd){
+DatetimeValidate validate_yyyymmdd(std::string yyyymmdd){
     if(yyyymmdd.length() != 10){
-        return false;
+        return DatetimeValidate::BAD_YYYYMMDD_LENGTH;
     }
     unsigned int num;
     unsigned int year;
     unsigned int month;
     unsigned int day;
     // Validate year individual digits
-    num = yyyymmdd.at(0) & 0x0F;
-    if(num < 0 | num > 9){
-        return false;
+    num = yyyymmdd.at(0);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
-    num = yyyymmdd.at(1) & 0x0F;
-    if(num < 0 | num > 9){
-        return false;
+    num = yyyymmdd.at(1);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
-    num = yyyymmdd.at(2) & 0x0F;
-    if(num < 0 | num > 9){
-        return false;
+    num = yyyymmdd.at(2);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
-    num = yyyymmdd.at(3) & 0x0F;
-    if(num < 0 | num > 9){
-        return false;
+    num = yyyymmdd.at(3);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
     // Validate range of year
     year = ((yyyymmdd.at(0) & 0x0F) * 1000) + 
@@ -122,124 +176,123 @@ bool validate_yyyymmdd(std::string yyyymmdd){
            ((yyyymmdd.at(2) & 0x0F) * 10) + 
            (yyyymmdd.at(3) & 0x0F);
     if(year < 0 | year > 9999){
-        return false;
+        return DatetimeValidate::YEAR_OUT_OF_RANGE;
     }
     // Check if dash delimiter exists
     if(yyyymmdd.at(4) != '-'){
-        return false;
+        return DatetimeValidate::MISSING_DASH;
     }
     // Validate month individual characters
-    num = yyyymmdd.at(5) & 0x0F;
-    if(num < 0 | num > 1){
-        return false;
+    num = yyyymmdd.at(5);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
-    num = yyyymmdd.at(6) & 0x0F;
-    if(num < 0 | num > 9){
-        return false;
+    num = yyyymmdd.at(6);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
     // Validate range of months
     month = ((yyyymmdd.at(5) & 0x0F) * 10) + 
             (yyyymmdd.at(6) & 0x0F);
     if(month < 1 | month > 12){
-        return false;
+        return DatetimeValidate::MONTH_OUT_OF_RANGE;
     }
     // Check if dash delimiter exists
     if(yyyymmdd.at(7) != '-'){
-        return false;
+        return DatetimeValidate::MISSING_DASH;
     }
     // Validate day individual characters
-    num = yyyymmdd.at(8) & 0x0F;
-    if(num < 0 | num > 3){
-        return false;
+    num = yyyymmdd.at(8);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
-    num = yyyymmdd.at(9) & 0x0F;
-    if(num < 0 | num > 9){
-        return false;
+    num = yyyymmdd.at(9);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
     // Validate range of days by month
     day = ((yyyymmdd.at(8) & 0x0F) * 10) + 
           (yyyymmdd.at(9) & 0x0F);
-
     switch (month)
     {
     case JANUARY:
         if(day < 1 || day > 31){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }
         break;
     case FEBRARY:
         // If year is a leap year, then up to 29 days
         if(year % 4 == 0){
             if(day < 1 || day > 29){
-                return false;
+                return DatetimeValidate::DAY_OUT_OF_RANGE;
             }
         }
         else{
             if(day < 1 || day > 28){
-                return false;
+                return DatetimeValidate::DAY_OUT_OF_RANGE;
             }
         }
         break;
     case MARCH:
         if(day < 1 || day > 31){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }
         break;
     case APRIL:
         if(day < 1 || day > 30){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }
         break;
     case MAY:
         if(day < 1 || day > 31){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }
         break;
     case JUNE:
         if(day < 1 || day > 30){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }
         break;
     case JULY:
         if(day < 1 || day > 31){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }    
         break;
     case AUGUST:
         if(day < 1 || day > 31){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }       
         break;
     case SEPTEMBER:
         if(day < 1 || day > 30){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }    
         break;
     case OCTOBER:
         if(day < 1 || day > 31){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }    
         break;
     case NOVEMBER:
         if(day < 1 || day > 30){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }    
         break;
     case DECEMBER:
         if(day < 1 || day > 31){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }    
         break;
     default:
-        return false;
+        return DatetimeValidate::INVALID_DATETIME_INPUT;
         break;
     }
-    return true;
+    return DatetimeValidate::OK;
 }
 
-bool validate_mmdd(std::string mmdd){
+DatetimeValidate validate_mmdd(std::string mmdd){
     if(mmdd.length() != 5){
-        return false;
+        return DatetimeValidate::BAD_MMDD_LENGTH;
     }
     
     time_t today = init_day();
@@ -251,116 +304,115 @@ bool validate_mmdd(std::string mmdd){
     unsigned int day;
 
     // Validate month individual characters
-    num = mmdd.at(0) & 0x0F;
-    if(num < 0 | num > 1){
-        return false;
+    num = mmdd.at(0);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
-    num = mmdd.at(1) & 0x0F;
-    if(num < 0 | num > 9){
-        return false;
+    num = mmdd.at(1);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
     // Validate range of months
     month = ((mmdd.at(0) & 0x0F) * 10) + 
             (mmdd.at(1) & 0x0F);
     if(month < 1 | month > 12){
-        return false;
+        return DatetimeValidate::MONTH_OUT_OF_RANGE;
     }
     // Check if dash delimiter exists
     if(mmdd.at(2) != '-'){
-        return false;
+        return DatetimeValidate::MISSING_DASH;
     }
     // Validate day individual characters
-    num = mmdd.at(3) & 0x0F;
-    if(num < 0 | num > 3){
-        return false;
+    num = mmdd.at(3);
+    if(num < '0' | num > '3'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
-    num = mmdd.at(4) & 0x0F;
-    if(num < 0 | num > 9){
-        return false;
+    num = mmdd.at(4);
+    if(num < '0' | num > '9'){
+        return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
     // Validate range of days by month
     day = ((mmdd.at(3) & 0x0F) * 10) + 
           (mmdd.at(4) & 0x0F);
-
     switch (month)
     {
     case JANUARY:
         if(day < 1 || day > 31){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }
         break;
     case FEBRARY:
         // If year is a leap year, then up to 29 days
         if(year % 4 == 0){
             if(day < 1 || day > 29){
-                return false;
+                return DatetimeValidate::DAY_OUT_OF_RANGE;
             }
         }
         else{
             if(day < 1 || day > 28){
-                return false;
+                return DatetimeValidate::DAY_OUT_OF_RANGE;
             }
         }
         break;
     case MARCH:
         if(day < 1 || day > 31){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }
         break;
     case APRIL:
         if(day < 1 || day > 30){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }
         break;
     case MAY:
         if(day < 1 || day > 31){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }
         break;
     case JUNE:
         if(day < 1 || day > 30){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }
         break;
     case JULY:
         if(day < 1 || day > 31){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }    
         break;
     case AUGUST:
         if(day < 1 || day > 31){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }       
         break;
     case SEPTEMBER:
         if(day < 1 || day > 30){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }    
         break;
     case OCTOBER:
         if(day < 1 || day > 31){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }    
         break;
     case NOVEMBER:
         if(day < 1 || day > 30){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }    
         break;
     case DECEMBER:
         if(day < 1 || day > 31){
-            return false;
+            return DatetimeValidate::DAY_OUT_OF_RANGE;
         }    
         break;
     default:
-        return false;
+        return DatetimeValidate::INVALID_DATETIME_INPUT;
         break;
     }
-    return true;
+    return DatetimeValidate::OK;
 }
 
 time_t init_day_add_hms(std::string hms){
-    if(!validate_hms(hms)){
+    if(validate_hms(hms) != DatetimeValidate::OK){
         return 0;
     }
     std::tm time_input_hms;
@@ -385,7 +437,7 @@ time_t init_day_add_hms(std::string hms){
 }
 
 time_t init_day_add_dhms(int d, std::string hms){
-    if(!validate_hms(hms) | d < 0){
+    if(validate_hms(hms) != DatetimeValidate::OK | d < 0){
         return 0;
     }
     std::tm time_input_hms;
@@ -411,10 +463,10 @@ time_t init_day_add_dhms(int d, std::string hms){
 }
 
 time_t init_day_add_wdhms(std::string wday, std::string hms){
-    if(!validate_wday(wday)){
+    if(validate_wday(wday) != DatetimeValidate::OK){
         return 0;
     }
-    if(!validate_hms(hms)){
+    if(validate_hms(hms) != DatetimeValidate::OK){
         return 0;
     }
     // Concatenate wday with hms
@@ -453,6 +505,116 @@ time_t init_day_add_wdhms(std::string wday, std::string hms){
     return time_now;
 }
 
+DatetimeFormat get_datetime_format(std::string datetime){
+    // Each character in datetime will have a score
+    // Numbers : 1 pts
+    // Dash: 2 pts
+    // Colon: 4 pts
+    // Space: 6 pts
+    // Letters: 8 pts
+    // A valid datetime will have a unique point sum which will
+    //   then be assigned to their specific validation function.
+    int point_sum = 0;
+    char c;
+    for(int i = 0; i < datetime.length(); i++){
+        c = datetime.at(i);
+        switch(c){
+            case ' ':
+                point_sum += 6;
+                break;
+            case '-':
+                point_sum += 2;
+                break;
+            case ':':
+                point_sum += 4;
+                break;
+            default:
+                if((c >= 0x41 && c <= 0x5a) || (c >= 0x61 && c <= 0x7a)){
+                    point_sum += 8; // Alphabetic char
+                }
+                else if(c >= 0x30 && c <= 0x39){
+                    point_sum += 1; // Number char
+                }
+                else{
+                    point_sum += 0; // Invalid char
+                }
+                break;
+        }
+    }
+
+    int space_idx;
+    std::string date_day;
+    std::string time;
+    DatetimeValidate validate_return;
+
+    switch((DatetimeFormat)point_sum){
+        case DatetimeFormat::YYYYMMDD_HHMMSS:
+            space_idx = datetime.find(" ");
+            date_day = datetime.substr(0, space_idx);
+            time = datetime.substr(space_idx + 1, datetime.length());
+            validate_return = validate_yyyymmdd(date_day);
+            if(validate_return != DatetimeValidate::OK){
+                return DatetimeFormat::INVALID_DATE_FORMAT;
+            }
+            validate_return = validate_hms(time);
+            if(validate_return != DatetimeValidate::OK){
+                return DatetimeFormat::INVALID_DATE_FORMAT;
+            }
+            break;
+        case DatetimeFormat::WDAY6_HHMMSS:
+        case DatetimeFormat::WDAY7_HHMMSS:
+        case DatetimeFormat::WDAY8_HHMMSS:
+        case DatetimeFormat::WDAY9_HHMMSS:
+        case DatetimeFormat::WDAY_HHMMSS:
+            space_idx = datetime.find(" ");
+            date_day = datetime.substr(0, space_idx);
+            time = datetime.substr(space_idx + 1, datetime.length());
+            validate_return = validate_wday(date_day); 
+            if(validate_return != DatetimeValidate::OK){
+                return DatetimeFormat::INVALID_DATE_FORMAT;
+            }
+            validate_return = validate_hms(time);
+            if(validate_return != DatetimeValidate::OK){
+                return DatetimeFormat::INVALID_DATE_FORMAT;
+            }
+            break;
+        case DatetimeFormat::MMDD_HHMMSS:
+            space_idx = datetime.find(" ");
+            date_day = datetime.substr(0, space_idx);
+            time = datetime.substr(space_idx + 1, datetime.length());
+            validate_return = validate_mmdd(date_day);
+            if(validate_return != DatetimeValidate::OK){
+                return DatetimeFormat::INVALID_DATE_FORMAT;
+            }
+            validate_return = validate_hms(time);
+            if(validate_return != DatetimeValidate::OK){
+                return DatetimeFormat::INVALID_DATE_FORMAT;
+            }
+            break;
+        case DatetimeFormat::YYYYMMDD:
+            validate_return = validate_yyyymmdd(datetime);
+            if(validate_return != DatetimeValidate::OK){
+                return DatetimeFormat::INVALID_DATE_FORMAT;
+            }
+            break;
+        case DatetimeFormat::HHMMSS:
+            validate_return = validate_hms(datetime);
+            if(validate_return != DatetimeValidate::OK){
+                return DatetimeFormat::INVALID_DATE_FORMAT;
+            }
+            break;
+        case DatetimeFormat::MMDD:
+            validate_return = validate_mmdd(datetime);
+            if(validate_return != DatetimeValidate::OK){
+                return DatetimeFormat::INVALID_DATE_FORMAT;
+            }
+            break;
+        default:
+            break;
+    }
+    return (DatetimeFormat)point_sum;
+}
+
 int main(){
     time_t ret;
     
@@ -484,13 +646,35 @@ int main(){
     ret = init_day_add_wdhms("Sat", "05:34:00"); 
     std::cout << ctime(&ret) << std::endl;
 
-    bool v;
+    DatetimeValidate v;
     v = validate_hms("01:34:00");
-    std::cout << v << std::endl;
+    std::cout << (int)v << std::endl;
     v = validate_yyyymmdd("2024-02-29");
-    std::cout << v << std::endl;
-    v = validate_mmdd("02-28");
-    std::cout << v << std::endl;
+    std::cout << (int)v << std::endl;
+    v = validate_mmdd("02-29");
+    std::cout << (int)v << std::endl;
+
+    DatetimeFormat f;
+    f = get_datetime_format("2024-02-29 12:12:12");
+    std::cout << (int)f << std::endl;
+    f = get_datetime_format("Sunday 12:12:12");
+    std::cout << (int)f << std::endl;
+    f = get_datetime_format("Tuesday 12:12:12");
+    std::cout << (int)f << std::endl;
+    f = get_datetime_format("Thursday 12:12:12");
+    std::cout << (int)f << std::endl;
+    f = get_datetime_format("Wednesday 12:12:12");
+    std::cout << (int)f << std::endl;
+    f = get_datetime_format("02-28 12:12:12");
+    std::cout << (int)f << std::endl;
+    f = get_datetime_format("Mon 12:12:12");
+    std::cout << (int)f << std::endl;
+    f = get_datetime_format("2024-02-29");
+    std::cout << (int)f << std::endl;
+    f = get_datetime_format("12:12:12");
+    std::cout << (int)f << std::endl;
+    f = get_datetime_format("02-28");
+    std::cout << (int)f << std::endl;
 
     return 0;
 }
