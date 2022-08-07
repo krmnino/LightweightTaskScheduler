@@ -57,6 +57,20 @@ enum class DatetimeValidate{
     INVALID_DATETIME_INPUT
 };
 
+enum class DatetimeFormat {
+    YYYYMMDD_HHMMSS = 32,
+    WDAY6_HHMMSS = 68,
+    WDAY7_HHMMSS = 76,
+    WDAY8_HHMMSS = 84,
+    WDAY9_HHMMSS = 92,
+    MMDD_HHMMSS = 26,
+    WDAY_HHMMSS = 44,
+    YYYYMMDD = 12,
+    HHMMSS = 14,
+    MMDD = 6,
+    INVALID_DATE_FORMAT = -1,
+};
+
 class Task{
 private:
     time_t starting_date;
