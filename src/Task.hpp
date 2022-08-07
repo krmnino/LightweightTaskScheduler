@@ -1,6 +1,9 @@
 #ifndef TSTASK
 #define TSTASK
 
+#define DAYS_IN_WEEK 7
+#define TIMEZONE -4
+
 #define JANUARY 1
 #define FEBRARY 2
 #define MARCH 3

@@ -415,6 +415,54 @@ DatetimeValidate validate_mmdd(std::string mmdd){
     return DatetimeValidate::OK;
 }
 
+time_t init_day(){
+    std::time_t time_now;
+    std::tm* struct_time_now;
+
+    // Get current time
+    std::time(&time_now);
+    // Convert to struct
+    struct_time_now = std::gmtime(&time_now);
+
+    // Get hours, minutes, and seconds. Convert to seconds 
+    int hrs_2_sec = (struct_time_now->tm_hour + TIMEZONE) * 60 * 60;
+    int min_2_sec = struct_time_now->tm_min * 60;
+    int sec = struct_time_now->tm_sec;
+
+    // Add converted hours and minutes to total seconds
+    sec += hrs_2_sec + min_2_sec;
+
+    // Subtract time
+    time_now -= sec;
+
+    return time_now;
+}
+
+time_t init_day_add_hms(std::string hms){
+    if(validate_hms(hms) != DatetimeValidate::OK){
+        return 0;
+    }
+    std::tm time_input_hms;
+    std::istringstream hms_ss(hms.c_str());
+    hms_ss >> std::get_time(&time_input_hms, "%H:%M:%S");
+
+    std::time_t time_hms = mktime(&time_input_hms);
+
+    // Get hours, minutes, and seconds. Convert to seconds 
+    int hrs_2_sec = time_input_hms.tm_hour * 60 * 60;
+    int min_2_sec = time_input_hms.tm_min * 60;
+    int sec = time_input_hms.tm_sec;
+
+    // Add converted hours and minutes to total seconds
+    sec += hrs_2_sec + min_2_sec;
+
+    std::time_t time_now = init_day();
+
+    time_now += sec;
+
+    return time_now;
+}
+
 TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_dir){
     // Check if required fields exist
     if(!task_config->key_exists("Name") ||
