@@ -36,4 +36,4 @@ test:
 	g++ -g Test.cpp -o test
 
 clean:
-	rm scheduler test
+	rm scheduler test Test
