@@ -96,7 +96,7 @@ DatetimeValidate validate_hms(std::string hms){
     // Validate range of hour
     hours = ((hms.at(0) & 0x0F) * 10) + 
             (hms.at(1) & 0x0F);
-    if(hours < 0 | hours > 9999){
+    if(hours < 0 | hours > 24){
         return DatetimeValidate::HOURS_OUT_OF_RANGE;
     }
     if(hms.at(2) != ':'){
@@ -111,9 +111,9 @@ DatetimeValidate validate_hms(std::string hms){
         return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
     // Validate range of minute
-    hours = ((hms.at(3) & 0x0F) * 10) + 
-            (hms.at(4) & 0x0F);
-    if(hours < 0 | hours > 9999){
+    minutes = ((hms.at(3) & 0x0F) * 10) + 
+               (hms.at(4) & 0x0F);
+    if(minutes < 0 | minutes > 59){
         return DatetimeValidate::MINUTES_OUT_OF_RANGE;
     }
     if(hms.at(5) != ':'){
@@ -128,9 +128,9 @@ DatetimeValidate validate_hms(std::string hms){
         return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
     // Validate range of second
-    hours = ((hms.at(6) & 0x0F) * 10) + 
-            (hms.at(7) & 0x0F);
-    if(hours < 0 | hours > 9999){
+    seconds = ((hms.at(6) & 0x0F) * 10) + 
+               (hms.at(7) & 0x0F);
+    if(seconds < 0 | seconds > 59){
         return DatetimeValidate::SECONDS_OUT_OF_RANGE;
     }
     return DatetimeValidate::OK;
@@ -145,6 +145,25 @@ DatetimeValidate validate_wday(std::string wday){
        wday != "Sat" && wday != "Saturday" &&
        wday != "Sun" && wday != "Sunday"){
         return DatetimeValidate::BAD_WDAY;
+    }
+    return DatetimeValidate::OK;
+}
+
+DatetimeValidate validate_wday_hms(std::string wday_hms){
+    int space_idx = wday_hms.find(" ");
+    if(space_idx < 0){
+        return DatetimeValidate::MISSING_SPACE;
+    }
+    std::string date = wday_hms.substr(0, space_idx);
+    std::string time = wday_hms.substr(space_idx + 1, wday_hms.length());
+    DatetimeValidate ret;
+    ret = validate_wday(date);
+    if(ret != DatetimeValidate::OK){
+        return ret;
+    }
+    ret = validate_hms(time);
+    if(ret != DatetimeValidate::OK){
+        return ret;
     }
     return DatetimeValidate::OK;
 }
@@ -217,8 +236,7 @@ DatetimeValidate validate_yyyymmdd(std::string yyyymmdd){
     // Validate range of days by month
     day = ((yyyymmdd.at(8) & 0x0F) * 10) + 
           (yyyymmdd.at(9) & 0x0F);
-    switch (month)
-    {
+    switch (month){
     case JANUARY:
         if(day < 1 || day > 31){
             return DatetimeValidate::DAY_OUT_OF_RANGE;
@@ -299,7 +317,7 @@ DatetimeValidate validate_mmdd(std::string mmdd){
         return DatetimeValidate::BAD_MMDD_LENGTH;
     }
     
-    time_t today = init_day();
+    time_t today = init_today();
     std::tm* today_struct = std::gmtime(&today);
 
     unsigned int year = today_struct->tm_year;
@@ -338,8 +356,7 @@ DatetimeValidate validate_mmdd(std::string mmdd){
     // Validate range of days by month
     day = ((mmdd.at(3) & 0x0F) * 10) + 
           (mmdd.at(4) & 0x0F);
-    switch (month)
-    {
+    switch (month){
     case JANUARY:
         if(day < 1 || day > 31){
             return DatetimeValidate::DAY_OUT_OF_RANGE;
@@ -415,7 +432,7 @@ DatetimeValidate validate_mmdd(std::string mmdd){
     return DatetimeValidate::OK;
 }
 
-time_t init_day(){
+time_t init_today(){
     std::time_t time_now;
     std::tm* struct_time_now;
 
@@ -438,7 +455,7 @@ time_t init_day(){
     return time_now;
 }
 
-time_t init_day_add_hms(std::string hms){
+time_t today_add_hms(std::string hms){
     if(validate_hms(hms) != DatetimeValidate::OK){
         return 0;
     }
@@ -456,14 +473,14 @@ time_t init_day_add_hms(std::string hms){
     // Add converted hours and minutes to total seconds
     sec += hrs_2_sec + min_2_sec;
 
-    std::time_t time_now = init_day();
+    std::time_t time_now = init_today();
 
     time_now += sec;
 
     return time_now;
 }
 
-time_t init_day_add_dhms(int d, std::string hms){
+time_t today_add_dhms(int d, std::string hms){
     if(validate_hms(hms) != DatetimeValidate::OK | d < 0){
         return 0;
     }
@@ -482,14 +499,14 @@ time_t init_day_add_dhms(int d, std::string hms){
     // Add converted days, hours, and minutes to total seconds
     sec += days_2_sec + hrs_2_sec + min_2_sec;
 
-    std::time_t time_now = init_day();
+    std::time_t time_now = init_today();
 
     time_now += sec;
 
     return time_now;
 }
 
-time_t init_day_add_wdhms(std::string wday, std::string hms){
+time_t today_add_wdhms(std::string wday, std::string hms){
     if(validate_wday(wday) != DatetimeValidate::OK){
         return 0;
     }
@@ -503,7 +520,7 @@ time_t init_day_add_wdhms(std::string wday, std::string hms){
     whms_ss >> std::get_time(&time_input_whms, "%a %H:%M:%S");
     
     // Get current time and convert to struct
-    std::time_t time_now = init_day();
+    std::time_t time_now = init_today();
     std::tm* time_now_struct;
     time_now_struct = gmtime(&time_now);
 
@@ -511,24 +528,67 @@ time_t init_day_add_wdhms(std::string wday, std::string hms){
     int diff_day;
     if(time_now_struct->tm_wday == time_input_whms.tm_wday){
         std::time_t now;
-        std::time_t now_add_hms = init_day_add_hms(hms);
+        std::time_t now_add_hms = today_add_hms(hms);
         std::time(&now);
         if(now < now_add_hms){
             time_now = now_add_hms;
         }
         else{
-            time_now = init_day_add_dhms(DAYS_IN_WEEK, hms);
+            time_now = today_add_dhms(DAYS_IN_WEEK, hms);
         }
     }
     else if(time_now_struct->tm_wday > time_input_whms.tm_wday){
         diff_day = time_now_struct->tm_wday - time_input_whms.tm_wday;
         diff_day = DAYS_IN_WEEK - diff_day;
-        time_now = init_day_add_dhms(diff_day, hms);
+        time_now = today_add_dhms(diff_day, hms);
     }
     else{
         diff_day = time_input_whms.tm_wday - time_now_struct->tm_wday;
-        time_now = init_day_add_dhms(diff_day, hms);
+        time_now = today_add_dhms(diff_day, hms);
     }
+    return time_now;
+}
+
+time_t today_add_mmdd_hms(std::string mmdd_hms){
+    std::string mmdd;
+    std::string hms;
+    int space_idx = mmdd_hms.find(" ");
+    if(space_idx < 0){
+        return 0;
+    }
+    mmdd = mmdd_hms.substr(0, space_idx);
+    hms = mmdd_hms.substr(space_idx + 1, mmdd_hms.length());
+
+    if(validate_mmdd(mmdd) != DatetimeValidate::OK || 
+       validate_hms(hms) != DatetimeValidate::OK){
+        return 0;
+    }
+    std::tm time_input_mmdd_hms;
+    std::istringstream mmdd_hms_ss(mmdd_hms.c_str());
+    mmdd_hms_ss >> std::get_time(&time_input_mmdd_hms, "%m-%d %H:%M:%S");
+
+    std::time_t time_mmdd_hms = mktime(&time_input_mmdd_hms);
+
+    // Get time at start of day and convert to struct
+    std::time_t init_day_now = init_today();
+    std::tm* init_day_now_struct;
+    init_day_now_struct = gmtime(&init_day_now);
+
+    // Get current time
+    time_t time_now;
+    std::time(&time_now);
+
+    time_t diff_days = time_input_mmdd_hms.tm_yday - init_day_now_struct->tm_yday; 
+    time_t time_now_hms = today_add_hms(hms);
+
+    // Current year is assumed, just check if day count in current year
+    if(diff_days <= 0 && time_now <= time_now_hms){
+        return 0;
+    }
+
+    // Add diff days and time
+    time_now = today_add_dhms(diff_days, hms);
+
     return time_now;
 }
 
@@ -546,98 +606,27 @@ DatetimeFormat get_datetime_format(std::string datetime){
     for(int i = 0; i < datetime.length(); i++){
         c = datetime.at(i);
         switch(c){
-            case ' ':
-                point_sum += 6;
-                break;
-            case '-':
-                point_sum += 2;
-                break;
-            case ':':
-                point_sum += 4;
-                break;
-            default:
-                if((c >= 0x41 && c <= 0x5a) || (c >= 0x61 && c <= 0x7a)){
-                    point_sum += 8; // Alphabetic char
-                }
-                else if(c >= 0x30 && c <= 0x39){
-                    point_sum += 1; // Number char
-                }
-                else{
-                    point_sum += 0; // Invalid char
-                }
-                break;
-        }
-    }
-
-    int space_idx;
-    std::string date_day;
-    std::string time;
-    DatetimeValidate validate_return;
-
-    switch((DatetimeFormat)point_sum){
-        case DatetimeFormat::YYYYMMDD_HHMMSS:
-            space_idx = datetime.find(" ");
-            date_day = datetime.substr(0, space_idx);
-            time = datetime.substr(space_idx + 1, datetime.length());
-            validate_return = validate_yyyymmdd(date_day);
-            if(validate_return != DatetimeValidate::OK){
-                return DatetimeFormat::INVALID_DATE_FORMAT;
-            }
-            validate_return = validate_hms(time);
-            if(validate_return != DatetimeValidate::OK){
-                return DatetimeFormat::INVALID_DATE_FORMAT;
-            }
+        case ' ':
+            point_sum += 6;
             break;
-        case DatetimeFormat::WDAY6_HHMMSS:
-        case DatetimeFormat::WDAY7_HHMMSS:
-        case DatetimeFormat::WDAY8_HHMMSS:
-        case DatetimeFormat::WDAY9_HHMMSS:
-        case DatetimeFormat::WDAY_HHMMSS:
-            space_idx = datetime.find(" ");
-            date_day = datetime.substr(0, space_idx);
-            time = datetime.substr(space_idx + 1, datetime.length());
-            validate_return = validate_wday(date_day); 
-            if(validate_return != DatetimeValidate::OK){
-                return DatetimeFormat::INVALID_DATE_FORMAT;
-            }
-            validate_return = validate_hms(time);
-            if(validate_return != DatetimeValidate::OK){
-                return DatetimeFormat::INVALID_DATE_FORMAT;
-            }
+        case '-':
+            point_sum += 2;
             break;
-        case DatetimeFormat::MMDD_HHMMSS:
-            space_idx = datetime.find(" ");
-            date_day = datetime.substr(0, space_idx);
-            time = datetime.substr(space_idx + 1, datetime.length());
-            validate_return = validate_mmdd(date_day);
-            if(validate_return != DatetimeValidate::OK){
-                return DatetimeFormat::INVALID_DATE_FORMAT;
-            }
-            validate_return = validate_hms(time);
-            if(validate_return != DatetimeValidate::OK){
-                return DatetimeFormat::INVALID_DATE_FORMAT;
-            }
-            break;
-        case DatetimeFormat::YYYYMMDD:
-            validate_return = validate_yyyymmdd(datetime);
-            if(validate_return != DatetimeValidate::OK){
-                return DatetimeFormat::INVALID_DATE_FORMAT;
-            }
-            break;
-        case DatetimeFormat::HHMMSS:
-            validate_return = validate_hms(datetime);
-            if(validate_return != DatetimeValidate::OK){
-                return DatetimeFormat::INVALID_DATE_FORMAT;
-            }
-            break;
-        case DatetimeFormat::MMDD:
-            validate_return = validate_mmdd(datetime);
-            if(validate_return != DatetimeValidate::OK){
-                return DatetimeFormat::INVALID_DATE_FORMAT;
-            }
+        case ':':
+            point_sum += 4;
             break;
         default:
+            if((c >= 0x41 && c <= 0x5a) || (c >= 0x61 && c <= 0x7a)){
+                point_sum += 8; // Alphabetic char
+            }
+            else if(c >= 0x30 && c <= 0x39){
+                point_sum += 1; // Number char
+            }
+            else{
+                point_sum += 0; // Invalid char
+            }
             break;
+        }
     }
     return (DatetimeFormat)point_sum;
 }
@@ -666,23 +655,188 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
     }
 
     // Validate datetime depending on frequency value
+    DatetimeFormat format;
+    bool datetime_defined = task_config->key_exists("Datetime");
+    if(datetime_defined){
+        value = task_config->get_value("Datetime")->get_data<std::string>();
+    }
     if(value == "Once"){
-
+        // Get datetime format, no validation performed at this step
+        format = get_datetime_format(value);
+        switch ((int)format){
+        case (int)DatetimeFormat::HHMMSS:
+            if(validate_hms(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::MMDD_HHMMSS:
+            if(validate_mmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
+            if(validate_yyyymmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::WDAY_HHMMSS:
+            if(validate_wday(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::WDAY6_HHMMSS:
+        case (int)DatetimeFormat::WDAY7_HHMMSS:
+        case (int)DatetimeFormat::WDAY8_HHMMSS:
+        case (int)DatetimeFormat::WDAY9_HHMMSS:
+            if(validate_wday_hms(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::MMDD:
+            if(validate_mmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::YYYYMMDD:
+            if(validate_yyyymmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        default:
+            return TaskValidate::BAD_DATETIME_VALUE;
+            break;
+        }
+        // TODO: validate future datetime
     }
     else if(value == "Hourly"){
-        
+        // Datetime value ignored
     }
     else if(value == "Daily"){
-        
+        // Get datetime format, no validation performed at this step
+        format = get_datetime_format(value);
+        switch ((int)format){
+        case (int)DatetimeFormat::HHMMSS:
+            if(validate_hms(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        default:
+            break;
+        }
+        // TODO: validate future datetime
     }
     else if(value == "Weekly"){
-        
+        // Get datetime format, no validation performed at this step
+        format = get_datetime_format(value);
+        switch ((int)format){
+        case (int)DatetimeFormat::HHMMSS:
+            if(validate_hms(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::MMDD_HHMMSS:
+            if(validate_mmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
+            if(validate_yyyymmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::WDAY_HHMMSS:
+            if(validate_wday(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::WDAY6_HHMMSS:
+        case (int)DatetimeFormat::WDAY7_HHMMSS:
+        case (int)DatetimeFormat::WDAY8_HHMMSS:
+        case (int)DatetimeFormat::WDAY9_HHMMSS:
+            if(validate_wday_hms(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::MMDD:
+            if(validate_mmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::YYYYMMDD:
+            if(validate_yyyymmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        default:
+            return TaskValidate::BAD_DATETIME_VALUE;
+            break;
+        }
+        // TODO: validate future datetime
     }
     else if(value == "Monthly"){
-        
+        // Get datetime format, no validation performed at this step
+        format = get_datetime_format(value);
+        switch ((int)format){
+        case (int)DatetimeFormat::HHMMSS:
+            if(validate_hms(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::MMDD_HHMMSS:
+            if(validate_mmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
+            if(validate_yyyymmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::MMDD:
+            if(validate_mmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::YYYYMMDD:
+            if(validate_yyyymmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        default:
+            return TaskValidate::BAD_DATETIME_VALUE;
+            break;
+        }
+        // TODO: validate future datetime
     }
     else if(value == "Yearly"){
-        
+        // Get datetime format, no validation performed at this step
+        format = get_datetime_format(value);
+        switch ((int)format){
+        case (int)DatetimeFormat::MMDD_HHMMSS:
+            if(validate_mmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
+            if(validate_yyyymmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::MMDD:
+            if(validate_mmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        case (int)DatetimeFormat::YYYYMMDD:
+            if(validate_yyyymmdd(value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            break;
+        default:
+            return TaskValidate::BAD_DATETIME_VALUE;
+            break;
+        }
+        // TODO: validate future datetime
     }
 
     return TaskValidate::OK;

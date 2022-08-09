@@ -27,7 +27,7 @@ enum class TaskStatus {
 	FINISHED,
 	ERROR,
 	QUEUED,
-	RUNNING,
+	RUNNING
 };
 
 enum class TaskValidate {
@@ -35,7 +35,8 @@ enum class TaskValidate {
 	MISSING_REQUIRED_KEYVALS,
 	SCRIPT_NOT_FOUND,
 	BAD_FREQUENCY_VALUE,
-    BAD_DATETIME
+    BAD_DATETIME_VALUE,
+    MISSING_DATETIME_VALUE
 };
 
 enum class DatetimeValidate{
@@ -47,6 +48,7 @@ enum class DatetimeValidate{
     BAD_APHABETIC_CHARACTER,
     MISSING_COLON,
     MISSING_DASH,
+    MISSING_SPACE,
     BAD_WDAY,
     YEAR_OUT_OF_RANGE,
     MONTH_OUT_OF_RANGE,
@@ -68,7 +70,7 @@ enum class DatetimeFormat {
     YYYYMMDD = 12,
     HHMMSS = 14,
     MMDD = 6,
-    INVALID_DATE_FORMAT = -1,
+    INVALID_DATE_FORMAT = -1
 };
 
 class Task{
@@ -103,12 +105,14 @@ public:
 
 DatetimeValidate validate_hms(std::string);
 DatetimeValidate validate_wday(std::string);
+DatetimeValidate validate_wday_hms(std::string);
 DatetimeValidate validate_yyyymmdd(std::string);
 DatetimeValidate validate_mmdd(std::string);
-time_t init_day(void);
-time_t init_day_add_hms(std::string);
-time_t init_day_add_dhms(int, std::string);
-time_t init_day_add_wdhms(std::string, std::string);
+time_t init_today(void);
+time_t today_add_hms(std::string);
+time_t today_add_dhms(int, std::string);
+time_t today_add_wdhms(std::string, std::string);
+time_t today_add_mmdd_hms(std::string);
 TaskValidate validate_task_parms(cl::Config*, std::string);
 } // namespace ts
 
