@@ -5,7 +5,7 @@
 #define TIMEZONE -4
 
 #define JANUARY 1
-#define FEBRARY 2
+#define FEBRUARY 2
 #define MARCH 3
 #define APRIL 4
 #define MAY 5
@@ -16,6 +16,20 @@
 #define OCTOBER 10
 #define NOVEMBER 11
 #define DECEMBER 12
+
+#define JANUARY_DAYS 31
+#define FEBRUARY_DAYS 28
+#define FEBRUARY_DAYS_LEAP 29
+#define MARCH_DAYS 31
+#define APRIL_DAYS 30
+#define MAY_DAYS 31
+#define JUNE_DAYS 30
+#define JULY_DAYS 31
+#define AUGUST_DAYS 31
+#define SEPTEMBER_DAYS 30
+#define OCTOBER_DAYS 31
+#define NOVEMBER_DAYS 30
+#define DECEMBER_DAYS 31
 
 #include <string>
 #include <iomanip>
@@ -106,13 +120,17 @@ public:
 DatetimeValidate validate_hms(std::string);
 DatetimeValidate validate_wday(std::string);
 DatetimeValidate validate_wday_hms(std::string);
-DatetimeValidate validate_yyyymmdd(std::string);
 DatetimeValidate validate_mmdd(std::string);
+DatetimeValidate validate_mmdd_hms(std::string);
+DatetimeValidate validate_yyyymmdd(std::string);
 time_t init_today(void);
+time_t init_year(void);
 time_t today_add_hms(std::string);
 time_t today_add_dhms(int, std::string);
-time_t today_add_wdhms(std::string, std::string);
+time_t today_add_wday_hms(std::string, std::string);
+time_t today_add_mmdd(std::string);
 time_t today_add_mmdd_hms(std::string);
+DatetimeFormat get_datetime_format(std::string);
 TaskValidate validate_task_parms(cl::Config*, std::string);
 } // namespace ts
 
