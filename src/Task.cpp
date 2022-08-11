@@ -1043,6 +1043,165 @@ time_t today_add_yyyymmdd(std::string yyyymmdd){
     return added_time;
 }
 
+time_t today_add_yyyymmdd_hms(std::string yyyymmdd_hms){
+    if(validate_yyyymmdd_hms(yyyymmdd_hms) != DatetimeValidate::OK){
+        return 0;
+    }
+
+    // Get time at start of current day
+    time_t time_start_year = init_year();
+    std::tm* time_start_year_struct;
+    time_start_year_struct = gmtime(&time_start_year);
+
+    // Convert horus and minutes to seconds and add them together
+    unsigned long years = ((yyyymmdd_hms.at(0) & 0x0F) * 1000) + 
+                          ((yyyymmdd_hms.at(1) & 0x0F) * 100) + 
+                          ((yyyymmdd_hms.at(2) & 0x0F) * 10) + 
+                          (yyyymmdd_hms.at(3) & 0x0F);
+    unsigned long months = ((yyyymmdd_hms.at(5) & 0x0F) * 10) + 
+                            (yyyymmdd_hms.at(6) & 0x0F);
+    unsigned long days = ((yyyymmdd_hms.at(8) & 0x0F) * 10) + 
+                          (yyyymmdd_hms.at(9) & 0x0F) - 1;
+    unsigned long hours = ((yyyymmdd_hms.at(11) & 0x0F) * 10) + 
+                           (yyyymmdd_hms.at(12) & 0x0F);
+    unsigned long minutes = ((yyyymmdd_hms.at(14) & 0x0F) * 10) + 
+                             (yyyymmdd_hms.at(15) & 0x0F);
+    unsigned long seconds = ((yyyymmdd_hms.at(17) & 0x0F) * 10) + 
+                             (yyyymmdd_hms.at(18) & 0x0F);                          
+
+    // Since tm_year counts years since 1900, add 1900
+    time_t current_year = time_start_year_struct->tm_year + 1900;
+
+    // Get delta years and a check if less than 0
+    unsigned long diff_years = years - current_year;
+    if(diff_years < 0){
+        return 0;
+    }
+
+    // Accumulate day count in year plus day in month
+    unsigned long acc_days = 0;
+    switch (months)
+    {
+    case JANUARY:
+        acc_days += days;
+        break;
+    case FEBRUARY:
+        acc_days += JANUARY_DAYS + days;
+        break;
+    case MARCH:
+        acc_days += JANUARY_DAYS +
+                    FEBRUARY_DAYS + days;
+        break;
+    case APRIL:
+        acc_days += JANUARY_DAYS +
+                    FEBRUARY_DAYS +
+                    MARCH_DAYS + days;
+        break;
+    case MAY:
+        acc_days += JANUARY_DAYS +
+                    FEBRUARY_DAYS +
+                    MARCH_DAYS +
+                    APRIL_DAYS + days;
+        break;
+    case JUNE:
+        acc_days += JANUARY_DAYS +
+                    FEBRUARY_DAYS +
+                    MARCH_DAYS +
+                    APRIL_DAYS + 
+                    MAY_DAYS + days;
+        break;
+    case JULY:
+        acc_days += JANUARY_DAYS +
+                    FEBRUARY_DAYS +
+                    MARCH_DAYS +
+                    APRIL_DAYS + 
+                    MAY_DAYS +
+                    JUNE_DAYS + days;   
+        break;
+    case AUGUST:
+        acc_days += JANUARY_DAYS +
+                    FEBRUARY_DAYS +
+                    MARCH_DAYS +
+                    APRIL_DAYS + 
+                    MAY_DAYS +
+                    JUNE_DAYS +
+                    JULY_DAYS + days;      
+        break;
+    case SEPTEMBER:
+        acc_days += JANUARY_DAYS +
+                    FEBRUARY_DAYS +
+                    MARCH_DAYS +
+                    APRIL_DAYS + 
+                    MAY_DAYS +
+                    JUNE_DAYS +
+                    JULY_DAYS +
+                    AUGUST_DAYS + days;  
+        break;
+    case OCTOBER:
+        acc_days += JANUARY_DAYS +
+                    FEBRUARY_DAYS +
+                    MARCH_DAYS +
+                    APRIL_DAYS + 
+                    MAY_DAYS +
+                    JUNE_DAYS +
+                    JULY_DAYS +
+                    AUGUST_DAYS + 
+                    SEPTEMBER_DAYS + days;   
+        break;
+    case NOVEMBER:
+        acc_days += JANUARY_DAYS +
+                    FEBRUARY_DAYS +
+                    MARCH_DAYS +
+                    APRIL_DAYS + 
+                    MAY_DAYS +
+                    JUNE_DAYS +
+                    JULY_DAYS +
+                    AUGUST_DAYS + 
+                    SEPTEMBER_DAYS +
+                    OCTOBER_DAYS + days;      
+        break;
+    case DECEMBER:
+        acc_days += JANUARY_DAYS +
+                    FEBRUARY_DAYS +
+                    MARCH_DAYS +
+                    APRIL_DAYS + 
+                    MAY_DAYS +
+                    JUNE_DAYS +
+                    JULY_DAYS +
+                    AUGUST_DAYS + 
+                    SEPTEMBER_DAYS +
+                    OCTOBER_DAYS +
+                    NOVEMBER_DAYS + days;    
+        break;
+    default:
+        return 0;
+        break;
+    }
+
+    // Loop through the years checking for leap years. If a leap year
+    // is found, then increase the counter.
+    unsigned long february_29s = 0;
+    for(unsigned long y = current_year; y < years + 1; y++){
+        if(y % 4 == 0){
+            february_29s++;
+        }
+    }
+
+    // Subtract 1 hour (3600 seconds)
+    time_t added_time = time_start_year + (diff_years * 365 * 24 * 60 * 60) +
+                        ((acc_days + february_29s) * 24 * 60 * 60) - 3600 + 
+                        (hours * 60 * 60) + (minutes * 60);
+
+    // Get current time and check for past time
+    time_t time_now;
+    std::time(&time_now);
+    if(time_now >= added_time){
+        return 0;
+    }    
+    
+    return added_time;
+}
+
 DatetimeFormat get_datetime_format(std::string datetime){
     // Each character in datetime will have a score
     // Numbers : 1 pts
