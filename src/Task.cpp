@@ -1280,7 +1280,7 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             }
             break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
-            if(validate_yyyymmdd(value) != DatetimeValidate::OK){
+            if(validate_yyyymmdd_hms(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
             break;
