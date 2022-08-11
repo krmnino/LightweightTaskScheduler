@@ -1291,14 +1291,9 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             if(validate_yyyymmdd_hms(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
-            // TODO: implemente today_add_yyyymmdd_hms()
+            schedule_datetime = today_add_yyyymmdd_hms(value);
             break;
         case (int)DatetimeFormat::WDAY_HHMMSS:
-            if(validate_wday_hms(value) != DatetimeValidate::OK){
-                return TaskValidate::BAD_DATETIME_VALUE;
-            }
-            schedule_datetime = today_add_wday_hms(value);
-            break;
         case (int)DatetimeFormat::WDAY6_HHMMSS:
         case (int)DatetimeFormat::WDAY7_HHMMSS:
         case (int)DatetimeFormat::WDAY8_HHMMSS:
@@ -1358,18 +1353,15 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             if(validate_mmdd_hms(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
-            schedule_datetime = today_add_hms(value);
+            schedule_datetime = today_add_mmdd_hms(value);
             break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             if(validate_yyyymmdd_hms(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_yyyymmdd_hms(value);
             break;
         case (int)DatetimeFormat::WDAY_HHMMSS:
-            if(validate_wday_hms(value) != DatetimeValidate::OK){
-                return TaskValidate::BAD_DATETIME_VALUE;
-            }
-            break;
         case (int)DatetimeFormat::WDAY6_HHMMSS:
         case (int)DatetimeFormat::WDAY7_HHMMSS:
         case (int)DatetimeFormat::WDAY8_HHMMSS:
@@ -1377,16 +1369,19 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             if(validate_wday_hms(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_wday_hms(value);
             break;
         case (int)DatetimeFormat::MMDD:
             if(validate_mmdd(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_mmdd(value);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
             if(validate_yyyymmdd(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_yyyymmdd(value);
             break;
         default:
             return TaskValidate::BAD_DATETIME_VALUE;
@@ -1402,26 +1397,31 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             if(validate_hms(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_hms(value);
             break;
         case (int)DatetimeFormat::MMDD_HHMMSS:
             if(validate_mmdd_hms(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_mmdd_hms(value);
             break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             if(validate_yyyymmdd_hms(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_yyyymmdd_hms(value);
             break;
         case (int)DatetimeFormat::MMDD:
             if(validate_mmdd(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_mmdd(value);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
             if(validate_yyyymmdd(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_yyyymmdd(value);
             break;
         default:
             return TaskValidate::BAD_DATETIME_VALUE;
@@ -1437,21 +1437,25 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             if(validate_mmdd_hms(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_mmdd_hms(value);
             break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             if(validate_yyyymmdd_hms(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_yyyymmdd(value);
             break;
         case (int)DatetimeFormat::MMDD:
             if(validate_mmdd(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_mmdd(value);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
             if(validate_yyyymmdd(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_yyyymmdd(value);
             break;
         default:
             return TaskValidate::BAD_DATETIME_VALUE;
