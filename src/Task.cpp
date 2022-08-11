@@ -452,6 +452,25 @@ DatetimeValidate validate_yyyymmdd(std::string yyyymmdd){
     return DatetimeValidate::OK;
 }
 
+DatetimeValidate validate_yyyymmdd_hms(std::string yyyymmdd_hms){
+    int space_idx = yyyymmdd_hms.find(" ");
+    if(space_idx < 0){
+        return DatetimeValidate::MISSING_SPACE;
+    }
+    std::string date = yyyymmdd_hms.substr(0, space_idx);
+    std::string time = yyyymmdd_hms.substr(space_idx + 1, yyyymmdd_hms.length());
+    DatetimeValidate ret;
+    ret = validate_yyyymmdd(date);
+    if(ret != DatetimeValidate::OK){
+        return ret;
+    }
+    ret = validate_hms(time);
+    if(ret != DatetimeValidate::OK){
+        return ret;
+    }
+    return DatetimeValidate::OK;
+}
+
 time_t init_today(void){
     time_t time_now;
     std::tm* struct_time_now;
