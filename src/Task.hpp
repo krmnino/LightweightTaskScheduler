@@ -19,7 +19,6 @@
 
 #define JANUARY_DAYS 31
 #define FEBRUARY_DAYS 28
-#define FEBRUARY_DAYS_LEAP 29
 #define MARCH_DAYS 31
 #define APRIL_DAYS 30
 #define MAY_DAYS 31
