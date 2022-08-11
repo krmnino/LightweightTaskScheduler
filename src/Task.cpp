@@ -452,7 +452,7 @@ DatetimeValidate validate_yyyymmdd(std::string yyyymmdd){
 }
 
 time_t init_today(void){
-    std::time_t time_now;
+    time_t time_now;
     std::tm* struct_time_now;
 
     // Get current time
@@ -463,7 +463,15 @@ time_t init_today(void){
     // Get hours, minutes, and seconds. Convert to seconds 
     int hrs_2_sec = (struct_time_now->tm_hour + TIMEZONE) * 60 * 60;
     int min_2_sec = struct_time_now->tm_min * 60;
-    int sec = struct_time_now->tm_sec;
+    int sec;
+
+    // If GMT already passed midnight, then add 1 day (86400 seconds) to time 
+    if(struct_time_now->tm_hour + TIMEZONE < 0){
+        sec = struct_time_now->tm_sec + 86400;
+    }
+    else{
+        sec = struct_time_now->tm_sec;
+    }
 
     // Add converted hours and minutes to total seconds
     sec += hrs_2_sec + min_2_sec;
@@ -475,7 +483,7 @@ time_t init_today(void){
 }
 
 time_t init_year(void){
-    std::time_t time_now;
+    time_t time_now;
     std::tm* struct_time_now;
 
     // Get current time
@@ -503,9 +511,9 @@ time_t today_add_hms(std::string hms){
         return 0;
     }
     // Get time at start of current day
-    std::time_t time_start_day = init_today();
+    time_t time_start_day = init_today();
     
-    // Convert horus and minutes to seconds and add them together
+    // Convert huors and minutes to seconds and add them together
     unsigned long hours = ((hms.at(0) & 0x0F) * 10) + 
                           (hms.at(1) & 0x0F);
     unsigned long minutes = ((hms.at(3) & 0x0F) * 10) + 
@@ -530,9 +538,9 @@ time_t today_add_dhms(int d, std::string hms){
         return 0;
     }
     // Get time at start of current day
-    std::time_t time_start_day = init_today();
+    time_t time_start_day = init_today();
     
-    // Convert horus and minutes to seconds and add them together
+    // Convert hours and minutes to seconds and add them together
     unsigned long hours = ((hms.at(0) & 0x0F) * 10) + 
                           (hms.at(1) & 0x0F);
     unsigned long minutes = ((hms.at(3) & 0x0F) * 10) + 
@@ -545,29 +553,29 @@ time_t today_add_dhms(int d, std::string hms){
     return added_time;
 }
 
-time_t today_add_wday_hms(std::string wday, std::string hms){
-    if(validate_wday(wday) != DatetimeValidate::OK){
+time_t today_add_wday_hms(std::string wday_hms){
+    if(validate_wday_hms(wday_hms) != DatetimeValidate::OK){
         return 0;
     }
-    if(validate_hms(hms) != DatetimeValidate::OK){
-        return 0;
-    }
-    // Concatenate wday with hms
-    wday += " " + hms;
-    std::tm time_input_whms;
-    std::istringstream whms_ss(wday.c_str());
-    whms_ss >> std::get_time(&time_input_whms, "%a %H:%M:%S");
-    
+   
     // Get current time and convert to struct
-    std::time_t time_now = init_today();
+    time_t time_now = init_today();
     std::tm* time_now_struct;
     time_now_struct = gmtime(&time_now);
+
+    std::tm time_input_whms;
+    std::istringstream whms_ss(wday_hms.c_str());
+    whms_ss >> std::get_time(&time_input_whms, "%a %H:%M:%S");
+
+    // Obtain hours, minutes, seconds part of the input string
+    int space_idx = wday_hms.find(" ");
+    std::string hms = wday_hms.substr(space_idx + 1, wday_hms.length());
 
     // Calculate days until desired weekday
     int diff_day;
     if(time_now_struct->tm_wday == time_input_whms.tm_wday){
-        std::time_t now;
-        std::time_t now_add_hms = today_add_hms(hms);
+        time_t now;
+        time_t now_add_hms = today_add_hms(hms);
         std::time(&now);
         if(now < now_add_hms){
             time_now = now_add_hms;
@@ -594,11 +602,11 @@ time_t today_add_mmdd(std::string mmdd){
     }
 
     // Get time at start of current day
-    std::time_t time_start_day = init_year();
-    std::tm* time_start_day_struct;
-    time_start_day_struct = gmtime(&time_start_day);
+    time_t time_start_year = init_year();
+    std::tm* time_start_year_struct;
+    time_start_year_struct = gmtime(&time_start_year);
 
-    // Convert horus and minutes to seconds and add them together
+    // Extract months and days and convert to integers
     unsigned long months = ((mmdd.at(0) & 0x0F) * 10) + 
                           (mmdd.at(1) & 0x0F);
     unsigned long days = ((mmdd.at(3) & 0x0F) * 10) + 
@@ -616,7 +624,7 @@ time_t today_add_mmdd(std::string mmdd){
         break;
     case MARCH:
         // If year is a leap year, then up to 29 days
-        if(time_start_day_struct->tm_year % 4 == 0){
+        if(time_start_year_struct->tm_year % 4 == 0){
             acc_days += JANUARY_DAYS + 
                         FEBRUARY_DAYS_LEAP + days;
         }
@@ -712,7 +720,7 @@ time_t today_add_mmdd(std::string mmdd){
     }
 
     // Subtract 1 hour (3600 seconds)
-    time_t added_time = time_start_day + (acc_days * 24 * 60 * 60) - 3600;
+    time_t added_time = time_start_year + (acc_days * 24 * 60 * 60) - 3600;
 
     // Get current time and check for past time
     time_t time_now;
@@ -730,9 +738,9 @@ time_t today_add_mmdd_hms(std::string mmdd_hms){
     }
 
     // Get time at start of current day
-    std::time_t time_start_day = init_year();
-    std::tm* time_start_day_struct;
-    time_start_day_struct = gmtime(&time_start_day);
+    time_t time_start_year = init_year();
+    std::tm* time_start_year_struct;
+    time_start_year_struct = gmtime(&time_start_year);
     
     // Convert horus and minutes to seconds and add them together
     // Subtract 1 day and 1 hour
@@ -759,7 +767,7 @@ time_t today_add_mmdd_hms(std::string mmdd_hms){
         break;
     case MARCH:
         // If year is a leap year, then up to 29 days
-        if(time_start_day_struct->tm_year % 4 == 0){
+        if(time_start_year_struct->tm_year % 4 == 0){
             acc_days += JANUARY_DAYS + 
                         FEBRUARY_DAYS_LEAP + days;
         }
@@ -855,7 +863,7 @@ time_t today_add_mmdd_hms(std::string mmdd_hms){
     }
 
     seconds += (acc_days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60);
-    time_t added_time = time_start_day + seconds;
+    time_t added_time = time_start_year + seconds;
 
     // Get current time and check for past time
     time_t time_now;
@@ -931,6 +939,7 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
 
     // Validate datetime depending on frequency value
     DatetimeFormat format;
+    time_t schedule_datetime;
     bool datetime_defined = task_config->key_exists("Datetime");
     if(datetime_defined){
         value = task_config->get_value("Datetime")->get_data<std::string>();
@@ -943,21 +952,25 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             if(validate_hms(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_hms(value);
             break;
         case (int)DatetimeFormat::MMDD_HHMMSS:
             if(validate_mmdd(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_mmdd_hms(value);
             break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             if(validate_yyyymmdd(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            // TODO: implemente today_add_yyyymmdd_hms()
             break;
         case (int)DatetimeFormat::WDAY_HHMMSS:
-            if(validate_wday(value) != DatetimeValidate::OK){
+            if(validate_wday_hms(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
+            schedule_datetime = today_add_wday_hms(value);
             break;
         case (int)DatetimeFormat::WDAY6_HHMMSS:
         case (int)DatetimeFormat::WDAY7_HHMMSS:
@@ -1020,7 +1033,7 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             }
             break;
         case (int)DatetimeFormat::WDAY_HHMMSS:
-            if(validate_wday(value) != DatetimeValidate::OK){
+            if(validate_wday_hms(value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
             break;
