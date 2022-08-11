@@ -95,7 +95,7 @@ DatetimeValidate validate_hms(std::string hms){
     }
     // Validate range of hour
     hours = ((hms.at(0) & 0x0F) * 10) + 
-            (hms.at(1) & 0x0F);
+             (hms.at(1) & 0x0F);
     if(hours < 0 | hours > 24){
         return DatetimeValidate::HOURS_OUT_OF_RANGE;
     }
@@ -193,7 +193,7 @@ DatetimeValidate validate_mmdd(std::string mmdd){
     }
     // Validate range of months
     month = ((mmdd.at(0) & 0x0F) * 10) + 
-            (mmdd.at(1) & 0x0F);
+             (mmdd.at(1) & 0x0F);
     if(month < 1 | month > 12){
         return DatetimeValidate::MONTH_OUT_OF_RANGE;
     }
@@ -212,7 +212,7 @@ DatetimeValidate validate_mmdd(std::string mmdd){
     }
     // Validate range of days by month
     day = ((mmdd.at(3) & 0x0F) * 10) + 
-          (mmdd.at(4) & 0x0F);
+           (mmdd.at(4) & 0x0F);
     switch (month){
     case JANUARY:
         if(day < 1 || day > 31){
@@ -337,7 +337,7 @@ DatetimeValidate validate_yyyymmdd(std::string yyyymmdd){
     year = ((yyyymmdd.at(0) & 0x0F) * 1000) + 
            ((yyyymmdd.at(1) & 0x0F) * 100) + 
            ((yyyymmdd.at(2) & 0x0F) * 10) + 
-           (yyyymmdd.at(3) & 0x0F);
+            (yyyymmdd.at(3) & 0x0F);
     if(year < 0 | year > 9999){
         return DatetimeValidate::YEAR_OUT_OF_RANGE;
     }
@@ -356,7 +356,7 @@ DatetimeValidate validate_yyyymmdd(std::string yyyymmdd){
     }
     // Validate range of months
     month = ((yyyymmdd.at(5) & 0x0F) * 10) + 
-            (yyyymmdd.at(6) & 0x0F);
+             (yyyymmdd.at(6) & 0x0F);
     if(month < 1 | month > 12){
         return DatetimeValidate::MONTH_OUT_OF_RANGE;
     }
@@ -375,7 +375,7 @@ DatetimeValidate validate_yyyymmdd(std::string yyyymmdd){
     }
     // Validate range of days by month
     day = ((yyyymmdd.at(8) & 0x0F) * 10) + 
-          (yyyymmdd.at(9) & 0x0F);
+           (yyyymmdd.at(9) & 0x0F);
     switch (month){
     case JANUARY:
         if(day < 1 || day > 31){
@@ -535,11 +535,11 @@ time_t today_add_hms(std::string hms){
     
     // Convert huors and minutes to seconds and add them together
     unsigned long hours = ((hms.at(0) & 0x0F) * 10) + 
-                          (hms.at(1) & 0x0F);
+                           (hms.at(1) & 0x0F);
     unsigned long minutes = ((hms.at(3) & 0x0F) * 10) + 
-                            (hms.at(4) & 0x0F);
+                             (hms.at(4) & 0x0F);
     unsigned long seconds = ((hms.at(6) & 0x0F) * 10) + 
-                            (hms.at(7) & 0x0F);
+                             (hms.at(7) & 0x0F);
     seconds += (hours * 60 * 60) + (minutes * 60);
     time_t added_time = time_start_day + seconds;
     
@@ -562,11 +562,11 @@ time_t today_add_dhms(int d, std::string hms){
     
     // Convert hours and minutes to seconds and add them together
     unsigned long hours = ((hms.at(0) & 0x0F) * 10) + 
-                          (hms.at(1) & 0x0F);
+                           (hms.at(1) & 0x0F);
     unsigned long minutes = ((hms.at(3) & 0x0F) * 10) + 
-                            (hms.at(4) & 0x0F);
+                             (hms.at(4) & 0x0F);
     unsigned long seconds = ((hms.at(6) & 0x0F) * 10) + 
-                            (hms.at(7) & 0x0F);
+                             (hms.at(7) & 0x0F);
     seconds += (d * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60);
     time_t added_time = time_start_day + seconds;
 
@@ -628,7 +628,7 @@ time_t today_add_mmdd(std::string mmdd){
 
     // Extract months and days and convert to integers
     unsigned long months = ((mmdd.at(0) & 0x0F) * 10) + 
-                          (mmdd.at(1) & 0x0F);
+                           (mmdd.at(1) & 0x0F);
     unsigned long days = ((mmdd.at(3) & 0x0F) * 10) + 
                           (mmdd.at(4) & 0x0F) - 1;
 
@@ -763,15 +763,15 @@ time_t today_add_mmdd_hms(std::string mmdd_hms){
     // Convert horus and minutes to seconds and add them together
     // Subtract 1 day and 1 hour
     unsigned long months = ((mmdd_hms.at(0) & 0x0F) * 10) + 
-                          (mmdd_hms.at(1) & 0x0F);
+                            (mmdd_hms.at(1) & 0x0F);
     unsigned long days = ((mmdd_hms.at(3) & 0x0F) * 10) + 
                           (mmdd_hms.at(4) & 0x0F) - 1;
     unsigned long hours = ((mmdd_hms.at(6) & 0x0F) * 10) + 
-                          (mmdd_hms.at(7) & 0x0F) - 1;
+                           (mmdd_hms.at(7) & 0x0F) - 1;
     unsigned long minutes = ((mmdd_hms.at(9) & 0x0F) * 10) + 
-                            (mmdd_hms.at(10) & 0x0F);
+                             (mmdd_hms.at(10) & 0x0F);
     unsigned long seconds = ((mmdd_hms.at(12) & 0x0F) * 10) + 
-                            (mmdd_hms.at(13) & 0x0F);
+                             (mmdd_hms.at(13) & 0x0F);
     
     // Accumulate day count in year plus day in month
     unsigned long acc_days = 0;
@@ -905,9 +905,9 @@ time_t today_add_yyyymmdd(std::string yyyymmdd){
     unsigned long years = ((yyyymmdd.at(0) & 0x0F) * 1000) + 
                           ((yyyymmdd.at(1) & 0x0F) * 100) + 
                           ((yyyymmdd.at(2) & 0x0F) * 10) + 
-                          (yyyymmdd.at(3) & 0x0F);
+                           (yyyymmdd.at(3) & 0x0F);
     unsigned long months = ((yyyymmdd.at(5) & 0x0F) * 10) + 
-                          (yyyymmdd.at(6) & 0x0F);
+                           (yyyymmdd.at(6) & 0x0F);
     unsigned long days = ((yyyymmdd.at(8) & 0x0F) * 10) + 
                           (yyyymmdd.at(9) & 0x0F) - 1;
 
