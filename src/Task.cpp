@@ -1319,7 +1319,10 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             return TaskValidate::BAD_DATETIME_VALUE;
             break;
         }
-        // TODO: validate future datetime
+        // Check if datetime is in the past
+        if(schedule_datetime <= 0){
+            return TaskValidate::BAD_DATETIME_VALUE;
+        }
     }
     else if(value == "Hourly"){
         // Datetime value ignored
@@ -1337,7 +1340,10 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
         default:
             break;
         }
-        // TODO: validate future datetime
+        // Check if datetime is in the past
+        if(schedule_datetime <= 0){
+            return TaskValidate::BAD_DATETIME_VALUE;
+        }
     }
     else if(value == "Weekly"){
         // Get datetime format, no validation performed at this step
@@ -1387,7 +1393,10 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             return TaskValidate::BAD_DATETIME_VALUE;
             break;
         }
-        // TODO: validate future datetime
+        // Check if datetime is in the past
+        if(schedule_datetime <= 0){
+            return TaskValidate::BAD_DATETIME_VALUE;
+        }
     }
     else if(value == "Monthly"){
         // Get datetime format, no validation performed at this step
@@ -1427,7 +1436,10 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             return TaskValidate::BAD_DATETIME_VALUE;
             break;
         }
-        // TODO: validate future datetime
+        // Check if datetime is in the past
+        if(schedule_datetime <= 0){
+            return TaskValidate::BAD_DATETIME_VALUE;
+        }
     }
     else if(value == "Yearly"){
         // Get datetime format, no validation performed at this step
@@ -1461,7 +1473,10 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             return TaskValidate::BAD_DATETIME_VALUE;
             break;
         }
-        // TODO: validate future datetime
+        // Check if datetime is in the past
+        if(schedule_datetime <= 0){
+            return TaskValidate::BAD_DATETIME_VALUE;
+        }
     }
 
     return TaskValidate::OK;
