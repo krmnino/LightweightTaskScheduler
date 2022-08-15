@@ -88,9 +88,8 @@ enum class DatetimeFormat {
 
 class Task{
 private:
-    time_t starting_date;
-    time_t task_creation_date;
-    time_t execution_date;
+    time_t execution_datetime;
+    time_t task_creation_datetime;
     std::string name;
     std::string description;
     std::string script_filename;
@@ -101,19 +100,18 @@ private:
 
 public:
     Task();
-    Task(std::string, std::string, std::string);
+    Task(std::string, std::string, std::string, std::string, std::string);
+    Task(std::string, std::string, std::string, std::string);
     ~Task();
     void launch(void);
     std::string get_name(void);
     std::string get_description(void);
     std::string get_frequency(void);
-    time_t get_starting_date(void);
-    time_t get_task_creation_date(void);
-    time_t get_execution_date(void);
+    time_t get_task_creation_datetime(void);
+    time_t get_execution_datetime(void);
     std::string get_output(void);
-    std::string get_starting_date_fmt(void);
-    std::string get_task_creation_date_fmt(void);
-    std::string get_execution_date_fmt(void);
+    std::string get_task_creation_datetime_fmt(void);
+    std::string get_execution_datetime_fmt(void);
 };
 
 DatetimeValidate validate_hms(std::string);

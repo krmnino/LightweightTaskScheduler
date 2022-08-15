@@ -8,9 +8,65 @@
 
 namespace ts{
 
-Task::Task(std::string name, std::string script_filename, std::string frequency){
+Task::Task(std::string name, 
+           std::string description,
+           std::string script_filename,
+           std::string frequency,
+           std::string execution_date_str){
     this->name = name;
+    this->description = description;
     this->script_filename = script_filename;
+    this->frequency = frequency;
+
+    // Get datetime format
+    DatetimeFormat df = get_datetime_format(execution_date_str);
+
+    // Initialize execution datetime 
+    switch((int)df){
+    case (int)DatetimeFormat::HHMMSS:
+        this->execution_datetime = today_add_hms(execution_date_str);
+        break;
+    case (int)DatetimeFormat::MMDD_HHMMSS:
+        this->execution_datetime = today_add_mmdd_hms(execution_date_str);
+        break;
+    case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
+        this->execution_datetime = today_add_yyyymmdd_hms(execution_date_str);
+        break;
+    case (int)DatetimeFormat::WDAY_HHMMSS:
+    case (int)DatetimeFormat::WDAY6_HHMMSS:
+    case (int)DatetimeFormat::WDAY7_HHMMSS:
+    case (int)DatetimeFormat::WDAY8_HHMMSS:
+    case (int)DatetimeFormat::WDAY9_HHMMSS:
+        this->execution_datetime = today_add_wday_hms(execution_date_str);
+        break;
+    case (int)DatetimeFormat::MMDD:
+        this->execution_datetime = today_add_mmdd(execution_date_str);
+        break;
+    case (int)DatetimeFormat::YYYYMMDD:
+        this->execution_datetime = today_add_yyyymmdd(execution_date_str);
+        break;
+    default:
+        this->execution_datetime = 0;
+        break;
+    }
+    // Store task creation datetime
+    std::time(&this->task_creation_datetime);
+
+    this->output = "";
+}
+
+Task::Task(std::string name, 
+           std::string description,
+           std::string script_filename,
+           std::string frequency){
+    this->name = name;
+    this->description = description;
+    this->script_filename = script_filename;
+    this->frequency = frequency;
+
+    // Store task creation datetime
+    std::time(&this->task_creation_datetime);
+
     this->output = "";
 }
 
@@ -49,32 +105,24 @@ std::string Task::get_frequency(void){
     return this->frequency;
 }
 
-time_t Task::get_starting_date(void){
-    return this->starting_date;
+time_t Task::get_task_creation_datetime(void){
+    return this->task_creation_datetime;
 }
 
-time_t Task::get_task_creation_date(void){
-    return this->task_creation_date;
-}
-
-time_t Task::get_execution_date(void){
-    return this->execution_date;
+time_t Task::get_execution_datetime(void){
+    return this->execution_datetime;
 }
 
 std::string Task::get_output(void){
     return this->output;
 }
 
-std::string Task::get_starting_date_fmt(void){
-    return std::string(ctime(&this->starting_date));
+std::string Task::get_task_creation_datetime_fmt(void){
+    return std::string(ctime(&this->task_creation_datetime));
 }
 
-std::string Task::get_task_creation_date_fmt(void){
-    return std::string(ctime(&this->task_creation_date));
-}
-
-std::string Task::get_execution_date_fmt(void){
-    return std::string(ctime(&this->execution_date)); 
+std::string Task::get_execution_datetime_fmt(void){
+    return std::string(ctime(&this->execution_datetime)); 
 }
 
 DatetimeValidate validate_hms(std::string hms){

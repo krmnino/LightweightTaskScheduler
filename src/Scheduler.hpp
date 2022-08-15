@@ -15,7 +15,8 @@ private:
     std::string top_level_dir;
     std::string tasks_dir;
     std::string scripts_dir;
-    std::map<std::string, Task*> tasks_registry;
+    std::map<std::string, Task*> task_registry;
+    
 public:
     Scheduler(std::string&, std::string&, std::string&);
     Scheduler();
