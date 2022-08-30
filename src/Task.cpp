@@ -76,7 +76,7 @@ Task::Task(){}
 
 Task::~Task() {}
 
-void Task::launch(void){
+void Task::run_task(void){
     pid_t pid = fork();
     if(pid < 0){
         throw std::runtime_error("fork() failed!");

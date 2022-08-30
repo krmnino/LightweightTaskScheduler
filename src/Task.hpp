@@ -105,7 +105,7 @@ public:
     Task(std::string, std::string, std::string, std::string, std::string);
     Task(std::string, std::string, std::string, std::string);
     ~Task();
-    void launch(void);
+    void run_task(void);
     std::string get_name(void);
     std::string get_description(void);
     std::string get_script_filename(void);
