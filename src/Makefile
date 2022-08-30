@@ -1,5 +1,6 @@
 debug:
 	g++ -g -std=c++17 			\
+		-pthread				\
 		Variant.hpp				\
 		Variant.cpp				\
 		Value.hpp				\
@@ -17,6 +18,7 @@ debug:
 
 release:
 	g++ -O2 -std=c++17 			\
+		-pthread				\
 		Variant.hpp				\
 		Variant.cpp				\
 		Value.hpp				\
@@ -33,7 +35,7 @@ release:
 		-lstdc++fs
 
 test: 
-	g++ -g Test.cpp -o test
+	g++ -g -pthread Test.cpp -o test
 
 clean:
 	rm scheduler test Test
