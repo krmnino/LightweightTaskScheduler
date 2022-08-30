@@ -12,38 +12,39 @@ Task::Task(std::string name,
            std::string description,
            std::string script_filename,
            std::string frequency,
-           std::string execution_date_str){
+           std::string execution_datetime_str){
     this->name = name;
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
+    this->execution_datetime_str = execution_datetime_str;
 
     // Get datetime format
-    DatetimeFormat df = get_datetime_format(execution_date_str);
+    DatetimeFormat df = get_datetime_format(execution_datetime_str);
 
     // Initialize execution datetime 
     switch((int)df){
     case (int)DatetimeFormat::HHMMSS:
-        this->execution_datetime = today_add_hms(execution_date_str);
+        this->execution_datetime = today_add_hms(execution_datetime_str);
         break;
     case (int)DatetimeFormat::MMDD_HHMMSS:
-        this->execution_datetime = today_add_mmdd_hms(execution_date_str);
+        this->execution_datetime = today_add_mmdd_hms(execution_datetime_str);
         break;
     case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
-        this->execution_datetime = today_add_yyyymmdd_hms(execution_date_str);
+        this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
         break;
     case (int)DatetimeFormat::WDAY_HHMMSS:
     case (int)DatetimeFormat::WDAY6_HHMMSS:
     case (int)DatetimeFormat::WDAY7_HHMMSS:
     case (int)DatetimeFormat::WDAY8_HHMMSS:
     case (int)DatetimeFormat::WDAY9_HHMMSS:
-        this->execution_datetime = today_add_wday_hms(execution_date_str);
+        this->execution_datetime = today_add_wday_hms(execution_datetime_str);
         break;
     case (int)DatetimeFormat::MMDD:
-        this->execution_datetime = today_add_mmdd(execution_date_str);
+        this->execution_datetime = today_add_mmdd(execution_datetime_str);
         break;
     case (int)DatetimeFormat::YYYYMMDD:
-        this->execution_datetime = today_add_yyyymmdd(execution_date_str);
+        this->execution_datetime = today_add_yyyymmdd(execution_datetime_str);
         break;
     default:
         this->execution_datetime = 0;
@@ -63,6 +64,7 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
+    this->execution_datetime_str = "";
 
     // Store task creation datetime
     std::time(&this->task_creation_datetime);
@@ -101,6 +103,10 @@ std::string Task::get_description(void){
     return this->description;
 }
 
+std::string Task::get_script_filename(void){
+    return this->script_filename;
+}
+
 std::string Task::get_frequency(void){
     return this->frequency;
 }
@@ -123,6 +129,14 @@ std::string Task::get_task_creation_datetime_fmt(void){
 
 std::string Task::get_execution_datetime_fmt(void){
     return std::string(ctime(&this->execution_datetime)); 
+}
+
+void Task::set_status(TaskStatus status){
+    this->status = status;
+}
+
+void Task::set_id(int id){
+    this->id = id;
 }
 
 DatetimeValidate validate_hms(std::string hms){

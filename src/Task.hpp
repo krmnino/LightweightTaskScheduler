@@ -94,9 +94,11 @@ private:
     std::string description;
     std::string script_filename;
     std::string frequency;
+    std::string execution_datetime_str;
     std::string output;
     pid_t pid;
-    int status;
+    TaskStatus status;
+    int id;
 
 public:
     Task();
@@ -106,12 +108,15 @@ public:
     void launch(void);
     std::string get_name(void);
     std::string get_description(void);
+    std::string get_script_filename(void);
     std::string get_frequency(void);
     time_t get_task_creation_datetime(void);
     time_t get_execution_datetime(void);
     std::string get_output(void);
     std::string get_task_creation_datetime_fmt(void);
     std::string get_execution_datetime_fmt(void);
+    void set_status(TaskStatus);
+    void set_id(int);
 };
 
 DatetimeValidate validate_hms(std::string);
