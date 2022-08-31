@@ -1,3 +1,4 @@
 src/scheduler
+src/scheduler_testing
 src/test
 .vscode
