@@ -34,8 +34,23 @@ release:
 		Main.cpp -o scheduler 	\
 		-lstdc++fs
 
-test: 
-	g++ -g -pthread Test.cpp -o test
+testing: 
+		g++ -g -std=c++17 		\
+		-pthread				\
+		Variant.hpp				\
+		Variant.cpp				\
+		Value.hpp				\
+		Value.cpp				\
+		CLErrorHandler.hpp 		\
+		CLErrorHandler.cpp 		\
+		ConfigLoader.hpp 		\
+		ConfigLoader.cpp 		\
+		Scheduler.hpp			\
+		Scheduler.cpp			\
+		Task.hpp				\
+		Task.cpp				\
+		Testing.cpp -o scheduler_testing 	\
+		-lstdc++fs
 
 clean:
-	rm scheduler test Test
+	rm scheduler scheduler_testing test Test
