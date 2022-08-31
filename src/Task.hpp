@@ -89,12 +89,12 @@ enum class DatetimeFormat {
 class Task{
 private:
     time_t execution_datetime;
-    time_t task_creation_datetime;
+    time_t creation_datetime;
     std::string name;
     std::string description;
     std::string script_filename;
     std::string frequency;
-    std::string execution_datetime_str;
+    std::string input_execution_datetime;
     std::string output;
     pid_t pid;
     TaskStatus status;
@@ -110,13 +110,16 @@ public:
     std::string get_description(void);
     std::string get_script_filename(void);
     std::string get_frequency(void);
-    time_t get_task_creation_datetime(void);
+    time_t get_creation_datetime(void);
     time_t get_execution_datetime(void);
     std::string get_output(void);
-    std::string get_task_creation_datetime_fmt(void);
+    std::string get_creation_datetime_fmt(void);
     std::string get_execution_datetime_fmt(void);
+    std::string get_input_execution_datetime(void);
+    int get_id(void);
     void set_status(TaskStatus);
     void set_id(int);
+    void update_execution_datetime(void);
 };
 
 DatetimeValidate validate_hms(std::string);

@@ -17,7 +17,7 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
-    this->execution_datetime_str = execution_datetime_str;
+    this->input_execution_datetime = execution_datetime_str;
 
     // Get datetime format
     DatetimeFormat df = get_datetime_format(execution_datetime_str);
@@ -51,7 +51,7 @@ Task::Task(std::string name,
         break;
     }
     // Store task creation datetime
-    std::time(&this->task_creation_datetime);
+    std::time(&this->creation_datetime);
 
     this->output = "";
 }
@@ -64,10 +64,10 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
-    this->execution_datetime_str = "";
+    this->input_execution_datetime = "";
 
     // Store task creation datetime
-    std::time(&this->task_creation_datetime);
+    std::time(&this->creation_datetime);
 
     this->output = "";
 }
@@ -111,8 +111,8 @@ std::string Task::get_frequency(void){
     return this->frequency;
 }
 
-time_t Task::get_task_creation_datetime(void){
-    return this->task_creation_datetime;
+time_t Task::get_creation_datetime(void){
+    return this->creation_datetime;
 }
 
 time_t Task::get_execution_datetime(void){
@@ -123,12 +123,20 @@ std::string Task::get_output(void){
     return this->output;
 }
 
-std::string Task::get_task_creation_datetime_fmt(void){
-    return std::string(ctime(&this->task_creation_datetime));
+std::string Task::get_creation_datetime_fmt(void){
+    return std::string(ctime(&this->creation_datetime));
 }
 
 std::string Task::get_execution_datetime_fmt(void){
     return std::string(ctime(&this->execution_datetime)); 
+}
+
+std::string Task::get_input_execution_datetime(void){
+    return this->input_execution_datetime;
+}
+
+int Task::get_id(void){
+    return this->id;
 }
 
 void Task::set_status(TaskStatus status){
@@ -137,6 +145,24 @@ void Task::set_status(TaskStatus status){
 
 void Task::set_id(int id){
     this->id = id;
+}
+
+void Task::update_execution_datetime(void){
+    if(this->frequency == "Hourly"){
+        // add 1 hour to current execution time
+    }
+    else if(this->frequency == "Daily"){
+        // add 24 hours to current execution time
+    }
+    else if(this->frequency == "Weekly"){
+        // add 7 days to current execution time
+    }
+    else if(this->frequency == "Monthly"){
+        // add necessary days until nth day of next month
+    }
+    else if(this->frequency == "Yearly"){
+        // add necessary days until nth day of next year
+    }
 }
 
 DatetimeValidate validate_hms(std::string hms){
