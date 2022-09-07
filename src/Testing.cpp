@@ -171,7 +171,7 @@ int test5(){
 
 
 int test6(){
-    // TEST 6: testing validate_hms() function
+    // TEST 6: testing validate_wday() function
 
     std::string wday;
     ts::DatetimeValidate ret;
@@ -226,6 +226,38 @@ int test6(){
 }
 
 
+int test7(){
+    // TEST 7: testing validate_wday_hms() function
+
+    std::string wday_hms;
+    ts::DatetimeValidate ret;
+
+    wday_hms = "Monday 01:00:00";
+    ret = ts::validate_wday_hms(wday_hms);
+    assert(ret == ts::DatetimeValidate::OK);
+
+    wday_hms = "Monday01:00:00";
+    ret = ts::validate_wday_hms(wday_hms);
+    assert(ret == ts::DatetimeValidate::MISSING_SPACE);
+
+    wday_hms = "Anything 01:00:00";
+    ret = ts::validate_wday_hms(wday_hms);
+    assert(ret == ts::DatetimeValidate::BAD_WDAY);    
+
+    wday_hms = "Anything 01:00:00";
+    ret = ts::validate_wday_hms(wday_hms);
+    assert(ret == ts::DatetimeValidate::BAD_WDAY);  
+
+    wday_hms = "Friday 35:00:00";
+    ret = ts::validate_wday_hms(wday_hms);
+    assert(ret == ts::DatetimeValidate::HOURS_OUT_OF_RANGE);
+
+    std::cout << ">> Test 7 done" << std::endl;
+
+    return 0;
+}
+
+
 int main(){
     bool all    = true;
     bool t1     = false;
@@ -234,6 +266,7 @@ int main(){
     bool t4     = false;
     bool t5     = false;
     bool t6     = false;
+    bool t7     = false;
 
     if(t1 || all){
         test1();
@@ -253,4 +286,9 @@ int main(){
     if(t6 || all){
         test6();
     }
+    if(t7 || all){
+        test7();
+    }
+
+    return 0;
 }
