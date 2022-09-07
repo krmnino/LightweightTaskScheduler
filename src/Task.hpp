@@ -116,6 +116,7 @@ public:
     std::string get_creation_datetime_fmt(void);
     std::string get_execution_datetime_fmt(void);
     std::string get_input_execution_datetime(void);
+    TaskStatus get_status(void);
     int get_id(void);
     void set_status(TaskStatus);
     void set_id(int);

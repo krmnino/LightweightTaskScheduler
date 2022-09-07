@@ -1,12 +1,16 @@
 #include <unistd.h>
+#include <sys/wait.h>
 #include <array>
 #include <memory>
 #include <exception>
 #include <filesystem>
+#include <mutex>
 
 #include "Task.hpp"
 
 namespace ts{
+
+std::mutex mux;
 
 Task::Task(std::string name, 
            std::string description,
@@ -92,7 +96,11 @@ void Task::run_task(void){
             this->output += buffer.data();
         }
     }
-    this->pid = pid;
+    else{
+        int status;
+        this->pid = pid;
+        waitpid(pid, &status, 0);
+    }
 }
 
 std::string Task::get_name(void){
@@ -133,6 +141,10 @@ std::string Task::get_execution_datetime_fmt(void){
 
 std::string Task::get_input_execution_datetime(void){
     return this->input_execution_datetime;
+}
+
+TaskStatus Task::get_status(void){
+    return this->status;
 }
 
 int Task::get_id(void){
@@ -184,7 +196,7 @@ DatetimeValidate validate_hms(std::string hms){
     // Validate range of hour
     hours = ((hms.at(0) & 0x0F) * 10) + 
              (hms.at(1) & 0x0F);
-    if(hours < 0 | hours > 24){
+    if(hours < 0 | hours > 23){
         return DatetimeValidate::HOURS_OUT_OF_RANGE;
     }
     if(hms.at(2) != ':'){
