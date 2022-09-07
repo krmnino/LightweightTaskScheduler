@@ -1,1 +1,1 @@
-cat ../src/Makefile
+cat ../scripts/ls_test.sh
