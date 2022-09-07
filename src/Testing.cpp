@@ -170,6 +170,62 @@ int test5(){
 }
 
 
+int test6(){
+    // TEST 6: testing validate_hms() function
+
+    std::string wday;
+    ts::DatetimeValidate ret;
+
+    wday = "Monday";
+    ret = ts::validate_wday(wday);
+    assert(ret == ts::DatetimeValidate::OK);
+    
+    wday = "Tuesday";
+    ret = ts::validate_wday(wday);
+    assert(ret == ts::DatetimeValidate::OK);
+    
+    wday = "Wednesday";
+    ret = ts::validate_wday(wday);
+    assert(ret == ts::DatetimeValidate::OK);
+    
+    wday = "Thursday";
+    ret = ts::validate_wday(wday);
+    assert(ret == ts::DatetimeValidate::OK);
+
+    wday = "Friday";
+    ret = ts::validate_wday(wday);
+    assert(ret == ts::DatetimeValidate::OK);
+
+    wday = "Mon";
+    ret = ts::validate_wday(wday);
+    assert(ret == ts::DatetimeValidate::OK);
+    
+    wday = "Tue";
+    ret = ts::validate_wday(wday);
+    assert(ret == ts::DatetimeValidate::OK);
+    
+    wday = "Wed";
+    ret = ts::validate_wday(wday);
+    assert(ret == ts::DatetimeValidate::OK);
+    
+    wday = "Thu";
+    ret = ts::validate_wday(wday);
+    assert(ret == ts::DatetimeValidate::OK);
+
+    wday = "Fri";
+    ret = ts::validate_wday(wday);
+    assert(ret == ts::DatetimeValidate::OK);
+
+    wday = "anything";
+    ret = ts::validate_wday(wday);
+    assert(ret == ts::DatetimeValidate::BAD_WDAY);
+
+    std::cout << ">> Test 6 done" << std::endl;
+
+    return 0;
+}
+
+
 int main(){
     bool all    = true;
     bool t1     = false;
@@ -177,6 +233,7 @@ int main(){
     bool t3     = false;
     bool t4     = false;
     bool t5     = false;
+    bool t6     = false;
 
     if(t1 || all){
         test1();
@@ -192,5 +249,8 @@ int main(){
     }
     if(t5 || all){
         test5();
+    }
+    if(t6 || all){
+        test6();
     }
 }
