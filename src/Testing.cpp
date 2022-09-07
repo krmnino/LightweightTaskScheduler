@@ -4,6 +4,13 @@
 #include "Task.hpp"
 
 int test1(){
+    // TEST 1: testing Task constructor Task(std::string, std::string, std::string, std::string)
+    // Testing methods 
+    // get_name()
+    // get_description()
+    // get_script_name()
+    // get_frequency()
+
     std::string t_name = "Task Name";
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
@@ -25,6 +32,14 @@ int test1(){
 
 
 int test2(){
+    // TEST 2: testing Task constructor Task(std::string, std::string, std::string, std::string, std::string)
+    // Testing methods 
+    // get_name()
+    // get_description()
+    // get_script_name()
+    // get_frequency()
+    // get_input_execution_datetime()
+
     std::string t_name = "Task Name";
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
@@ -48,6 +63,12 @@ int test2(){
 
 
 int test3(){
+    // TEST 3: testing methods 
+    // get_execution_datetime_fmt()
+    // get_creation_datetime_fmt()
+    // get_creation_datetime()
+    // get_execution_datetime()
+
     std::string t_name = "Task Name";
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
@@ -58,11 +79,92 @@ int test3(){
     
     std::string execution_datetime_fmt = t->get_execution_datetime_fmt();
     std::string creation_datetime_fmt = t->get_creation_datetime_fmt();
-    std::cout << execution_datetime_fmt << std::endl;
+    time_t execution_datetime = t->get_creation_datetime(); 
+    time_t creation_datetime = t->get_execution_datetime();
 
     delete t;
 
     std::cout << ">> Test 3 done" << std::endl;
+
+    return 0;
+}
+
+
+int test4(){
+    // TEST 4: testing methods 
+    // set_id()
+    // get_id()
+    // set_status()
+    // get_status()
+
+    std::string t_name = "Task Name";
+    std::string t_description = "A short description for this task";
+    std::string t_script_name = "../scripts/cat_test.sh";
+    std::string t_frequency = "Once";
+
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency);
+    
+    t->set_id(12345);
+    assert(t->get_id() == 12345);
+
+    t->set_status(ts::TaskStatus::QUEUED);
+    assert(t->get_status() == ts::TaskStatus::QUEUED);
+
+    delete t;
+
+    std::cout << ">> Test 4 done" << std::endl;
+
+    return 0;
+}
+
+
+int test5(){
+    // TEST 5: testing validate_hms() function
+
+    std::string hms;
+    ts::DatetimeValidate ret;
+    
+    hms = "12:00:00";
+    ret = ts::validate_hms(hms);
+    assert(ret == ts::DatetimeValidate::OK);
+
+    hms = "12:00";
+    ret = ts::validate_hms(hms);
+    assert(ret == ts::DatetimeValidate::BAD_HMS_LENGTH);
+
+    hms = "1a:00:00";
+    ret = ts::validate_hms(hms);
+    assert(ret == ts::DatetimeValidate::BAD_NUMBER_CHARACTER);
+
+    hms = "12:a0:00";
+    ret = ts::validate_hms(hms);
+    assert(ret == ts::DatetimeValidate::BAD_NUMBER_CHARACTER);
+
+    hms = "12:00:a0";
+    ret = ts::validate_hms(hms);
+    assert(ret == ts::DatetimeValidate::BAD_NUMBER_CHARACTER);
+
+    hms = "30:00:00";
+    ret = ts::validate_hms(hms);
+    assert(ret == ts::DatetimeValidate::HOURS_OUT_OF_RANGE);
+
+    hms = "12:90:00";
+    ret = ts::validate_hms(hms);
+    assert(ret == ts::DatetimeValidate::MINUTES_OUT_OF_RANGE);    
+
+    hms = "12:00:88";
+    ret = ts::validate_hms(hms);
+    assert(ret == ts::DatetimeValidate::SECONDS_OUT_OF_RANGE);
+
+    hms = "12A00:00";
+    ret = ts::validate_hms(hms);
+    assert(ret == ts::DatetimeValidate::MISSING_COLON);
+    
+    hms = "12:00A00";
+    ret = ts::validate_hms(hms);
+    assert(ret == ts::DatetimeValidate::MISSING_COLON);
+
+    std::cout << ">> Test 5 done" << std::endl;
 
     return 0;
 }
@@ -73,6 +175,8 @@ int main(){
     bool t1     = false;
     bool t2     = false;
     bool t3     = false;
+    bool t4     = false;
+    bool t5     = false;
 
     if(t1 || all){
         test1();
@@ -82,5 +186,11 @@ int main(){
     }
     if(t3 || all){
         test3();
+    }
+    if(t4 || all){
+        test4();
+    }
+    if(t5 || all){
+        test5();
     }
 }
