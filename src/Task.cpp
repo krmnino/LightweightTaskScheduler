@@ -303,7 +303,7 @@ DatetimeValidate validate_mmdd(std::string mmdd){
     }
     // Validate day individual characters
     num = mmdd.at(3);
-    if(num < '0' | num > '3'){
+    if(num < '0' | num > '9'){
         return DatetimeValidate::BAD_NUMBER_CHARACTER;
     }
     num = mmdd.at(4);

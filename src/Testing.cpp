@@ -258,6 +258,182 @@ int test7(){
 }
 
 
+int test8(){
+    // TEST 8: testing validate_mmdd() function
+
+    std::string mmdd;
+    ts::DatetimeValidate ret;
+
+    mmdd = "01-01";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);
+
+    mmdd = "01-31";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "02-01";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "02-28";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "03-01";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "03-31";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "04-01";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "04-30";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "05-01";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "05-31";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "06-01";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "06-30";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "07-01";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "07-31";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "08-01";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "08-31";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "09-01";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "09-30";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);
+
+    mmdd = "10-01";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "10-31";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK); 
+
+    mmdd = "11-01";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "11-30";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK); 
+
+    mmdd = "12-01";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    mmdd = "12-31";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::OK); 
+
+    mmdd = "12-31-22";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::BAD_MMDD_LENGTH); 
+
+    mmdd = "a2-31";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::BAD_NUMBER_CHARACTER);
+
+    mmdd = "12-3a";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::BAD_NUMBER_CHARACTER);
+
+    mmdd = "12a30";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::MISSING_DASH);
+
+    mmdd = "25-30";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::MONTH_OUT_OF_RANGE);
+
+    mmdd = "01-40";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);   
+
+    mmdd = "02-40";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);   
+
+    mmdd = "03-40";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);  
+
+    mmdd = "04-40";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);  
+
+    mmdd = "05-40";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);  
+
+    mmdd = "06-40";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);  
+
+    mmdd = "07-40";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);  
+
+    mmdd = "08-40";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);  
+
+    mmdd = "09-40";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);  
+
+    mmdd = "10-40";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);  
+
+    mmdd = "11-40";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);  
+
+    mmdd = "12-40";
+    ret = ts::validate_mmdd(mmdd);
+    assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);  
+
+    std::cout << ">> Test 8 done" << std::endl;
+
+    return 0;
+}
+
+
 int main(){
     bool all    = true;
     bool t1     = false;
@@ -267,6 +443,7 @@ int main(){
     bool t5     = false;
     bool t6     = false;
     bool t7     = false;
+    bool t8     = false;
 
     if(t1 || all){
         test1();
@@ -288,6 +465,9 @@ int main(){
     }
     if(t7 || all){
         test7();
+    }
+    if(t8 || all){
+        test8();
     }
 
     return 0;
