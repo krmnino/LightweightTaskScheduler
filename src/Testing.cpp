@@ -244,10 +244,6 @@ int test7(){
     ret = ts::validate_wday_hms(wday_hms);
     assert(ret == ts::DatetimeValidate::BAD_WDAY);    
 
-    wday_hms = "Anything 01:00:00";
-    ret = ts::validate_wday_hms(wday_hms);
-    assert(ret == ts::DatetimeValidate::BAD_WDAY);  
-
     wday_hms = "Friday 35:00:00";
     ret = ts::validate_wday_hms(wday_hms);
     assert(ret == ts::DatetimeValidate::HOURS_OUT_OF_RANGE);
