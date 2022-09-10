@@ -430,6 +430,34 @@ int test8(){
 }
 
 
+int test9(){
+    // TEST 9: testing validate_mmdd_hms() function
+
+    std::string mmdd_hms;
+    ts::DatetimeValidate ret;
+
+    mmdd_hms = "10-25 01:00:00";
+    ret = ts::validate_mmdd_hms(mmdd_hms);
+    assert(ret == ts::DatetimeValidate::OK);
+
+    mmdd_hms = "Monday01:00:00";
+    ret = ts::validate_mmdd_hms(mmdd_hms);
+    assert(ret == ts::DatetimeValidate::MISSING_SPACE);
+
+    mmdd_hms = "56-25 01:00:00";
+    ret = ts::validate_mmdd_hms(mmdd_hms);
+    assert(ret == ts::DatetimeValidate::MONTH_OUT_OF_RANGE);    
+
+    mmdd_hms = "10-25 35:00:00";
+    ret = ts::validate_mmdd_hms(mmdd_hms);
+    assert(ret == ts::DatetimeValidate::HOURS_OUT_OF_RANGE);
+
+    std::cout << ">> Test 9 done" << std::endl;
+
+    return 0;
+}
+
+
 int main(){
     bool all    = true;
     bool t1     = false;
@@ -440,6 +468,7 @@ int main(){
     bool t6     = false;
     bool t7     = false;
     bool t8     = false;
+    bool t9     = false;
 
     if(t1 || all){
         test1();
@@ -464,6 +493,9 @@ int main(){
     }
     if(t8 || all){
         test8();
+    }
+    if(t9 || all){
+        test9();
     }
 
     return 0;
