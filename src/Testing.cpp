@@ -458,6 +458,149 @@ int test9(){
 }
 
 
+int test10(){
+    // TEST 10: testing today_add_yyyymmdd() function
+    
+    std::string yyyymmdd;
+    ts::DatetimeValidate ret;
+
+    yyyymmdd = "2022-01-01";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);
+
+    yyyymmdd = "2022-01-31";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-02-01";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-02-28";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2024-02-29";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-03-01";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-03-31";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-04-01";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-04-30";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-05-01";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-05-31";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-06-01";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-06-30";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-07-01";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-07-31";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-08-01";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-08-31";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-09-01";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-09-30";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);
+
+    yyyymmdd = "2022-10-01";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-10-31";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK); 
+
+    yyyymmdd = "2022-11-01";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-11-30";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK); 
+
+    yyyymmdd = "2022-12-01";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);    
+
+    yyyymmdd = "2022-12-31";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::OK);
+
+    yyyymmdd = "2022-31-2222";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::BAD_YYYYMMDD_LENGTH); 
+
+    yyyymmdd = "2a22-12-31";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::BAD_NUMBER_CHARACTER);
+
+    yyyymmdd = "2022-1a-31";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::BAD_NUMBER_CHARACTER);
+
+    yyyymmdd = "2022-12-3a";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::BAD_NUMBER_CHARACTER);
+
+    yyyymmdd = "2022a12a30";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::MISSING_DASH);
+
+    yyyymmdd = "2022-12a30";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::MISSING_DASH);
+
+    yyyymmdd = "2022-25-30";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::MONTH_OUT_OF_RANGE);
+
+    yyyymmdd = "2022-01-40";
+    ret = ts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);   
+    
+    std::cout << ">> Test 10 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     bool all    = true;
     bool t1     = false;
@@ -469,6 +612,7 @@ int main(){
     bool t7     = false;
     bool t8     = false;
     bool t9     = false;
+    bool t10     = false;
 
     if(t1 || all){
         test1();
@@ -496,6 +640,9 @@ int main(){
     }
     if(t9 || all){
         test9();
+    }
+    if(t10 || all){
+        test10();
     }
 
     return 0;
