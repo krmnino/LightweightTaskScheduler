@@ -601,6 +601,33 @@ int test10(){
 }
 
 
+int test11(){
+    // TEST 11: testing today_add_yyyymmdd_hms() function
+    
+    std::string yyyymmdd_hms;
+    ts::DatetimeValidate ret;
+
+    yyyymmdd_hms = "2022-01-01 12:00:00";
+    ret = ts::validate_yyyymmdd_hms(yyyymmdd_hms);
+    assert(ret == ts::DatetimeValidate::OK);
+
+    yyyymmdd_hms = "2022-01-0112:00:00";
+    ret = ts::validate_yyyymmdd_hms(yyyymmdd_hms);
+    assert(ret == ts::DatetimeValidate::MISSING_SPACE);
+
+    yyyymmdd_hms = "202a-01-01 12:00:00";
+    ret = ts::validate_yyyymmdd_hms(yyyymmdd_hms);
+    assert(ret == ts::DatetimeValidate::BAD_NUMBER_CHARACTER);
+
+    yyyymmdd_hms = "2022-01-01 12:0a:00";
+    ret = ts::validate_yyyymmdd_hms(yyyymmdd_hms);
+    assert(ret == ts::DatetimeValidate::BAD_NUMBER_CHARACTER);
+
+    std::cout << ">> Test 11 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     bool all    = true;
     bool t1     = false;
@@ -613,6 +640,7 @@ int main(){
     bool t8     = false;
     bool t9     = false;
     bool t10     = false;
+    bool t11     = false;
 
     if(t1 || all){
         test1();
@@ -643,6 +671,9 @@ int main(){
     }
     if(t10 || all){
         test10();
+    }
+    if(t11 || all){
+        test11();
     }
 
     return 0;
