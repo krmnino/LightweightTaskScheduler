@@ -628,6 +628,36 @@ int test11(){
 }
 
 
+int test12(){
+    // TEST 12: testing init_today() and init_year() function
+
+    time_t ret;
+    time_t time_now;
+
+    ret = ts::init_today();
+    time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    std::tm* to_struct;
+
+    to_struct = std::gmtime(&ret);
+    std::tm struct_ret = *to_struct;
+
+    to_struct = std::gmtime(&time_now);
+    std::tm struct_time_now = *to_struct;
+    
+    assert(struct_ret.tm_sec == 0);
+    assert(struct_ret.tm_min == 0);
+    assert(struct_ret.tm_hour == -TIMEZONE);
+    assert(struct_ret.tm_yday == struct_time_now.tm_yday);
+    assert(struct_ret.tm_mday == struct_time_now.tm_mday);
+    assert(struct_ret.tm_mon == struct_time_now.tm_mon);
+    assert(struct_ret.tm_year == struct_time_now.tm_year);
+
+    std::cout << ">> Test 12 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     bool all    = true;
     bool t1     = false;
@@ -641,6 +671,7 @@ int main(){
     bool t9     = false;
     bool t10     = false;
     bool t11     = false;
+    bool t12     = false;
 
     if(t1 || all){
         test1();
@@ -674,6 +705,9 @@ int main(){
     }
     if(t11 || all){
         test11();
+    }
+    if(t12 || all){
+        test12();
     }
 
     return 0;
