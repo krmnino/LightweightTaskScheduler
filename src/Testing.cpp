@@ -687,6 +687,65 @@ int test13(){
     return 0;
 }
 
+
+int test14(){
+    // TEST 14: testing today_add_hms() function
+
+    time_t ret;
+    time_t time_now;
+    std::tm* to_struct;
+    std::tm struct_time_now;
+
+    time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    
+    to_struct = std::gmtime(&time_now);
+    struct_time_now = *to_struct;
+
+    std::string hours = std::to_string(struct_time_now.tm_hour);
+    std::string minutes = std::to_string(struct_time_now.tm_min + 1);
+    std::string seconds = std::to_string(struct_time_now.tm_sec);
+    
+    ret = ts::today_add_hms(hours + ":" + minutes + ":" + seconds);
+
+    to_struct = std::gmtime(&ret);
+    std::tm struct_ret = *to_struct;
+
+    assert(ret >= time_now);
+       
+    std::cout << ">> Test 14 done" << std::endl;
+    return 0;
+}
+
+
+int test15(){
+    // TEST 15: testing today_add_hms() function
+
+    time_t ret;
+    time_t time_now;
+    std::tm* to_struct;
+    std::tm struct_time_now;
+
+    time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    
+    to_struct = std::gmtime(&time_now);
+    struct_time_now = *to_struct;
+
+    std::string hours = std::to_string(struct_time_now.tm_hour);
+    std::string minutes = std::to_string(struct_time_now.tm_min - 5);
+    std::string seconds = std::to_string(struct_time_now.tm_sec);
+    
+    ret = ts::today_add_hms(hours + ":" + minutes + ":" + seconds);
+
+    to_struct = std::gmtime(&ret);
+    std::tm struct_ret = *to_struct;
+
+    assert(ret == 0);
+       
+    std::cout << ">> Test 15 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     bool all    = true;
     bool t1     = false;
@@ -702,6 +761,8 @@ int main(){
     bool t11     = false;
     bool t12     = false;
     bool t13     = false;
+    bool t14     = false;
+    bool t15     = false;
 
     if(t1 || all){
         test1();
@@ -741,6 +802,12 @@ int main(){
     }
     if(t13 || all){
         test13();
+    }
+    if(t14 || all){
+        test14();
+    }
+    if(t15 || all){
+        test15();
     }
 
     return 0;
