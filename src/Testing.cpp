@@ -840,6 +840,43 @@ int test17(){
 }
 
 
+int test18(){
+    // TEST 18: testing today_add_dhms() function
+
+    time_t ret;
+    time_t time_now;
+    std::tm* to_struct;
+    std::tm struct_time_now;
+
+    time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    
+    to_struct = std::gmtime(&time_now);
+    struct_time_now = *to_struct;
+
+    std::string hours = std::to_string(struct_time_now.tm_hour);
+    std::string minutes = std::to_string(struct_time_now.tm_min - 1);
+    std::string seconds = std::to_string(struct_time_now.tm_sec);
+    
+    if(struct_time_now.tm_hour < 10){
+        hours = "0" + hours;
+    }
+    if(struct_time_now.tm_min - 1 < 10){
+        minutes = "0" + minutes;
+    }
+    if(struct_time_now.tm_sec < 10){
+        seconds = "0" + seconds;
+    }    
+    ret = ts::today_add_dhms(-15, hours + ":" + minutes + ":" + seconds);
+
+    to_struct = std::gmtime(&ret);
+    std::tm struct_ret = *to_struct;
+
+    assert(ret == 0);
+       
+    std::cout << ">> Test 18 done" << std::endl;
+    return 0;
+}
+
 int main(){
     bool all    = true;
     bool t1     = false;
@@ -859,6 +896,7 @@ int main(){
     bool t15     = false;
     bool t16     = false;
     bool t17     = false;
+    bool t18     = false;
 
     if(t1 || all){
         test1();
@@ -910,6 +948,9 @@ int main(){
     }
     if(t17 || all){
         test17();
+    }
+    if(t18 || all){
+        test18();
     }
 
     return 0;
