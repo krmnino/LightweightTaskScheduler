@@ -670,6 +670,13 @@ time_t today_add_dhms(int d, std::string hms){
     seconds += (d * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60);
     time_t added_time = time_start_day + seconds;
 
+    // Get current time and check for past time
+    time_t time_now;
+    std::time(&time_now);
+    if(time_now >= added_time){
+        return 0;
+    }
+
     return added_time;
 }
 
