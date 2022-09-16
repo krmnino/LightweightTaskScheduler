@@ -704,7 +704,16 @@ int test14(){
     std::string hours = std::to_string(struct_time_now.tm_hour);
     std::string minutes = std::to_string(struct_time_now.tm_min + 1);
     std::string seconds = std::to_string(struct_time_now.tm_sec);
-    
+
+    if(struct_time_now.tm_hour < 10){
+        hours = "0" + hours;
+    }
+    if(struct_time_now.tm_min + 1 < 10){
+        minutes = "0" + minutes;
+    }
+    if(struct_time_now.tm_sec < 10){
+        seconds = "0" + seconds;
+    }
     ret = ts::today_add_hms(hours + ":" + minutes + ":" + seconds);
 
     to_struct = std::gmtime(&ret);
@@ -731,9 +740,18 @@ int test15(){
     struct_time_now = *to_struct;
 
     std::string hours = std::to_string(struct_time_now.tm_hour);
-    std::string minutes = std::to_string(struct_time_now.tm_min - 5);
+    std::string minutes = std::to_string(struct_time_now.tm_min - 1);
     std::string seconds = std::to_string(struct_time_now.tm_sec);
     
+    if(struct_time_now.tm_hour < 10){
+        hours = "0" + hours;
+    }
+    if(struct_time_now.tm_min - 1 < 10){
+        minutes = "0" + minutes;
+    }
+    if(struct_time_now.tm_sec < 10){
+        seconds = "0" + seconds;
+    }
     ret = ts::today_add_hms(hours + ":" + minutes + ":" + seconds);
 
     to_struct = std::gmtime(&ret);
@@ -742,6 +760,82 @@ int test15(){
     assert(ret == 0);
        
     std::cout << ">> Test 15 done" << std::endl;
+    return 0;
+}
+
+
+int test16(){
+    // TEST 16: testing today_add_dhms() function
+
+    time_t ret;
+    time_t time_now;
+    std::tm* to_struct;
+    std::tm struct_time_now;
+
+    time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    
+    to_struct = std::gmtime(&time_now);
+    struct_time_now = *to_struct;
+
+    std::string hours = std::to_string(struct_time_now.tm_hour);
+    std::string minutes = std::to_string(struct_time_now.tm_min + 1);
+    std::string seconds = std::to_string(struct_time_now.tm_sec);
+    
+    if(struct_time_now.tm_hour < 10){
+        hours = "0" + hours;
+    }
+    if(struct_time_now.tm_min + 1 < 10){
+        minutes = "0" + minutes;
+    }
+    if(struct_time_now.tm_sec < 10){
+        seconds = "0" + seconds;
+    }    
+    ret = ts::today_add_dhms(1, hours + ":" + minutes + ":" + seconds);
+
+    to_struct = std::gmtime(&ret);
+    std::tm struct_ret = *to_struct;
+
+    assert(ret >= time_now);
+       
+    std::cout << ">> Test 16 done" << std::endl;
+    return 0;
+}
+
+
+int test17(){
+    // TEST 17: testing today_add_dhms() function
+
+    time_t ret;
+    time_t time_now;
+    std::tm* to_struct;
+    std::tm struct_time_now;
+
+    time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    
+    to_struct = std::gmtime(&time_now);
+    struct_time_now = *to_struct;
+
+    std::string hours = std::to_string(struct_time_now.tm_hour);
+    std::string minutes = std::to_string(struct_time_now.tm_min - 1);
+    std::string seconds = std::to_string(struct_time_now.tm_sec);
+    
+    if(struct_time_now.tm_hour < 10){
+        hours = "0" + hours;
+    }
+    if(struct_time_now.tm_min - 1 < 10){
+        minutes = "0" + minutes;
+    }
+    if(struct_time_now.tm_sec < 10){
+        seconds = "0" + seconds;
+    }    
+    ret = ts::today_add_dhms(0, hours + ":" + minutes + ":" + seconds);
+
+    to_struct = std::gmtime(&ret);
+    std::tm struct_ret = *to_struct;
+
+    assert(ret == 0);
+       
+    std::cout << ">> Test 17 done" << std::endl;
     return 0;
 }
 
@@ -763,6 +857,8 @@ int main(){
     bool t13     = false;
     bool t14     = false;
     bool t15     = false;
+    bool t16     = false;
+    bool t17     = false;
 
     if(t1 || all){
         test1();
@@ -808,6 +904,12 @@ int main(){
     }
     if(t15 || all){
         test15();
+    }
+    if(t16 || all){
+        test16();
+    }
+    if(t17 || all){
+        test17();
     }
 
     return 0;
