@@ -1092,7 +1092,7 @@ int test23(){
     to_struct = std::gmtime(&ret);
     std::tm struct_ret = *to_struct;
 
-    assert(ret == 0);
+    assert(ret >= time_now);
        
     std::cout << ">> Test 23 done" << std::endl;
     return 0;
