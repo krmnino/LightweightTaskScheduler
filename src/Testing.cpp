@@ -1151,6 +1151,26 @@ int test24(){
     return 0;
 }
 
+int test25(){
+    // TEST 25: testing run_task() function
+
+    std::string t_name = "Task Name";
+    std::string t_description = "A short description for this task";
+    std::string t_script_name = "../scripts/cat_test.sh";
+    std::string t_frequency = "Once";
+
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency);
+    
+    t->run_task();
+
+    assert(t->get_output() == "ls -l");
+
+    delete t;
+
+    std::cout << ">> Test 25 done." << std::endl;
+    return 0;
+}
+
 
 int main(){
     bool all    = true;
@@ -1178,6 +1198,7 @@ int main(){
     bool t22     = false;
     bool t23     = false;
     bool t24     = false;
+    bool t25     = false;
 
     if(t1 || all){
         test1();
@@ -1250,6 +1271,9 @@ int main(){
     }
     if(t24 || all){
         test24();
+    }
+    if(t25 || all){
+        test25();
     }
 
     return 0;
