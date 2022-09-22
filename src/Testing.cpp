@@ -1193,6 +1193,58 @@ int test26(){
 }
 
 
+int test27(){
+    // TEST 27: testing today_add_mmdd() function -> FAIL
+    // Current time - 1 day
+
+    time_t time_now;
+    time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add minus one day in seconds to current time
+    time_t time_now_add = time_now - 86400;
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string months = (struct_time_now_add.tm_mon < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon) :
+                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string days = (struct_time_now_add.tm_mday < 10) ? 
+                       "0" + std::to_string(struct_time_now_add.tm_mday) :
+                       std::to_string(struct_time_now_add.tm_mday);
+        
+    time_t ret;
+    ret = ts::today_add_mmdd(months + "-" + days);
+
+    to_struct = std::gmtime(&ret);
+
+    std::tm struct_ret;
+    struct_ret = *to_struct;
+
+    assert(ret == 0);
+       
+    std::cout << ">> Test 27 done" << std::endl;
+    return 0;
+}
+
+
+int test28(){
+    // TEST 28: testing today_add_mmdd() function -> FAIL
+    // Invalid months-days subtring
+
+    time_t ret;
+    ret = ts::today_add_mmdd("0212");
+
+    assert(ret == 0);
+       
+    std::cout << ">> Test 28 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     bool all    = true;
     bool t1     = false;
@@ -1221,6 +1273,8 @@ int main(){
     bool t24     = false;
     bool t25     = false;
     bool t26     = false;
+    bool t27     = false;
+    bool t28     = false;
 
     if(t1 || all){
         test1();
@@ -1299,6 +1353,12 @@ int main(){
     }
     if(t26 || all){
         test26();
+    }
+    if(t27 || all){
+        test27();
+    }
+    if(t28 || all){
+        test28();
     }
 
     return 0;
