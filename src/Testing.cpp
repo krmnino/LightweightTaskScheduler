@@ -1188,7 +1188,7 @@ int test27(){
     time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
 
     // Add minus one day in seconds to current time
-    time_t time_now_add = time_now - 86400;
+    time_t time_now_add = time_now + (-86400);
     
     std::tm* to_struct;
     to_struct = std::gmtime(&time_now_add);
@@ -1325,7 +1325,7 @@ int test31(){
     time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
 
     // Add minus one day in seconds to current time
-    time_t time_now_add = time_now - 86400;
+    time_t time_now_add = time_now + (-86400);
     
     std::tm* to_struct;
     to_struct = std::gmtime(&time_now_add);
@@ -1391,6 +1391,156 @@ int test33(){
 }
 
 
+int test34(){
+    // TEST 34: testing today_add_yyyymmdd() function -> PASS
+    // Current time + 1 day
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add one day in seconds to current time
+    time_t time_now_add = time_now + 86400;
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string years = std::to_string(1900 + struct_time_now_add.tm_year);
+    std::string months = (struct_time_now_add.tm_mon < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon) :
+                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string days = (struct_time_now_add.tm_mday < 10) ? 
+                       "0" + std::to_string(struct_time_now_add.tm_mday) :
+                       std::to_string(struct_time_now_add.tm_mday);
+        
+    time_t ret = ts::today_add_yyyymmdd(years + "-" + months + "-" + days);
+
+    to_struct = std::gmtime(&ret);
+
+    assert(ret >= time_now);
+       
+    std::cout << ">> Test 34 done" << std::endl;
+    return 0;
+}
+
+
+int test35(){
+    // TEST 35: testing today_add_yyyymmdd() function -> PASS
+    // Current time + 30 days
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add 30 days in seconds to current time
+    time_t time_now_add = time_now + 2592000;
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string years = std::to_string(1900 + struct_time_now_add.tm_year);
+    std::string months = (struct_time_now_add.tm_mon < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon) :
+                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string days = (struct_time_now_add.tm_mday < 10) ? 
+                       "0" + std::to_string(struct_time_now_add.tm_mday) :
+                       std::to_string(struct_time_now_add.tm_mday);
+        
+    time_t ret = ts::today_add_yyyymmdd(years + "-" + months + "-" + days);
+
+    to_struct = std::gmtime(&ret);
+
+    assert(ret >= time_now);
+       
+    std::cout << ">> Test 35 done" << std::endl;
+    return 0;
+}
+
+
+int test36(){
+    // TEST 36: testing today_add_yyyymmdd() function -> PASS
+    // Current time + 365 days
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add 30 days in seconds to current time
+    time_t time_now_add = time_now + 31536000;
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string years = std::to_string(1900 + struct_time_now_add.tm_year);
+    std::string months = (struct_time_now_add.tm_mon < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon) :
+                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string days = (struct_time_now_add.tm_mday < 10) ? 
+                       "0" + std::to_string(struct_time_now_add.tm_mday) :
+                       std::to_string(struct_time_now_add.tm_mday);
+        
+    time_t ret = ts::today_add_yyyymmdd(years + "-" + months + "-" + days);
+
+    to_struct = std::gmtime(&ret);
+
+    assert(ret >= time_now);
+       
+    std::cout << ">> Test 36 done" << std::endl;
+    return 0;
+}
+
+
+int test37(){
+    // TEST 37: testing today_add_yyyymmdd() function -> FAIL
+    // Current time - 1 day
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add minus one day in seconds to current time
+    time_t time_now_add = time_now + (-86400);
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string years = std::to_string(1900 + struct_time_now_add.tm_year);
+    std::string months = (struct_time_now_add.tm_mon < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon) :
+                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string days = (struct_time_now_add.tm_mday < 10) ? 
+                       "0" + std::to_string(struct_time_now_add.tm_mday) :
+                       std::to_string(struct_time_now_add.tm_mday);
+        
+    time_t ret = ts::today_add_yyyymmdd(years + "-" + months + "-" + days);
+
+    to_struct = std::gmtime(&ret);
+
+    assert(ret == 0);
+       
+    std::cout << ">> Test 37 done" << std::endl;
+    return 0;
+}
+
+
+int test38(){
+    // TEST 38: testing today_add_yyyymmdd() function -> FAIL
+    // Invalid years-months-days subtring
+
+    time_t ret;
+    ret = ts::today_add_mmdd("20220212");
+
+    assert(ret == 0);
+       
+    std::cout << ">> Test 38 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     bool all    = true;
     bool t1     = false;
@@ -1426,6 +1576,11 @@ int main(){
     bool t31     = false;
     bool t32     = false;
     bool t33     = false;
+    bool t34     = false;
+    bool t35     = false;
+    bool t36     = false;
+    bool t37     = false;
+    bool t38     = false;
 
     if(t1 || all){
         test1();
@@ -1525,6 +1680,21 @@ int main(){
     }
     if(t33 || all){
         test33();
+    }
+    if(t34 || all){
+        test34();
+    }
+    if(t35 || all){
+        test35();
+    }
+    if(t36 || all){
+        test36();
+    }
+    if(t37 || all){
+        test37();
+    }
+    if(t38 || all){
+        test38();
     }
 
     return 0;
