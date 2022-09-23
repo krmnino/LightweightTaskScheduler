@@ -799,9 +799,6 @@ int test17(){
 
     time_t ret = ts::today_add_dhms(1, hours + ":" + minutes + ":" + seconds);
 
-    to_struct = std::gmtime(&ret);
-    std::tm struct_ret = *to_struct;
-
     assert(ret >= time_now);
        
     std::cout << ">> Test 17 done" << std::endl;
@@ -837,9 +834,6 @@ int test18(){
                           std::to_string(struct_time_now_add.tm_sec);
 
     time_t ret = ts::today_add_dhms(0, hours + ":" + minutes + ":" + seconds);
-
-    to_struct = std::gmtime(&ret);
-    std::tm struct_ret = *to_struct;
 
     assert(ret == 0);
        
@@ -964,8 +958,7 @@ int test22(){
     // TEST 22: testing today_add_wday_hms() function -> PASS
     // Using abbreviated weekday substrings
 
-    time_t time_now;
-    time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
 
     // Add one minute in seconds to current time
     time_t time_now_add = time_now + 60;
@@ -1059,7 +1052,7 @@ int test23(){
         wday = "Wednesday";
         break;
     case 5:
-        wday = "Thrusday";
+        wday = "Thursday";
         break;
     case 6:
         wday = "Friday";
@@ -1159,8 +1152,7 @@ int test26(){
     // TEST 26: testing today_add_mmdd() function -> PASS
     // Current time + 1 day
 
-    time_t time_now;
-    time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
 
     // Add one day in seconds to current time
     time_t time_now_add = time_now + 86400;
@@ -1178,13 +1170,9 @@ int test26(){
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
         
-    time_t ret;
-    ret = ts::today_add_mmdd(months + "-" + days);
+    time_t ret = ts::today_add_mmdd(months + "-" + days);
 
     to_struct = std::gmtime(&ret);
-
-    std::tm struct_ret;
-    struct_ret = *to_struct;
 
     assert(ret >= time_now);
        
@@ -1197,8 +1185,7 @@ int test27(){
     // TEST 27: testing today_add_mmdd() function -> FAIL
     // Current time - 1 day
 
-    time_t time_now;
-    time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
 
     // Add minus one day in seconds to current time
     time_t time_now_add = time_now - 86400;
@@ -1216,13 +1203,9 @@ int test27(){
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
         
-    time_t ret;
-    ret = ts::today_add_mmdd(months + "-" + days);
+    time_t ret = ts::today_add_mmdd(months + "-" + days);
 
     to_struct = std::gmtime(&ret);
-
-    std::tm struct_ret;
-    struct_ret = *to_struct;
 
     assert(ret == 0);
        
@@ -1241,6 +1224,169 @@ int test28(){
     assert(ret == 0);
        
     std::cout << ">> Test 28 done" << std::endl;
+    return 0;
+}
+
+
+int test29(){
+    // TEST 29: testing today_add_mmdd_hms() function -> PASS
+    // Current time + 1 day
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add one day in seconds to current time
+    time_t time_now_add = time_now + 86400;
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string months = (struct_time_now_add.tm_mon < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon) :
+                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string days = (struct_time_now_add.tm_mday < 10) ? 
+                       "0" + std::to_string(struct_time_now_add.tm_mday) :
+                       std::to_string(struct_time_now_add.tm_mday);
+    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
+                        "0" + std::to_string(struct_time_now_add.tm_hour) :
+                        std::to_string(struct_time_now_add.tm_hour);
+    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_min) :
+                          std::to_string(struct_time_now_add.tm_min);
+    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_sec) :
+                          std::to_string(struct_time_now_add.tm_sec);
+    
+    time_t ret = ts::today_add_mmdd_hms(months + "-" + days + " " + hours + ":" + minutes + ":" + seconds);
+
+    to_struct = std::gmtime(&ret);
+
+    std::tm struct_ret;
+    struct_ret = *to_struct;
+
+    assert(ret >= time_now);
+       
+    std::cout << ">> Test 29 done" << std::endl;
+    return 0;
+}
+
+
+int test30(){
+    // TEST 30: testing today_add_mmdd_hms() function -> PASS
+    // Current time + 30 days
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add 30 days in seconds to current time
+    time_t time_now_add = time_now + 2592000;
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string months = (struct_time_now_add.tm_mon < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon) :
+                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string days = (struct_time_now_add.tm_mday < 10) ? 
+                       "0" + std::to_string(struct_time_now_add.tm_mday) :
+                       std::to_string(struct_time_now_add.tm_mday);
+    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
+                        "0" + std::to_string(struct_time_now_add.tm_hour) :
+                        std::to_string(struct_time_now_add.tm_hour);
+    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_min) :
+                          std::to_string(struct_time_now_add.tm_min);
+    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_sec) :
+                          std::to_string(struct_time_now_add.tm_sec);
+    
+    time_t ret = ts::today_add_mmdd_hms(months + "-" + days + " " + hours + ":" + minutes + ":" + seconds);
+
+    to_struct = std::gmtime(&ret);
+
+    std::tm struct_ret;
+    struct_ret = *to_struct;
+
+    assert(ret >= time_now);
+       
+    std::cout << ">> Test 30 done" << std::endl;
+    return 0;
+}
+
+
+int test31(){
+    // TEST 31: testing today_add_mmdd_hms() function -> FAIL
+    // Current time - 1 day
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add minus one day in seconds to current time
+    time_t time_now_add = time_now - 86400;
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string months = (struct_time_now_add.tm_mon < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon) :
+                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string days = (struct_time_now_add.tm_mday < 10) ? 
+                       "0" + std::to_string(struct_time_now_add.tm_mday) :
+                       std::to_string(struct_time_now_add.tm_mday);
+    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
+                        "0" + std::to_string(struct_time_now_add.tm_hour) :
+                        std::to_string(struct_time_now_add.tm_hour);
+    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_min) :
+                          std::to_string(struct_time_now_add.tm_min);
+    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_sec) :
+                          std::to_string(struct_time_now_add.tm_sec);
+    
+    time_t ret = ts::today_add_mmdd_hms(months + "-" + days + " " + hours + ":" + minutes + ":" + seconds);
+
+    to_struct = std::gmtime(&ret);
+
+    std::tm struct_ret;
+    struct_ret = *to_struct;
+
+    assert(ret == 0);
+       
+    std::cout << ">> Test 31 done" << std::endl;
+    return 0;
+}
+
+
+int test32(){
+    // TEST 32: testing today_add_mmdd_hms() function -> FAIL
+    // Invalid months-days subtring
+
+    time_t ret;
+    ret = ts::today_add_mmdd("0212 12:00:00");
+
+    assert(ret == 0);
+       
+    std::cout << ">> Test 32 done" << std::endl;
+    return 0;
+}
+
+
+int test33(){
+    // TEST 33: testing today_add_mmdd_hms() function -> FAIL
+    // Invalid hours-minutes-seconds subtring
+
+    time_t ret;
+    ret = ts::today_add_mmdd("02-12 120000");
+
+    assert(ret == 0);
+       
+    std::cout << ">> Test 33 done" << std::endl;
     return 0;
 }
 
@@ -1275,6 +1421,11 @@ int main(){
     bool t26     = false;
     bool t27     = false;
     bool t28     = false;
+    bool t29     = false;
+    bool t30     = false;
+    bool t31     = false;
+    bool t32     = false;
+    bool t33     = false;
 
     if(t1 || all){
         test1();
@@ -1359,6 +1510,21 @@ int main(){
     }
     if(t28 || all){
         test28();
+    }
+    if(t29 || all){
+        test29();
+    }
+    if(t30 || all){
+        test30();
+    }
+    if(t31 || all){
+        test31();
+    }
+    if(t32 || all){
+        test32();
+    }
+    if(t33 || all){
+        test33();
     }
 
     return 0;
