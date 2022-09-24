@@ -1759,6 +1759,170 @@ int test45(){
 }
 
 
+int test46(){
+    // TEST 46: testing get_datetime_format() function -> PASS
+    // Datetime format HH:MM:SS
+    
+    std::string datetime = "12:00:00";
+    ts::DatetimeFormat ret = ts::get_datetime_format(datetime);
+
+    assert(ret == ts::DatetimeFormat::HHMMSS);
+
+    std::cout << ">> Test 46 done" << std::endl;
+    return 0;
+}
+
+
+int test47(){
+    // TEST 47: testing get_datetime_format() function -> PASS
+    // Datetime format abbreviated weekday + HH:MM:SS
+    
+    ts::DatetimeFormat ret;
+    std::string datetime;
+
+    datetime = "Sun 20:00:00";
+    ret = ts::get_datetime_format(datetime);
+    assert(ret == ts::DatetimeFormat::WDAY_HHMMSS);
+
+    datetime = "Mon 20:00:00";
+    ret = ts::get_datetime_format(datetime);
+    assert(ret == ts::DatetimeFormat::WDAY_HHMMSS);
+
+    datetime = "Tue 20:00:00";
+    ret = ts::get_datetime_format(datetime);
+    assert(ret == ts::DatetimeFormat::WDAY_HHMMSS);
+
+    datetime = "Wed 20:00:00";
+    ret = ts::get_datetime_format(datetime);
+    assert(ret == ts::DatetimeFormat::WDAY_HHMMSS);
+
+    datetime = "Thu 20:00:00";
+    ret = ts::get_datetime_format(datetime);
+    assert(ret == ts::DatetimeFormat::WDAY_HHMMSS);
+
+    datetime = "Fri 20:00:00";
+    ret = ts::get_datetime_format(datetime);
+    assert(ret == ts::DatetimeFormat::WDAY_HHMMSS);
+
+    datetime = "Sat 20:00:00";
+    ret = ts::get_datetime_format(datetime);
+    assert(ret == ts::DatetimeFormat::WDAY_HHMMSS);
+
+    std::cout << ">> Test 47 done" << std::endl;
+    return 0;
+}
+
+
+int test48(){
+    // TEST 48: testing get_datetime_format() function -> PASS
+    // Datetime format full weekday + HH:MM:SS
+    
+    ts::DatetimeFormat ret;
+    std::string datetime;
+
+    datetime = "Sunday 20:00:00";
+    ret = ts::get_datetime_format(datetime);
+    assert(ret == ts::DatetimeFormat::WDAY6_HHMMSS);
+
+    datetime = "Monday 20:00:00";
+    ret = ts::get_datetime_format(datetime);
+    assert(ret == ts::DatetimeFormat::WDAY6_HHMMSS);
+
+    datetime = "Tuesday 20:00:00";
+    ret = ts::get_datetime_format(datetime);
+    assert(ret == ts::DatetimeFormat::WDAY7_HHMMSS);
+
+    datetime = "Wednesday 20:00:00";
+    ret = ts::get_datetime_format(datetime);
+    assert(ret == ts::DatetimeFormat::WDAY9_HHMMSS);
+
+    datetime = "Thursday 20:00:00";
+    ret = ts::get_datetime_format(datetime);
+    assert(ret == ts::DatetimeFormat::WDAY8_HHMMSS);
+
+    datetime = "Friday 20:00:00";
+    ret = ts::get_datetime_format(datetime);
+    assert(ret == ts::DatetimeFormat::WDAY6_HHMMSS);
+
+    datetime = "Saturday 20:00:00";
+    ret = ts::get_datetime_format(datetime);
+    assert(ret == ts::DatetimeFormat::WDAY8_HHMMSS);
+
+    std::cout << ">> Test 48 done" << std::endl;
+    return 0;
+}
+
+
+int test49(){
+    // TEST 49: testing get_datetime_format() function -> PASS
+    // Datetime format MM-DD
+    
+    std::string datetime = "02-22";
+    ts::DatetimeFormat ret = ts::get_datetime_format(datetime);
+
+    assert(ret == ts::DatetimeFormat::MMDD);
+
+    std::cout << ">> Test 49 done" << std::endl;
+    return 0;
+}
+
+
+int test50(){
+    // TEST 50: testing get_datetime_format() function -> PASS
+    // Datetime format MM-DD
+    
+    std::string datetime = "02-22";
+    ts::DatetimeFormat ret = ts::get_datetime_format(datetime);
+
+    assert(ret == ts::DatetimeFormat::MMDD);
+
+    std::cout << ">> Test 50 done" << std::endl;
+    return 0;
+}
+
+
+int test51(){
+    // TEST 51: testing get_datetime_format() function -> PASS
+    // Datetime format MM-DD HH:MM:SS
+    
+    std::string datetime = "02-22 13:00:00";
+    ts::DatetimeFormat ret = ts::get_datetime_format(datetime);
+
+    assert(ret == ts::DatetimeFormat::MMDD_HHMMSS);
+
+    std::cout << ">> Test 51 done" << std::endl;
+    return 0;
+}
+
+
+int test52(){
+    // TEST 52: testing get_datetime_format() function -> PASS
+    // Datetime format YYYY-MM-DD
+    
+    std::string datetime = "2022-02-22";
+    ts::DatetimeFormat ret = ts::get_datetime_format(datetime);
+
+    assert(ret == ts::DatetimeFormat::YYYYMMDD);
+
+    std::cout << ">> Test 52 done" << std::endl;
+    return 0;
+}
+
+
+int test53(){
+    // TEST 53: testing get_datetime_format() function -> PASS
+    // Datetime format YYYY-MM-DD HH:MM:SS
+    
+    std::string datetime = "2022-02-22 13:00:00";
+    ts::DatetimeFormat ret = ts::get_datetime_format(datetime);
+
+    assert(ret == ts::DatetimeFormat::YYYYMMDD_HHMMSS);
+
+    std::cout << ">> Test 53 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     bool all    = true;
     bool t1     = false;
@@ -1806,6 +1970,14 @@ int main(){
     bool t43     = false;
     bool t44     = false;
     bool t45     = false;
+    bool t46     = false;
+    bool t47     = false;
+    bool t48     = false;
+    bool t49     = false;
+    bool t50     = false;
+    bool t51     = false;
+    bool t52     = false;
+    bool t53     = false;
 
     if(t1 || all){
         test1();
@@ -1941,6 +2113,30 @@ int main(){
     }
     if(t45 || all){
         test45();
+    }
+    if(t46 || all){
+        test46();
+    }
+    if(t47 || all){
+        test47();
+    }
+    if(t48 || all){
+        test48();
+    }
+    if(t49 || all){
+        test49();
+    }
+    if(t50 || all){
+        test50();
+    }
+    if(t51 || all){
+        test51();
+    }
+    if(t52 || all){
+        test52();
+    }
+    if(t53 || all){
+        test53();
     }
 
     return 0;
