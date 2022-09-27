@@ -1923,8 +1923,379 @@ int test53(){
 }
 
 
+int test54(){
+    // TEST 54: testing validate_task_parms() function -> PASS
+    // Pass mandatory task parameters only
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add five minutes in seconds to current time
+    time_t time_now_add = time_now + 300;
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
+                        "0" + std::to_string(struct_time_now_add.tm_hour) :
+                        std::to_string(struct_time_now_add.tm_hour);
+    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_min) :
+                          std::to_string(struct_time_now_add.tm_min);
+    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_sec) :
+                          std::to_string(struct_time_now_add.tm_sec);                       
+        
+    std::string time_now_str =  hours + ":" + minutes + ":" + seconds;
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 54");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", time_now_str);
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::OK);
+
+    delete c;
+
+    std::cout << ">> Test 54 done" << std::endl;
+    return 0;
+}
+
+
+int test55(){
+    // TEST 55: testing validate_task_parms() function -> PASS
+    // Pass mandatory task parameters only
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add five minutes in seconds to current time
+    time_t time_now_add = time_now + 300;
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
+                        "0" + std::to_string(struct_time_now_add.tm_hour) :
+                        std::to_string(struct_time_now_add.tm_hour);
+    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_min) :
+                          std::to_string(struct_time_now_add.tm_min);
+    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_sec) :
+                          std::to_string(struct_time_now_add.tm_sec);                       
+        
+    std::string time_now_str =  hours + ":" + minutes + ":" + seconds;
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 55");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", time_now_str);
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::OK);
+
+    delete c;
+
+    std::cout << ">> Test 55 done" << std::endl;
+    return 0;
+}
+
+
+int test56(){
+    // TEST 56: testing validate_task_parms() function -> FAIL
+    // Missing Name parameter
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", "12:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::MISSING_REQUIRED_KEYVALS);
+
+    delete c;
+
+    std::cout << ">> Test 56 done" << std::endl;
+    return 0;
+}
+
+
+int test57(){
+    // TEST 57: testing validate_task_parms() function -> FAIL
+    // Missing Description parameter
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 57");
+    c->add_entry("Description", "A short description");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", "12:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::MISSING_REQUIRED_KEYVALS);
+
+    delete c;
+
+    std::cout << ">> Test 57 done" << std::endl;
+    return 0;
+}
+
+
+int test58(){
+    // TEST 58: testing validate_task_parms() function -> FAIL
+    // Missing Frequency parameter
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 58");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Datetime", "12:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::MISSING_REQUIRED_KEYVALS);
+
+    delete c;
+
+    std::cout << ">> Test 58 done" << std::endl;
+    return 0;
+}
+
+
+int test59(){
+    // TEST 59: testing validate_task_parms() function -> FAIL
+    // Missing Datetime parameter
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 59");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::MISSING_REQUIRED_KEYVALS);
+
+    delete c;
+
+    std::cout << ">> Test 59 done" << std::endl;
+    return 0;
+}
+
+
+int test60(){
+    // TEST 60: testing validate_task_parms() function -> FAIL
+    // Script file not found
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 60");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "fakename");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", "12:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::SCRIPT_NOT_FOUND);
+
+    delete c;
+
+    std::cout << ">> Test 60 done" << std::endl;
+    return 0;
+}
+
+
+int test61(){
+    // TEST 61: testing validate_task_parms() function -> FAIL
+    // Bad frequency value
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 61");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Bad value");
+    c->add_entry("Datetime", "12:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_FREQUENCY_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 61 done" << std::endl;
+    return 0;
+}
+
+
+int test62(){
+    // TEST 62: testing validate_task_parms() function -> FAIL
+    // Pass bad HH:MM:SS datetime value with Frequency = Once
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 62");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", "12:a0:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 62 done" << std::endl;
+    return 0;
+}
+
+
+int test63(){
+    // TEST 63: testing validate_task_parms() function -> FAIL
+    // Pass bad MM-DD HH:MM:SS datetime value with Frequency = Once
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 63");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", "02-a1 12:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 63 done" << std::endl;
+    return 0;
+}
+
+
+int test64(){
+    // TEST 64: testing validate_task_parms() function -> FAIL
+    // Pass bad YYYY-MM-DD HH:MM:SS datetime value with Frequency = Once
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 64");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", "2a22-02-01 12:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 64 done" << std::endl;
+    return 0;
+}
+
+
+int test65(){
+    // TEST 65: testing validate_task_parms() function -> FAIL
+    // Pass bad WDAY HH:MM:SS datetime value with Frequency = Once
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 65");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", "Saturd4y 12:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 65 done" << std::endl;
+    return 0;
+}
+
+
+int test66(){
+    // TEST 66: testing validate_task_parms() function -> FAIL
+    // Pass bad MM-DD datetime value with Frequency = Once
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 66");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", "02a22");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 66 done" << std::endl;
+    return 0;
+}
+
+
+int test67(){
+    // TEST 67: testing validate_task_parms() function -> FAIL
+    // Pass bad YYYY-MM-DD datetime value with Frequency = Once
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 67");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", "2022-a2-22");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 67 done" << std::endl;
+    return 0;
+}
+
+
+int test68(){
+    // TEST 68: testing validate_task_parms() function -> FAIL
+    // Pass bad datetime value with Frequency = Once
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 68");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", "Something");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 68 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
-    bool all    = true;
+    bool all    = false;
     bool t1     = false;
     bool t2     = false;
     bool t3     = false;
@@ -1978,6 +2349,21 @@ int main(){
     bool t51     = false;
     bool t52     = false;
     bool t53     = false;
+    bool t54     = true;
+    bool t55     = true;
+    bool t56     = true;
+    bool t57     = true;
+    bool t58     = true;
+    bool t59     = true;
+    bool t60     = true;
+    bool t61     = true;
+    bool t62     = true;
+    bool t63     = true;
+    bool t64     = true;
+    bool t65     = true;
+    bool t66     = true;
+    bool t67     = true;
+    bool t68     = true;
 
     if(t1 || all){
         test1();
@@ -2137,6 +2523,51 @@ int main(){
     }
     if(t53 || all){
         test53();
+    }
+    if(t54 || all){
+        test54();
+    }
+    if(t55 || all){
+        test55();
+    }
+    if(t56 || all){
+        test56();
+    }
+    if(t57 || all){
+        test57();
+    }
+    if(t58 || all){
+        test58();
+    }
+    if(t59 || all){
+        test59();
+    }
+    if(t60 || all){
+        test60();
+    }
+    if(t61 || all){
+        test61();
+    }
+    if(t62 || all){
+        test62();
+    }
+    if(t63 || all){
+        test63();
+    }
+    if(t64 || all){
+        test64();
+    }
+    if(t65 || all){
+        test65();
+    }
+    if(t66 || all){
+        test66();
+    }
+    if(t67 || all){
+        test67();
+    }
+    if(t68 || all){
+        test68();
     }
 
     return 0;
