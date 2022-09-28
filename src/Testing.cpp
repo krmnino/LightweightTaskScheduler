@@ -720,9 +720,7 @@ int test14(){
 
     to_struct = std::gmtime(&ret);
     std::tm struct_ret = *to_struct;
-
-    std::cout << ctime(&ret) << std::endl;
-       
+      
     std::cout << ">> Test 14 done" << std::endl;
     return 0;
 }
@@ -2149,7 +2147,7 @@ int test62(){
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Once");
-    c->add_entry("Datetime", "12:a0:00");
+    c->add_entry("Datetime", "12:80:00");
 
     ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
 
@@ -2171,7 +2169,7 @@ int test63(){
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Once");
-    c->add_entry("Datetime", "02-a1 12:00:00");
+    c->add_entry("Datetime", "02-61 12:00:00");
 
     ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
 
@@ -2193,7 +2191,7 @@ int test64(){
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Once");
-    c->add_entry("Datetime", "2a22-02-01 12:00:00");
+    c->add_entry("Datetime", "2022-02-01 62:00:00");
 
     ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
 
@@ -2215,7 +2213,7 @@ int test65(){
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Once");
-    c->add_entry("Datetime", "Saturd4y 12:00:00");
+    c->add_entry("Datetime", "Saturdxy 12:00:00");
 
     ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
 
@@ -2237,7 +2235,7 @@ int test66(){
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Once");
-    c->add_entry("Datetime", "02a22");
+    c->add_entry("Datetime", "02-82");
 
     ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
 
@@ -2259,7 +2257,7 @@ int test67(){
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Once");
-    c->add_entry("Datetime", "2022-a2-22");
+    c->add_entry("Datetime", "2022-92-22");
 
     ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
 
@@ -2361,8 +2359,650 @@ int test70(){
 }
 
 
+int test71(){
+    // TEST 71: testing validate_task_parms() function -> FAIL
+    // Pass bad HH:MM:SS datetime value with Frequency = Daily
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 71");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Daily");
+    c->add_entry("Datetime", "12:90:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 71 done" << std::endl;
+    return 0;
+}
+
+
+int test72(){
+    // TEST 72: testing validate_task_parms() function -> FAIL
+    // Pass bad datetime value with Frequency = Daily
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 72");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Daily");
+    c->add_entry("Datetime", "Something");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 72 done" << std::endl;
+    return 0;
+}
+
+
+int test73(){
+    // TEST 73: testing validate_task_parms() function -> FAIL
+    // Pass HH:MM:SS datetime value in the past with Frequency = Daily
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add minus one minute in seconds to current time
+    time_t time_now_add = time_now + (-60);
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
+                        "0" + std::to_string(struct_time_now_add.tm_hour) :
+                        std::to_string(struct_time_now_add.tm_hour);
+    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_min) :
+                          std::to_string(struct_time_now_add.tm_min);
+    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_sec) :
+                          std::to_string(struct_time_now_add.tm_sec);                       
+        
+    std::string time_now_str =  hours + ":" + minutes + ":" + seconds;
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 73");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Daily");
+    c->add_entry("Datetime", time_now_str);
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 73 done" << std::endl;
+    return 0;
+}
+
+
+int test74(){
+    // TEST 74: testing validate_task_parms() function -> FAIL
+    // Pass bad HH:MM:SS datetime value with Frequency = Weekly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 74");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Weekly");
+    c->add_entry("Datetime", "12:80:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 74 done" << std::endl;
+    return 0;
+}
+
+
+int test75(){
+    // TEST 75: testing validate_task_parms() function -> FAIL
+    // Pass bad MM-DD HH:MM:SS datetime value with Frequency = Weekly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 75");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Weekly");
+    c->add_entry("Datetime", "02-61 12:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 75 done" << std::endl;
+    return 0;
+}
+
+
+int test76(){
+    // TEST 76: testing validate_task_parms() function -> FAIL
+    // Pass bad YYYY-MM-DD HH:MM:SS datetime value with Frequency = Weekly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 76");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Weekly");
+    c->add_entry("Datetime", "2022-02-01 62:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 76 done" << std::endl;
+    return 0;
+}
+
+
+int test77(){
+    // TEST 77: testing validate_task_parms() function -> FAIL
+    // Pass bad WDAY HH:MM:SS datetime value with Frequency = Weekly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 77");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Weekly");
+    c->add_entry("Datetime", "Saturdxy 12:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 77 done" << std::endl;
+    return 0;
+}
+
+
+int test78(){
+    // TEST 78: testing validate_task_parms() function -> FAIL
+    // Pass bad MM-DD datetime value with Frequency = Weekly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 78");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Weekly");
+    c->add_entry("Datetime", "02-82");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 78 done" << std::endl;
+    return 0;
+}
+
+
+int test79(){
+    // TEST 79: testing validate_task_parms() function -> FAIL
+    // Pass bad YYYY-MM-DD datetime value with Frequency = Weekly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 79");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Weekly");
+    c->add_entry("Datetime", "2022-92-22");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 79 done" << std::endl;
+    return 0;
+}
+
+
+int test80(){
+    // TEST 80: testing validate_task_parms() function -> FAIL
+    // Pass bad datetime value with Frequency = Weekly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 80");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Weekly");
+    c->add_entry("Datetime", "Something");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 80 done" << std::endl;
+    return 0;
+}
+
+
+int test81(){
+    // TEST 81: testing validate_task_parms() function -> FAIL
+    // Pass HH:MM:SS datetime value in the past with Frequency = Weekly
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add minus one minute in seconds to current time
+    time_t time_now_add = time_now + (-60);
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
+                        "0" + std::to_string(struct_time_now_add.tm_hour) :
+                        std::to_string(struct_time_now_add.tm_hour);
+    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_min) :
+                          std::to_string(struct_time_now_add.tm_min);
+    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_sec) :
+                          std::to_string(struct_time_now_add.tm_sec);                       
+        
+    std::string time_now_str =  hours + ":" + minutes + ":" + seconds;
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 81");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Weekly");
+    c->add_entry("Datetime", time_now_str);
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 81 done" << std::endl;
+    return 0;
+}
+
+
+int test82(){
+    // TEST 74: testing validate_task_parms() function -> FAIL
+    // Pass bad HH:MM:SS datetime value with Frequency = Monthly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 82");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Monthly");
+    c->add_entry("Datetime", "12:80:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 82 done" << std::endl;
+    return 0;
+}
+
+
+int test83(){
+    // TEST 83: testing validate_task_parms() function -> FAIL
+    // Pass bad MM-DD HH:MM:SS datetime value with Frequency = Monthly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 83");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Monthly");
+    c->add_entry("Datetime", "02-61 12:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 83 done" << std::endl;
+    return 0;
+}
+
+
+int test84(){
+    // TEST 84: testing validate_task_parms() function -> FAIL
+    // Pass bad YYYY-MM-DD HH:MM:SS datetime value with Frequency = Monthly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 84");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Monthly");
+    c->add_entry("Datetime", "2022-02-01 62:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 84 done" << std::endl;
+    return 0;
+}
+
+
+int test85(){
+    // TEST 85: testing validate_task_parms() function -> FAIL
+    // Pass bad WDAY HH:MM:SS datetime value with Frequency = Monthly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 85");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Monthly");
+    c->add_entry("Datetime", "Saturdxy 12:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 85 done" << std::endl;
+    return 0;
+}
+
+
+int test86(){
+    // TEST 86: testing validate_task_parms() function -> FAIL
+    // Pass bad MM-DD datetime value with Frequency = Monthly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 86");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Monthly");
+    c->add_entry("Datetime", "02-82");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 86 done" << std::endl;
+    return 0;
+}
+
+
+int test87(){
+    // TEST 87: testing validate_task_parms() function -> FAIL
+    // Pass bad YYYY-MM-DD datetime value with Frequency = Monthly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 87");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Monthly");
+    c->add_entry("Datetime", "2022-92-22");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 87 done" << std::endl;
+    return 0;
+}
+
+
+int test88(){
+    // TEST 88: testing validate_task_parms() function -> FAIL
+    // Pass bad datetime value with Frequency = Monthly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 88");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Monthly");
+    c->add_entry("Datetime", "Something");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 88 done" << std::endl;
+    return 0;
+}
+
+
+int test89(){
+    // TEST 89: testing validate_task_parms() function -> FAIL
+    // Pass HH:MM:SS datetime value in the past with Frequency = Monthly
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add minus one minute in seconds to current time
+    time_t time_now_add = time_now + (-60);
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
+                        "0" + std::to_string(struct_time_now_add.tm_hour) :
+                        std::to_string(struct_time_now_add.tm_hour);
+    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_min) :
+                          std::to_string(struct_time_now_add.tm_min);
+    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_sec) :
+                          std::to_string(struct_time_now_add.tm_sec);                       
+        
+    std::string time_now_str =  hours + ":" + minutes + ":" + seconds;
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 89");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Monthly");
+    c->add_entry("Datetime", time_now_str);
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 89 done" << std::endl;
+    return 0;
+}
+
+
+int test90(){
+    // TEST 90: testing validate_task_parms() function -> FAIL
+    // Pass bad MM-DD HH:MM:SS datetime value with Frequency = Yearly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 90");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Yearly");
+    c->add_entry("Datetime", "02-61 12:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 90 done" << std::endl;
+    return 0;
+}
+
+
+int test91(){
+    // TEST 91: testing validate_task_parms() function -> FAIL
+    // Pass bad YYYY-MM-DD HH:MM:SS datetime value with Frequency = Yearly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 91");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Yearly");
+    c->add_entry("Datetime", "2022-02-01 62:00:00");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 91 done" << std::endl;
+    return 0;
+}
+
+
+int test92(){
+    // TEST 92: testing validate_task_parms() function -> FAIL
+    // Pass bad MM-DD datetime value with Frequency = Yearly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 92");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Yearly");
+    c->add_entry("Datetime", "02-82");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 92 done" << std::endl;
+    return 0;
+}
+
+
+int test93(){
+    // TEST 93: testing validate_task_parms() function -> FAIL
+    // Pass bad YYYY-MM-DD datetime value with Frequency = Yearly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 93");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Yearly");
+    c->add_entry("Datetime", "2022-92-22");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 93 done" << std::endl;
+    return 0;
+}
+
+
+int test94(){
+    // TEST 94: testing validate_task_parms() function -> FAIL
+    // Pass bad datetime value with Frequency = Yearly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 94");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Yearly");
+    c->add_entry("Datetime", "Something");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 94 done" << std::endl;
+    return 0;
+}
+
+
+int test95(){
+    // TEST 95: testing validate_task_parms() function -> FAIL
+    // Pass HH:MM:SS datetime value in the past with Frequency = Yearly
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add minus one minute in seconds to current time
+    time_t time_now_add = time_now + (-60);
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
+                        "0" + std::to_string(struct_time_now_add.tm_hour) :
+                        std::to_string(struct_time_now_add.tm_hour);
+    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_min) :
+                          std::to_string(struct_time_now_add.tm_min);
+    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_sec) :
+                          std::to_string(struct_time_now_add.tm_sec);                       
+        
+    std::string time_now_str =  hours + ":" + minutes + ":" + seconds;
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 95");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Yearly");
+    c->add_entry("Datetime", time_now_str);
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 95 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
-    bool all    = false;
+    bool all    = true;
     bool t1     = false;
     bool t2     = false;
     bool t3     = false;
@@ -2416,23 +3056,48 @@ int main(){
     bool t51     = false;
     bool t52     = false;
     bool t53     = false;
-    bool t54     = true;
-    bool t55     = true;
-    bool t56     = true;
-    bool t57     = true;
-    bool t58     = true;
-    bool t59     = true;
-    bool t60     = true;
-    bool t61     = true;
-    bool t62     = true;
-    bool t63     = true;
-    bool t64     = true;
-    bool t65     = true;
-    bool t66     = true;
-    bool t67     = true;
-    bool t68     = true;
-    bool t69     = true;
-    bool t70     = true;
+    bool t54     = false;
+    bool t55     = false;
+    bool t56     = false;
+    bool t57     = false;
+    bool t58     = false;
+    bool t59     = false;
+    bool t60     = false;
+    bool t61     = false;
+    bool t62     = false;
+    bool t63     = false;
+    bool t64     = false;
+    bool t65     = false;
+    bool t66     = false;
+    bool t67     = false;
+    bool t68     = false;
+    bool t69     = false;
+    bool t70     = false;
+    bool t71     = false;
+    bool t72     = false;
+    bool t73     = false;
+    bool t74     = false;
+    bool t75     = false;
+    bool t76     = false;
+    bool t77     = false;
+    bool t78     = false;
+    bool t79     = false;
+    bool t80     = false;
+    bool t81     = false;
+    bool t82     = false;
+    bool t83     = false;
+    bool t84     = false;
+    bool t85     = false;
+    bool t86     = false;
+    bool t87     = false;
+    bool t88     = false;
+    bool t89     = false;
+    bool t90     = false;
+    bool t91     = false;
+    bool t92     = false;
+    bool t93     = false;
+    bool t94     = false;
+    bool t95     = false;
 
     if(t1 || all){
         test1();
@@ -2643,6 +3308,81 @@ int main(){
     }
     if(t70 || all){
         test70();
+    }
+    if(t71 || all){
+        test71();
+    }
+    if(t72 || all){
+        test72();
+    }
+    if(t73 || all){
+        test73();
+    }
+    if(t74 || all){
+        test74();
+    }
+    if(t75 || all){
+        test75();
+    }
+    if(t76 || all){
+        test76();
+    }
+    if(t77 || all){
+        test77();
+    }
+    if(t78 || all){
+        test78();
+    }
+    if(t79 || all){
+        test79();
+    }
+    if(t80 || all){
+        test80();
+    }
+    if(t81 || all){
+        test81();
+    }
+    if(t82 || all){
+        test82();
+    }
+    if(t83 || all){
+        test83();
+    }
+    if(t84 || all){
+        test84();
+    }
+    if(t85 || all){
+        test85();
+    }
+    if(t86 || all){
+        test86();
+    }
+    if(t87 || all){
+        test87();
+    }
+    if(t88 || all){
+        test88();
+    }
+    if(t89 || all){
+        test89();
+    }
+    if(t90 || all){
+        test90();
+    }
+    if(t91 || all){
+        test91();
+    }
+    if(t92 || all){
+        test92();
+    }
+    if(t93 || all){
+        test93();
+    }
+    if(t94 || all){
+        test94();
+    }
+    if(t95 || all){
+        test95();
     }
 
     return 0;
