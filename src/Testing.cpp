@@ -2294,6 +2294,73 @@ int test68(){
 }
 
 
+int test69(){
+    // TEST 69: testing validate_task_parms() function -> FAIL
+    // Pass HH:MM:SS datetime value in the past with Frequency = Once
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add minus one minute in seconds to current time
+    time_t time_now_add = time_now + (-60);
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
+                        "0" + std::to_string(struct_time_now_add.tm_hour) :
+                        std::to_string(struct_time_now_add.tm_hour);
+    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_min) :
+                          std::to_string(struct_time_now_add.tm_min);
+    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_sec) :
+                          std::to_string(struct_time_now_add.tm_sec);                       
+        
+    std::string time_now_str =  hours + ":" + minutes + ":" + seconds;
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 69");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", time_now_str);
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> Test 69 done" << std::endl;
+    return 0;
+}
+
+
+int test70(){
+    // TEST 70: testing validate_task_parms() function -> PASS
+    // Ignored datetime value with Frequency = Hourly
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test 70");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Hourly");
+    c->add_entry("Datetime", "Any value");
+
+    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+
+    assert(ret == ts::TaskValidate::OK);
+
+    delete c;
+
+    std::cout << ">> Test 70 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     bool all    = false;
     bool t1     = false;
@@ -2364,6 +2431,8 @@ int main(){
     bool t66     = true;
     bool t67     = true;
     bool t68     = true;
+    bool t69     = true;
+    bool t70     = true;
 
     if(t1 || all){
         test1();
@@ -2568,6 +2637,12 @@ int main(){
     }
     if(t68 || all){
         test68();
+    }
+    if(t69 || all){
+        test69();
+    }
+    if(t70 || all){
+        test70();
     }
 
     return 0;
