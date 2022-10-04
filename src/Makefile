@@ -1,6 +1,7 @@
 debug:
 	g++ -g -std=c++17 			\
 		-pthread				\
+		-D DEBUG				\
 		Variant.hpp				\
 		Variant.cpp				\
 		Value.hpp				\
