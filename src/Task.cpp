@@ -10,8 +10,6 @@
 
 namespace ts{
 
-std::mutex mux;
-
 Task::Task(std::string name, 
            std::string description,
            std::string script_filename,
@@ -56,6 +54,7 @@ Task::Task(std::string name,
     }
     // Store task creation datetime
     std::time(&this->creation_datetime);
+    this->creation_datetime = this->creation_datetime + (TIMEZONE * 3600);
 
     this->output = "";
 }
@@ -72,6 +71,7 @@ Task::Task(std::string name,
 
     // Store task creation datetime
     std::time(&this->creation_datetime);
+    this->creation_datetime = this->creation_datetime + (TIMEZONE * 3600);
 
     this->output = "";
 }
@@ -109,7 +109,7 @@ std::string Task::get_frequency(void){
 }
 
 time_t Task::get_creation_datetime(void){
-    return this->creation_datetime;
+    return this->creation_datetime + (TIMEZONE * 3600);
 }
 
 time_t Task::get_execution_datetime(void){
@@ -121,7 +121,8 @@ std::string Task::get_output(void){
 }
 
 std::string Task::get_creation_datetime_fmt(void){
-    return std::string(ctime(&this->creation_datetime));
+    time_t value = this->creation_datetime - (TIMEZONE * 3600);
+    return std::string(ctime(&value));
 }
 
 std::string Task::get_execution_datetime_fmt(void){
