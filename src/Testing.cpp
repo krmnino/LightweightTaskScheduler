@@ -44,7 +44,7 @@ int test2(){
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Hourly";
-    std::string t_input_execution_datetime = "12:00:00";
+    std::string t_input_execution_datetime = "12:00:00"; // ignored because Task is hourly
 
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime);
     
@@ -73,14 +73,20 @@ int test3(){
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Hourly";
-    std::string t_input_execution_datetime = "12:00:00";
+    std::string t_input_execution_datetime = "12:00:00"; // ignored because Task is hourly
 
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime);
     
     std::string execution_datetime_fmt = t->get_execution_datetime_fmt();
     std::string creation_datetime_fmt = t->get_creation_datetime_fmt();
-    time_t execution_datetime = t->get_creation_datetime(); 
-    time_t creation_datetime = t->get_execution_datetime();
+    time_t creation_datetime = t->get_creation_datetime(); 
+    time_t execution_datetime = t->get_execution_datetime();
+
+    std::tm* to_struct;
+    to_struct = std::gmtime(&creation_datetime);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
 
     delete t;
 
@@ -3001,8 +3007,29 @@ int test95(){
 }
 
 
+int test96(){
+    // TEST 96: testing Task::update_execution_datetime() 
+
+    std::string t_name = "Task Name";
+    std::string t_description = "A short description for this task";
+    std::string t_script_name = "cat_test.sh";
+    std::string t_frequency = "Hourly";
+
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency);
+
+    std::cout << t->get_execution_datetime_fmt() << std::endl;
+
+    t->update_execution_datetime();
+
+    std::cout << t->get_execution_datetime_fmt() << std::endl;
+
+    std::cout << ">> Test 96 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
-    bool all    = true;
+    bool all    = false;
     bool t1     = false;
     bool t2     = false;
     bool t3     = false;
@@ -3098,6 +3125,7 @@ int main(){
     bool t93     = false;
     bool t94     = false;
     bool t95     = false;
+    bool t96     = true;
 
     if(t1 || all){
         test1();
@@ -3383,6 +3411,9 @@ int main(){
     }
     if(t95 || all){
         test95();
+    }
+    if(t96 || all){
+        test96();
     }
 
     return 0;
