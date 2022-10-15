@@ -3009,6 +3009,37 @@ int test95(){
 
 int test96(){
     // TEST 96: testing Task::update_execution_datetime() 
+    // Frequency: Hourly
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    // Add two hours in seconds to current time
+    time_t time_now_add = time_now + (2 * 3600);
+    
+    std::tm* to_struct;
+    to_struct = std::gmtime(&time_now_add);
+
+    std::tm struct_time_now_add;
+    struct_time_now_add = *to_struct;
+
+    std::string years = std::to_string(1900 + struct_time_now_add.tm_year);
+    std::string months = (struct_time_now_add.tm_mon < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon) :
+                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string days = (struct_time_now_add.tm_mday < 10) ? 
+                       "0" + std::to_string(struct_time_now_add.tm_mday) :
+                       std::to_string(struct_time_now_add.tm_mday);
+    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
+                        "0" + std::to_string(struct_time_now_add.tm_hour) :
+                        std::to_string(struct_time_now_add.tm_hour);
+    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_min) :
+                          std::to_string(struct_time_now_add.tm_min);
+    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
+                          "0" + std::to_string(struct_time_now_add.tm_sec) :
+                          std::to_string(struct_time_now_add.tm_sec);
+        
+    std::string time_str =  hours + ":" + minutes + ":" + seconds;
 
     std::string t_name = "Task Name";
     std::string t_description = "A short description for this task";
@@ -3016,12 +3047,12 @@ int test96(){
     std::string t_frequency = "Hourly";
 
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency);
-
-    std::cout << t->get_execution_datetime_fmt() << std::endl;
-
+    
     t->update_execution_datetime();
 
-    std::cout << t->get_execution_datetime_fmt() << std::endl;
+    std::string ret = t->get_execution_datetime_fmt();
+
+    assert(ret.find(time_str) != std::string::npos);
 
     std::cout << ">> Test 96 done" << std::endl;
     return 0;
