@@ -223,7 +223,99 @@ std::string Task::get_creation_datetime_fmt(void){
 }
 
 std::string Task::get_execution_datetime_fmt(void){
-    return std::string(ctime(&this->execution_datetime)); 
+    std::string years;
+    std::string month;
+    std::string days;
+    std::string wday;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::tm* exec_time_struct = std::gmtime(&this->execution_datetime);
+
+    years = std::to_string(1900 + exec_time_struct->tm_year);
+    switch (exec_time_struct->tm_mon)
+    {
+    case JANUARY:
+        month = "Jan";
+        break;
+    case FEBRUARY:
+        month = "Feb";
+        break;
+    case MARCH:
+        month = "Mar";
+        break;
+    case APRIL:
+        month = "Apr";
+        break;
+    case MAY:
+        month = "May";
+        break;
+    case JUNE:
+        month = "Jun";
+        break;
+    case JULY:
+        month = "Jul";
+        break;
+    case AUGUST:
+        month = "Aug";
+        break;
+    case SEPTEMBER:
+        month = "Sep";
+        break;
+    case OCTOBER:
+        month = "Oct";
+        break;
+    case NOVEMBER:
+        month = "Nov";
+        break;
+    case DECEMBER:
+        month = "Dec";
+        break;
+    default:
+        month = "";
+        break;
+    }
+    days = (exec_time_struct->tm_mday < 10) ? 
+            "0" + std::to_string(exec_time_struct->tm_mday) :
+            std::to_string(exec_time_struct->tm_mday);
+    switch (exec_time_struct->tm_wday)
+    {
+    case SUNDAY:
+        wday = "Sun";
+        break;
+    case MONDAY:
+        wday = "Mon";
+        break;
+    case TUESDAY:
+        wday = "Tue";
+        break;
+    case WEDNESDAY:
+        wday = "Wed";
+        break;
+    case THURSDAY:
+        wday = "Thu";
+        break;
+    case FRIDAY:
+        wday = "Fri";
+        break;
+    case SATURDAY:
+        wday = "Sat";
+        break;
+    default:
+        wday = "";
+        break;
+    }
+    hours = (exec_time_struct->tm_hour + TIMEZONE < 10) ? 
+             "0" + std::to_string(exec_time_struct->tm_hour + TIMEZONE) :
+             std::to_string(exec_time_struct->tm_hour + TIMEZONE);
+    minutes = (exec_time_struct->tm_min < 10) ? 
+               "0" + std::to_string(exec_time_struct->tm_min) :
+               std::to_string(exec_time_struct->tm_min);
+    seconds = (exec_time_struct->tm_sec < 10) ? 
+               "0" + std::to_string(exec_time_struct->tm_sec) :
+               std::to_string(exec_time_struct->tm_sec);
+
+    return wday + " " + month + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
 }
 
 std::string Task::get_input_execution_datetime(void){

@@ -4,6 +4,14 @@
 #define DAYS_IN_WEEK 7
 #define TIMEZONE -4
 
+#define SUNDAY 0
+#define MONDAY 1
+#define TUESDAY 2
+#define WEDNESDAY 3
+#define THURSDAY 4
+#define FRIDAY 5
+#define SATURDAY 6
+
 #define JANUARY 0
 #define FEBRUARY 1
 #define MARCH 2
