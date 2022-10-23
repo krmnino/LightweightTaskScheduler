@@ -3125,40 +3125,40 @@ int test97(){
     years = std::to_string(1900 + struct_time_now_add.tm_year);      
     switch (struct_time_now_add.tm_mon)
     {
-    case 0:
+    case JANUARY:
         months = "Jan";
         break;
-    case 1:
+    case FEBRUARY:
         months = "Feb";
         break;
-    case 2:
+    case MARCH:
         months = "Mar";
         break;
-    case 3:
+    case APRIL:
         months = "Apr";
         break;
-    case 4:
+    case MAY:
         months = "May";
         break;
-    case 5:
+    case JUNE:
         months = "Jun";
         break;
-    case 6:
+    case JULY:
         months = "Jul";
         break;
-    case 7:
+    case AUGUST:
         months = "Aug";
         break;
-    case 8:
+    case SEPTEMBER:
         months = "Sep";
         break;
-    case 9:
+    case OCTOBER:
         months = "Oct";
         break;
-    case 10:
+    case NOVEMBER:
         months = "Nov";
         break;
-    case 11:
+    case DECEMBER:
         months = "Dec";
         break;
     default:
