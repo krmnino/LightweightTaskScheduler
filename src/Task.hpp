@@ -30,8 +30,17 @@
 #define NOVEMBER_DAYS 30
 #define DECEMBER_DAYS 31
 
+#define DELAY_OFFSET 60
+
 #include <string>
 #include <iomanip>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <array>
+#include <memory>
+#include <exception>
+#include <filesystem>
+#include <mutex>
 
 #include "ConfigLoader.hpp"
 
@@ -132,6 +141,7 @@ DatetimeValidate validate_yyyymmdd(std::string);
 DatetimeValidate validate_yyyymmdd_hms(std::string);
 time_t init_today(void);
 time_t init_year(void);
+time_t today_add_hrs(int);
 time_t today_add_hms(std::string);
 time_t today_add_dhms(int, std::string);
 time_t today_add_wday_hms(std::string);
