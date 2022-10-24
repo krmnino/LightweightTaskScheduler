@@ -218,8 +218,120 @@ std::string Task::get_output(void){
 }
 
 std::string Task::get_creation_datetime_fmt(void){
-    time_t value = this->creation_datetime + (TIMEZONE * 3600);
-    return std::string(ctime(&value));
+    int struct_hours;
+    std::string years;
+    std::string month;
+    std::string days;
+    std::string wday;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::tm* exec_time_struct = std::gmtime(&this->creation_datetime);
+
+    years = std::to_string(1900 + exec_time_struct->tm_year);
+    switch (exec_time_struct->tm_mon)
+    {
+    case JANUARY:
+        month = "Jan";
+        break;
+    case FEBRUARY:
+        month = "Feb";
+        break;
+    case MARCH:
+        month = "Mar";
+        break;
+    case APRIL:
+        month = "Apr";
+        break;
+    case MAY:
+        month = "May";
+        break;
+    case JUNE:
+        month = "Jun";
+        break;
+    case JULY:
+        month = "Jul";
+        break;
+    case AUGUST:
+        month = "Aug";
+        break;
+    case SEPTEMBER:
+        month = "Sep";
+        break;
+    case OCTOBER:
+        month = "Oct";
+        break;
+    case NOVEMBER:
+        month = "Nov";
+        break;
+    case DECEMBER:
+        month = "Dec";
+        break;
+    default:
+        month = "";
+        break;
+    }
+    switch (exec_time_struct->tm_wday)
+    {
+    case SUNDAY:
+        wday = "Sun";
+        break;
+    case MONDAY:
+        wday = "Mon";
+        break;
+    case TUESDAY:
+        wday = "Tue";
+        break;
+    case WEDNESDAY:
+        wday = "Wed";
+        break;
+    case THURSDAY:
+        wday = "Thu";
+        break;
+    case FRIDAY:
+        wday = "Fri";
+        break;
+    case SATURDAY:
+        wday = "Sat";
+        break;
+    default:
+        wday = "";
+        break;
+    }
+    struct_hours = exec_time_struct->tm_hour + TIMEZONE;
+    if(struct_hours < 0){
+        days = (exec_time_struct->tm_mday - 1 < 10) ? 
+                "0" + std::to_string(exec_time_struct->tm_mday - 1) :
+                std::to_string(exec_time_struct->tm_mday - 1);
+        hours = (24 + struct_hours < 10) ? 
+                 "0" + std::to_string(24 + struct_hours) :
+                 std::to_string(24 + struct_hours);
+    }
+    else if(struct_hours > 23){
+        days = (exec_time_struct->tm_mday + 1 < 10) ? 
+                "0" + std::to_string(exec_time_struct->tm_mday + 1) :
+                std::to_string(exec_time_struct->tm_mday + 1);
+        hours = (struct_hours - 23 < 10) ? 
+                 "0" + std::to_string(struct_hours - 23) :
+                 std::to_string(struct_hours - 23);
+    }
+    else{
+        days = (exec_time_struct->tm_mday < 10) ? 
+                "0" + std::to_string(exec_time_struct->tm_mday) :
+                std::to_string(exec_time_struct->tm_mday);
+        hours = (struct_hours < 10) ? 
+                 "0" + std::to_string(struct_hours) :
+                 std::to_string(struct_hours);
+    }
+    
+    minutes = (exec_time_struct->tm_min < 10) ? 
+               "0" + std::to_string(exec_time_struct->tm_min) :
+               std::to_string(exec_time_struct->tm_min);
+    seconds = (exec_time_struct->tm_sec < 10) ? 
+               "0" + std::to_string(exec_time_struct->tm_sec) :
+               std::to_string(exec_time_struct->tm_sec);
+
+    return wday + " " + month + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
 }
 
 std::string Task::get_execution_datetime_fmt(void){
