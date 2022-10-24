@@ -223,6 +223,7 @@ std::string Task::get_creation_datetime_fmt(void){
 }
 
 std::string Task::get_execution_datetime_fmt(void){
+    int struct_hours;
     std::string years;
     std::string month;
     std::string days;
@@ -275,9 +276,6 @@ std::string Task::get_execution_datetime_fmt(void){
         month = "";
         break;
     }
-    days = (exec_time_struct->tm_mday < 10) ? 
-            "0" + std::to_string(exec_time_struct->tm_mday) :
-            std::to_string(exec_time_struct->tm_mday);
     switch (exec_time_struct->tm_wday)
     {
     case SUNDAY:
@@ -305,9 +303,32 @@ std::string Task::get_execution_datetime_fmt(void){
         wday = "";
         break;
     }
-    hours = (exec_time_struct->tm_hour + TIMEZONE < 10) ? 
-             "0" + std::to_string(exec_time_struct->tm_hour + TIMEZONE) :
-             std::to_string(exec_time_struct->tm_hour + TIMEZONE);
+    struct_hours = exec_time_struct->tm_hour + TIMEZONE;
+    if(struct_hours < 0){
+        days = (exec_time_struct->tm_mday - 1 < 10) ? 
+                "0" + std::to_string(exec_time_struct->tm_mday - 1) :
+                std::to_string(exec_time_struct->tm_mday - 1);
+        hours = (24 + struct_hours < 10) ? 
+                 "0" + std::to_string(24 + struct_hours) :
+                 std::to_string(24 + struct_hours);
+    }
+    else if(struct_hours > 23){
+        days = (exec_time_struct->tm_mday + 1 < 10) ? 
+                "0" + std::to_string(exec_time_struct->tm_mday + 1) :
+                std::to_string(exec_time_struct->tm_mday + 1);
+        hours = (struct_hours - 23 < 10) ? 
+                 "0" + std::to_string(struct_hours - 23) :
+                 std::to_string(struct_hours - 23);
+    }
+    else{
+        days = (exec_time_struct->tm_mday < 10) ? 
+                "0" + std::to_string(exec_time_struct->tm_mday) :
+                std::to_string(exec_time_struct->tm_mday);
+        hours = (struct_hours < 10) ? 
+                 "0" + std::to_string(struct_hours) :
+                 std::to_string(struct_hours);
+    }
+    
     minutes = (exec_time_struct->tm_min < 10) ? 
                "0" + std::to_string(exec_time_struct->tm_min) :
                std::to_string(exec_time_struct->tm_min);
@@ -348,11 +369,11 @@ void Task::update_execution_datetime(void){
     }
     else if(this->frequency == "Daily"){
         // Add 24 hours in seconds to current execution time
-        this->execution_datetime = this->execution_datetime + 86400;
+        this->execution_datetime = this->execution_datetime + (24 * 3600);
     }
     else if(this->frequency == "Weekly"){
         // Add 7 days in seconds to current execution time
-        this->execution_datetime = this->execution_datetime + 604800;
+        this->execution_datetime = this->execution_datetime + (7 * 24 * 3600);
     }
     else if(this->frequency == "Monthly"){
         // add necessary days until nth day of next month
@@ -1505,7 +1526,7 @@ time_t today_add_yyyymmdd_hms(std::string yyyymmdd_hms){
     // Subtract 1 hour (3600 seconds)
     time_t added_time = time_start_year + (diff_years * 365 * 24 * 60 * 60) +
                         ((acc_days + february_29s) * 24 * 60 * 60) - 3600 + 
-                        (hours * 60 * 60) + (minutes * 60);
+                        (hours * 60 * 60) + (minutes * 60) + seconds;
 
     // Get current time and check for past time
     time_t time_now;
