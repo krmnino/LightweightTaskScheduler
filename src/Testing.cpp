@@ -3734,7 +3734,6 @@ int test102(){
     std::string years;
     std::string months;
     std::string days;
-    std::string wday;
     std::string hours;
     std::string minutes;
     std::string seconds;
@@ -3752,33 +3751,6 @@ int test102(){
     days = (struct_time_now_add.tm_mday < 10) ? 
               "0" + std::to_string(struct_time_now_add.tm_mday) :
               std::to_string(struct_time_now_add.tm_mday);
-    switch (struct_time_now_add.tm_wday)
-    {
-    case SUNDAY:
-        wday = "Sun";
-        break;
-    case MONDAY:
-        wday = "Mon";
-        break;
-    case TUESDAY:
-        wday = "Tue";
-        break;
-    case WEDNESDAY:
-        wday = "Wed";
-        break;
-    case THURSDAY:
-        wday = "Thu";
-        break;
-    case FRIDAY:
-        wday = "Fri";
-        break;
-    case SATURDAY:
-        wday = "Sat";
-        break;
-    default:
-        wday = "";
-        break;
-    }
     hours = (struct_time_now_add.tm_hour < 10) ? 
              "0" + std::to_string(struct_time_now_add.tm_hour) :
              std::to_string(struct_time_now_add.tm_hour);
@@ -3788,8 +3760,8 @@ int test102(){
     seconds = (struct_time_now_add.tm_sec < 10) ? 
                "0" + std::to_string(struct_time_now_add.tm_sec) :
                std::to_string(struct_time_now_add.tm_sec);
-    // WDAY HH:MM:SS format
-    datetime_str =  years + "-" + months + "-" + days; 
+    // YYYY-MM-DD format
+    datetime_str = years + "-" + months + "-" + days; 
 
     std::string t_name = "Task Name";
     std::string t_description = "A short description for this task";
@@ -3872,6 +3844,133 @@ int test102(){
     delete t;
 
     std::cout << ">> Test 102 done" << std::endl;
+    return 0;
+}
+
+
+int test103(){
+    // TEST 103: testing Task::update_execution_datetime() 
+    // Frequency: Week
+    // Datetime format: MM-DD
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string years;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+
+    // Add two days and one hour in seconds to current time
+    time_now_add = time_now + (2 * 24 * 3600) + (1 * 3600);
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+    
+    years = std::to_string(1900 + struct_time_now_add.tm_year);
+    months = (struct_time_now_add.tm_mon < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon) :
+              std::to_string(struct_time_now_add.tm_mon);  
+    days = (struct_time_now_add.tm_mday < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mday) :
+              std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    // MM-DD format
+    datetime_str = months + "-" + days; 
+
+    std::string t_name = "Task Name";
+    std::string t_description = "A short description for this task";
+    std::string t_script_name = "cat_test.sh";
+    std::string t_frequency = "Weekly";
+    std::string t_datetime = datetime_str;
+
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+   
+    t->update_execution_datetime();
+    std::string ret = t->get_execution_datetime_fmt();
+
+    // Add nine days and one hour in seconds to current time after calling update_execution_datetime()
+    // Today = +0 days
+    // Init Task = +2 days
+    // Update date = +7 days
+    // Total = 9 days
+    time_now_add = time_now + (9 * 24 * 3600) + (1 * 3600);
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+
+    years = std::to_string(1900 + struct_time_now_add.tm_year);      
+    switch (struct_time_now_add.tm_mon)
+    {
+    case JANUARY:
+        months = "Jan";
+        break;
+    case FEBRUARY:
+        months = "Feb";
+        break;
+    case MARCH:
+        months = "Mar";
+        break;
+    case APRIL:
+        months = "Apr";
+        break;
+    case MAY:
+        months = "May";
+        break;
+    case JUNE:
+        months = "Jun";
+        break;
+    case JULY:
+        months = "Jul";
+        break;
+    case AUGUST:
+        months = "Aug";
+        break;
+    case SEPTEMBER:
+        months = "Sep";
+        break;
+    case OCTOBER:
+        months = "Oct";
+        break;
+    case NOVEMBER:
+        months = "Nov";
+        break;
+    case DECEMBER:
+        months = "Dec";
+        break;
+    default:
+        months = "";
+        break;
+    }
+    days = (struct_time_now_add.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now_add.tm_mday) :
+            std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    datetime_str =  months + " " + days + " 00:00:00 " + years;
+
+    assert(ret.find(datetime_str) != std::string::npos);
+    delete t;
+
+    std::cout << ">> Test 103 done" << std::endl;
     return 0;
 }
 
@@ -3980,6 +4079,7 @@ int main(){
     bool t100    = false;
     bool t101    = true;
     bool t102    = true;
+    bool t103    = true;
 
     if(t1 || all){
         test1();
@@ -4286,6 +4386,9 @@ int main(){
     }
     if(t102 || all){
         test102();
+    }
+    if(t103 || all){
+        test103();
     }
 
     return 0;
