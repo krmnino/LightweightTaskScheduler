@@ -104,7 +104,6 @@ int Scheduler::generate_task_id(Task* task){
     std::string task_script_filename = task->get_script_filename();
     std::string task_frequency = task->get_frequency();
     std::string task_creation_datetime_fmt = task->get_creation_datetime_fmt();
-    std::string task_input_execution_datetime = task->get_input_execution_datetime();
 
     // Get attribute string lengths
     int task_name_len = task_name.length();
@@ -112,7 +111,6 @@ int Scheduler::generate_task_id(Task* task){
     int task_script_filename_len = task_script_filename.length();
     int task_frequency_len = task_frequency.length();
     int task_creation_datetime_fmt_len = task_creation_datetime_fmt.length();
-    int task_input_execution_datetime_len = task_input_execution_datetime.length();
 
     unsigned int acc_seed = 0;
 
@@ -142,10 +140,7 @@ int Scheduler::generate_task_id(Task* task){
     }
     acc_seed += task_creation_datetime_fmt_len;
 
-    for(int i = 0; i < task_input_execution_datetime_len; i++){
-        acc_seed += (unsigned int)task_input_execution_datetime.at(i);
-    }
-    acc_seed += task_input_execution_datetime_len;
+    acc_seed += (int)task->get_datetime_format_attr();
 
     // Set seed and generate id
     srand(acc_seed);

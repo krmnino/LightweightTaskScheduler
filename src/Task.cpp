@@ -11,35 +11,34 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
-    this->input_execution_datetime = execution_datetime_str;
     
     ts::DatetimeFormat format;
     if(this->frequency == "Once"){
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(this->input_execution_datetime);
+        format = get_datetime_format(execution_datetime_str);
         // Datetime string validation occurs at Scheduler constructor
         switch ((int)format){
         case (int)DatetimeFormat::HHMMSS:
-            this->execution_datetime = today_add_hms(this->input_execution_datetime);
+            this->execution_datetime = today_add_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::MMDD_HHMMSS:
-            this->execution_datetime = today_add_mmdd_hms(this->input_execution_datetime);
+            this->execution_datetime = today_add_mmdd_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
-            this->execution_datetime = today_add_yyyymmdd_hms(this->input_execution_datetime);
+            this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::WDAY_HHMMSS:
         case (int)DatetimeFormat::WDAY6_HHMMSS:
         case (int)DatetimeFormat::WDAY7_HHMMSS:
         case (int)DatetimeFormat::WDAY8_HHMMSS:
         case (int)DatetimeFormat::WDAY9_HHMMSS:
-            this->execution_datetime = today_add_wday_hms(this->input_execution_datetime);
+            this->execution_datetime = today_add_wday_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::MMDD:
-            this->execution_datetime = today_add_mmdd(this->input_execution_datetime);
+            this->execution_datetime = today_add_mmdd(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
-            this->execution_datetime = today_add_yyyymmdd(this->input_execution_datetime);
+            this->execution_datetime = today_add_yyyymmdd(execution_datetime_str);
             break;
         default:
             this->execution_datetime = 0;
@@ -51,11 +50,11 @@ Task::Task(std::string name,
     }
     else if(this->frequency == "Daily"){
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(this->input_execution_datetime);
+        format = get_datetime_format(execution_datetime_str);
         // Datetime string validation occurs at Scheduler constructor
         switch ((int)format){
         case (int)DatetimeFormat::HHMMSS:
-            this->execution_datetime = today_add_hms(this->input_execution_datetime);
+            this->execution_datetime = today_add_hms(execution_datetime_str);
             break;
         default:
             this->execution_datetime = 0;
@@ -64,30 +63,30 @@ Task::Task(std::string name,
     }
     else if(this->frequency == "Weekly"){
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(this->input_execution_datetime);
+        format = get_datetime_format(execution_datetime_str);
         // Datetime string validation occurs at Scheduler constructor
         switch ((int)format){
         case (int)DatetimeFormat::HHMMSS:
-            this->execution_datetime = today_add_hms(this->input_execution_datetime);
+            this->execution_datetime = today_add_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::MMDD_HHMMSS:
-            this->execution_datetime = today_add_mmdd_hms(this->input_execution_datetime);
+            this->execution_datetime = today_add_mmdd_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
-            this->execution_datetime = today_add_yyyymmdd_hms(this->input_execution_datetime);
+            this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::WDAY_HHMMSS:
         case (int)DatetimeFormat::WDAY6_HHMMSS:
         case (int)DatetimeFormat::WDAY7_HHMMSS:
         case (int)DatetimeFormat::WDAY8_HHMMSS:
         case (int)DatetimeFormat::WDAY9_HHMMSS:
-            this->execution_datetime = today_add_wday_hms(this->input_execution_datetime);
+            this->execution_datetime = today_add_wday_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::MMDD:
-            this->execution_datetime = today_add_mmdd(this->input_execution_datetime);
+            this->execution_datetime = today_add_mmdd(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
-            this->execution_datetime = today_add_yyyymmdd(this->input_execution_datetime);
+            this->execution_datetime = today_add_yyyymmdd(execution_datetime_str);
             break;
         default:
             this->execution_datetime = 0;
@@ -96,23 +95,23 @@ Task::Task(std::string name,
     }
     else if(this->frequency == "Monthly"){
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(this->input_execution_datetime);
+        format = get_datetime_format(execution_datetime_str);
         // Datetime string validation occurs at Scheduler constructor
         switch ((int)format){
         case (int)DatetimeFormat::HHMMSS:
-            this->execution_datetime = today_add_hms(this->input_execution_datetime);
+            this->execution_datetime = today_add_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::MMDD_HHMMSS:
-            this->execution_datetime = today_add_mmdd_hms(this->input_execution_datetime);
+            this->execution_datetime = today_add_mmdd_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
-            this->execution_datetime = today_add_yyyymmdd_hms(this->input_execution_datetime);
+            this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::MMDD:
-            this->execution_datetime = today_add_mmdd(this->input_execution_datetime);
+            this->execution_datetime = today_add_mmdd(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
-            this->execution_datetime = today_add_yyyymmdd(this->input_execution_datetime);
+            this->execution_datetime = today_add_yyyymmdd(execution_datetime_str);
             break;
         default:
             this->execution_datetime = 0;
@@ -121,20 +120,20 @@ Task::Task(std::string name,
     }
     else if(this->frequency == "Yearly"){
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(this->input_execution_datetime);
+        format = get_datetime_format(execution_datetime_str);
         // Datetime string validation occurs at Scheduler constructor
         switch ((int)format){
         case (int)DatetimeFormat::MMDD_HHMMSS:
-            this->execution_datetime = today_add_mmdd_hms(this->input_execution_datetime);
+            this->execution_datetime = today_add_mmdd_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
-            this->execution_datetime = today_add_yyyymmdd(this->input_execution_datetime);
+            this->execution_datetime = today_add_yyyymmdd(execution_datetime_str);
             break;
         case (int)DatetimeFormat::MMDD:
-            this->execution_datetime = today_add_mmdd(this->input_execution_datetime);
+            this->execution_datetime = today_add_mmdd(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
-            this->execution_datetime = today_add_yyyymmdd(this->input_execution_datetime);
+            this->execution_datetime = today_add_yyyymmdd(execution_datetime_str);
             break;
         default:
             this->execution_datetime = 0;
@@ -142,6 +141,8 @@ Task::Task(std::string name,
         }
     }
 
+    // Save datetime format
+    this->datetime_fmt = format;
     // Store task creation datetime
     std::time(&this->creation_datetime);
     this->creation_datetime = this->creation_datetime;
@@ -157,7 +158,6 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
-    this->input_execution_datetime = "";
 
     if(this->frequency == "Hourly"){
         this->execution_datetime = today_add_hrs(1);
@@ -451,16 +451,16 @@ std::string Task::get_execution_datetime_fmt(void){
     return wday + " " + month + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
 }
 
-std::string Task::get_input_execution_datetime(void){
-    return this->input_execution_datetime;
-}
-
 TaskStatus Task::get_status(void){
     return this->status;
 }
 
 int Task::get_id(void){
     return this->id;
+}
+
+DatetimeFormat Task::get_datetime_format_attr(void){
+    return this->datetime_fmt;
 }
 
 void Task::set_status(TaskStatus status){

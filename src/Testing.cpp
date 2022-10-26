@@ -38,7 +38,6 @@ int test2(){
     // get_description()
     // get_script_name()
     // get_frequency()
-    // get_input_execution_datetime()
 
     std::string t_name = "Task Name";
     std::string t_description = "A short description for this task";
@@ -52,7 +51,6 @@ int test2(){
     assert(t->get_description() == "A short description for this task");
     assert(t->get_script_filename() == "cat_test.sh");
     assert(t->get_frequency() == "Hourly");
-    assert(t->get_input_execution_datetime() == "12:00:00");
 
     delete t;
 
@@ -3975,8 +3973,14 @@ int test103(){
 }
 
 
+int test104(){
+    std::cout << ">> Test 103 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
-    bool all    = false;
+    bool all    = true;
     bool t1     = false;
     bool t2     = false;
     bool t3     = false;

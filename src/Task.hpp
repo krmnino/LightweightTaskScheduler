@@ -111,10 +111,10 @@ private:
     std::string description;
     std::string script_filename;
     std::string frequency;
-    std::string input_execution_datetime;
     std::string output;
     pid_t pid;
     TaskStatus status;
+    DatetimeFormat datetime_fmt;
     int id;
 
 public:
@@ -132,9 +132,9 @@ public:
     std::string get_output(void);
     std::string get_creation_datetime_fmt(void);
     std::string get_execution_datetime_fmt(void);
-    std::string get_input_execution_datetime(void);
     TaskStatus get_status(void);
     int get_id(void);
+    DatetimeFormat get_datetime_format_attr(void);
     void set_status(TaskStatus);
     void set_id(int);
     void update_execution_datetime(void);
