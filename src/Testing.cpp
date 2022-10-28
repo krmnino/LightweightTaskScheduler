@@ -3033,7 +3033,7 @@ int test96(){
     t->update_execution_datetime();
     std::string ret = t->get_execution_datetime_fmt();
 
-        // Add two hours in seconds to current time
+    // Add two hours in seconds to current time
     time_now_add = time_now + (2 * 3600);
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
@@ -3082,8 +3082,8 @@ int test97(){
     std::string seconds;
     std::string datetime_str;
 
-    // Add one hour in seconds to current time
-    time_now_add = time_now + (1 * 3600);
+    // Add 5 seconds to current time
+    time_now_add = time_now + (5);
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
     
@@ -3113,12 +3113,12 @@ int test97(){
     std::string t_datetime = datetime_str;
 
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
-    
+
     t->update_execution_datetime();
     std::string ret = t->get_execution_datetime_fmt();
 
-    // Add one day and one hour in seconds to current time after calling update_execution_datetime()
-    time_now_add = time_now + (1 * 24 * 3600) + (1 * 3600);
+    // Add one day in seconds and 5 seconds to current time after calling update_execution_datetime()
+    time_now_add = time_now + (1 * 24 * 3600) + (5);
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
 
@@ -3205,8 +3205,8 @@ int test98(){
     std::string seconds;
     std::string datetime_str;
 
-    // Add one hour in seconds to current time
-    time_now_add = time_now + (1 * 3600);
+    // Add 30 seconds to current time
+    time_now_add = time_now + (5);
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
     
@@ -3240,8 +3240,8 @@ int test98(){
     t->update_execution_datetime();
     std::string ret = t->get_execution_datetime_fmt();
 
-    // Add seven days and one hour in seconds to current time after calling update_execution_datetime()
-    time_now_add = time_now + (7 * 24 * 3600) + (1 * 3600);
+    // Add seven days in seconds and 5 seconds to current time after calling update_execution_datetime()
+    time_now_add = time_now + (7 * 24 * 3600) + (5);
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
 
@@ -3974,7 +3974,7 @@ int test103(){
 
 
 int test104(){
-    std::cout << ">> Test 103 done" << std::endl;
+    std::cout << ">> Test 104 done" << std::endl;
     return 0;
 }
 
@@ -4077,13 +4077,13 @@ int main(){
     bool t94     = false;
     bool t95     = false;
     bool t96     = false;
-    bool t97     = false;
+    bool t97     = true;
     bool t98     = false;
     bool t99     = false;
     bool t100    = false;
-    bool t101    = true;
-    bool t102    = true;
-    bool t103    = true;
+    bool t101    = false;
+    bool t102    = false;
+    bool t103    = false;
 
     if(t1 || all){
         test1();
