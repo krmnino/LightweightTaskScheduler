@@ -1170,9 +1170,9 @@ int test26(){
     std::tm struct_time_now_add;
     struct_time_now_add = *to_struct;
 
-    std::string months = (struct_time_now_add.tm_mon < 10) ? 
-                         "0" + std::to_string(struct_time_now_add.tm_mon) :
-                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+                         std::to_string(struct_time_now_add.tm_mon + 1);  
     std::string days = (struct_time_now_add.tm_mday < 10) ? 
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
@@ -1201,9 +1201,9 @@ int test27(){
     std::tm struct_time_now_add;
     struct_time_now_add = *to_struct;
 
-    std::string months = (struct_time_now_add.tm_mon < 10) ? 
-                         "0" + std::to_string(struct_time_now_add.tm_mon) :
-                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+                         std::to_string(struct_time_now_add.tm_mon + 1);  
     std::string days = (struct_time_now_add.tm_mday < 10) ? 
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
@@ -1246,9 +1246,9 @@ int test29(){
     std::tm struct_time_now_add;
     struct_time_now_add = *to_struct;
 
-    std::string months = (struct_time_now_add.tm_mon < 10) ? 
-                         "0" + std::to_string(struct_time_now_add.tm_mon) :
-                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+                         std::to_string(struct_time_now_add.tm_mon + 1);  
     std::string days = (struct_time_now_add.tm_mday < 10) ? 
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
@@ -1288,9 +1288,9 @@ int test30(){
     std::tm struct_time_now_add;
     struct_time_now_add = *to_struct;
 
-    std::string months = (struct_time_now_add.tm_mon < 10) ? 
-                         "0" + std::to_string(struct_time_now_add.tm_mon) :
-                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+                         std::to_string(struct_time_now_add.tm_mon + 1);  
     std::string days = (struct_time_now_add.tm_mday < 10) ? 
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
@@ -1328,9 +1328,9 @@ int test31(){
     std::tm struct_time_now_add;
     struct_time_now_add = *to_struct;
 
-    std::string months = (struct_time_now_add.tm_mon < 10) ? 
-                         "0" + std::to_string(struct_time_now_add.tm_mon) :
-                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+                         std::to_string(struct_time_now_add.tm_mon + 1);  
     std::string days = (struct_time_now_add.tm_mday < 10) ? 
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
@@ -1402,9 +1402,9 @@ int test34(){
     struct_time_now_add = *to_struct;
 
     std::string years = std::to_string(1900 + struct_time_now_add.tm_year);
-    std::string months = (struct_time_now_add.tm_mon < 10) ? 
-                         "0" + std::to_string(struct_time_now_add.tm_mon) :
-                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+                         std::to_string(struct_time_now_add.tm_mon + 1);  
     std::string days = (struct_time_now_add.tm_mday < 10) ? 
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
@@ -1434,9 +1434,9 @@ int test35(){
     struct_time_now_add = *to_struct;
 
     std::string years = std::to_string(1900 + struct_time_now_add.tm_year);
-    std::string months = (struct_time_now_add.tm_mon < 10) ? 
-                         "0" + std::to_string(struct_time_now_add.tm_mon) :
-                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+                         std::to_string(struct_time_now_add.tm_mon + 1);  
     std::string days = (struct_time_now_add.tm_mday < 10) ? 
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
@@ -1466,9 +1466,9 @@ int test36(){
     struct_time_now_add = *to_struct;
 
     std::string years = std::to_string(1900 + struct_time_now_add.tm_year);
-    std::string months = (struct_time_now_add.tm_mon < 10) ? 
-                         "0" + std::to_string(struct_time_now_add.tm_mon) :
-                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+                         std::to_string(struct_time_now_add.tm_mon + 1);  
     std::string days = (struct_time_now_add.tm_mday < 10) ? 
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
@@ -1498,9 +1498,9 @@ int test37(){
     struct_time_now_add = *to_struct;
 
     std::string years = std::to_string(1900 + struct_time_now_add.tm_year);
-    std::string months = (struct_time_now_add.tm_mon < 10) ? 
-                         "0" + std::to_string(struct_time_now_add.tm_mon) :
-                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+                         std::to_string(struct_time_now_add.tm_mon + 1);  
     std::string days = (struct_time_now_add.tm_mday < 10) ? 
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
@@ -1544,9 +1544,9 @@ int test39(){
     struct_time_now_add = *to_struct;
 
     std::string years = std::to_string(1900 + struct_time_now_add.tm_year);
-    std::string months = (struct_time_now_add.tm_mon < 10) ? 
-                         "0" + std::to_string(struct_time_now_add.tm_mon) :
-                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+                         std::to_string(struct_time_now_add.tm_mon + 1);  
     std::string days = (struct_time_now_add.tm_mday < 10) ? 
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
@@ -1585,9 +1585,9 @@ int test40(){
     struct_time_now_add = *to_struct;
 
     std::string years = std::to_string(1900 + struct_time_now_add.tm_year);
-    std::string months = (struct_time_now_add.tm_mon < 10) ? 
-                         "0" + std::to_string(struct_time_now_add.tm_mon) :
-                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+                         std::to_string(struct_time_now_add.tm_mon + 1);  
     std::string days = (struct_time_now_add.tm_mday < 10) ? 
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
@@ -1626,9 +1626,9 @@ int test41(){
     struct_time_now_add = *to_struct;
 
     std::string years = std::to_string(1900 + struct_time_now_add.tm_year);
-    std::string months = (struct_time_now_add.tm_mon < 10) ? 
-                         "0" + std::to_string(struct_time_now_add.tm_mon) :
-                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+                         std::to_string(struct_time_now_add.tm_mon + 1);  
     std::string days = (struct_time_now_add.tm_mday < 10) ? 
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
@@ -1667,9 +1667,9 @@ int test42(){
     struct_time_now_add = *to_struct;
 
     std::string years = std::to_string(1900 + struct_time_now_add.tm_year);
-    std::string months = (struct_time_now_add.tm_mon < 10) ? 
-                         "0" + std::to_string(struct_time_now_add.tm_mon) :
-                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+                         std::to_string(struct_time_now_add.tm_mon + 1);  
     std::string days = (struct_time_now_add.tm_mday < 10) ? 
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
@@ -1708,9 +1708,9 @@ int test43(){
     struct_time_now_add = *to_struct;
 
     std::string years = std::to_string(1900 + struct_time_now_add.tm_year);
-    std::string months = (struct_time_now_add.tm_mon < 10) ? 
-                         "0" + std::to_string(struct_time_now_add.tm_mon) :
-                         std::to_string(struct_time_now_add.tm_mon);  
+    std::string months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+                         "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+                         std::to_string(struct_time_now_add.tm_mon + 1);  
     std::string days = (struct_time_now_add.tm_mday < 10) ? 
                        "0" + std::to_string(struct_time_now_add.tm_mday) :
                        std::to_string(struct_time_now_add.tm_mday);
@@ -3334,9 +3334,9 @@ int test99(){
     struct_time_now_add = *to_struct;
     
     years = std::to_string(1900 + struct_time_now_add.tm_year);
-    months = (struct_time_now_add.tm_mon < 10) ? 
-              "0" + std::to_string(struct_time_now_add.tm_mon) :
-              std::to_string(struct_time_now_add.tm_mon);  
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
     days = (struct_time_now_add.tm_mday < 10) ? 
             "0" + std::to_string(struct_time_now_add.tm_mday) :
             std::to_string(struct_time_now_add.tm_mday);
@@ -3439,7 +3439,7 @@ int test99(){
 
 int test100(){
     // TEST 100: testing Task::update_execution_datetime() 
-    // Frequency: Week
+    // Frequency: Weekly
     // Datetime format: YYYY-MM-DD HH:MM:SS
 
     time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
@@ -3461,9 +3461,9 @@ int test100(){
     struct_time_now_add = *to_struct;
     
     years = std::to_string(1900 + struct_time_now_add.tm_year);
-    months = (struct_time_now_add.tm_mon < 10) ? 
-              "0" + std::to_string(struct_time_now_add.tm_mon) :
-              std::to_string(struct_time_now_add.tm_mon);  
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
     days = (struct_time_now_add.tm_mday < 10) ? 
             "0" + std::to_string(struct_time_now_add.tm_mday) :
             std::to_string(struct_time_now_add.tm_mday);
@@ -3566,7 +3566,7 @@ int test100(){
 
 int test101(){
     // TEST 101: testing Task::update_execution_datetime() 
-    // Frequency: Week
+    // Frequency: Weekly
     // Datetime format: WDAY HH:MM:SS
 
     time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
@@ -3589,9 +3589,9 @@ int test101(){
     struct_time_now_add = *to_struct;
     
     years = std::to_string(1900 + struct_time_now_add.tm_year);
-    months = (struct_time_now_add.tm_mon < 10) ? 
-              "0" + std::to_string(struct_time_now_add.tm_mon) :
-              std::to_string(struct_time_now_add.tm_mon);  
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
     days = (struct_time_now_add.tm_mday < 10) ? 
             "0" + std::to_string(struct_time_now_add.tm_mday) :
             std::to_string(struct_time_now_add.tm_mday);
@@ -3721,7 +3721,7 @@ int test101(){
 
 int test102(){
     // TEST 102: testing Task::update_execution_datetime() 
-    // Frequency: Week
+    // Frequency: Weekly
     // Datetime format: YYYY-MM-DD
 
     time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
@@ -3743,9 +3743,9 @@ int test102(){
     struct_time_now_add = *to_struct;
     
     years = std::to_string(1900 + struct_time_now_add.tm_year);
-    months = (struct_time_now_add.tm_mon < 10) ? 
-              "0" + std::to_string(struct_time_now_add.tm_mon) :
-              std::to_string(struct_time_now_add.tm_mon);  
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
     days = (struct_time_now_add.tm_mday < 10) ? 
               "0" + std::to_string(struct_time_now_add.tm_mday) :
               std::to_string(struct_time_now_add.tm_mday);
@@ -3848,7 +3848,7 @@ int test102(){
 
 int test103(){
     // TEST 103: testing Task::update_execution_datetime() 
-    // Frequency: Week
+    // Frequency: Weekly
     // Datetime format: MM-DD
 
     time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
@@ -3870,9 +3870,9 @@ int test103(){
     struct_time_now_add = *to_struct;
     
     years = std::to_string(1900 + struct_time_now_add.tm_year);
-    months = (struct_time_now_add.tm_mon < 10) ? 
-              "0" + std::to_string(struct_time_now_add.tm_mon) :
-              std::to_string(struct_time_now_add.tm_mon);  
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
     days = (struct_time_now_add.tm_mday < 10) ? 
               "0" + std::to_string(struct_time_now_add.tm_mday) :
               std::to_string(struct_time_now_add.tm_mday);
@@ -3974,13 +3974,65 @@ int test103(){
 
 
 int test104(){
+    // TEST 104: testing Task::update_execution_datetime() 
+    // Frequency: Monthly
+    // Datetime format: HH:MM:SS
+
+    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string years;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+
+    // Add two days and one hour in seconds to current time
+    time_now_add = time_now + (2 * 24 * 3600) + (1 * 3600);
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+    
+    years = std::to_string(1900 + struct_time_now_add.tm_year);
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
+    days = (struct_time_now_add.tm_mday < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mday) :
+              std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    // HH:MM:SS format
+    datetime_str = hours + ":" + minutes + ":" + seconds; 
+
+    std::string t_name = "Task Name";
+    std::string t_description = "A short description for this task";
+    std::string t_script_name = "cat_test.sh";
+    std::string t_frequency = "Monthly";
+    std::string t_datetime = datetime_str;
+
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+   
+    t->update_execution_datetime();
+    std::string ret = t->get_execution_datetime_fmt();
+
     std::cout << ">> Test 104 done" << std::endl;
     return 0;
 }
 
 
 int main(){
-    bool all    = true;
+    bool all    = false;
     bool t1     = false;
     bool t2     = false;
     bool t3     = false;
@@ -4077,13 +4129,14 @@ int main(){
     bool t94     = false;
     bool t95     = false;
     bool t96     = false;
-    bool t97     = true;
+    bool t97     = false;
     bool t98     = false;
-    bool t99     = false;
-    bool t100    = false;
-    bool t101    = false;
-    bool t102    = false;
-    bool t103    = false;
+    bool t99     = true;
+    bool t100    = true;
+    bool t101    = true;
+    bool t102    = true;
+    bool t103    = true;
+    bool t104    = true;
 
     if(t1 || all){
         test1();
@@ -4393,6 +4446,9 @@ int main(){
     }
     if(t103 || all){
         test103();
+    }
+    if(t104 || all){
+        test104();
     }
 
     return 0;
