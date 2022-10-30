@@ -577,7 +577,9 @@ void Task::update_execution_datetime(void){
         {
         case JANUARY:
             // January has max day count of 31
-            day = std::to_string(this->initial_execution_datetime.day);
+            day = (this->initial_execution_datetime.day < 10) ? 
+                   "0" + std::to_string(this->initial_execution_datetime.day) :
+                   std::to_string(this->initial_execution_datetime.day);
             break;
         case FEBRUARY:
             // Check if we are currently on a leap year
@@ -590,64 +592,87 @@ void Task::update_execution_datetime(void){
                 }
             }
             else{
-                day = std::to_string(this->initial_execution_datetime.day);
+                day = (this->initial_execution_datetime.day < 10) ? 
+                       "0" + std::to_string(this->initial_execution_datetime.day) :
+                       std::to_string(this->initial_execution_datetime.day);
             }
             break;
         case MARCH:
             // March has max day count of 31
-            day = std::to_string(this->initial_execution_datetime.day);
+            day = (this->initial_execution_datetime.day < 10) ? 
+                   "0" + std::to_string(this->initial_execution_datetime.day) :
+                   std::to_string(this->initial_execution_datetime.day);
             break;
         case APRIL:
             if(this->initial_execution_datetime.day > APRIL_DAYS){
                 day = std::to_string(APRIL_DAYS);
             }
             else{
-                day = std::to_string(this->initial_execution_datetime.day);
+                day = (this->initial_execution_datetime.day < 10) ? 
+                       "0" + std::to_string(this->initial_execution_datetime.day) :
+                       std::to_string(this->initial_execution_datetime.day);
             }
             break;
         case MAY:
             // May has max day count of 31
-            day = std::to_string(this->initial_execution_datetime.day);
+            day = (this->initial_execution_datetime.day < 10) ? 
+                   "0" + std::to_string(this->initial_execution_datetime.day) :
+                   std::to_string(this->initial_execution_datetime.day);
             break;
         case JUNE:
             if(this->initial_execution_datetime.day > JUNE_DAYS){
                 day = std::to_string(JUNE_DAYS);
             }
             else{
-                day = std::to_string(this->initial_execution_datetime.day);
+                day = (this->initial_execution_datetime.day < 10) ? 
+                       "0" + std::to_string(this->initial_execution_datetime.day) :
+                       std::to_string(this->initial_execution_datetime.day);
             }
             break;
         case JULY:
             // July has max day count of 31
-            day = std::to_string(this->initial_execution_datetime.day);
+            day = (this->initial_execution_datetime.day < 10) ? 
+                   "0" + std::to_string(this->initial_execution_datetime.day) :
+                   std::to_string(this->initial_execution_datetime.day);
             break;
         case AUGUST:
             // August has max day count of 31
-            day = std::to_string(this->initial_execution_datetime.day);
+            day = (this->initial_execution_datetime.day < 10) ? 
+                   "0" + std::to_string(this->initial_execution_datetime.day) :
+                   std::to_string(this->initial_execution_datetime.day);
             break;
         case SEPTEMBER:
             if(this->initial_execution_datetime.day > SEPTEMBER_DAYS){
                 day = std::to_string(SEPTEMBER_DAYS);
             }
             else{
-                day = std::to_string(this->initial_execution_datetime.day);
+                day = (this->initial_execution_datetime.day < 10) ? 
+                       "0" + std::to_string(this->initial_execution_datetime.day) :
+                       std::to_string(this->initial_execution_datetime.day);
+
             }
             break;
         case OCTOBER:
             // October has max day count of 31
-            day = std::to_string(this->initial_execution_datetime.day);
+            day = (this->initial_execution_datetime.day < 10) ? 
+                   "0" + std::to_string(this->initial_execution_datetime.day) :
+                   std::to_string(this->initial_execution_datetime.day);
             break;
         case NOVEMBER:
             if(this->initial_execution_datetime.day > NOVEMBER_DAYS){
                 day = std::to_string(NOVEMBER_DAYS);
             }
             else{
-                day = std::to_string(this->initial_execution_datetime.day);
+                day = (this->initial_execution_datetime.day < 10) ? 
+                       "0" + std::to_string(this->initial_execution_datetime.day) :
+                       std::to_string(this->initial_execution_datetime.day);
             }
             break;
         case DECEMBER:
             // December has max day count of 31
-            day = std::to_string(this->initial_execution_datetime.day);
+            day = (this->initial_execution_datetime.day < 10) ? 
+                   "0" + std::to_string(this->initial_execution_datetime.day) :
+                   std::to_string(this->initial_execution_datetime.day);
             break;
         default:
             month = "";
