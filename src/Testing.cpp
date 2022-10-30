@@ -3991,8 +3991,8 @@ int test104(){
     std::string seconds;
     std::string datetime_str;
 
-    // Add two days and one hour in seconds to current time
-    time_now_add = time_now + (2 * 24 * 3600) + (1 * 3600);
+    // Add 5 seconds to current time
+    time_now_add = time_now + (5);
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
     
@@ -4026,13 +4026,138 @@ int test104(){
     t->update_execution_datetime();
     std::string ret = t->get_execution_datetime_fmt();
 
+    switch((struct_time_now_add.tm_mon) % 12)
+    {
+    case JANUARY:
+        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (JANUARY_DAYS * 24 * 3600) + (5);
+        break;
+    case FEBRUARY:
+        // Check if we are currently on a leap year
+        if(struct_time_now_add.tm_mday > FEBRUARY_DAYS & 1900 + struct_time_now_add.tm_year % 4 == 0){
+            // Add 29 days in seconds and 5 seconds to current time after calling update_execution_datetime()
+            time_now_add = time_now + ((FEBRUARY_DAYS + 1) * 24 * 3600) + (5);
+        }
+        else{
+            // Add 28 days in seconds and 5 seconds to current time after calling update_execution_datetime()
+            time_now_add = time_now + (FEBRUARY_DAYS * 24 * 3600) + (5);
+        }
+        break;
+    case MARCH:
+        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (MARCH_DAYS * 24 * 3600) + (5);
+        break;
+    case APRIL:
+        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (APRIL_DAYS * 24 * 3600) + (5);
+        break;
+    case MAY:
+        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (MAY_DAYS * 24 * 3600) + (5);
+        break;
+    case JUNE:
+        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (JUNE_DAYS * 24 * 3600) + (5);
+        break;
+    case JULY:
+        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (JULY_DAYS * 24 * 3600) + (5);
+        break;
+    case AUGUST:
+        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (AUGUST_DAYS * 24 * 3600) + (5);
+        break;
+    case SEPTEMBER:
+        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (SEPTEMBER_DAYS * 24 * 3600) + (5);
+        break;
+    case OCTOBER:
+        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (OCTOBER_DAYS * 24 * 3600) + (5);
+        break;
+    case NOVEMBER:
+        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (NOVEMBER_DAYS * 24 * 3600) + (5);
+        break;
+    case DECEMBER:
+        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (DECEMBER_DAYS * 24 * 3600) + (5);
+        break;
+    default:
+        time_now_add = 0;
+        break;
+    }
+
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+
+    years = std::to_string(1900 + struct_time_now_add.tm_year);      
+    switch (struct_time_now_add.tm_mon)
+    {
+    case JANUARY:
+        months = "Jan";
+        break;
+    case FEBRUARY:
+        months = "Feb";
+        break;
+    case MARCH:
+        months = "Mar";
+        break;
+    case APRIL:
+        months = "Apr";
+        break;
+    case MAY:
+        months = "May";
+        break;
+    case JUNE:
+        months = "Jun";
+        break;
+    case JULY:
+        months = "Jul";
+        break;
+    case AUGUST:
+        months = "Aug";
+        break;
+    case SEPTEMBER:
+        months = "Sep";
+        break;
+    case OCTOBER:
+        months = "Oct";
+        break;
+    case NOVEMBER:
+        months = "Nov";
+        break;
+    case DECEMBER:
+        months = "Dec";
+        break;
+    default:
+        months = "";
+        break;
+    }
+    days = (struct_time_now_add.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now_add.tm_mday) :
+            std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    datetime_str =  months + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
+
+    assert(ret.find(datetime_str) != std::string::npos);
+    delete t;
+
     std::cout << ">> Test 104 done" << std::endl;
     return 0;
 }
 
 
 int main(){
-    bool all    = false;
+    bool all    = true;
     bool t1     = false;
     bool t2     = false;
     bool t3     = false;
@@ -4131,11 +4256,11 @@ int main(){
     bool t96     = false;
     bool t97     = false;
     bool t98     = false;
-    bool t99     = true;
-    bool t100    = true;
-    bool t101    = true;
-    bool t102    = true;
-    bool t103    = true;
+    bool t99     = false;
+    bool t100    = false;
+    bool t101    = false;
+    bool t102    = false;
+    bool t103    = false;
     bool t104    = true;
 
     if(t1 || all){
