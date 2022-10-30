@@ -140,7 +140,7 @@ int Scheduler::generate_task_id(Task* task){
     }
     acc_seed += task_creation_datetime_fmt_len;
 
-    acc_seed += (int)task->get_datetime_format_attr();
+    acc_seed += (int)task->get_execution_datetime_format_attr() % 255;
 
     // Set seed and generate id
     srand(acc_seed);
