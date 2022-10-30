@@ -53,5 +53,10 @@ testing:
 		Testing.cpp -o scheduler_testing 	\
 		-lstdc++fs
 
+scratch:
+		g++ -g -std=c++17		\
+		Scratch.cpp -o scratch 	\
+		-lstdc++fs
+
 clean:
-	rm scheduler scheduler_testing test Test
+	rm scheduler scheduler_testing test Test scratch Scratch
