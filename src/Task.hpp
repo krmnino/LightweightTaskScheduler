@@ -105,6 +105,15 @@ enum class DatetimeFormat {
 
 class Task{
 private:
+    struct{
+        unsigned long year;
+        unsigned long month;
+        unsigned long day;
+        unsigned long wday;
+        unsigned long hour;
+        unsigned long minute;
+        unsigned long second;
+    } initial_execution_datetime;
     time_t execution_datetime;
     time_t creation_datetime;
     std::string name;
@@ -114,7 +123,7 @@ private:
     std::string output;
     pid_t pid;
     TaskStatus status;
-    DatetimeFormat datetime_fmt;
+    DatetimeFormat execution_datetime_fmt;
     int id;
 
 public:
@@ -134,7 +143,7 @@ public:
     std::string get_execution_datetime_fmt(void);
     TaskStatus get_status(void);
     int get_id(void);
-    DatetimeFormat get_datetime_format_attr(void);
+    DatetimeFormat get_execution_datetime_format_attr(void);
     void set_status(TaskStatus);
     void set_id(int);
     void update_execution_datetime(void);

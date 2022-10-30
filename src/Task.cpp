@@ -142,7 +142,29 @@ Task::Task(std::string name,
     }
 
     // Save datetime format
-    this->datetime_fmt = format;
+    this->execution_datetime_fmt = format;
+
+    // Set initial execution datetime struct
+    std::tm* exec_time_struct = std::gmtime(&this->execution_datetime);
+    this->initial_execution_datetime.year = 1900 + exec_time_struct->tm_year;
+    this->initial_execution_datetime.month = exec_time_struct->tm_mon;
+    this->initial_execution_datetime.wday = exec_time_struct->tm_wday;
+    int struct_hours = exec_time_struct->tm_hour + TIMEZONE;
+    if(exec_time_struct->tm_hour + TIMEZONE < 0){
+        this->initial_execution_datetime.day = exec_time_struct->tm_mday - 1;
+        this->initial_execution_datetime.hour = 24 + (exec_time_struct->tm_hour + TIMEZONE);
+    }
+    else if(exec_time_struct->tm_hour + TIMEZONE > 23){
+        this->initial_execution_datetime.day = exec_time_struct->tm_mday + 1;
+        this->initial_execution_datetime.hour = (exec_time_struct->tm_hour + TIMEZONE) - 23;
+    }
+    else{
+        this->initial_execution_datetime.day = exec_time_struct->tm_mday;
+        this->initial_execution_datetime.hour = exec_time_struct->tm_hour + TIMEZONE;
+    }
+    this->initial_execution_datetime.minute = exec_time_struct->tm_min;
+    this->initial_execution_datetime.second = exec_time_struct->tm_sec;
+
     // Store task creation datetime
     std::time(&this->creation_datetime);
     this->creation_datetime = this->creation_datetime;
@@ -165,6 +187,27 @@ Task::Task(std::string name,
     else{
         this->execution_datetime = 0;
     }
+
+    // Set initial execution datetime struct
+    std::tm* exec_time_struct = std::gmtime(&this->execution_datetime);
+    this->initial_execution_datetime.year = 1900 + exec_time_struct->tm_year;
+    this->initial_execution_datetime.month = exec_time_struct->tm_mon;
+    this->initial_execution_datetime.wday = exec_time_struct->tm_wday;
+    int struct_hours = exec_time_struct->tm_hour + TIMEZONE;
+    if(exec_time_struct->tm_hour + TIMEZONE < 0){
+        this->initial_execution_datetime.day = exec_time_struct->tm_mday - 1;
+        this->initial_execution_datetime.hour = 24 + (exec_time_struct->tm_hour + TIMEZONE);
+    }
+    else if(exec_time_struct->tm_hour + TIMEZONE > 23){
+        this->initial_execution_datetime.day = exec_time_struct->tm_mday + 1;
+        this->initial_execution_datetime.hour = (exec_time_struct->tm_hour + TIMEZONE) - 23;
+    }
+    else{
+        this->initial_execution_datetime.day = exec_time_struct->tm_mday;
+        this->initial_execution_datetime.hour = exec_time_struct->tm_hour + TIMEZONE;
+    }
+    this->initial_execution_datetime.minute = exec_time_struct->tm_min;
+    this->initial_execution_datetime.second = exec_time_struct->tm_sec;
 
     // Store task creation datetime
     std::time(&this->creation_datetime);
@@ -459,8 +502,8 @@ int Task::get_id(void){
     return this->id;
 }
 
-DatetimeFormat Task::get_datetime_format_attr(void){
-    return this->datetime_fmt;
+DatetimeFormat Task::get_execution_datetime_format_attr(void){
+    return this->execution_datetime_fmt;
 }
 
 void Task::set_status(TaskStatus status){
@@ -488,10 +531,134 @@ void Task::update_execution_datetime(void){
         this->execution_datetime = this->execution_datetime + (7 * 24 * 3600);
     }
     else if(this->frequency == "Monthly"){
-        // add necessary days until nth day of next month
+        // Add necessary days until nth day of next month
+        std::string year;
+        std::string month;
+        std::string day;
+        std::string hour;
+        std::string minute;
+        std::string second;
+        std::string updated_datetime_str;
+        unsigned long updated_year;
+        unsigned long updated_month;
+        unsigned long updated_day;
+
+        std::tm* exec_date_struct = std::gmtime(&this->execution_datetime);
+
+        // If current execution month is december, we need to roll back to January and set next year
+        if(exec_date_struct->tm_mon == DECEMBER){
+            updated_year = 1900 + exec_date_struct->tm_year + 1;
+            updated_month = JANUARY; 
+        }
+        else{
+            updated_year = 1900 + exec_date_struct->tm_year;
+            updated_month = exec_date_struct->tm_mon + 1;
+        }
+
+        // String-ify datetime values
+        year = std::to_string(updated_year);
+        month = (updated_month + 1 < 10) ? 
+                "0" + std::to_string(updated_month + 1) :
+                std::to_string(updated_month + 1);
+        hour = (this->initial_execution_datetime.hour < 10) ? 
+                "0" + std::to_string(this->initial_execution_datetime.hour) :
+                std::to_string(this->initial_execution_datetime.hour);
+        minute = (this->initial_execution_datetime.minute < 10) ? 
+                 "0" + std::to_string(this->initial_execution_datetime.minute) :
+                 std::to_string(this->initial_execution_datetime.minute);
+        second = (this->initial_execution_datetime.second < 10) ? 
+                 "0" + std::to_string(this->initial_execution_datetime.second) :
+                 std::to_string(this->initial_execution_datetime.second);
+
+        // Check for the appropiate day of the month for the next month
+        // If a month has less number than the initial execution datetime, then pick the very last day of the next month
+        // No need to subtract month value here
+        switch(updated_month)
+        {
+        case JANUARY:
+            // January has max day count of 31
+            day = std::to_string(this->initial_execution_datetime.day);
+            break;
+        case FEBRUARY:
+            // Check if we are currently on a leap year
+            if(this->initial_execution_datetime.day > FEBRUARY_DAYS){
+                if(1900 + exec_date_struct->tm_year % 4 == 0){
+                    day = std::to_string(FEBRUARY_DAYS + 1);
+                }
+                else{
+                    day = std::to_string(FEBRUARY_DAYS);
+                }
+            }
+            else{
+                day = std::to_string(this->initial_execution_datetime.day);
+            }
+            break;
+        case MARCH:
+            // March has max day count of 31
+            day = std::to_string(this->initial_execution_datetime.day);
+            break;
+        case APRIL:
+            if(this->initial_execution_datetime.day > APRIL_DAYS){
+                day = std::to_string(APRIL_DAYS);
+            }
+            else{
+                day = std::to_string(this->initial_execution_datetime.day);
+            }
+            break;
+        case MAY:
+            // May has max day count of 31
+            day = std::to_string(this->initial_execution_datetime.day);
+            break;
+        case JUNE:
+            if(this->initial_execution_datetime.day > JUNE_DAYS){
+                day = std::to_string(JUNE_DAYS);
+            }
+            else{
+                day = std::to_string(this->initial_execution_datetime.day);
+            }
+            break;
+        case JULY:
+            // July has max day count of 31
+            day = std::to_string(this->initial_execution_datetime.day);
+            break;
+        case AUGUST:
+            // August has max day count of 31
+            day = std::to_string(this->initial_execution_datetime.day);
+            break;
+        case SEPTEMBER:
+            if(this->initial_execution_datetime.day > SEPTEMBER_DAYS){
+                day = std::to_string(SEPTEMBER_DAYS);
+            }
+            else{
+                day = std::to_string(this->initial_execution_datetime.day);
+            }
+            break;
+        case OCTOBER:
+            // October has max day count of 31
+            day = std::to_string(this->initial_execution_datetime.day);
+            break;
+        case NOVEMBER:
+            if(this->initial_execution_datetime.day > NOVEMBER_DAYS){
+                day = std::to_string(NOVEMBER_DAYS);
+            }
+            else{
+                day = std::to_string(this->initial_execution_datetime.day);
+            }
+            break;
+        case DECEMBER:
+            // December has max day count of 31
+            day = std::to_string(this->initial_execution_datetime.day);
+            break;
+        default:
+            month = "";
+            break;
+        }
+        this->execution_datetime = today_add_yyyymmdd_hms(year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second);
     }
     else if(this->frequency == "Yearly"){
-        // add necessary days until nth day of next year
+        // Add necessary days until nth day of next year
+        std::tm* exec_date_struct = std::gmtime(&this->execution_datetime);
+
     }
 }
 
@@ -1082,7 +1249,7 @@ time_t today_add_mmdd(std::string mmdd){
 
     // Accumulate day count in year plus day in month
     unsigned long acc_days = 0;
-    switch (months)
+    switch (months - 1)
     {
     case JANUARY:
         acc_days += days;
@@ -1208,7 +1375,7 @@ time_t today_add_mmdd_hms(std::string mmdd_hms){
     std::tm* time_start_year_struct;
     time_start_year_struct = gmtime(&time_start_year);
     
-    // Convert horus and minutes to seconds and add them together
+    // Convert hours and minutes to seconds and add them together
     // Subtract 1 day and 1 hour
     unsigned long months = ((mmdd_hms.at(0) & 0x0F) * 10) + 
                             (mmdd_hms.at(1) & 0x0F);
@@ -1223,7 +1390,7 @@ time_t today_add_mmdd_hms(std::string mmdd_hms){
     
     // Accumulate day count in year plus day in month
     unsigned long acc_days = 0;
-    switch (months)
+    switch (months - 1)
     {
     case JANUARY:
         acc_days += days;
@@ -1349,7 +1516,7 @@ time_t today_add_yyyymmdd(std::string yyyymmdd){
     std::tm* time_start_year_struct;
     time_start_year_struct = gmtime(&time_start_year);
 
-    // Convert horus and minutes to seconds and add them together
+    // Convert hours and minutes to seconds and add them together
     unsigned long years = ((yyyymmdd.at(0) & 0x0F) * 1000) + 
                           ((yyyymmdd.at(1) & 0x0F) * 100) + 
                           ((yyyymmdd.at(2) & 0x0F) * 10) + 
@@ -1370,7 +1537,7 @@ time_t today_add_yyyymmdd(std::string yyyymmdd){
 
     // Accumulate day count in year plus day in month
     unsigned long acc_days = 0;
-    switch (months)
+    switch (months - 1)
     {
     case JANUARY:
         acc_days += days;
@@ -1501,7 +1668,7 @@ time_t today_add_yyyymmdd_hms(std::string yyyymmdd_hms){
     std::tm* time_start_year_struct;
     time_start_year_struct = gmtime(&time_start_year);
 
-    // Convert horus and minutes to seconds and add them together
+    // Convert hours and minutes to seconds and add them together
     unsigned long years = ((yyyymmdd_hms.at(0) & 0x0F) * 1000) + 
                           ((yyyymmdd_hms.at(1) & 0x0F) * 100) + 
                           ((yyyymmdd_hms.at(2) & 0x0F) * 10) + 
@@ -1528,7 +1695,7 @@ time_t today_add_yyyymmdd_hms(std::string yyyymmdd_hms){
 
     // Accumulate day count in year plus day in month
     unsigned long acc_days = 0;
-    switch (months)
+    switch (months - 1)
     {
     case JANUARY:
         acc_days += days;
