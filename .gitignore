@@ -1,4 +1,6 @@
 src/scheduler
 src/scheduler_testing
 src/test
+src/Scratch.cpp
+src/Scratch
 .vscode
