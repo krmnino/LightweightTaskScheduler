@@ -639,7 +639,7 @@ int test12(){
     time_t time_now;
 
     ret = ts::init_today();
-    time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_now = std::time(&time_now);
 
     std::tm* to_struct;
 
@@ -651,7 +651,7 @@ int test12(){
     
     assert(struct_ret.tm_sec == 0);
     assert(struct_ret.tm_min == 0);
-    assert(struct_ret.tm_hour == -TIMEZONE);
+    assert(struct_ret.tm_hour == 0);
     assert(struct_ret.tm_yday == struct_time_now.tm_yday);
     assert(struct_ret.tm_mday == struct_time_now.tm_mday);
     assert(struct_ret.tm_mon == struct_time_now.tm_mon);
@@ -669,7 +669,7 @@ int test13(){
     time_t time_now;
 
     ret = ts::init_year();
-    time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_now = std::time(&time_now);
   
     std::tm* to_struct;
 
@@ -681,7 +681,7 @@ int test13(){
     
     assert(struct_ret.tm_sec == 0);
     assert(struct_ret.tm_min == 0);
-    assert(struct_ret.tm_hour == -(TIMEZONE - 1));
+    assert(struct_ret.tm_hour == 0);
     assert(struct_ret.tm_yday == 0);
     assert(struct_ret.tm_mday == 1);
     assert(struct_ret.tm_mon == 0);
@@ -696,34 +696,60 @@ int test14(){
     // TEST 14: testing today_add_hms() function -> PASS
     // Add one minute in seconds to current time
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::tm struct_ret;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    time_t ret;
+    std::string ret_str;
+
+    time_now = std::time(&time_now);
     
     // Add one minute in seconds to current time
-    time_t time_now_add = time_now + 60;
+    time_now_add = time_now + 60;
 
     // time_t to std::tm*
-    std::tm* to_struct;
     to_struct = std::gmtime(&time_now_add);
     
     // std::tm* to std::tm
-    std::tm struct_time_now_add = *to_struct;
+    struct_time_now_add = *to_struct;
 
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
-                          std::to_string(struct_time_now_add.tm_sec);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+
+    datetime_str = hours + ":" + minutes + ":" + seconds;
                           
-    time_t ret = ts::today_add_hms(hours + ":" + minutes + ":" + seconds);
-
-    assert(ret >= time_now);
+    ret = ts::today_add_hms(datetime_str);
 
     to_struct = std::gmtime(&ret);
-    std::tm struct_ret = *to_struct;
+    struct_ret = *to_struct;
+
+    hours = (struct_ret.tm_hour < 10) ? 
+             "0" + std::to_string(struct_ret.tm_hour) :
+             std::to_string(struct_ret.tm_hour);
+    minutes = (struct_ret.tm_min < 10) ? 
+               "0" + std::to_string(struct_ret.tm_min) :
+               std::to_string(struct_ret.tm_min);
+    seconds = (struct_ret.tm_sec < 10) ? 
+               "0" + std::to_string(struct_ret.tm_sec) :
+               std::to_string(struct_ret.tm_sec);
+
+    ret_str = hours + ":" + minutes + ":" + seconds;
+
+    assert(ret_str  == datetime_str);
+    assert(ret >= time_now);
       
     std::cout << ">> Test 14 done" << std::endl;
     return 0;
@@ -734,29 +760,40 @@ int test15(){
     // TEST 15: testing today_add_hms() function -> FAIL
     // Invalid time. Current time minus 1 minute
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    time_t ret;
+
+    time_now = std::time(&time_now);
     
     // Add minus one minute in seconds to current time
-    time_t time_now_add = time_now + (-60);
+    time_now_add = time_now + (-60);
     
     // time_t to std::tm*
-    std::tm* to_struct;
     to_struct = std::gmtime(&time_now_add);
 
     // std::tm* to std::tm
-    std::tm struct_time_now_add = *to_struct;
+    struct_time_now_add = *to_struct;
 
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
-                          std::to_string(struct_time_now_add.tm_sec);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
 
-    time_t ret = ts::today_add_hms(hours + ":" + minutes + ":" + seconds);
+    datetime_str = hours + ":" + minutes + ":" + seconds;
+
+    ret = ts::today_add_hms(datetime_str);
 
     assert(ret == 0);
        
@@ -766,7 +803,8 @@ int test15(){
 
 
 int test16(){
-    // TEST 16: testing today_add_hms() function
+    // TEST 16: testing today_add_hms() function -> FAIL
+    // Invalid hours-minutes-seconds subtring
 
     time_t ret;
     ret = ts::today_add_hms("120000");
@@ -782,30 +820,59 @@ int test17(){
     // TEST 17: testing today_add_dhms() function -> PASS
     // Add one minute in seconds to current time
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::tm struct_ret;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    time_t ret;
+    std::string ret_str;
+
+    time_now = std::time(&time_now);
 
     // Add one minute in seconds to current time
-    time_t time_now_add = time_now + 60;
+    time_now_add = time_now + 60;
 
     // time_t to std::tm*
-    std::tm* to_struct;
     to_struct = std::gmtime(&time_now_add);
     
     // std::tm* to std::tm
-    std::tm struct_time_now_add = *to_struct;
+    struct_time_now_add = *to_struct;
 
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
-                          std::to_string(struct_time_now_add.tm_sec);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
 
-    time_t ret = ts::today_add_dhms(1, hours + ":" + minutes + ":" + seconds);
+    datetime_str = hours + ":" + minutes + ":" + seconds;
 
+    ret = ts::today_add_dhms(1, datetime_str);
+
+    to_struct = std::gmtime(&ret);
+    struct_ret = *to_struct;
+
+    hours = (struct_ret.tm_hour < 10) ? 
+             "0" + std::to_string(struct_ret.tm_hour) :
+             std::to_string(struct_ret.tm_hour);
+    minutes = (struct_ret.tm_min < 10) ? 
+               "0" + std::to_string(struct_ret.tm_min) :
+               std::to_string(struct_ret.tm_min);
+    seconds = (struct_ret.tm_sec < 10) ? 
+               "0" + std::to_string(struct_ret.tm_sec) :
+               std::to_string(struct_ret.tm_sec);
+
+    ret_str = hours + ":" + minutes + ":" + seconds;
+
+    assert(ret_str == datetime_str);
     assert(ret >= time_now);
        
     std::cout << ">> Test 17 done" << std::endl;
@@ -817,30 +884,40 @@ int test18(){
     // TEST 18: testing today_add_dhms() function -> FAIL
     // Invalid time. Current time minus 1 minute
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    time_t ret;
+
+    time_now = std::time(&time_now);
 
     // Add minus one minute in seconds to current time
-    time_t time_now_add = time_now + (-60);
+    time_now_add = time_now + (-60);
 
     // time_t to std::tm*
-    std::tm* to_struct;
     to_struct = std::gmtime(&time_now_add);
 
     // std::tm* to std::tm
-    std::tm struct_time_now_add;    
     struct_time_now_add = *to_struct;
     
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
-                          std::to_string(struct_time_now_add.tm_sec);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
 
-    time_t ret = ts::today_add_dhms(0, hours + ":" + minutes + ":" + seconds);
+    datetime_str = hours + ":" + minutes + ":" + seconds;
+
+    ret = ts::today_add_dhms(0, datetime_str);
 
     assert(ret == 0);
        
@@ -853,29 +930,40 @@ int test19(){
     // TEST 19: testing today_add_dhms() function -> FAIL
     // Invalid value for day parameter
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    time_t ret;    
+
+    time_now = std::time(&time_now);
 
     // Add one minute in seconds to current time
-    time_t time_now_add = time_now + 60;
+    time_now_add = time_now + 60;
     
     // time_t to std::tm*
-    std::tm* to_struct;
     to_struct = std::gmtime(&time_now_add);
 
     // std::tm* to std::tm
-    std::tm struct_time_now_add = *to_struct;
+    struct_time_now_add = *to_struct;
 
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
-                          std::to_string(struct_time_now_add.tm_sec);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+
+    datetime_str = hours + ":" + minutes + ":" + seconds;
     
-    time_t ret = ts::today_add_dhms(-15, hours + ":" + minutes + ":" + seconds);
+    ret = ts::today_add_dhms(-15, datetime_str);
 
     assert(ret == 0);
        
@@ -902,58 +990,112 @@ int test21(){
     // TEST 21: testing today_add_wday_hms() function -> PASS
     // Using full weekday substrings
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::tm struct_ret;
+    std::string wday;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    time_t ret;
+    std::string ret_str;    
+
+    time_now = std::time(&time_now);
 
     // Add one minute in seconds to current time
-    time_t time_now_add = time_now + 60;
+    time_now_add = time_now + 60;
     
     // time_t to std::tm*
-    std::tm* to_struct;
     to_struct = std::gmtime(&time_now_add);
 
     // std::tm* to std::tm
-    std::tm struct_time_now_add = *to_struct;
+    struct_time_now_add = *to_struct;
 
-    std::string wday;
     switch (struct_time_now_add.tm_wday)
     {
-    case 0:
+    case SUNDAY:
+        wday = "Sunday";
+        break;
+    case MONDAY:
         wday = "Monday";
         break;
-    case 1:
+    case TUESDAY:
         wday = "Tuesday";
         break;
-    case 2:
+    case WEDNESDAY:
         wday = "Wednesday";
         break;
-    case 3:
+    case THURSDAY:
         wday = "Thursday";
         break;
-    case 4:
+    case FRIDAY:
         wday = "Friday";
         break;
-    case 5:
+    case SATURDAY:
         wday = "Saturday";
-        break;
-    case 6:
-        wday = "Sunday";
         break;
     default:
         break;
     }
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
 
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
-                          std::to_string(struct_time_now_add.tm_sec);
+    datetime_str = wday + " " + hours + ":" + minutes + ":" + seconds;
 
-    time_t ret = ts::today_add_wday_hms(wday + " " + hours + ":" + minutes + ":" + seconds);
+    ret = ts::today_add_wday_hms(datetime_str);
 
+    to_struct = std::gmtime(&ret);
+    struct_ret = *to_struct;
+
+    switch (struct_ret.tm_wday)
+    {
+    case SUNDAY:
+        wday = "Sunday";
+        break;
+    case MONDAY:
+        wday = "Monday";
+        break;
+    case TUESDAY:
+        wday = "Tuesday";
+        break;
+    case WEDNESDAY:
+        wday = "Wednesday";
+        break;
+    case THURSDAY:
+        wday = "Thursday";
+        break;
+    case FRIDAY:
+        wday = "Friday";
+        break;
+    case SATURDAY:
+        wday = "Saturday";
+        break;
+    default:
+        break;
+    }
+    hours = (struct_ret.tm_hour < 10) ? 
+             "0" + std::to_string(struct_ret.tm_hour) :
+             std::to_string(struct_ret.tm_hour);
+    minutes = (struct_ret.tm_min < 10) ? 
+               "0" + std::to_string(struct_ret.tm_min) :
+               std::to_string(struct_ret.tm_min);
+    seconds = (struct_ret.tm_sec < 10) ? 
+               "0" + std::to_string(struct_ret.tm_sec) :
+               std::to_string(struct_ret.tm_sec);
+
+    ret_str = wday + " " + hours + ":" + minutes + ":" + seconds;
+
+    assert(ret_str == datetime_str);
     assert(ret >= time_now);
        
     std::cout << ">> Test 21 done" << std::endl;
@@ -965,58 +1107,112 @@ int test22(){
     // TEST 22: testing today_add_wday_hms() function -> PASS
     // Using abbreviated weekday substrings
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::tm struct_ret;
+    std::string wday;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    time_t ret;
+    std::string ret_str;
+
+    time_now = std::time(&time_now);
 
     // Add one minute in seconds to current time
-    time_t time_now_add = time_now + 60;
+    time_now_add = time_now + 60;
     
     // time_t to std::tm*
-    std::tm* to_struct;
     to_struct = std::gmtime(&time_now_add);
     
     // std::tm* to std::tm
-    std::tm struct_time_now_add = *to_struct;
+    struct_time_now_add = *to_struct;
 
-    std::string wday;
-    switch (struct_time_now_add.tm_wday)
+    switch (struct_ret.tm_wday)
     {
-    case 0:
+    case SUNDAY:
+        wday = "Sun";
+        break;
+    case MONDAY:
         wday = "Mon";
         break;
-    case 1:
+    case TUESDAY:
         wday = "Tue";
         break;
-    case 2:
+    case WEDNESDAY:
         wday = "Wed";
         break;
-    case 3:
+    case THURSDAY:
         wday = "Thu";
         break;
-    case 4:
+    case FRIDAY:
         wday = "Fri";
         break;
-    case 5:
+    case SATURDAY:
         wday = "Sat";
-        break;
-    case 6:
-        wday = "Sun";
         break;
     default:
         break;
     }
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
 
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
-                          std::to_string(struct_time_now_add.tm_sec);
+    datetime_str = wday + " " + hours + ":" + minutes + ":" + seconds;
     
-    time_t ret = ts::today_add_wday_hms(wday + " " + hours + ":" + minutes + ":" + seconds);
+    ret = ts::today_add_wday_hms(datetime_str);
 
+    to_struct = std::gmtime(&ret);
+    struct_ret = *to_struct;
+
+    switch (struct_ret.tm_wday)
+    {
+    case SUNDAY:
+        wday = "Sun";
+        break;
+    case MONDAY:
+        wday = "Mon";
+        break;
+    case TUESDAY:
+        wday = "Tue";
+        break;
+    case WEDNESDAY:
+        wday = "Wed";
+        break;
+    case THURSDAY:
+        wday = "Thu";
+        break;
+    case FRIDAY:
+        wday = "Fri";
+        break;
+    case SATURDAY:
+        wday = "Sat";
+        break;
+    default:
+        break;
+    }
+    hours = (struct_ret.tm_hour < 10) ? 
+             "0" + std::to_string(struct_ret.tm_hour) :
+             std::to_string(struct_ret.tm_hour);
+    minutes = (struct_ret.tm_min < 10) ? 
+               "0" + std::to_string(struct_ret.tm_min) :
+               std::to_string(struct_ret.tm_min);
+    seconds = (struct_ret.tm_sec < 10) ? 
+               "0" + std::to_string(struct_ret.tm_sec) :
+               std::to_string(struct_ret.tm_sec);
+
+    ret_str = wday + " " + hours + ":" + minutes + ":" + seconds;
+
+    assert(ret_str == datetime_str);
     assert(ret >= time_now);
        
     std::cout << ">> Test 22 done" << std::endl;
@@ -1028,58 +1224,112 @@ int test23(){
     // TEST 23: testing today_add_wday_hms() function -> PASS
     // Attempt setting input weekday to previous weekday (i.e. Sun -> Sat)
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::tm struct_ret;
+    std::string wday;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    time_t ret;
+    std::string ret_str;
+
+    time_now = std::time(&time_now);
 
     // Add one minute in seconds to current time
-    time_t time_now_add = time_now + 60;
+    time_now_add = time_now - (24 * 60 * 60);
     
     // time_t to std::tm*
-    std::tm* to_struct;
     to_struct = std::gmtime(&time_now_add);
 
     // std::tm* to std::tm
-    std::tm struct_time_now_add = *to_struct;
+    struct_time_now_add = *to_struct;
 
-    std::string wday;
     switch (struct_time_now_add.tm_wday)
     {
-    case 0:
-        wday = "Saturday";
-        break;
-    case 1:
+    case SUNDAY:
         wday = "Sunday";
         break;
-    case 2:
+    case MONDAY:
         wday = "Monday";
         break;
-    case 3:
+    case TUESDAY:
         wday = "Tuesday";
         break;
-    case 4:
+    case WEDNESDAY:
         wday = "Wednesday";
         break;
-    case 5:
+    case THURSDAY:
         wday = "Thursday";
         break;
-    case 6:
+    case FRIDAY:
         wday = "Friday";
+        break;
+    case SATURDAY:
+        wday = "Saturday";
         break;
     default:
         break;
     }
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+            "0" + std::to_string(struct_time_now_add.tm_hour) :
+            std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_min) :
+              std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_sec) :
+              std::to_string(struct_time_now_add.tm_sec);
 
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
-                          std::to_string(struct_time_now_add.tm_sec);
+    datetime_str = wday + " " + hours + ":" + minutes + ":" + seconds;              
        
-    time_t ret = ts::today_add_wday_hms(wday + " " + hours + ":" + minutes + ":" + seconds);
+    ret = ts::today_add_wday_hms(datetime_str);
 
+    to_struct = std::gmtime(&ret);
+    struct_ret = *to_struct;
+
+    switch (struct_ret.tm_wday)
+    {
+    case SUNDAY:
+        wday = "Sunday";
+        break;
+    case MONDAY:
+        wday = "Monday";
+        break;
+    case TUESDAY:
+        wday = "Tuesday";
+        break;
+    case WEDNESDAY:
+        wday = "Wednesday";
+        break;
+    case THURSDAY:
+        wday = "Thursday";
+        break;
+    case FRIDAY:
+        wday = "Friday";
+        break;
+    case SATURDAY:
+        wday = "Saturday";
+        break;
+    default:
+        break;
+    }
+    hours = (struct_ret.tm_hour < 10) ? 
+             "0" + std::to_string(struct_ret.tm_hour) :
+             std::to_string(struct_ret.tm_hour);
+    minutes = (struct_ret.tm_min < 10) ? 
+               "0" + std::to_string(struct_ret.tm_min) :
+               std::to_string(struct_ret.tm_min);
+    seconds = (struct_ret.tm_sec < 10) ? 
+               "0" + std::to_string(struct_ret.tm_sec) :
+               std::to_string(struct_ret.tm_sec);
+
+    ret_str = wday + " " + hours + ":" + minutes + ":" + seconds;    
+
+    assert(ret_str == datetime_str);
     assert(ret >= time_now);
        
     std::cout << ">> Test 23 done" << std::endl;
@@ -1091,42 +1341,53 @@ int test24(){
     // TEST 24: testing today_add_wday_hms() function -> FAIL
     // Invalid hours-minutes-seconds substring
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
-  
+    time_t time_now;
+    time_t time_now_add;
     std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string wday;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    time_t ret;
+
+    time_now = std::time(&time_now);
+  
+    // time_t to std::tm*
     to_struct = std::gmtime(&time_now);
     
+    // std::tm* to std::tm
     std::tm struct_time_now = *to_struct;
 
-    std::string wday;
     switch (struct_time_now.tm_wday)
     {
-    case 0:
+    case SUNDAY:
+        wday = "Sunday";
+        break;
+    case MONDAY:
         wday = "Monday";
         break;
-    case 1:
+    case TUESDAY:
         wday = "Tuesday";
         break;
-    case 2:
+    case WEDNESDAY:
         wday = "Wednesday";
         break;
-    case 3:
+    case THURSDAY:
         wday = "Thursday";
         break;
-    case 4:
+    case FRIDAY:
         wday = "Friday";
         break;
-    case 5:
+    case SATURDAY:
         wday = "Saturday";
-        break;
-    case 6:
-        wday = "Sunday";
         break;
     default:
         break;
     }
-       
-    time_t ret = ts::today_add_wday_hms(wday + "120000");
+
+    ret = ts::today_add_wday_hms(wday + "120000");
 
     assert(ret == 0);
        
@@ -4026,7 +4287,8 @@ int test104(){
     t->update_execution_datetime();
     std::string ret = t->get_execution_datetime_fmt();
 
-    switch((struct_time_now_add.tm_mon) % 12)
+    int var = struct_time_now_add.tm_mon + 1;
+    switch((var) % 12)
     {
     case JANUARY:
         // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
@@ -4889,7 +5151,7 @@ int test108(){
 
 
 int main(){
-    bool all    = true;
+    bool all    = false;
     bool t1     = false;
     bool t2     = false;
     bool t3     = false;
@@ -4914,7 +5176,7 @@ int main(){
     bool t22     = false;
     bool t23     = false;
     bool t24     = false;
-    bool t25     = false;
+    bool t25     = true;
     bool t26     = false;
     bool t27     = false;
     bool t28     = false;
@@ -4996,8 +5258,8 @@ int main(){
     bool t104    = false;
     bool t105    = false;
     bool t106    = false;
-    bool t107    = true;
-    bool t108    = true;
+    bool t107    = false;
+    bool t108    = false;
 
     if(t1 || all){
         test1();
