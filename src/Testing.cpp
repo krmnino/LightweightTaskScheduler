@@ -2581,36 +2581,50 @@ int test54(){
     // TEST 54: testing validate_task_parms() function -> PASS
     // Pass mandatory task parameters only
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    ts::TaskValidate ret;
+
+    time_now = std::time(&time_now);
 
     // Add five minutes in seconds to current time
-    time_t time_now_add = time_now + 300;
+    time_now_add = time_now + (5 * 60);
     
-    std::tm* to_struct;
+    // time_t to std::tm*
     to_struct = std::gmtime(&time_now_add);
 
-    std::tm struct_time_now_add;
+    // std::tm* to std::tm
     struct_time_now_add = *to_struct;
 
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);                       
                           std::to_string(struct_time_now_add.tm_sec);                       
+               std::to_string(struct_time_now_add.tm_sec);                       
+                          std::to_string(struct_time_now_add.tm_sec);                       
+               std::to_string(struct_time_now_add.tm_sec);                       
         
-    std::string time_now_str =  hours + ":" + minutes + ":" + seconds;
+    datetime_str =  hours + ":" + minutes + ":" + seconds;
 
     cl::Config* c = new cl::Config();
     c->add_entry("Name", "Test 54");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Once");
-    c->add_entry("Datetime", time_now_str);
+    c->add_entry("Datetime", datetime_str);
 
-    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+    ret = ts::validate_task_parms(c, "../scripts/");
 
     assert(ret == ts::TaskValidate::OK);
 
@@ -2625,37 +2639,51 @@ int test55(){
     // TEST 55: testing validate_task_parms() function -> PASS
     // Pass mandatory task parameters only
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    ts::TaskValidate ret;    
+
+    time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
 
     // Add five minutes in seconds to current time
-    time_t time_now_add = time_now + 300;
+    time_now_add = time_now + 300;
     
-    std::tm* to_struct;
+    // time_t to std::tm*
     to_struct = std::gmtime(&time_now_add);
 
-    std::tm struct_time_now_add;
+    // std::tm* to std::tm
     struct_time_now_add = *to_struct;
 
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);                       
                           std::to_string(struct_time_now_add.tm_sec);                       
+               std::to_string(struct_time_now_add.tm_sec);                       
+                          std::to_string(struct_time_now_add.tm_sec);                       
+               std::to_string(struct_time_now_add.tm_sec);                       
         
-    std::string time_now_str =  hours + ":" + minutes + ":" + seconds;
+    datetime_str =  hours + ":" + minutes + ":" + seconds;
 
     cl::Config* c = new cl::Config();
     c->add_entry("Name", "Test 55");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Once");
-    c->add_entry("Datetime", time_now_str);
+    c->add_entry("Datetime", datetime_str);
 
-    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+    ret = ts::validate_task_parms(c, "../scripts/");
 
     assert(ret == ts::TaskValidate::OK);
 
@@ -2952,37 +2980,47 @@ int test69(){
     // TEST 69: testing validate_task_parms() function -> FAIL
     // Pass HH:MM:SS datetime value in the past with Frequency = Once
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
-
-    // Add minus one minute in seconds to current time
-    time_t time_now_add = time_now + (-60);
-    
+    time_t time_now;
+    time_t time_now_add;
     std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    ts::TaskValidate ret;     
+
+    time_now = std::time(&time_now);
+
+    // Subtract one minute in seconds from current time
+    time_now_add = time_now - (60);
+    
+    // time_t to std::tm*
     to_struct = std::gmtime(&time_now_add);
 
-    std::tm struct_time_now_add;
+    // std::tm* to std::tm
     struct_time_now_add = *to_struct;
 
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
-                          std::to_string(struct_time_now_add.tm_sec);                       
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);                       
         
-    std::string time_now_str =  hours + ":" + minutes + ":" + seconds;
+    datetime_str =  hours + ":" + minutes + ":" + seconds;
 
     cl::Config* c = new cl::Config();
     c->add_entry("Name", "Test 69");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Once");
-    c->add_entry("Datetime", time_now_str);
+    c->add_entry("Datetime", datetime_str);
 
-    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+    ret = ts::validate_task_parms(c, "../scripts/");
 
     assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
 
@@ -3063,37 +3101,47 @@ int test73(){
     // TEST 73: testing validate_task_parms() function -> FAIL
     // Pass HH:MM:SS datetime value in the past with Frequency = Daily
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
-
-    // Add minus one minute in seconds to current time
-    time_t time_now_add = time_now + (-60);
-    
+    time_t time_now;
+    time_t time_now_add;
     std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    ts::TaskValidate ret;
+
+    time_now = std::time(&time_now);
+
+    // Subtract one minute in seconds from current time
+    time_now_add = time_now - 60;
+    
+    // time_t to std::tm*
     to_struct = std::gmtime(&time_now_add);
 
-    std::tm struct_time_now_add;
+    // std::tm* to std::tm
     struct_time_now_add = *to_struct;
 
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
-                          std::to_string(struct_time_now_add.tm_sec);                       
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);                       
         
-    std::string time_now_str =  hours + ":" + minutes + ":" + seconds;
+    datetime_str =  hours + ":" + minutes + ":" + seconds;
 
     cl::Config* c = new cl::Config();
     c->add_entry("Name", "Test 73");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Daily");
-    c->add_entry("Datetime", time_now_str);
+    c->add_entry("Datetime", datetime_str);
 
-    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+    ret = ts::validate_task_parms(c, "../scripts/");
 
     assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
 
@@ -3262,37 +3310,47 @@ int test81(){
     // TEST 81: testing validate_task_parms() function -> FAIL
     // Pass HH:MM:SS datetime value in the past with Frequency = Weekly
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
-
-    // Add minus one minute in seconds to current time
-    time_t time_now_add = time_now + (-60);
-    
+    time_t time_now;
+    time_t time_now_add;
     std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    ts::TaskValidate ret;
+
+    time_now = std::time(&time_now);
+
+    // Subtract one minute in seconds from current time
+    time_now_add = time_now - 60;
+    
+    // time_t to std::tm*
     to_struct = std::gmtime(&time_now_add);
 
-    std::tm struct_time_now_add;
+    // std::tm* to std::tm
     struct_time_now_add = *to_struct;
 
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
-                          std::to_string(struct_time_now_add.tm_sec);                       
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);                       
         
-    std::string time_now_str =  hours + ":" + minutes + ":" + seconds;
+    datetime_str =  hours + ":" + minutes + ":" + seconds;
 
     cl::Config* c = new cl::Config();
     c->add_entry("Name", "Test 81");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Weekly");
-    c->add_entry("Datetime", time_now_str);
+    c->add_entry("Datetime", datetime_str);
 
-    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+    ret = ts::validate_task_parms(c, "../scripts/");
 
     assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
 
@@ -3461,37 +3519,47 @@ int test89(){
     // TEST 89: testing validate_task_parms() function -> FAIL
     // Pass HH:MM:SS datetime value in the past with Frequency = Monthly
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
-
-    // Add minus one minute in seconds to current time
-    time_t time_now_add = time_now + (-60);
-    
+    time_t time_now;
+    time_t time_now_add;
     std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    ts::TaskValidate ret;
+
+    time_now = std::time(&time_now);
+
+    // Subtact one minute in seconds from current time
+    time_now_add = time_now - 60;
+    
+    // time_t to std::tm*
     to_struct = std::gmtime(&time_now_add);
 
-    std::tm struct_time_now_add;
+    // std::tm* to std::tm
     struct_time_now_add = *to_struct;
 
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
-                          std::to_string(struct_time_now_add.tm_sec);                       
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);                       
         
-    std::string time_now_str =  hours + ":" + minutes + ":" + seconds;
+    datetime_str =  hours + ":" + minutes + ":" + seconds;
 
     cl::Config* c = new cl::Config();
     c->add_entry("Name", "Test 89");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Monthly");
-    c->add_entry("Datetime", time_now_str);
+    c->add_entry("Datetime", datetime_str);
 
-    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+    ret = ts::validate_task_parms(c, "../scripts/");
 
     assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
 
@@ -3616,37 +3684,47 @@ int test95(){
     // TEST 95: testing validate_task_parms() function -> FAIL
     // Pass HH:MM:SS datetime value in the past with Frequency = Yearly
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
-
-    // Add minus one minute in seconds to current time
-    time_t time_now_add = time_now + (-60);
-    
+    time_t time_now;
+    time_t time_now_add;
     std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    ts::TaskValidate ret;    
+
+    time_now = std::time(&time_now);
+
+    // Subtact one minute in seconds from current time
+    time_now_add = time_now - 60;
+    
+    // time_t to std::tm*
     to_struct = std::gmtime(&time_now_add);
 
-    std::tm struct_time_now_add;
+    // std::tm* to std::tm
     struct_time_now_add = *to_struct;
 
-    std::string hours = (struct_time_now_add.tm_hour < 10) ? 
-                        "0" + std::to_string(struct_time_now_add.tm_hour) :
-                        std::to_string(struct_time_now_add.tm_hour);
-    std::string minutes = (struct_time_now_add.tm_min < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_min) :
-                          std::to_string(struct_time_now_add.tm_min);
-    std::string seconds = (struct_time_now_add.tm_sec < 10) ? 
-                          "0" + std::to_string(struct_time_now_add.tm_sec) :
-                          std::to_string(struct_time_now_add.tm_sec);                       
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);                       
         
-    std::string time_now_str = hours + ":" + minutes + ":" + seconds;
+    datetime_str = hours + ":" + minutes + ":" + seconds;
 
     cl::Config* c = new cl::Config();
     c->add_entry("Name", "Test 95");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Yearly");
-    c->add_entry("Datetime", time_now_str);
+    c->add_entry("Datetime", datetime_str);
 
-    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+    ret = ts::validate_task_parms(c, "../scripts/");
 
     assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
 
@@ -3662,7 +3740,7 @@ int test96(){
     // Frequency: Hourly
     // Datetime format: n/a
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now = std::time(&time_now);
 
     time_t time_now_add;
     std::tm* to_struct;
@@ -5580,15 +5658,15 @@ int main(){
     bool t34     = false;
     bool t35     = false;
     bool t36     = false;
-    bool t37     = true;
-    bool t38     = true;
-    bool t39     = true;
-    bool t40     = true;
-    bool t41     = true;
-    bool t42     = true;
-    bool t43     = true;
-    bool t44     = true;
-    bool t45     = true;
+    bool t37     = false;
+    bool t38     = false;
+    bool t39     = false;
+    bool t40     = false;
+    bool t41     = false;
+    bool t42     = false;
+    bool t43     = false;
+    bool t44     = false;
+    bool t45     = false;
     bool t46     = false;
     bool t47     = false;
     bool t48     = false;
@@ -5639,7 +5717,7 @@ int main(){
     bool t93     = false;
     bool t94     = false;
     bool t95     = false;
-    bool t96     = false;
+    bool t96     = true;
     bool t97     = false;
     bool t98     = false;
     bool t99     = false;
