@@ -149,19 +149,8 @@ Task::Task(std::string name,
     this->initial_execution_datetime.year = 1900 + exec_time_struct->tm_year;
     this->initial_execution_datetime.month = exec_time_struct->tm_mon;
     this->initial_execution_datetime.wday = exec_time_struct->tm_wday;
-    int struct_hours = exec_time_struct->tm_hour + TIMEZONE;
-    if(exec_time_struct->tm_hour + TIMEZONE < 0){
-        this->initial_execution_datetime.day = exec_time_struct->tm_mday - 1;
-        this->initial_execution_datetime.hour = 24 + (exec_time_struct->tm_hour + TIMEZONE);
-    }
-    else if(exec_time_struct->tm_hour + TIMEZONE > 23){
-        this->initial_execution_datetime.day = exec_time_struct->tm_mday + 1;
-        this->initial_execution_datetime.hour = (exec_time_struct->tm_hour + TIMEZONE) - 23;
-    }
-    else{
-        this->initial_execution_datetime.day = exec_time_struct->tm_mday;
-        this->initial_execution_datetime.hour = exec_time_struct->tm_hour + TIMEZONE;
-    }
+    this->initial_execution_datetime.day =  exec_time_struct->tm_mday;
+    this->initial_execution_datetime.hour =  exec_time_struct->tm_hour;
     this->initial_execution_datetime.minute = exec_time_struct->tm_min;
     this->initial_execution_datetime.second = exec_time_struct->tm_sec;
 
@@ -193,19 +182,8 @@ Task::Task(std::string name,
     this->initial_execution_datetime.year = 1900 + exec_time_struct->tm_year;
     this->initial_execution_datetime.month = exec_time_struct->tm_mon;
     this->initial_execution_datetime.wday = exec_time_struct->tm_wday;
-    int struct_hours = exec_time_struct->tm_hour + TIMEZONE;
-    if(exec_time_struct->tm_hour + TIMEZONE < 0){
-        this->initial_execution_datetime.day = exec_time_struct->tm_mday - 1;
-        this->initial_execution_datetime.hour = 24 + (exec_time_struct->tm_hour + TIMEZONE);
-    }
-    else if(exec_time_struct->tm_hour + TIMEZONE > 23){
-        this->initial_execution_datetime.day = exec_time_struct->tm_mday + 1;
-        this->initial_execution_datetime.hour = (exec_time_struct->tm_hour + TIMEZONE) - 23;
-    }
-    else{
-        this->initial_execution_datetime.day = exec_time_struct->tm_mday;
-        this->initial_execution_datetime.hour = exec_time_struct->tm_hour + TIMEZONE;
-    }
+    this->initial_execution_datetime.day =  exec_time_struct->tm_mday;
+    this->initial_execution_datetime.hour =  exec_time_struct->tm_hour;
     this->initial_execution_datetime.minute = exec_time_struct->tm_min;
     this->initial_execution_datetime.second = exec_time_struct->tm_sec;
 
@@ -249,11 +227,11 @@ std::string Task::get_frequency(void){
 }
 
 time_t Task::get_creation_datetime(void){
-    return this->creation_datetime + (TIMEZONE * 3600);
+    return this->creation_datetime + (TIMEZONE * 60 * 60);
 }
 
 time_t Task::get_execution_datetime(void){
-    return this->execution_datetime;
+    return this->execution_datetime + (TIMEZONE * 60 * 60);
 }
 
 std::string Task::get_output(void){
@@ -261,7 +239,6 @@ std::string Task::get_output(void){
 }
 
 std::string Task::get_creation_datetime_fmt(void){
-    int struct_hours;
     std::string years;
     std::string month;
     std::string days;
@@ -269,10 +246,11 @@ std::string Task::get_creation_datetime_fmt(void){
     std::string hours;
     std::string minutes;
     std::string seconds;
-    std::tm* exec_time_struct = std::gmtime(&this->creation_datetime);
+    time_t time_offset_timezone = this->creation_datetime + (TIMEZONE * 60 * 60);
+    std::tm* creat_time_struct = std::gmtime(&time_offset_timezone);
 
-    years = std::to_string(1900 + exec_time_struct->tm_year);
-    switch (exec_time_struct->tm_mon)
+    years = std::to_string(1900 + creat_time_struct->tm_year);
+    switch (creat_time_struct->tm_mon)
     {
     case JANUARY:
         month = "Jan";
@@ -314,7 +292,7 @@ std::string Task::get_creation_datetime_fmt(void){
         month = "";
         break;
     }
-    switch (exec_time_struct->tm_wday)
+    switch (creat_time_struct->tm_wday)
     {
     case SUNDAY:
         wday = "Sun";
@@ -341,44 +319,23 @@ std::string Task::get_creation_datetime_fmt(void){
         wday = "";
         break;
     }
-    struct_hours = exec_time_struct->tm_hour + TIMEZONE;
-    if(struct_hours < 0){
-        days = (exec_time_struct->tm_mday - 1 < 10) ? 
-                "0" + std::to_string(exec_time_struct->tm_mday - 1) :
-                std::to_string(exec_time_struct->tm_mday - 1);
-        hours = (24 + struct_hours < 10) ? 
-                 "0" + std::to_string(24 + struct_hours) :
-                 std::to_string(24 + struct_hours);
-    }
-    else if(struct_hours > 23){
-        days = (exec_time_struct->tm_mday + 1 < 10) ? 
-                "0" + std::to_string(exec_time_struct->tm_mday + 1) :
-                std::to_string(exec_time_struct->tm_mday + 1);
-        hours = (struct_hours - 23 < 10) ? 
-                 "0" + std::to_string(struct_hours - 23) :
-                 std::to_string(struct_hours - 23);
-    }
-    else{
-        days = (exec_time_struct->tm_mday < 10) ? 
-                "0" + std::to_string(exec_time_struct->tm_mday) :
-                std::to_string(exec_time_struct->tm_mday);
-        hours = (struct_hours < 10) ? 
-                 "0" + std::to_string(struct_hours) :
-                 std::to_string(struct_hours);
-    }
-    
-    minutes = (exec_time_struct->tm_min < 10) ? 
-               "0" + std::to_string(exec_time_struct->tm_min) :
-               std::to_string(exec_time_struct->tm_min);
-    seconds = (exec_time_struct->tm_sec < 10) ? 
-               "0" + std::to_string(exec_time_struct->tm_sec) :
-               std::to_string(exec_time_struct->tm_sec);
+    days = (creat_time_struct->tm_mday < 10) ? 
+            "0" + std::to_string(creat_time_struct->tm_mday) :
+            std::to_string(creat_time_struct->tm_mday);
+    hours = (creat_time_struct->tm_hour < 10) ? 
+            "0" + std::to_string(creat_time_struct->tm_hour) :
+            std::to_string(creat_time_struct->tm_hour);    
+    minutes = (creat_time_struct->tm_min < 10) ? 
+               "0" + std::to_string(creat_time_struct->tm_min) :
+               std::to_string(creat_time_struct->tm_min);
+    seconds = (creat_time_struct->tm_sec < 10) ? 
+               "0" + std::to_string(creat_time_struct->tm_sec) :
+               std::to_string(creat_time_struct->tm_sec);
 
     return wday + " " + month + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
 }
 
 std::string Task::get_execution_datetime_fmt(void){
-    int struct_hours;
     std::string years;
     std::string month;
     std::string days;
@@ -386,7 +343,8 @@ std::string Task::get_execution_datetime_fmt(void){
     std::string hours;
     std::string minutes;
     std::string seconds;
-    std::tm* exec_time_struct = std::gmtime(&this->execution_datetime);
+    time_t time_offset_timezone = this->execution_datetime + (TIMEZONE * 60 * 60);
+    std::tm* exec_time_struct = std::gmtime(&time_offset_timezone);
 
     years = std::to_string(1900 + exec_time_struct->tm_year);
     switch (exec_time_struct->tm_mon)
@@ -458,32 +416,12 @@ std::string Task::get_execution_datetime_fmt(void){
         wday = "";
         break;
     }
-    struct_hours = exec_time_struct->tm_hour + TIMEZONE;
-    if(struct_hours < 0){
-        days = (exec_time_struct->tm_mday - 1 < 10) ? 
-                "0" + std::to_string(exec_time_struct->tm_mday - 1) :
-                std::to_string(exec_time_struct->tm_mday - 1);
-        hours = (24 + struct_hours < 10) ? 
-                 "0" + std::to_string(24 + struct_hours) :
-                 std::to_string(24 + struct_hours);
-    }
-    else if(struct_hours > 23){
-        days = (exec_time_struct->tm_mday + 1 < 10) ? 
-                "0" + std::to_string(exec_time_struct->tm_mday + 1) :
-                std::to_string(exec_time_struct->tm_mday + 1);
-        hours = (struct_hours - 23 < 10) ? 
-                 "0" + std::to_string(struct_hours - 23) :
-                 std::to_string(struct_hours - 23);
-    }
-    else{
-        days = (exec_time_struct->tm_mday < 10) ? 
-                "0" + std::to_string(exec_time_struct->tm_mday) :
-                std::to_string(exec_time_struct->tm_mday);
-        hours = (struct_hours < 10) ? 
-                 "0" + std::to_string(struct_hours) :
-                 std::to_string(struct_hours);
-    }
-    
+    days = (exec_time_struct->tm_mday < 10) ? 
+            "0" + std::to_string(exec_time_struct->tm_mday) :
+            std::to_string(exec_time_struct->tm_mday);
+    hours = (exec_time_struct->tm_hour < 10) ? 
+            "0" + std::to_string(exec_time_struct->tm_hour) :
+            std::to_string(exec_time_struct->tm_hour);    
     minutes = (exec_time_struct->tm_min < 10) ? 
                "0" + std::to_string(exec_time_struct->tm_min) :
                std::to_string(exec_time_struct->tm_min);
@@ -1095,17 +1033,9 @@ time_t init_today(void){
     struct_time_now = std::gmtime(&time_now);
 
     // Get hours, minutes, and seconds. Convert to seconds 
-    int hrs_2_sec = (struct_time_now->tm_hour + TIMEZONE) * 60 * 60;
+    int hrs_2_sec = (struct_time_now->tm_hour) * 60 * 60;
     int min_2_sec = struct_time_now->tm_min * 60;
-    int sec;
-
-    // If GMT already passed midnight, then add 1 day (86400 seconds) to time 
-    if(struct_time_now->tm_hour + TIMEZONE < 0){
-        sec = struct_time_now->tm_sec + 86400;
-    }
-    else{
-        sec = struct_time_now->tm_sec;
-    }
+    int sec = struct_time_now->tm_sec;
 
     // Add converted hours and minutes to total seconds
     sec += hrs_2_sec + min_2_sec;
@@ -1127,7 +1057,7 @@ time_t init_year(void){
 
     // Get days, hours, minutes, and seconds. Convert to seconds 
     unsigned long days_2_sec = (struct_time_now->tm_yday) * 24 * 60 * 60;
-    int hrs_2_sec = (struct_time_now->tm_hour + TIMEZONE - 1) * 60 * 60;
+    int hrs_2_sec = (struct_time_now->tm_hour) * 60 * 60;
     int min_2_sec = struct_time_now->tm_min * 60;
     int sec = struct_time_now->tm_sec;
 
@@ -1175,12 +1105,8 @@ time_t today_add_hms(std::string hms){
     // Get current time and check for past time
     time_t time_now;
     std::time(&time_now);
-    if(time_now > added_time){
+    if(time_now >= added_time){
         return 0;
-    }
-    else if(time_now == added_time){
-        // If task is scheduled to run NOW, add execution delay of 60 seconds
-        return added_time + DELAY_OFFSET;
     }
 
     return added_time;
@@ -1378,7 +1304,7 @@ time_t today_add_mmdd(std::string mmdd){
     }
 
     // Subtract 1 hour (3600 seconds)
-    time_t added_time = time_start_year + (acc_days * 24 * 60 * 60) - 3600;
+    time_t added_time = time_start_year + (acc_days * 24 * 60 * 60);
 
     // Get current time and check for past time
     time_t time_now;
@@ -1407,7 +1333,7 @@ time_t today_add_mmdd_hms(std::string mmdd_hms){
     unsigned long days = ((mmdd_hms.at(3) & 0x0F) * 10) + 
                           (mmdd_hms.at(4) & 0x0F) - 1;
     unsigned long hours = ((mmdd_hms.at(6) & 0x0F) * 10) + 
-                           (mmdd_hms.at(7) & 0x0F) - 1;
+                           (mmdd_hms.at(7) & 0x0F);
     unsigned long minutes = ((mmdd_hms.at(9) & 0x0F) * 10) + 
                              (mmdd_hms.at(10) & 0x0F);
     unsigned long seconds = ((mmdd_hms.at(12) & 0x0F) * 10) + 
@@ -1669,9 +1595,8 @@ time_t today_add_yyyymmdd(std::string yyyymmdd){
         }
     }
 
-    // Subtract 1 hour (3600 seconds)
     time_t added_time = time_start_year + (diff_years * 365 * 24 * 60 * 60) +
-                        ((acc_days + february_29s) * 24 * 60 * 60) - 3600;
+                        ((acc_days + february_29s) * 24 * 60 * 60);
 
     // Get current time and check for past time
     time_t time_now;
@@ -1827,9 +1752,8 @@ time_t today_add_yyyymmdd_hms(std::string yyyymmdd_hms){
         }
     }
 
-    // Subtract 1 hour (3600 seconds)
     time_t added_time = time_start_year + (diff_years * 365 * 24 * 60 * 60) +
-                        ((acc_days + february_29s) * 24 * 60 * 60) - 3600 + 
+                        ((acc_days + february_29s) * 24 * 60 * 60) + 
                         (hours * 60 * 60) + (minutes * 60) + seconds;
 
     // Get current time and check for past time
