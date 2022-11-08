@@ -2,7 +2,7 @@
 #define TSTASK
 
 #define DAYS_IN_WEEK 7
-#define TIMEZONE -4
+#define TIMEZONE -5
 
 #define SUNDAY 0
 #define MONDAY 1
