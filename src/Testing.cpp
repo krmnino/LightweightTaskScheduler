@@ -2649,7 +2649,7 @@ int test55(){
     std::string datetime_str;
     ts::TaskValidate ret;    
 
-    time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_now = std::time(&time_now);
 
     // Add five minutes in seconds to current time
     time_now_add = time_now + 300;
@@ -3766,7 +3766,7 @@ int test96(){
 
     // Add two hours in seconds to current time after calling update_execution_datetime()
     // Add timezone offset
-    time_now_add = time_now + (2 * 3600) + (TIMEZONE * 60 * 60);
+    time_now_add = time_now + (2 * 60 * 60) + (TIMEZONE * 60 * 60);
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
 
@@ -4105,7 +4105,7 @@ int test99(){
     // Init Task = +2 days
     // Update date = +7 days
     // Total = 9 days
-    time_now_add = time_now + (9 * 24 * 60 * 60) + (1 * 3600) + (TIMEZONE * 60 * 60);
+    time_now_add = time_now + (9 * 24 * 60 * 60) + (1 * 60 * 60) + (TIMEZONE * 60 * 60);
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
 
@@ -4768,68 +4768,70 @@ int test104(){
     t->update_execution_datetime();
     ret = t->get_execution_datetime_fmt();
 
+    // Add necessary number of days until the day of the next month
     switch((struct_time_now_add.tm_mon) % 12)
     {
     case JANUARY:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JANUARY_DAYS * 24 * 60 * 60) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (JANUARY_DAYS * 24 * 60 * 60);
         break;
     case FEBRUARY:
         // Check if we are currently on a leap year
         if(struct_time_now_add.tm_mday > FEBRUARY_DAYS & 1900 + struct_time_now_add.tm_year % 4 == 0){
-            // Add 29 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-            time_now_add = time_now + ((FEBRUARY_DAYS + 1) * 24 * 60 * 60) + (5);
+            // Add 29 days in seconds to current time after calling update_execution_datetime()
+            time_now_add = time_now + ((FEBRUARY_DAYS + 1) * 24 * 60 * 60);
         }
         else{
-            // Add 28 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-            time_now_add = time_now + (FEBRUARY_DAYS * 24 * 60 * 60) + (5);
+            // Add 28 days in seconds to current time after calling update_execution_datetime()
+            time_now_add = time_now + (FEBRUARY_DAYS * 24 * 60 * 60);
         }
         break;
     case MARCH:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (MARCH_DAYS * 24 * 60 * 60) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (MARCH_DAYS * 24 * 60 * 60);
         break;
     case APRIL:
-        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (APRIL_DAYS * 24 * 60 * 60) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (APRIL_DAYS * 24 * 60 * 60);
         break;
     case MAY:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (MAY_DAYS * 24 * 60 * 60) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (MAY_DAYS * 24 * 60 * 60);
         break;
     case JUNE:
-        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JUNE_DAYS * 24 * 60 * 60) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (JUNE_DAYS * 24 * 60 * 60);
         break;
     case JULY:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JULY_DAYS * 24 * 60 * 60) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (JULY_DAYS * 24 * 60 * 60);
         break;
     case AUGUST:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (AUGUST_DAYS * 24 * 60 * 60) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (AUGUST_DAYS * 24 * 60 * 60);
         break;
     case SEPTEMBER:
-        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (SEPTEMBER_DAYS * 24 * 60 * 60) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (SEPTEMBER_DAYS * 24 * 60 * 60);
         break;
     case OCTOBER:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (OCTOBER_DAYS * 24 * 60 * 60) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (OCTOBER_DAYS * 24 * 60 * 60);
         break;
     case NOVEMBER:
-        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (NOVEMBER_DAYS * 24 * 60 * 60) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (NOVEMBER_DAYS * 24 * 60 * 60);
         break;
     case DECEMBER:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (DECEMBER_DAYS * 24 * 60 * 60) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (DECEMBER_DAYS * 24 * 60 * 60);
         break;
     default:
         time_now_add = 0;
         break;
     }
-    time_now_add = time_now_add + (TIMEZONE * 60 * 60);
+    // Add timezone offset plus 5 seconds
+    time_now_add = time_now_add + (TIMEZONE * 60 * 60) + 5;
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
 
@@ -4899,11 +4901,11 @@ int test104(){
 
 
 int test105(){
-    // TEST 104: testing Task::update_execution_datetime() 
+    // TEST 105: testing Task::update_execution_datetime() 
     // Frequency: Monthly
     // Datetime format: MM-DD HH:MM:SS
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now = std::time(&time_now);
 
     time_t time_now_add;
     std::tm* to_struct;
@@ -4915,9 +4917,10 @@ int test105(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
+    std::string ret;
 
     // Add 5 seconds to current time
-    time_now_add = time_now + (5);
+    time_now_add = time_now + 5;
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
     
@@ -4949,70 +4952,71 @@ int test105(){
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
    
     t->update_execution_datetime();
-    std::string ret = t->get_execution_datetime_fmt();
+    ret = t->get_execution_datetime_fmt();
 
     switch((struct_time_now_add.tm_mon) % 12)
     {
     case JANUARY:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JANUARY_DAYS * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (JANUARY_DAYS * 24 * 60 * 60);
         break;
     case FEBRUARY:
         // Check if we are currently on a leap year
         if(struct_time_now_add.tm_mday > FEBRUARY_DAYS & 1900 + struct_time_now_add.tm_year % 4 == 0){
-            // Add 29 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-            time_now_add = time_now + ((FEBRUARY_DAYS + 1) * 24 * 3600) + (5);
+            // Add 29 days in seconds to current time after calling update_execution_datetime()
+            time_now_add = time_now + ((FEBRUARY_DAYS + 1) * 24 * 60 * 60);
         }
         else{
-            // Add 28 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-            time_now_add = time_now + (FEBRUARY_DAYS * 24 * 3600) + (5);
+            // Add 28 days in seconds to current time after calling update_execution_datetime()
+            time_now_add = time_now + (FEBRUARY_DAYS * 24 * 60 * 60);
         }
         break;
     case MARCH:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (MARCH_DAYS * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (MARCH_DAYS * 24 * 60 * 60);
         break;
     case APRIL:
-        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (APRIL_DAYS * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (APRIL_DAYS * 24 * 60 * 60);
         break;
     case MAY:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (MAY_DAYS * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (MAY_DAYS * 24 * 60 * 60);
         break;
     case JUNE:
-        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JUNE_DAYS * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (JUNE_DAYS * 24 * 60 * 60);
         break;
     case JULY:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JULY_DAYS * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (JULY_DAYS * 24 * 60 * 60);
         break;
     case AUGUST:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (AUGUST_DAYS * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (AUGUST_DAYS * 24 * 60 * 60);
         break;
     case SEPTEMBER:
-        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (SEPTEMBER_DAYS * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (SEPTEMBER_DAYS * 24 * 60 * 60);
         break;
     case OCTOBER:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (OCTOBER_DAYS * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (OCTOBER_DAYS * 24 * 60 * 60);
         break;
     case NOVEMBER:
-        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (NOVEMBER_DAYS * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (NOVEMBER_DAYS * 24 * 60 * 60);
         break;
     case DECEMBER:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (DECEMBER_DAYS * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (DECEMBER_DAYS * 24 * 60 * 60);
         break;
     default:
         time_now_add = 0;
         break;
     }
-
+    // Add timezone offset plus 5 seconds
+    time_now_add = time_now_add + (TIMEZONE * 60 * 60) + 5;
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
 
@@ -5086,7 +5090,7 @@ int test106(){
     // Frequency: Monthly
     // Datetime format: YYYY-MM-DD HH:MM:SS
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now = std::time(&time_now);
 
     time_t time_now_add;
     std::tm* to_struct;
@@ -5100,7 +5104,7 @@ int test106(){
     std::string datetime_str;
 
     // Add 5 seconds to current time
-    time_now_add = time_now + (5);
+    time_now_add = time_now + 5;
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
     
@@ -5137,65 +5141,66 @@ int test106(){
     switch((struct_time_now_add.tm_mon) % 12)
     {
     case JANUARY:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JANUARY_DAYS * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (JANUARY_DAYS * 24 * 60 * 60);
         break;
     case FEBRUARY:
         // Check if we are currently on a leap year
         if(struct_time_now_add.tm_mday > FEBRUARY_DAYS & 1900 + struct_time_now_add.tm_year % 4 == 0){
-            // Add 29 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-            time_now_add = time_now + ((FEBRUARY_DAYS + 1) * 24 * 3600) + (5);
+            // Add 29 days in seconds to current time after calling update_execution_datetime()
+            time_now_add = time_now + ((FEBRUARY_DAYS + 1) * 24 * 60 * 60);
         }
         else{
-            // Add 28 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-            time_now_add = time_now + (FEBRUARY_DAYS * 24 * 3600) + (5);
+            // Add 28 days in seconds to current time after calling update_execution_datetime()
+            time_now_add = time_now + (FEBRUARY_DAYS * 24 * 60 * 60);
         }
         break;
     case MARCH:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (MARCH_DAYS * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (MARCH_DAYS * 24 * 60 * 60);
         break;
     case APRIL:
-        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (APRIL_DAYS * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (APRIL_DAYS * 24 * 60 * 60);
         break;
     case MAY:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (MAY_DAYS * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (MAY_DAYS * 24 * 60 * 60);
         break;
     case JUNE:
-        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JUNE_DAYS * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (JUNE_DAYS * 24 * 60 * 60);
         break;
     case JULY:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JULY_DAYS * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (JULY_DAYS * 24 * 60 * 60);
         break;
     case AUGUST:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (AUGUST_DAYS * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (AUGUST_DAYS * 24 * 60 * 60);
         break;
     case SEPTEMBER:
-        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (SEPTEMBER_DAYS * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (SEPTEMBER_DAYS * 24 * 60 * 60);
         break;
     case OCTOBER:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (OCTOBER_DAYS * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (OCTOBER_DAYS * 24 * 60 * 60);
         break;
     case NOVEMBER:
-        // Add 30 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (NOVEMBER_DAYS * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (NOVEMBER_DAYS * 24 * 60 * 60);
         break;
     case DECEMBER:
-        // Add 31 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (DECEMBER_DAYS * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now + (DECEMBER_DAYS * 24 * 60 * 60);
         break;
     default:
         time_now_add = 0;
         break;
     }
-
+    // Add timezone offset plus 5 seconds
+    time_now_add = time_now_add + (TIMEZONE * 60 * 60) + 5;
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
 
@@ -5269,7 +5274,7 @@ int test107(){
     // Frequency: Monthly
     // Datetime format: MM-DD
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now = std::time(&time_now);
 
     time_t time_now_add;
     std::tm* to_struct;
@@ -5281,9 +5286,10 @@ int test107(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
+    std::string ret;
 
-    // Add 2 days in seconds and 5 seconds to current time
-    time_now_add = time_now + (2 * 24 * 3600) + (5);
+    // Add 2 days in seconds to current time
+    time_now_add = time_now + (2 * 24 * 60 * 60);
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
     
@@ -5315,70 +5321,74 @@ int test107(){
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
 
     t->update_execution_datetime();
-    std::string ret = t->get_execution_datetime_fmt();
+    ret = t->get_execution_datetime_fmt();
 
+
+    time_now_add = ts::init_today();
+    // Add necessary number of days until the day of the next month
     switch((struct_time_now_add.tm_mon) % 12)
     {
     case JANUARY:
-        // Add 31 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JANUARY_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (JANUARY_DAYS * 24 * 60 * 60);
         break;
     case FEBRUARY:
         // Check if we are currently on a leap year
         if(struct_time_now_add.tm_mday > FEBRUARY_DAYS & 1900 + struct_time_now_add.tm_year % 4 == 0){
-            // Add 29 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-            time_now_add = time_now + ((FEBRUARY_DAYS + 1) * 24 * 3600) + (2 * 24 * 3600) + (5);
+            // Add 29 days in seconds to current time after calling update_execution_datetime()
+            time_now_add = time_now_add + ((FEBRUARY_DAYS + 1) * 24 * 60 * 60);
         }
         else{
-            // Add 28 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-            time_now_add = time_now + (FEBRUARY_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+            // Add 28 days in seconds to current time after calling update_execution_datetime()
+            time_now_add = time_now_add + (FEBRUARY_DAYS * 24 * 60 * 60);
         }
         break;
     case MARCH:
-        // Add 31 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (MARCH_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (MARCH_DAYS * 24 * 60 * 60);
         break;
     case APRIL:
-        // Add 30 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (APRIL_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (APRIL_DAYS * 24 * 60 * 60);
         break;
     case MAY:
-        // Add 31 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (MAY_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (MAY_DAYS * 24 * 60 * 60);
         break;
     case JUNE:
-        // Add 30 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JUNE_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (JUNE_DAYS * 24 * 60 * 60);
         break;
     case JULY:
-        // Add 31 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JULY_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (JULY_DAYS * 24 * 60 * 60);
         break;
     case AUGUST:
-        // Add 31 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (AUGUST_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (AUGUST_DAYS * 24 * 60 * 60);
         break;
     case SEPTEMBER:
-        // Add 30 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (SEPTEMBER_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (SEPTEMBER_DAYS * 24 * 60 * 60);
         break;
     case OCTOBER:
-        // Add 31 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (OCTOBER_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (OCTOBER_DAYS * 24 * 60 * 60);
         break;
     case NOVEMBER:
-        // Add 30 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (NOVEMBER_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (NOVEMBER_DAYS * 24 * 60 * 60);
         break;
     case DECEMBER:
-        // Add 31 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (DECEMBER_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (DECEMBER_DAYS * 24 * 60 * 60);
         break;
     default:
         time_now_add = 0;
         break;
     }
-
+    // Add timezone offset plus 2 days in seconds
+    time_now_add = time_now_add + (TIMEZONE * 60 * 60) + (2 * 24 * 60 * 60);
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
 
@@ -5437,7 +5447,7 @@ int test107(){
     seconds = (struct_time_now_add.tm_sec < 10) ? 
                "0" + std::to_string(struct_time_now_add.tm_sec) :
                std::to_string(struct_time_now_add.tm_sec);
-    datetime_str =  months + " " + days + " 00:00:00 " + years;
+    datetime_str =  months + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
 
     assert(ret.find(datetime_str) != std::string::npos);
     delete t;
@@ -5452,7 +5462,7 @@ int test108(){
     // Frequency: Monthly
     // Datetime format: YYYY-MM-DD
 
-    time_t time_now = std::time(&time_now) + (TIMEZONE * 60 * 60);
+    time_t time_now = std::time(&time_now);
 
     time_t time_now_add;
     std::tm* to_struct;
@@ -5464,9 +5474,10 @@ int test108(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
+    std::string ret;
 
     // Add 5 seconds to current time
-    time_now_add = time_now + (2 * 24 * 3600) + (5);
+    time_now_add = time_now + (2 * 24 * 60 * 60);
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
     
@@ -5498,70 +5509,72 @@ int test108(){
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
    
     t->update_execution_datetime();
-    std::string ret = t->get_execution_datetime_fmt();
+    ret = t->get_execution_datetime_fmt();
 
+    time_now_add = ts::init_today();
+    // Add necessary number of days until the day of the next month
     switch((struct_time_now_add.tm_mon) % 12)
     {
     case JANUARY:
-        // Add 31 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JANUARY_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (JANUARY_DAYS * 24 * 60 * 60);
         break;
     case FEBRUARY:
         // Check if we are currently on a leap year
         if(struct_time_now_add.tm_mday > FEBRUARY_DAYS & 1900 + struct_time_now_add.tm_year % 4 == 0){
-            // Add 29 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-            time_now_add = time_now + ((FEBRUARY_DAYS + 1) * 24 * 3600) + (2 * 24 * 3600) + (5);
+            // Add 29 days in seconds to current time after calling update_execution_datetime()
+            time_now_add = time_now_add + ((FEBRUARY_DAYS + 1) * 24 * 60 * 60);
         }
         else{
-            // Add 28 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-            time_now_add = time_now + (FEBRUARY_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+            // Add 28 days in seconds to current time after calling update_execution_datetime()
+            time_now_add = time_now_add + (FEBRUARY_DAYS * 24 * 60 * 60);
         }
         break;
     case MARCH:
-        // Add 31 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (MARCH_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (MARCH_DAYS * 24 * 60 * 60);
         break;
     case APRIL:
-        // Add 30 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (APRIL_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (APRIL_DAYS * 24 * 60 * 60);
         break;
     case MAY:
-        // Add 31 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (MAY_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (MAY_DAYS * 24 * 60 * 60);
         break;
     case JUNE:
-        // Add 30 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JUNE_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (JUNE_DAYS * 24 * 60 * 60);
         break;
     case JULY:
-        // Add 31 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (JULY_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (JULY_DAYS * 24 * 60 * 60);
         break;
     case AUGUST:
-        // Add 31 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (AUGUST_DAYS * 24 * 3600) + (2 * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (AUGUST_DAYS * 24 * 60 * 60);
         break;
     case SEPTEMBER:
-        // Add 30 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (SEPTEMBER_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (SEPTEMBER_DAYS * 24 * 60 * 60);
         break;
     case OCTOBER:
-        // Add 31 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (OCTOBER_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (OCTOBER_DAYS * 24 * 60 * 60);
         break;
     case NOVEMBER:
-        // Add 30 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (NOVEMBER_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 30 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (NOVEMBER_DAYS * 24 * 60 * 60);
         break;
     case DECEMBER:
-        // Add 31 + 1 days in seconds and 5 seconds to current time after calling update_execution_datetime()
-        time_now_add = time_now + (DECEMBER_DAYS * 24 * 3600) + (2 * 24 * 3600) + (5);
+        // Add 31 days in seconds to current time after calling update_execution_datetime()
+        time_now_add = time_now_add + (DECEMBER_DAYS * 24 * 60 * 60);
         break;
     default:
         time_now_add = 0;
         break;
     }
-
+    time_now_add = time_now_add + (TIMEZONE * 60 * 60) + (2 * 24 * 60 * 60);
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
 
@@ -5620,7 +5633,7 @@ int test108(){
     seconds = (struct_time_now_add.tm_sec < 10) ? 
                "0" + std::to_string(struct_time_now_add.tm_sec) :
                std::to_string(struct_time_now_add.tm_sec);
-    datetime_str =  months + " " + days + " 00:00:00 " + years;
+    datetime_str =  months + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
 
     assert(ret.find(datetime_str) != std::string::npos);
     delete t;
@@ -5631,7 +5644,7 @@ int test108(){
 
 
 int main(){
-    bool all    = false;
+    bool all    = true;
 
     bool t1     = false;
     bool t2     = false;
@@ -5736,7 +5749,7 @@ int main(){
     bool t101    = false;
     bool t102    = false;
     bool t103    = false;
-    bool t104    = true;
+    bool t104    = false;
     bool t105    = false;
     bool t106    = false;
     bool t107    = false;
