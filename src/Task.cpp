@@ -226,12 +226,18 @@ std::string Task::get_frequency(void){
     return this->frequency;
 }
 
-time_t Task::get_creation_datetime(void){
-    return this->creation_datetime + (TIMEZONE * 60 * 60);
+time_t Task::get_creation_datetime(bool add_timezone){
+    if(add_timezone){
+        return this->creation_datetime + (TIMEZONE * 60 * 60);
+    }
+    return this->creation_datetime;
 }
 
-time_t Task::get_execution_datetime(void){
-    return this->execution_datetime + (TIMEZONE * 60 * 60);
+time_t Task::get_execution_datetime(bool add_timezone){
+    if(add_timezone){
+        return this->execution_datetime + (TIMEZONE * 60 * 60);
+    }
+    return this->execution_datetime;
 }
 
 std::string Task::get_output(void){
@@ -621,6 +627,22 @@ void Task::update_execution_datetime(void){
     else if(this->frequency == "Yearly"){
         // Add necessary days until nth day of next year
         std::tm* exec_date_struct = std::gmtime(&this->execution_datetime);
+        // Edge case if case is scheduled to run on February 29th
+        // If next year is not a leap year, then run on the 28th (see else statement)
+        if(this->initial_execution_datetime.month == FEBRUARY && 
+           this->initial_execution_datetime.day == 29 && 
+           (1900 + exec_date_struct->tm_year + 1) % 4 == 0){
+            this->execution_datetime = this->execution_datetime + (366 * 24 * 60 * 60);
+        }
+        // Else if next year is a leap year and task is scheduled after February 28th, then add 366 days
+        else if((1900 + exec_date_struct->tm_year + 1) % 4 == 0 && 
+           (exec_date_struct->tm_mon >= FEBRUARY || 
+           (exec_date_struct->tm_mon == FEBRUARY && exec_date_struct->tm_mday >= 28))){
+            this->execution_datetime = this->execution_datetime + (366 * 24 * 60 * 60);
+        }
+        else{
+            this->execution_datetime = this->execution_datetime + (365 * 24 * 60 * 60);
+        }
 
     }
 }

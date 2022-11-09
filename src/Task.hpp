@@ -136,8 +136,8 @@ public:
     std::string get_description(void);
     std::string get_script_filename(void);
     std::string get_frequency(void);
-    time_t get_creation_datetime(void);
-    time_t get_execution_datetime(void);
+    time_t get_creation_datetime(bool);
+    time_t get_execution_datetime(bool);
     std::string get_output(void);
     std::string get_creation_datetime_fmt(void);
     std::string get_execution_datetime_fmt(void);
