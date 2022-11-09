@@ -71,7 +71,7 @@ void Scheduler::launch_task_thread(std::string& task_name){
     auto key_thread = std::make_pair(task->get_id(), [task](){
         while(true){
             // Get task scheduled execution time 
-            time_t execution_datetime = task->get_execution_datetime();
+            time_t execution_datetime = task->get_execution_datetime(false);
             // Convert time_t to std::chrono::system_clock::time_point and put thread to sleep until then
             std::this_thread::sleep_until(std::chrono::system_clock::from_time_t(execution_datetime));
             // Update next execution time based on frequency
