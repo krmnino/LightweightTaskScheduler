@@ -26,7 +26,6 @@ int test1(){
     delete t;
 
     std::cout << ">> Test 1 done" << std::endl;
-
     return 0;
 }
 
@@ -55,41 +54,215 @@ int test2(){
     delete t;
 
     std::cout << ">> Test 2 done" << std::endl;
-
     return 0;
 }
 
 
 int test3(){
     // TEST 3: testing methods 
-    // get_execution_datetime_fmt()
     // get_creation_datetime_fmt()
     // get_creation_datetime()
     // get_execution_datetime()
+    // get_execution_datetime_fmt()
+    // get_execution_datetime_format_attr()
+
+    time_t time_now = std::time(&time_now);
+
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string years;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    time_t ret_creation_datetime;
+    std::string ret_creation_datetime_fmt;
+    time_t ret_execution_datetime;
+    std::string ret_execution_datetime_fmt;
+    ts::DatetimeFormat ret_execution_datetime_format_attr;
+
+    // Add 5 seconds to current time
+    time_now_add = time_now + 5;
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+    
+    years = std::to_string(1900 + struct_time_now_add.tm_year);
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
+    days = (struct_time_now_add.tm_mday < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mday) :
+              std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    // HH:MM:SS format
+    datetime_str = hours + ":" + minutes + ":" + seconds;
 
     std::string t_name = "Task Name";
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
-    std::string t_frequency = "Hourly";
-    std::string t_input_execution_datetime = "12:00:00"; // ignored because Task is hourly
+    std::string t_frequency = "Monthly";
+    std::string t_input_execution_datetime = datetime_str; // HH:MM:SS format
 
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime);
-    
-    std::string execution_datetime_fmt = t->get_execution_datetime_fmt();
-    std::string creation_datetime_fmt = t->get_creation_datetime_fmt();
-    time_t creation_datetime = t->get_creation_datetime(); 
-    time_t execution_datetime = t->get_execution_datetime();
 
-    std::tm* to_struct;
-    to_struct = std::gmtime(&creation_datetime);
+    // Validate get_creation_datetime()
+    ret_creation_datetime = t->get_creation_datetime(false);
+    assert(time_now == ret_creation_datetime);
 
-    std::tm struct_time_now_add;
+    // Validate get_execution_datetime()
+    ret_execution_datetime = t->get_execution_datetime(false);
+    assert(time_now_add == ret_execution_datetime);
+
+    // Validate get_creation_datetime_fmt() 
+    ret_creation_datetime_fmt = t->get_creation_datetime_fmt();
+    // Add timezone offset to current time
+    time_now_add = time_now + (TIMEZONE * 60 * 60);
+    to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
+    
+    years = std::to_string(1900 + struct_time_now_add.tm_year);
+    switch (struct_time_now_add.tm_mon)
+    {
+    case JANUARY:
+        months = "Jan";
+        break;
+    case FEBRUARY:
+        months = "Feb";
+        break;
+    case MARCH:
+        months = "Mar";
+        break;
+    case APRIL:
+        months = "Apr";
+        break;
+    case MAY:
+        months = "May";
+        break;
+    case JUNE:
+        months = "Jun";
+        break;
+    case JULY:
+        months = "Jul";
+        break;
+    case AUGUST:
+        months = "Aug";
+        break;
+    case SEPTEMBER:
+        months = "Sep";
+        break;
+    case OCTOBER:
+        months = "Oct";
+        break;
+    case NOVEMBER:
+        months = "Nov";
+        break;
+    case DECEMBER:
+        months = "Dec";
+        break;
+    default:
+        months = "";
+        break;
+    }
+    days = (struct_time_now_add.tm_mday < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mday) :
+              std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    datetime_str =  months + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
+
+    assert(ret_creation_datetime_fmt.find(datetime_str) != std::string::npos);
+
+    // Validate get_execution_datetime_fmt() 
+    ret_execution_datetime_fmt = t->get_execution_datetime_fmt();
+    // Add 5 seconds and timezone offset to current time
+    time_now_add = time_now + 5 + (TIMEZONE * 60 * 60);
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+    
+    years = std::to_string(1900 + struct_time_now_add.tm_year);
+    switch (struct_time_now_add.tm_mon)
+    {
+    case JANUARY:
+        months = "Jan";
+        break;
+    case FEBRUARY:
+        months = "Feb";
+        break;
+    case MARCH:
+        months = "Mar";
+        break;
+    case APRIL:
+        months = "Apr";
+        break;
+    case MAY:
+        months = "May";
+        break;
+    case JUNE:
+        months = "Jun";
+        break;
+    case JULY:
+        months = "Jul";
+        break;
+    case AUGUST:
+        months = "Aug";
+        break;
+    case SEPTEMBER:
+        months = "Sep";
+        break;
+    case OCTOBER:
+        months = "Oct";
+        break;
+    case NOVEMBER:
+        months = "Nov";
+        break;
+    case DECEMBER:
+        months = "Dec";
+        break;
+    default:
+        months = "";
+        break;
+    }
+    days = (struct_time_now_add.tm_mday < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mday) :
+              std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    datetime_str =  months + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
+    
+    assert(ret_execution_datetime_fmt.find(datetime_str) != std::string::npos);
+
+    // Validate get_execution_datetime_attr()
+    ret_execution_datetime_format_attr = t->get_execution_datetime_format_attr();
+    assert(ret_execution_datetime_format_attr == ts::DatetimeFormat::HHMMSS);
 
     delete t;
 
     std::cout << ">> Test 3 done" << std::endl;
-
     return 0;
 }
 
@@ -117,7 +290,6 @@ int test4(){
     delete t;
 
     std::cout << ">> Test 4 done" << std::endl;
-
     return 0;
 }
 
@@ -169,7 +341,6 @@ int test5(){
     assert(ret == ts::DatetimeValidate::MISSING_COLON);
 
     std::cout << ">> Test 5 done" << std::endl;
-
     return 0;
 }
 
@@ -225,7 +396,6 @@ int test6(){
     assert(ret == ts::DatetimeValidate::BAD_WDAY);
 
     std::cout << ">> Test 6 done" << std::endl;
-
     return 0;
 }
 
@@ -253,7 +423,6 @@ int test7(){
     assert(ret == ts::DatetimeValidate::HOURS_OUT_OF_RANGE);
 
     std::cout << ">> Test 7 done" << std::endl;
-
     return 0;
 }
 
@@ -429,7 +598,6 @@ int test8(){
     assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);  
 
     std::cout << ">> Test 8 done" << std::endl;
-
     return 0;
 }
 
@@ -457,7 +625,6 @@ int test9(){
     assert(ret == ts::DatetimeValidate::HOURS_OUT_OF_RANGE);
 
     std::cout << ">> Test 9 done" << std::endl;
-
     return 0;
 }
 
@@ -5644,11 +5811,11 @@ int test108(){
 
 
 int main(){
-    bool all    = true;
+    bool all    = false;
 
     bool t1     = false;
     bool t2     = false;
-    bool t3     = false;
+    bool t3     = true;
     bool t4     = false;
     bool t5     = false;
     bool t6     = false;
