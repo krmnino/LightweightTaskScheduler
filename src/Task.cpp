@@ -127,7 +127,7 @@ Task::Task(std::string name,
             this->execution_datetime = today_add_mmdd_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
-            this->execution_datetime = today_add_yyyymmdd(execution_datetime_str);
+            this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::MMDD:
             this->execution_datetime = today_add_mmdd(execution_datetime_str);
