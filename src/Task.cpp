@@ -1349,7 +1349,7 @@ time_t today_add_mmdd_hms(std::string mmdd_hms){
     time_start_year_struct = gmtime(&time_start_year);
     
     // Convert hours and minutes to seconds and add them together
-    // Subtract 1 day and 1 hour
+    // Subtract 1 day
     unsigned long months = ((mmdd_hms.at(0) & 0x0F) * 10) + 
                             (mmdd_hms.at(1) & 0x0F);
     unsigned long days = ((mmdd_hms.at(3) & 0x0F) * 10) + 
