@@ -5682,7 +5682,7 @@ int test108(){
     std::string datetime_str;
     std::string ret;
 
-    // Add 5 seconds to current time
+    // Add 2 days in seconds to current time
     time_now_add = time_now + (2 * 24 * 60 * 60);
     to_struct = std::gmtime(&time_now_add);
     struct_time_now_add = *to_struct;
@@ -9046,6 +9046,623 @@ int test132(){
 }
 
 
+int test133(){
+    // TEST 133: testing Task::Task() setting execution datetime 
+    // Frequency: Monthly
+    // Datetime format: HH:MM:SS
+
+    time_t time_now = std::time(&time_now);
+
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string years;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    std::string ret;
+
+    // Add 5 seconds to current time
+    time_now_add = time_now + 5;
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+    
+    years = std::to_string(1900 + struct_time_now_add.tm_year);
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
+    days = (struct_time_now_add.tm_mday < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mday) :
+              std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    // HH:MM:SS format
+    datetime_str = hours + ":" + minutes + ":" + seconds; 
+
+    std::string t_name = "Task Name";
+    std::string t_description = "A short description for this task";
+    std::string t_script_name = "cat_test.sh";
+    std::string t_frequency = "Monthly";
+    std::string t_datetime = datetime_str;
+
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+   
+    ret = t->get_execution_datetime_fmt();
+
+    // Add timezone offset
+    time_now_add = time_now_add + (TIMEZONE * 60 * 60);
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+
+    years = std::to_string(1900 + struct_time_now_add.tm_year);      
+    switch (struct_time_now_add.tm_mon)
+    {
+    case JANUARY:
+        months = "Jan";
+        break;
+    case FEBRUARY:
+        months = "Feb";
+        break;
+    case MARCH:
+        months = "Mar";
+        break;
+    case APRIL:
+        months = "Apr";
+        break;
+    case MAY:
+        months = "May";
+        break;
+    case JUNE:
+        months = "Jun";
+        break;
+    case JULY:
+        months = "Jul";
+        break;
+    case AUGUST:
+        months = "Aug";
+        break;
+    case SEPTEMBER:
+        months = "Sep";
+        break;
+    case OCTOBER:
+        months = "Oct";
+        break;
+    case NOVEMBER:
+        months = "Nov";
+        break;
+    case DECEMBER:
+        months = "Dec";
+        break;
+    default:
+        months = "";
+        break;
+    }
+    days = (struct_time_now_add.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now_add.tm_mday) :
+            std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    datetime_str =  months + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
+
+    assert(ret.find(datetime_str) != std::string::npos);
+    assert(time_now_add == t->get_execution_datetime(true));
+    delete t;
+
+    std::cout << ">> Test 133 done" << std::endl;
+    return 0;
+}
+
+
+int test134(){
+    // TEST 134: testing Task::Task() setting execution datetime 
+    // Frequency: Monthly
+    // Datetime format: MM-DD HH:MM:SS
+
+    time_t time_now = std::time(&time_now);
+
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string years;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    std::string ret;
+
+    // Add 5 seconds to current time
+    time_now_add = time_now + 5;
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+    
+    years = std::to_string(1900 + struct_time_now_add.tm_year);
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
+    days = (struct_time_now_add.tm_mday < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mday) :
+              std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    // MM-DD HH:MM:SS format
+    datetime_str = months + "-" + days + " " + hours + ":" + minutes + ":" + seconds; 
+
+    std::string t_name = "Task Name";
+    std::string t_description = "A short description for this task";
+    std::string t_script_name = "cat_test.sh";
+    std::string t_frequency = "Monthly";
+    std::string t_datetime = datetime_str;
+
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+   
+    ret = t->get_execution_datetime_fmt();
+
+    // Add timezone offset
+    time_now_add = time_now_add + (TIMEZONE * 60 * 60);
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+
+    years = std::to_string(1900 + struct_time_now_add.tm_year);      
+    switch (struct_time_now_add.tm_mon)
+    {
+    case JANUARY:
+        months = "Jan";
+        break;
+    case FEBRUARY:
+        months = "Feb";
+        break;
+    case MARCH:
+        months = "Mar";
+        break;
+    case APRIL:
+        months = "Apr";
+        break;
+    case MAY:
+        months = "May";
+        break;
+    case JUNE:
+        months = "Jun";
+        break;
+    case JULY:
+        months = "Jul";
+        break;
+    case AUGUST:
+        months = "Aug";
+        break;
+    case SEPTEMBER:
+        months = "Sep";
+        break;
+    case OCTOBER:
+        months = "Oct";
+        break;
+    case NOVEMBER:
+        months = "Nov";
+        break;
+    case DECEMBER:
+        months = "Dec";
+        break;
+    default:
+        months = "";
+        break;
+    }
+    days = (struct_time_now_add.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now_add.tm_mday) :
+            std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    datetime_str =  months + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
+
+    assert(ret.find(datetime_str) != std::string::npos);
+    assert(time_now_add == t->get_execution_datetime(true));
+    delete t;
+
+    std::cout << ">> Test 134 done" << std::endl;
+    return 0;
+}
+
+
+int test135(){
+    // TEST 135: testing Task::Task() setting execution datetime 
+    // Frequency: Monthly
+    // Datetime format: YYYY-MM-DD HH:MM:SS
+
+    time_t time_now = std::time(&time_now);
+
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string years;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+
+    // Add 5 seconds to current time
+    time_now_add = time_now + 5;
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+    
+    years = std::to_string(1900 + struct_time_now_add.tm_year);
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
+    days = (struct_time_now_add.tm_mday < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mday) :
+              std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    // YYYY-MM-DD HH:MM:SS format
+    datetime_str = years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds; 
+
+    std::string t_name = "Task Name";
+    std::string t_description = "A short description for this task";
+    std::string t_script_name = "cat_test.sh";
+    std::string t_frequency = "Monthly";
+    std::string t_datetime = datetime_str;
+
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+   
+    std::string ret = t->get_execution_datetime_fmt();
+
+    // Add timezone offset 
+    time_now_add = time_now_add + (TIMEZONE * 60 * 60);
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+
+    years = std::to_string(1900 + struct_time_now_add.tm_year);      
+    switch (struct_time_now_add.tm_mon)
+    {
+    case JANUARY:
+        months = "Jan";
+        break;
+    case FEBRUARY:
+        months = "Feb";
+        break;
+    case MARCH:
+        months = "Mar";
+        break;
+    case APRIL:
+        months = "Apr";
+        break;
+    case MAY:
+        months = "May";
+        break;
+    case JUNE:
+        months = "Jun";
+        break;
+    case JULY:
+        months = "Jul";
+        break;
+    case AUGUST:
+        months = "Aug";
+        break;
+    case SEPTEMBER:
+        months = "Sep";
+        break;
+    case OCTOBER:
+        months = "Oct";
+        break;
+    case NOVEMBER:
+        months = "Nov";
+        break;
+    case DECEMBER:
+        months = "Dec";
+        break;
+    default:
+        months = "";
+        break;
+    }
+    days = (struct_time_now_add.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now_add.tm_mday) :
+            std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    datetime_str =  months + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
+
+    assert(ret.find(datetime_str) != std::string::npos);
+    delete t;
+
+    std::cout << ">> Test 135 done" << std::endl;
+    assert(time_now_add == t->get_execution_datetime(true));
+    return 0;
+}
+
+
+int test136(){
+    // TEST 136: testing Task::Task() setting execution datetime 
+    // Frequency: Monthly
+    // Datetime format: MM-DD
+
+    time_t time_now = std::time(&time_now);
+
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string years;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    std::string ret;
+
+    // Add 2 days in seconds to current time
+    time_now_add = time_now + (2 * 24 * 60 * 60);
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+    
+    years = std::to_string(1900 + struct_time_now_add.tm_year);
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
+    days = (struct_time_now_add.tm_mday < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mday) :
+              std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    // MM-DD format
+    datetime_str = months + "-" + days;
+
+    std::string t_name = "Task Name";
+    std::string t_description = "A short description for this task";
+    std::string t_script_name = "cat_test.sh";
+    std::string t_frequency = "Monthly";
+    std::string t_datetime = datetime_str;
+
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+
+    ret = t->get_execution_datetime_fmt();
+    
+    // Add timezone offset plus 2 days in seconds
+    time_now_add = ts::init_today() + (TIMEZONE * 60 * 60) + (2 * 24 * 60 * 60);
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+
+    years = std::to_string(1900 + struct_time_now_add.tm_year);      
+    switch (struct_time_now_add.tm_mon)
+    {
+    case JANUARY:
+        months = "Jan";
+        break;
+    case FEBRUARY:
+        months = "Feb";
+        break;
+    case MARCH:
+        months = "Mar";
+        break;
+    case APRIL:
+        months = "Apr";
+        break;
+    case MAY:
+        months = "May";
+        break;
+    case JUNE:
+        months = "Jun";
+        break;
+    case JULY:
+        months = "Jul";
+        break;
+    case AUGUST:
+        months = "Aug";
+        break;
+    case SEPTEMBER:
+        months = "Sep";
+        break;
+    case OCTOBER:
+        months = "Oct";
+        break;
+    case NOVEMBER:
+        months = "Nov";
+        break;
+    case DECEMBER:
+        months = "Dec";
+        break;
+    default:
+        months = "";
+        break;
+    }
+    days = (struct_time_now_add.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now_add.tm_mday) :
+            std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    datetime_str =  months + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
+
+    assert(ret.find(datetime_str) != std::string::npos);
+    assert(time_now_add == t->get_execution_datetime(true));
+    delete t;
+
+    std::cout << ">> Test 136 done" << std::endl;
+    return 0;
+}
+
+
+int test137(){
+    // TEST 137: testing Task::update_execution_datetime() 
+    // Frequency: Monthly
+    // Datetime format: YYYY-MM-DD
+
+    time_t time_now = std::time(&time_now);
+
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string years;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    std::string ret;
+
+    // Add 2 days in seconds to current time
+    time_now_add = time_now + (2 * 24 * 60 * 60);
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+    
+    years = std::to_string(1900 + struct_time_now_add.tm_year);
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
+    days = (struct_time_now_add.tm_mday < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mday) :
+              std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    // YYYY-MM-DD format
+    datetime_str = years + "-" + months + "-" + days; 
+
+    std::string t_name = "Task Name";
+    std::string t_description = "A short description for this task";
+    std::string t_script_name = "cat_test.sh";
+    std::string t_frequency = "Monthly";
+    std::string t_datetime = datetime_str;
+
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+   
+    ret = t->get_execution_datetime_fmt();
+
+    time_now_add = ts::init_today() + (TIMEZONE * 60 * 60) + (2 * 24 * 60 * 60);
+    to_struct = std::gmtime(&time_now_add);
+    struct_time_now_add = *to_struct;
+
+    years = std::to_string(1900 + struct_time_now_add.tm_year);      
+    switch (struct_time_now_add.tm_mon)
+    {
+    case JANUARY:
+        months = "Jan";
+        break;
+    case FEBRUARY:
+        months = "Feb";
+        break;
+    case MARCH:
+        months = "Mar";
+        break;
+    case APRIL:
+        months = "Apr";
+        break;
+    case MAY:
+        months = "May";
+        break;
+    case JUNE:
+        months = "Jun";
+        break;
+    case JULY:
+        months = "Jul";
+        break;
+    case AUGUST:
+        months = "Aug";
+        break;
+    case SEPTEMBER:
+        months = "Sep";
+        break;
+    case OCTOBER:
+        months = "Oct";
+        break;
+    case NOVEMBER:
+        months = "Nov";
+        break;
+    case DECEMBER:
+        months = "Dec";
+        break;
+    default:
+        months = "";
+        break;
+    }
+    days = (struct_time_now_add.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now_add.tm_mday) :
+            std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+    datetime_str =  months + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
+
+    assert(ret.find(datetime_str) != std::string::npos);
+    delete t;
+
+    std::cout << ">> Test 137 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     bool all    = true;
 
@@ -9180,7 +9797,12 @@ int main(){
     bool t129    = false;
     bool t130    = false;
     bool t131    = false;
-    bool t132    = true;
+    bool t132    = false;
+    bool t133    = false;
+    bool t134    = false;
+    bool t135    = false;
+    bool t136    = false;
+    bool t137    = true;
 
     if(t1 || all){
         test1();
@@ -9577,6 +10199,21 @@ int main(){
     }
     if(t132 || all){
         test132();
+    }
+    if(t133 || all){
+        test133();
+    }
+    if(t134 || all){
+        test134();
+    }
+    if(t135 || all){
+        test135();
+    }
+    if(t136 || all){
+        test136();
+    }
+    if(t137 || all){
+        test137();
     }
 
     return 0;
