@@ -19,6 +19,7 @@ Scheduler::Scheduler(std::string& top_level_dir, std::string& tasks_dir, std::st
         task_config = new cl::Config(file.path());
         if(ts::validate_task_parms(task_config, this->top_level_dir + this->scripts_dir) != TaskValidate::OK){
             std::cout << "invalid config" << std::endl;
+            continue;
         }
 
         // Get task attributes from config file and validate them, check if task name is repeated
@@ -62,7 +63,10 @@ Scheduler::Scheduler(){
 }
 
 Scheduler::~Scheduler(){
-    // delete tasks from task registry
+    // Delete tasks by iterating through task registry
+    for (std::map<std::string, Task*>::iterator it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
+        delete it->second;
+    }
 }
 
 void Scheduler::launch_task_thread(std::string& task_name){
