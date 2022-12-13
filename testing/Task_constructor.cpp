@@ -25,7 +25,7 @@ int test1(){
 
     delete t;
 
-    std::cout << ">> Test 1 done" << std::endl;
+    std::cout << ">> Task_constructor: Test 1 done" << std::endl;
     return 0;
 }
 
@@ -53,9 +53,10 @@ int test2(){
 
     delete t;
 
-    std::cout << ">> Test 2 done" << std::endl;
+    std::cout << ">> Task_constructor: Test 2 done" << std::endl;
     return 0;
 }
+
 
 int main(){
     test1();
