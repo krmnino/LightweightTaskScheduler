@@ -3,4 +3,9 @@ src/scheduler_testing
 src/test
 src/Scratch.cpp
 src/Scratch
+src/*.gch
 .vscode
+
+# TESTING 
+testing/Task_constructor
+testing/Task_methods
