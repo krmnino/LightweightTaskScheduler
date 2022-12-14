@@ -9,3 +9,5 @@ src/*.gch
 # TESTING 
 testing/Task_constructor
 testing/Task_methods
+testing/validate_hms
+testing/validate_wday
