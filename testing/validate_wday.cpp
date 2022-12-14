@@ -5,7 +5,7 @@
 #include "../src/Task.hpp"
 
 int test1(){
-    // TEST 1: testing validate_wday() function. Full day names
+    // TEST 1: testing validate_wday() function. Full day names.
 
     ts::DatetimeValidate ret;
     std::vector<std::string> days = {
@@ -23,13 +23,13 @@ int test1(){
         assert(ret == ts::DatetimeValidate::OK);
     }
 
-    std::cout << ">> Task_methods: Test 1 done" << std::endl;
+    std::cout << ">> validate_wday: Test 1 done" << std::endl;
     return 0;
 }
 
 
 int test2(){
-    // TEST 2: testing validate_wday() function. Abbreviated day names
+    // TEST 2: testing validate_wday() function. Abbreviated day names.
 
     ts::DatetimeValidate ret;
     std::vector<std::string> days = {
@@ -47,13 +47,13 @@ int test2(){
         assert(ret == ts::DatetimeValidate::OK);
     }
 
-    std::cout << ">> Task_methods: Test 2 done" << std::endl;
+    std::cout << ">> validate_wday: Test 2 done" << std::endl;
     return 0;
 }
 
 
 int test3(){
-    // TEST 3: testing validate_wday() function. Abbreviated day names
+    // TEST 3: testing validate_wday() function. Invalid weekday string.
 
     ts::DatetimeValidate ret;
     std::string day = "anything";
@@ -61,7 +61,7 @@ int test3(){
     ret = ts::validate_wday(day);
     assert(ret == ts::DatetimeValidate::BAD_WDAY);
 
-    std::cout << ">> Task_methods: Test 3 done" << std::endl;
+    std::cout << ">> validate_wday: Test 3 done" << std::endl;
     return 0;
 }
 
