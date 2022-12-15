@@ -121,7 +121,7 @@ int test6(){
 
 
 int test7(){
-    // TEST 7: testing validate_mmdd() function. Valid MM-DD string.
+    // TEST 7: testing validate_mmdd() function. Invalid MM-DD string.
 
     ts::DatetimeValidate ret;
     std::vector<std::string> mmdd = {
