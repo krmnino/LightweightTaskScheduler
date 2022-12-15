@@ -11,3 +11,5 @@ testing/Task_constructor
 testing/Task_methods
 testing/validate_hms
 testing/validate_wday
+testing/validate_wday_hms
+testing/validate_mmdd
