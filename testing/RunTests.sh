@@ -4,3 +4,4 @@
 ./validate_mmdd
 ./validate_wday
 ./validate_wday_hms
+./validate_mmdd_hms

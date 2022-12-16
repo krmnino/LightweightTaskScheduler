@@ -13,3 +13,4 @@ testing/validate_hms
 testing/validate_wday
 testing/validate_wday_hms
 testing/validate_mmdd
+testing/validate_mmdd_hms

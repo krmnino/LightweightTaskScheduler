@@ -16,7 +16,8 @@ all: 	Task_constructor				\
 		validate_hms					\
 		validate_wday					\
 		validate_wday_hms				\
-		validate_mmdd
+		validate_mmdd					\
+		validate_mmdd_hms
 
 Task_constructor:
 	g++ -g -std=c++17 -pthread $(SRC_FILES) Task_constructor.cpp -o Task_constructor -lstdc++fs
@@ -36,6 +37,9 @@ validate_wday_hms:
 validate_mmdd:
 	g++ -g -std=c++17 -pthread $(SRC_FILES) validate_mmdd.cpp -o validate_mmdd -lstdc++fs
 
+validate_mmdd_hms:
+	g++ -g -std=c++17 -pthread $(SRC_FILES) validate_mmdd_hms.cpp -o validate_mmdd_hms -lstdc++fs
+
 clean:
 	rm *.o 						\
 	Task_constructor			\
@@ -43,4 +47,5 @@ clean:
 	validate_hms				\
 	validate_wday				\
 	validate_wday_hms			\
-	validate_mmdd
+	validate_mmdd				\
+	validate_mmdd_hms
