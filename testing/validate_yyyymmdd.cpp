@@ -4,7 +4,7 @@
 #include "../src/Task.hpp"
 
 int test1(){
-    // TEST 1: testing validate_yyyymmdd() function. Valid MM-DD string.
+    // TEST 1: testing validate_yyyymmdd() function. Valid YYYY-MM-DD string.
 
     ts::DatetimeValidate ret;
     std::vector<std::string> yyyymmdd = {
@@ -46,7 +46,7 @@ int test1(){
 
 
 int test2(){
-    // TEST 2: testing validate_yyyymmdd() function. Invalid MM-DD string.
+    // TEST 2: testing validate_yyyymmdd() function. Invalid YYYY-MM-DD string.
 
     std::string yyyymmdd;
     ts::DatetimeValidate ret;
@@ -61,7 +61,7 @@ int test2(){
 
 
 int test3(){
-    // TEST 3: testing validate_yyyymmdd() function. Invalid MM-DD string.
+    // TEST 3: testing validate_yyyymmdd() function. Invalid YYYY-MM-DD string.
 
     ts::DatetimeValidate ret;
     std::vector<std::string> yyyymmdd = {
@@ -81,7 +81,7 @@ int test3(){
 
 
 int test4(){
-    // TEST 4: testing validate_yyyymmdd() function. Invalid MM-DD string.
+    // TEST 4: testing validate_yyyymmdd() function. Invalid YYYY-MM-DD string.
 
     ts::DatetimeValidate ret;
     std::vector<std::string> yyyymmdd = {
@@ -100,7 +100,7 @@ int test4(){
 
 
 int test5(){
-    // TEST 5: testing validate_yyyymmdd() function. Invalid MM-DD string.
+    // TEST 5: testing validate_yyyymmdd() function. Invalid YYYY-MM-DD string.
 
     std::string yyyymmdd;
     ts::DatetimeValidate ret;
@@ -115,7 +115,7 @@ int test5(){
 
 
 int test6(){
-    // TEST 6: testing validate_yyyymmdd() function. Invalid MM-DD string.
+    // TEST 6: testing validate_yyyymmdd() function. Invalid YYYY-MM-DD string.
 
     std::string yyyymmdd;
     ts::DatetimeValidate ret;
