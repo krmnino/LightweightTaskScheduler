@@ -8,3 +8,4 @@
 ./validate_yyyymmdd
 ./validate_yyyymmdd_hms
 ./init_today
+./init_year
