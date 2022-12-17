@@ -10,3 +10,4 @@
 ./init_today
 ./init_year
 ./today_add_hms
+./today_add_dhms
