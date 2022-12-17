@@ -7,3 +7,4 @@
 ./validate_mmdd_hms
 ./validate_yyyymmdd
 ./validate_yyyymmdd_hms
+./init_today

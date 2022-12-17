@@ -19,7 +19,9 @@ all: 	Task_constructor				\
 		validate_mmdd					\
 		validate_mmdd_hms				\
 		validate_yyyymmdd				\
-		validate_yyyymmdd_hms
+		validate_yyyymmdd_hms			\
+		init_today
+
 
 Task_constructor:
 	g++ -g -std=c++17 -pthread $(SRC_FILES) Task_constructor.cpp -o Task_constructor -lstdc++fs
@@ -48,6 +50,9 @@ validate_yyyymmdd:
 validate_yyyymmdd_hms:
 	g++ -g -std=c++17 -pthread $(SRC_FILES) validate_yyyymmdd_hms.cpp -o validate_yyyymmdd_hms -lstdc++fs
 
+init_today:
+	g++ -g -std=c++17 -pthread $(SRC_FILES) init_today.cpp -o init_today -lstdc++fs
+
 clean:
 	rm *.o 						\
 	Task_constructor			\
@@ -58,4 +63,5 @@ clean:
 	validate_mmdd				\
 	validate_mmdd_hms			\
 	validate_yyyymmdd			\
-	validate_yyyymmdd_hms
+	validate_yyyymmdd_hms		\
+	init_today
