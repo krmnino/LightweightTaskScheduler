@@ -9,3 +9,4 @@
 ./validate_yyyymmdd_hms
 ./init_today
 ./init_year
+./today_add_hms

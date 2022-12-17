@@ -18,3 +18,4 @@ testing/validate_yyyymmdd
 testing/validate_yyyymmdd_hms
 testing/init_today
 testing/init_year
+testing/today_add_hms
