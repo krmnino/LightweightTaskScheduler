@@ -469,6 +469,27 @@ int test6(){
 }
 
 
+int test7(){
+    // TEST 7: testing run_task() and get_output() methods -> PASS
+
+    std::string t_name = "Task Name";
+    std::string t_description = "A short description for this task";
+    std::string t_script_name = "scripts/cat_test.sh";
+    std::string t_frequency = "Once";
+
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency);
+    
+    t->run_task();
+
+    assert(t->get_output() == "ls -l");
+
+    delete t;
+
+    std::cout << ">> Task_methods: Test 7 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     test1();
     test2();
@@ -476,4 +497,5 @@ int main(){
     test4();
     test5();
     test6();
+    test7();
 }
