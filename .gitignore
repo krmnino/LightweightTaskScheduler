@@ -21,4 +21,4 @@ testing/init_year
 testing/today_add_hms
 testing/today_add_dhms
 testing/today_add_wday_hms
-
+testing/today_add_mmdd

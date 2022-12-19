@@ -12,3 +12,4 @@
 ./today_add_hms
 ./today_add_dhms
 ./today_add_wday_hms
+./today_add_mmdd
