@@ -25,7 +25,8 @@ all: 	Task_constructor				\
 		today_add_hms					\
 		today_add_dhms					\
 		today_add_wday_hms				\
-		today_add_mmdd
+		today_add_mmdd					\
+		today_add_mmdd_hms
 
 Task_constructor:
 	g++ -g -std=c++17 -pthread $(SRC_FILES) Task_constructor.cpp -o Task_constructor -lstdc++fs
@@ -72,6 +73,9 @@ today_add_wday_hms:
 today_add_mmdd:
 	g++ -g -std=c++17 -pthread $(SRC_FILES) today_add_mmdd.cpp -o today_add_mmdd -lstdc++fs
 
+today_add_mmdd_hms:
+	g++ -g -std=c++17 -pthread $(SRC_FILES) today_add_mmdd_hms.cpp -o today_add_mmdd_hms -lstdc++fs
+
 clean:
 	rm *.o 						\
 	Task_constructor			\
@@ -88,4 +92,5 @@ clean:
 	today_add_hms				\
 	today_add_dhms				\
 	today_add_wday_hms			\
-	today_add_mmdd
+	today_add_mmdd				\
+	today_add_mmdd_hms
