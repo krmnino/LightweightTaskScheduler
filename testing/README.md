@@ -16,20 +16,20 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Verify Task object instantiation with constructor|`Task(std::string, std::string, std::string, std::string)`<br/>`Task::get_name(void)`<br/> `Task::get_description(void)`<br/>`Task::get_script_name(void)`<br/>`Task::get_frequency(void)` |<span style="color:green">Passed|
-|`test2()`|Verify Task object instantiation with constructor|`Task(std::string, std::string, std::string, std::string, std::string)`<br/>`Task::get_name(void)`<br/> `Task::get_description(void)`<br/>`Task::get_script_name(void)`<br/>`Task::get_frequency(void)` |<span style="color:green">Passed|
+|`test1()`|Verify Task object instantiation with constructor.|`Task(std::string, std::string, std::string, std::string)`<br/>`Task::get_name(void)`<br/> `Task::get_description(void)`<br/>`Task::get_script_name(void)`<br/>`Task::get_frequency(void)` |<span style="color:green">Passed|
+|`test2()`|Verify Task object instantiation with constructor.|`Task(std::string, std::string, std::string, std::string, std::string)`<br/>`Task::get_name(void)`<br/> `Task::get_description(void)`<br/>`Task::get_script_name(void)`<br/>`Task::get_frequency(void)` |<span style="color:green">Passed|
 
 ### **2. Task_methods.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Obtain the `time_t` value when `Task` is created|`Task::get_creation_datetime(bool)`|<span style="color:green">Passed|
+|`test1()`|Obtain the `time_t` value when `Task` is created.|`Task::get_creation_datetime(bool)`|<span style="color:green">Passed|
 |`test2()`|Obtain system's current time + 5 seconds for `Task`'s execution time parameter. Then, verify the returned `time_t` time of execution value.|`Task::get_execution_datetime(bool)`|<span style="color:green">Passed|
-|`test3()`|Obtain formated time of creation `string` value|`Task::get_creation_datetime_fmt(void)`|<span style="color:green">Passed|
-|`test4()`|Obtain formated time of execution `string` value|`Task::get_execution_datetime_fmt(void)`|<span style="color:green">Passed|
-|`test5()`|Obtain system's current time + 5 seconds for `Task`'s execution time parameter in `HH:MM:SS` format. Then, verify the returned `DatetimeFormat` value|`Task::get_execution_datetime_format_attr(void)`|<span style="color:green">Passed|
-|`test6()`|Set and get task id and status values|`Task::set_id(int)`<br/>`Task::get_id(void)`<br/>`Task::set_status(TaskStatus)`<br/>`Task::get_status(void)`<br/>|<span style="color:green">Passed|
-|`test7()`|Create `Task` object and run it. Then, verify that the command-line output has been successfully routed to output data member|`Task::run_task(void)`<br/>`Task::get_output(void)`<br/>|<span style="color:green">Passed|
+|`test3()`|Obtain formated time of creation `string` value.|`Task::get_creation_datetime_fmt(void)`|<span style="color:green">Passed|
+|`test4()`|Obtain formated time of execution `string` value.|`Task::get_execution_datetime_fmt(void)`|<span style="color:green">Passed|
+|`test5()`|Obtain system's current time + 5 seconds for `Task`'s execution time parameter in `HH:MM:SS` format. Then, verify the returned `DatetimeFormat` value.|`Task::get_execution_datetime_format_attr(void)`|<span style="color:green">Passed|
+|`test6()`|Set and get task id and status values.|`Task::set_id(int)`<br/>`Task::get_id(void)`<br/>`Task::set_status(TaskStatus)`<br/>`Task::get_status(void)`<br/>|<span style="color:green">Passed|
+|`test7()`|Create `Task` object and run it. Then, verify that the command-line output has been successfully routed to output data member.|`Task::run_task(void)`<br/>`Task::get_output(void)`<br/>|<span style="color:green">Passed|
 
 ### **3. validate_hms.cpp**
 
@@ -51,6 +51,12 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test13()`|Pass an invalid `HH:MM:SS` string with valid length and all alphabetic characters.|`validate_hms(void)`|<span style="color:green">Passed|
 
 ### **4. validate_wday.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Pass full week day names.|`validate_wday(void)`|<span style="color:green">Passed|
+|`test2()`|Pass abbreviated week day names.|`validate_wday(void)`|<span style="color:green">Passed|
+|`test3()`|Invalid week day name.|`validate_hms(void)`|<span style="color:green">Passed|
 
 ### **5. validate_wday_hms.cpp**
 ### **6. validate_mmdd.cpp**
