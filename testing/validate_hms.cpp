@@ -69,7 +69,7 @@ int test5(){
     std::string hms;
     ts::DatetimeValidate ret;
 
-    hms = "12:a0:00";
+    hms = "12:00:a0";
     ret = ts::validate_hms(hms);
     assert(ret == ts::DatetimeValidate::BAD_NUMBER_CHARACTER);
 
@@ -84,9 +84,9 @@ int test6(){
     std::string hms;
     ts::DatetimeValidate ret;
 
-    hms = "12:00:a0";
+    hms = "30:00:00";
     ret = ts::validate_hms(hms);
-    assert(ret == ts::DatetimeValidate::BAD_NUMBER_CHARACTER);
+    assert(ret == ts::DatetimeValidate::HOURS_OUT_OF_RANGE);
 
     std::cout << ">> validate_hms: Test 6 done" << std::endl;
     return 0;
@@ -99,9 +99,9 @@ int test7(){
     std::string hms;
     ts::DatetimeValidate ret;
 
-    hms = "30:00:00";
+    hms = "12:90:00";
     ret = ts::validate_hms(hms);
-    assert(ret == ts::DatetimeValidate::HOURS_OUT_OF_RANGE);
+    assert(ret == ts::DatetimeValidate::MINUTES_OUT_OF_RANGE);    
 
     std::cout << ">> validate_hms: Test 7 done" << std::endl;
     return 0;
@@ -114,9 +114,9 @@ int test8(){
     std::string hms;
     ts::DatetimeValidate ret;
 
-    hms = "12:90:00";
+    hms = "12:00:88";
     ret = ts::validate_hms(hms);
-    assert(ret == ts::DatetimeValidate::MINUTES_OUT_OF_RANGE);    
+    assert(ret == ts::DatetimeValidate::SECONDS_OUT_OF_RANGE); 
 
     std::cout << ">> validate_hms: Test 8 done" << std::endl;
     return 0;
@@ -129,9 +129,9 @@ int test9(){
     std::string hms;
     ts::DatetimeValidate ret;
 
-    hms = "12:00:88";
+    hms = "12A00:00";
     ret = ts::validate_hms(hms);
-    assert(ret == ts::DatetimeValidate::SECONDS_OUT_OF_RANGE); 
+    assert(ret == ts::DatetimeValidate::MISSING_COLON); 
 
     std::cout << ">> validate_hms: Test 9 done" << std::endl;
     return 0;
@@ -144,9 +144,9 @@ int test10(){
     std::string hms;
     ts::DatetimeValidate ret;
 
-    hms = "12A00:00";
+    hms = "12:00A00";
     ret = ts::validate_hms(hms);
-    assert(ret == ts::DatetimeValidate::MISSING_COLON); 
+    assert(ret == ts::DatetimeValidate::MISSING_COLON);
 
     std::cout << ">> validate_hms: Test 10 done" << std::endl;
     return 0;
@@ -159,11 +159,41 @@ int test11(){
     std::string hms;
     ts::DatetimeValidate ret;
 
-    hms = "12:00A00";
+    hms = "12:";
     ret = ts::validate_hms(hms);
-    assert(ret == ts::DatetimeValidate::MISSING_COLON);
+    assert(ret == ts::DatetimeValidate::BAD_HMS_LENGTH);
 
     std::cout << ">> validate_hms: Test 11 done" << std::endl;
+    return 0;
+}
+
+
+int test12(){
+    // TEST 12: testing validate_hms() function. Invalid HH:MM:SS string.
+
+    std::string hms;
+    ts::DatetimeValidate ret;
+
+    hms = "ANYTHING HERE";
+    ret = ts::validate_hms(hms);
+    assert(ret == ts::DatetimeValidate::BAD_HMS_LENGTH);
+
+    std::cout << ">> validate_hms: Test 12 done" << std::endl;
+    return 0;
+}
+
+
+int test13(){
+    // TEST 13: testing validate_hms() function. Invalid HH:MM:SS string.
+
+    std::string hms;
+    ts::DatetimeValidate ret;
+
+    hms = "ANYTHING";
+    ret = ts::validate_hms(hms);
+    assert(ret == ts::DatetimeValidate::BAD_NUMBER_CHARACTER);
+
+    std::cout << ">> validate_hms: Test 13 done" << std::endl;
     return 0;
 }
 
@@ -180,4 +210,6 @@ int main(){
     test9();
     test10();
     test11();
+    test12();
+    test13();
 }

@@ -33,6 +33,23 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 ### **3. validate_hms.cpp**
 
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Pass a valid `HH:MM:SS` string.|`validate_hms()`|<span style="color:green">Passed|
+|`test2()`|Pass an invalid `HH:MM:SS` string with missing `SS` field.|`validate_hms()`|<span style="color:green">Passed|
+|`test3()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `HH` field.|`validate_hms()`|<span style="color:green">Passed|
+|`test4()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `MM` field.|`validate_hms()`|<span style="color:green">Passed|
+|`test5()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `SS` field.|`validate_hms()`|<span style="color:green">Passed|
+|`test6()`|Pass an invalid `HH:MM:SS` string with `HH` field out of range.|`validate_hms()`|<span style="color:green">Passed|
+|`test7()`|Pass an invalid `HH:MM:SS` string with `MM` field out of range.|`validate_hms()`|<span style="color:green">Passed|
+|`test8()`|Pass an invalid `HH:MM:SS` string with `SS` field out of range.|`validate_hms()`|<span style="color:green">Passed|
+|`test9()`|Pass an invalid `HH:MM:SS` string with missing first semicolon.|`validate_hms()`|<span style="color:green">Passed|
+|`test10()`|Pass an invalid `HH:MM:SS` string with missing second semicolon.|`validate_hms()`|<span style="color:green">Passed|
+|`test11()`|Pass an invalid `HH:MM:SS` string with missing `:MM:SS` fields.|`validate_hms()`|<span style="color:green">Passed|
+|`test11()`|Pass an invalid `HH:MM:SS` string with missing `:MM:SS` fields.|`validate_hms()`|<span style="color:green">Passed|
+|`test12()`|Pass an invalid `HH:MM:SS` string with bad length and all alphabetic characters.|`validate_hms()`|<span style="color:green">Passed|
+|`test13()`|Pass an invalid `HH:MM:SS` string with valid length and all alphabetic characters.|`validate_hms()`|<span style="color:green">Passed|
+
 ### **4. validate_wday.cpp**
 
 ### **5. validate_wday_hms.cpp**
