@@ -133,6 +133,15 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test3()`|Pass invalid `HH:MM:SS` string. Call should fail and return `time_t` with a value of zero.|`today_add_hms(std::string)`|<span style="color:green">Passed|
 
 ### **13. today_add_dhms.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Add one minute in seconds to input `HH:MM:SS` string and zero days. Call should succeed and return `time_t` value one minute in the future.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
+|`test2()`|Add one minute in seconds to input `HH:MM:SS` string and two days. Call should succeed and return `time_t` value two days and one minute in the future.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
+|`test3()`|Subtract one minute in seconds to input `HH:MM:SS` string and zero days. Call should fail and return `time_t` with a value of zero.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass negative value for days parameter. Call should fail and return `time_t` with a value of zero.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass invalid `HH:MM:SS` string. Call should fail and return `time_t` with a value of zero.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
+
 ### **14. today_add_wday_hms.cpp**
 ### **15. today_add_mmdd.cpp**
 ### **16. today_add_mmdd_hms.cpp**
