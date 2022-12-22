@@ -54,11 +54,20 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Pass full week day names.|`validate_wday(void)`|<span style="color:green">Passed|
-|`test2()`|Pass abbreviated week day names.|`validate_wday(void)`|<span style="color:green">Passed|
+|`test1()`|Pass valid full week day names.|`validate_wday(void)`|<span style="color:green">Passed|
+|`test2()`|Pass valid abbreviated week day names.|`validate_wday(void)`|<span style="color:green">Passed|
 |`test3()`|Invalid week day name.|`validate_hms(void)`|<span style="color:green">Passed|
 
 ### **5. validate_wday_hms.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Pass valid full week day names and `HH:MM:SS` string.|`validate_wday_hms(void)`|<span style="color:green">Passed|
+|`test2()`|Pass valid abbreviated week day names and `HH:MM:SS` string.|`validate_wday_hms(void)`|<span style="color:green">Passed|
+|`test3()`|Pass invalid `WDAY HH:MM:SS` string with missing space.|`validate_wday_hms(void)`|<span style="color:green">Passed|
+|`test4()`|Pass invalid `WDAY HH:MM:SS` string with bad `WDAY` field.|`validate_wday_hms(void)`|<span style="color:green">Passed|
+|`test4()`|Pass invalid `WDAY HH:MM:SS` string with bad `HH:MM:SS` field.|`validate_wday_hms(void)`|<span style="color:green">Passed|
+
 ### **6. validate_mmdd.cpp**
 ### **7. validate_mmdd_hms.cpp**
 ### **8. validate_yyyymmdd.cpp**
