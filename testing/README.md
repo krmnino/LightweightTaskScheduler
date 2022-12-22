@@ -125,6 +125,13 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test1()`|Verify that `init_year()` returns the correct `time_t` value that corresponds to the very beginning of the current year in UTC time.|`init_year()`|<span style="color:green">Passed|
 
 ### **12. today_add_hms.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Add one minute in seconds to input `HH:MM:SS` string. Call should succeed and return `time_t` value one minute in the future.|`today_add_hms(std::string)`|<span style="color:green">Passed|
+|`test2()`|Subtract one minute in seconds to input `HH:MM:SS` string. Call should fail and return `time_t` with a value of zero.|`today_add_hms(std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass invalid `HH:MM:SS` string. Call should fail and return `time_t` with a value of zero.|`today_add_hms(std::string)`|<span style="color:green">Passed|
+
 ### **13. today_add_dhms.cpp**
 ### **14. today_add_wday_hms.cpp**
 ### **15. today_add_mmdd.cpp**
