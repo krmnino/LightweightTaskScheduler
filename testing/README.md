@@ -103,10 +103,19 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test6()`|Pass invalid `YYYY-MM-DD` string with `DD` out of range|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
 
 ### **9. validate_yyyymmdd_hms.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Pass valid `YYYY-MM-DD HH:MM:SS` string.|`validate_yyyymmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test2()`|Pass invalid `YYYY-MM-DD HH:MM:SS` string with missing space.|`validate_yyyymmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass invalid `YYYY-MM-DD HH:MM:SS` strings: alphabetic character in `YYYY-MM-DD` section, and alphabetic character in `HH:MM:SS` section.|`validate_yyyymmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass invalid `YYYY-MM-DD HH:MM:SS` strings missing dash characters.|`validate_yyyymmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass invalid `YYYY-MM-DD HH:MM:SS` strings missing colon characters.|`validate_yyyymmdd_hms(std::string)`|<span style="color:green">Passed|
+
 ### **10. init_today.cpp**
 ### **11. init_year.cpp**
 ### **12. today_add_hms.cpp**
 ### **13. today_add_dhms.cpp**
 ### **14. today_add_wday_hms.cpp**
 ### **15. today_add_mmdd.cpp**
-### **15. today_add_mmdd_hms.cpp**
+### **16. today_add_mmdd_hms.cpp**

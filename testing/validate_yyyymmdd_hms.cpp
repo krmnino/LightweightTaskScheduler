@@ -52,8 +52,50 @@ int test3(){
 }
 
 
+int test4(){
+    // TEST 4: testing validate_yyyymmdd() function. Invalid YYYY-MM-DD HH:MM:SS string.
+
+    ts::DatetimeValidate ret;
+    std::vector<std::string> yyyymmdd_hms = {
+        "2022a01a01 12:00:00",
+        "2022a01-01 12:00:00",
+        "2022-01a01 12:00:00"
+    };
+
+    for(int i = 0; i < yyyymmdd_hms.size(); i++){
+        ret = ts::validate_yyyymmdd_hms(yyyymmdd_hms[i]);
+        assert(ret == ts::DatetimeValidate::MISSING_DASH);
+    }
+
+    std::cout << ">> validate_yyyymmdd_hms: Test 4 done" << std::endl;
+    return 0;
+}
+
+
+int test5(){
+    // TEST 5: testing validate_yyyymmdd() function. Invalid YYYY-MM-DD HH:MM:SS string.
+
+    ts::DatetimeValidate ret;
+    std::vector<std::string> yyyymmdd_hms = {
+        "2022-01-01 12a00a00",
+        "2022-01-01 12a00:00",
+        "2022-01-01 12:00a00"
+    };
+
+    for(int i = 0; i < yyyymmdd_hms.size(); i++){
+        ret = ts::validate_yyyymmdd_hms(yyyymmdd_hms[i]);
+        assert(ret == ts::DatetimeValidate::MISSING_COLON);
+    }
+
+    std::cout << ">> validate_yyyymmdd_hms: Test 5 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     test1();
     test2();
     test3();
+    test4();
+    test5();
 }
