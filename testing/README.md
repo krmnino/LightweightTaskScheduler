@@ -35,40 +35,51 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Pass a valid `HH:MM:SS` string.|`validate_hms(void)`|<span style="color:green">Passed|
-|`test2()`|Pass an invalid `HH:MM:SS` string with missing `SS` field.|`validate_hms(void)`|<span style="color:green">Passed|
-|`test3()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `HH` field.|`validate_hms(void)`|<span style="color:green">Passed|
-|`test4()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `MM` field.|`validate_hms(void)`|<span style="color:green">Passed|
-|`test5()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `SS` field.|`validate_hms(void)`|<span style="color:green">Passed|
-|`test6()`|Pass an invalid `HH:MM:SS` string with `HH` field out of range.|`validate_hms(void)`|<span style="color:green">Passed|
-|`test7()`|Pass an invalid `HH:MM:SS` string with `MM` field out of range.|`validate_hms(void)`|<span style="color:green">Passed|
-|`test8()`|Pass an invalid `HH:MM:SS` string with `SS` field out of range.|`validate_hms(void)`|<span style="color:green">Passed|
-|`test9()`|Pass an invalid `HH:MM:SS` string with missing first semicolon.|`validate_hms(void)`|<span style="color:green">Passed|
-|`test10()`|Pass an invalid `HH:MM:SS` string with missing second semicolon.|`validate_hms(void)`|<span style="color:green">Passed|
-|`test11()`|Pass an invalid `HH:MM:SS` string with missing `:MM:SS` fields.|`validate_hms(void)`|<span style="color:green">Passed|
-|`test11()`|Pass an invalid `HH:MM:SS` string with missing `:MM:SS` fields.|`validate_hms(void)`|<span style="color:green">Passed|
-|`test12()`|Pass an invalid `HH:MM:SS` string with bad length and all alphabetic characters.|`validate_hms(void)`|<span style="color:green">Passed|
-|`test13()`|Pass an invalid `HH:MM:SS` string with valid length and all alphabetic characters.|`validate_hms(void)`|<span style="color:green">Passed|
+|`test1()`|Pass a valid `HH:MM:SS` string.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test2()`|Pass an invalid `HH:MM:SS` string with missing `SS` field.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `HH` field.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `MM` field.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `SS` field.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass an invalid `HH:MM:SS` string with `HH` field out of range.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass an invalid `HH:MM:SS` string with `MM` field out of range.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test8()`|Pass an invalid `HH:MM:SS` string with `SS` field out of range.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test9()`|Pass an invalid `HH:MM:SS` string with missing first semicolon.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test10()`|Pass an invalid `HH:MM:SS` string with missing second semicolon.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test11()`|Pass an invalid `HH:MM:SS` string with missing `:MM:SS` fields.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test11()`|Pass an invalid `HH:MM:SS` string with missing `:MM:SS` fields.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test12()`|Pass an invalid `HH:MM:SS` string with bad length and all alphabetic characters.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test13()`|Pass an invalid `HH:MM:SS` string with valid length and all alphabetic characters.|`validate_hms(std::string)`|<span style="color:green">Passed|
 
 ### **4. validate_wday.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Pass valid full week day names.|`validate_wday(void)`|<span style="color:green">Passed|
-|`test2()`|Pass valid abbreviated week day names.|`validate_wday(void)`|<span style="color:green">Passed|
-|`test3()`|Invalid week day name.|`validate_hms(void)`|<span style="color:green">Passed|
+|`test1()`|Pass valid full week day names.|`validate_wday(std::string)`|<span style="color:green">Passed|
+|`test2()`|Pass valid abbreviated week day names.|`validate_wday(std::string)`|<span style="color:green">Passed|
+|`test3()`|Invalid week day name.|`validate_hms(std::string)`|<span style="color:green">Passed|
 
 ### **5. validate_wday_hms.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Pass valid full week day names and `HH:MM:SS` string.|`validate_wday_hms(void)`|<span style="color:green">Passed|
-|`test2()`|Pass valid abbreviated week day names and `HH:MM:SS` string.|`validate_wday_hms(void)`|<span style="color:green">Passed|
-|`test3()`|Pass invalid `WDAY HH:MM:SS` string with missing space.|`validate_wday_hms(void)`|<span style="color:green">Passed|
-|`test4()`|Pass invalid `WDAY HH:MM:SS` string with bad `WDAY` field.|`validate_wday_hms(void)`|<span style="color:green">Passed|
-|`test4()`|Pass invalid `WDAY HH:MM:SS` string with bad `HH:MM:SS` field.|`validate_wday_hms(void)`|<span style="color:green">Passed|
+|`test1()`|Pass valid full week day names and `HH:MM:SS` string.|`validate_wday_hms(std::string)`|<span style="color:green">Passed|
+|`test2()`|Pass valid abbreviated week day names and `HH:MM:SS` string.|`validate_wday_hms(std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass invalid `WDAY HH:MM:SS` string with missing space.|`validate_wday_hms(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass invalid `WDAY HH:MM:SS` string with bad `WDAY` field.|`validate_wday_hms(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass invalid `WDAY HH:MM:SS` string with bad `HH:MM:SS` field.|`validate_wday_hms(std::string)`|<span style="color:green">Passed|
 
 ### **6. validate_mmdd.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Pass valid `MM-DD` strings, lower and upper bound days for each month.|`validate_mmdd(std::string)`|<span style="color:green">Passed|
+|`test2()`|Pass invalid `MM-DD` string with bad length.|`validate_mmdd(std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass invalid `MM-DD` strings: bad `MM` field and bad `DD` field.|`validate_mmdd(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass invalid `MM-DD` string with missing dash.|`validate_mmdd(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass invalid `MM-DD` string with `MM` field out of range.|`validate_mmdd(std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass invalid `MM-DD` string with `MM` field out of range.|`validate_mmdd(std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass invalid `MM-DD` string with `DD` field out of range.|`validate_mmdd(std::string)`|<span style="color:green">Passed|
+
 ### **7. validate_mmdd_hms.cpp**
 ### **8. validate_yyyymmdd.cpp**
 ### **9. validate_yyyymmdd_hms.cpp**
