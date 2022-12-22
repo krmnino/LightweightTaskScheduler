@@ -86,7 +86,8 @@ int test4(){
     ts::DatetimeValidate ret;
     std::vector<std::string> yyyymmdd = {
         "2022a12a30",
-        "2022-12a30"
+        "2022-12a30",
+        "2022a12-30"
     };
 
     for(int i = 0; i < yyyymmdd.size(); i++){

@@ -86,12 +86,22 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test1()`|Pass valid `MM-DD HH:MM:SS` string.|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
 |`test2()`|Pass invalid `MM-DD HH:MM:SS` string with missing space.|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
 |`test3()`|Pass invalid `MM-DD HH:MM:SS` string with `MM` out of range.|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
-|`test4()`|Pass invalid `MM-DD HH:MM:SS` string with `DD` out of range|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
-|`test5()`|Pass invalid `MM-DD HH:MM:SS` string with `HH` out of range|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
-|`test6()`|Pass invalid `MM-DD HH:MM:SS` string with `MM` out of range|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
-|`test7()`|Pass invalid `MM-DD HH:MM:SS` string with `SS` out of range|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass invalid `MM-DD HH:MM:SS` string with `DD` out of range.|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass invalid `MM-DD HH:MM:SS` string with `HH` out of range.|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass invalid `MM-DD HH:MM:SS` string with `MM` out of range.|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass invalid `MM-DD HH:MM:SS` string with `SS` out of range.|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
 
 ### **8. validate_yyyymmdd.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Pass valid `YYYY-MM-DD` strings, lower and upper bound days for each month.|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
+|`test2()`|Pass invalid `YYYY-MM-DD` string with bad length.|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass invalid `YYYY-MM-DD` strings: bad `YYYY` field, bad `MM` field, and bad `DD` field.|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass invalid `YYYY-MM-DD` strings with misplaced dashes.|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass invalid `YYYY-MM-DD` string with `MM` out of range|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass invalid `YYYY-MM-DD` string with `DD` out of range|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
+
 ### **9. validate_yyyymmdd_hms.cpp**
 ### **10. init_today.cpp**
 ### **11. init_year.cpp**
