@@ -80,6 +80,17 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test7()`|Pass invalid `MM-DD` string with `DD` field out of range.|`validate_mmdd(std::string)`|<span style="color:green">Passed|
 
 ### **7. validate_mmdd_hms.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Pass valid `MM-DD HH:MM:SS` string.|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test2()`|Pass invalid `MM-DD HH:MM:SS` string with missing space.|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass invalid `MM-DD HH:MM:SS` string with `MM` out of range.|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass invalid `MM-DD HH:MM:SS` string with `DD` out of range|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass invalid `MM-DD HH:MM:SS` string with `HH` out of range|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass invalid `MM-DD HH:MM:SS` string with `MM` out of range|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass invalid `MM-DD HH:MM:SS` string with `SS` out of range|`validate_mmdd_hms(std::string)`|<span style="color:green">Passed|
+
 ### **8. validate_yyyymmdd.cpp**
 ### **9. validate_yyyymmdd_hms.cpp**
 ### **10. init_today.cpp**

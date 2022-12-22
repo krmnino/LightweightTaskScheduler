@@ -54,11 +54,56 @@ int test4(){
     std::string mmdd_hms;
     ts::DatetimeValidate ret;
 
+    mmdd_hms = "01-50 01:00:00";
+    ret = ts::validate_mmdd_hms(mmdd_hms);
+    assert(ret == ts::DatetimeValidate::DAY_OUT_OF_RANGE);
+
+    std::cout << ">> validate_mmdd_hms: Test 4 done" << std::endl;
+    return 0;
+}
+
+
+int test5(){
+    // TEST 5: testing validate_mmdd_hms() function. Invalid MM-DD HH:MM:SS string.
+
+    std::string mmdd_hms;
+    ts::DatetimeValidate ret;
+
     mmdd_hms = "10-25 35:00:00";
     ret = ts::validate_mmdd_hms(mmdd_hms);
     assert(ret == ts::DatetimeValidate::HOURS_OUT_OF_RANGE);
 
-    std::cout << ">> validate_mmdd_hms: Test 4 done" << std::endl;
+    std::cout << ">> validate_mmdd_hms: Test 5 done" << std::endl;
+    return 0;
+}
+
+
+int test6(){
+    // TEST 6: testing validate_mmdd_hms() function. Invalid MM-DD HH:MM:SS string.
+
+    std::string mmdd_hms;
+    ts::DatetimeValidate ret;
+
+    mmdd_hms = "10-25 12:99:00";
+    ret = ts::validate_mmdd_hms(mmdd_hms);
+    assert(ret == ts::DatetimeValidate::MINUTES_OUT_OF_RANGE);
+
+    std::cout << ">> validate_mmdd_hms: Test 6 done" << std::endl;
+    return 0;
+}
+
+
+int test7(){
+    // TEST 7: testing validate_mmdd_hms() function. Invalid MM-DD HH:MM:SS string.
+
+    std::string mmdd_hms;
+    ts::DatetimeValidate ret;
+
+    mmdd_hms = "10-25 12:00:99";
+    ret = ts::validate_mmdd_hms(mmdd_hms);
+    assert(ret == ts::DatetimeValidate::SECONDS_OUT_OF_RANGE);
+
+    std::cout << ">> validate_mmdd_hms: Test 7 done" << std::endl;
     return 0;
 }
 
@@ -68,4 +113,7 @@ int main(){
     test2();
     test3();
     test4();
+    test5();
+    test6();
+    test7();
 }

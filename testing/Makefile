@@ -115,6 +115,7 @@ today_add_yyyymmdd: task_scheduler.o
 clean:
 	rm *.o 						\
 	rm *.gch					\
+	rm ../src/*.gch				\
 	Task_constructor			\
 	Task_methods				\
 	validate_hms				\
