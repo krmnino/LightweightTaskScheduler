@@ -43,9 +43,8 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test6()`|Pass an invalid `HH:MM:SS` string with `HH` field out of range.|`validate_hms(std::string)`|<span style="color:green">Passed|
 |`test7()`|Pass an invalid `HH:MM:SS` string with `MM` field out of range.|`validate_hms(std::string)`|<span style="color:green">Passed|
 |`test8()`|Pass an invalid `HH:MM:SS` string with `SS` field out of range.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test9()`|Pass an invalid `HH:MM:SS` string with missing first semicolon.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test10()`|Pass an invalid `HH:MM:SS` string with missing second semicolon.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test11()`|Pass an invalid `HH:MM:SS` string with missing `:MM:SS` fields.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test9()`|Pass an invalid `HH:MM:SS` string with missing first colon.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test10()`|Pass an invalid `HH:MM:SS` string with missing second colon.|`validate_hms(std::string)`|<span style="color:green">Passed|
 |`test11()`|Pass an invalid `HH:MM:SS` string with missing `:MM:SS` fields.|`validate_hms(std::string)`|<span style="color:green">Passed|
 |`test12()`|Pass an invalid `HH:MM:SS` string with bad length and all alphabetic characters.|`validate_hms(std::string)`|<span style="color:green">Passed|
 |`test13()`|Pass an invalid `HH:MM:SS` string with valid length and all alphabetic characters.|`validate_hms(std::string)`|<span style="color:green">Passed|
