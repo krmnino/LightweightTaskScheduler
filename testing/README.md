@@ -99,8 +99,8 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test2()`|Pass invalid `YYYY-MM-DD` string with bad length.|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
 |`test3()`|Pass invalid `YYYY-MM-DD` strings: bad `YYYY` field, bad `MM` field, and bad `DD` field.|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
 |`test4()`|Pass invalid `YYYY-MM-DD` strings with misplaced dashes.|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
-|`test5()`|Pass invalid `YYYY-MM-DD` string with `MM` out of range|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
-|`test6()`|Pass invalid `YYYY-MM-DD` string with `DD` out of range|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass invalid `YYYY-MM-DD` string with `MM` out of range.|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass invalid `YYYY-MM-DD` string with `DD` out of range.|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
 
 ### **9. validate_yyyymmdd_hms.cpp**
 
@@ -113,7 +113,17 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test5()`|Pass invalid `YYYY-MM-DD HH:MM:SS` strings with missing colon characters.|`validate_yyyymmdd_hms(std::string)`|<span style="color:green">Passed|
 
 ### **10. init_today.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Verify that `init_today()` returns the correct `time_t` value that corresponds to the very beginning of the current day in UTC time.|`init_today()`|<span style="color:green">Passed|
+
 ### **11. init_year.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Verify that `init_year()` returns the correct `time_t` value that corresponds to the very beginning of the current year in UTC time.|`init_year()`|<span style="color:green">Passed|
+
 ### **12. today_add_hms.cpp**
 ### **13. today_add_dhms.cpp**
 ### **14. today_add_wday_hms.cpp**
