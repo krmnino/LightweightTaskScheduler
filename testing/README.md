@@ -128,7 +128,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Add one minute in seconds to input `HH:MM:SS` string. Call should succeed and return `time_t` value one minute in the future.|`today_add_hms(std::string)`|<span style="color:green">Passed|
+|`test1()`|Add one minute in seconds to input `HH:MM:SS` string. Call should succeed and return `time_t` with a value one minute in the future.|`today_add_hms(std::string)`|<span style="color:green">Passed|
 |`test2()`|Subtract one minute in seconds to input `HH:MM:SS` string. Call should fail and return `time_t` with a value of zero.|`today_add_hms(std::string)`|<span style="color:green">Passed|
 |`test3()`|Pass invalid `HH:MM:SS` string. Call should fail and return `time_t` with a value of zero.|`today_add_hms(std::string)`|<span style="color:green">Passed|
 
@@ -136,8 +136,8 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Add one minute in seconds to input `HH:MM:SS` string and zero days. Call should succeed and return `time_t` value one minute in the future.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
-|`test2()`|Add one minute in seconds to input `HH:MM:SS` string and two days. Call should succeed and return `time_t` value two days and one minute in the future.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
+|`test1()`|Add one minute in seconds to input `HH:MM:SS` string and zero days. Call should succeed and return `time_t` with a value one minute in the future.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
+|`test2()`|Add one minute in seconds to input `HH:MM:SS` string and two days. Call should succeed and return `time_t` with a value two days and one minute in the future.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
 |`test3()`|Subtract one minute in seconds to input `HH:MM:SS` string and zero days. Call should fail and return `time_t` with a value of zero.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
 |`test4()`|Pass negative value for days parameter. Call should fail and return `time_t` with a value of zero.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
 |`test5()`|Pass invalid `HH:MM:SS` string. Call should fail and return `time_t` with a value of zero.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
@@ -146,11 +146,21 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Verify week day full name. Add one minute in seconds to input `HH:MM:SS` section. Call should succeed and return `time_t` value one minute in the future.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
-|`test2()`|Verify week day abbreviated name. Add one minute in seconds to input `HH:MM:SS` section. Call should succeed and return `time_t` value one minute in the future.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
-|`test3()`|Subtract 24 hours from current time to obtain previous week day name; then, use this week day as input for the function. Call should succeed and return `time_t` value 6 days into the future.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
+|`test1()`|Verify week day full name. Add one minute in seconds to input `HH:MM:SS` section. Call should succeed and return `time_t` with a value one minute in the future.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
+|`test2()`|Verify week day abbreviated name. Add one minute in seconds to input `HH:MM:SS` section. Call should succeed and return `time_t` with a value one minute in the future.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
+|`test3()`|Subtract 24 hours from current time to obtain previous week day name; then, use this week day as input for the function. Call should succeed and return `time_t` with a value 6 days into the future.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
 |`test4()`|Pass invalid string input with bad `HH:MM:SS` section. Call should fail and return `time_t` with a value of zero.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
 |`test5()`|Pass invalid string input with bad `WDAY` section. Call should fail and return `time_t` with a value of zero.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
 
 ### **15. today_add_mmdd.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Add one day in seconds to input `MM-DD` string. Call should succeed and return `time_t` with a value of one day in the future.|`today_add_mmdd(std::string)`|<span style="color:green">Passed|
+|`test2()`|Subtract one day in seconds to input `MM-DD` string. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd(std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass invalid `MM-DD` string with missing dash. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass invalid `MM-DD` string with `DD` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass invalid `MM-DD` string with `MM` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd(std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass `MM-DD` string indicating the current date. This call should fail because the returned `time_t` value is equivalent to the `MM-DD` date at `00:00:00` UTC. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd(std::string)`|<span style="color:green">Passed|
+
 ### **16. today_add_mmdd_hms.cpp**

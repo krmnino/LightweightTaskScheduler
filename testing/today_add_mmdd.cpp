@@ -131,9 +131,22 @@ int test4(){
     return 0;
 }
 
-
 int test5(){
     // TEST 5: testing today_add_mmdd() function -> FAIL
+    // Invalid months-days subtring
+
+    time_t ret;
+    ret = ts::today_add_mmdd("60-20");
+
+    assert(ret == 0);
+       
+    std::cout << ">> today_add_mmdd: Test 5 done" << std::endl;
+    return 0;
+}
+
+
+int test6(){
+    // TEST 6: testing today_add_mmdd() function -> FAIL
     // Current time
 
     time_t time_now;
@@ -168,7 +181,7 @@ int test5(){
 
     assert(ret == 0);
        
-    std::cout << ">> today_add_mmdd: Test 5 done" << std::endl;
+    std::cout << ">> today_add_mmdd: Test 6 done" << std::endl;
     return 0;
 }
 
@@ -179,4 +192,5 @@ int main(){
     test3();
     test4();
     test5();
+    test6();
 }
