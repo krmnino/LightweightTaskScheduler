@@ -246,6 +246,9 @@ int test3(){
     std::tm* to_struct;
     std::tm struct_time_now_add;
     std::tm struct_ret;
+    std::string years;
+    std::string months;
+    std::string days;
     std::string wday;
     std::string hours;
     std::string minutes;
@@ -308,6 +311,13 @@ int test3(){
     to_struct = std::gmtime(&ret);
     struct_ret = *to_struct;
 
+    years = std::to_string(1900 + struct_ret.tm_year);
+    months = (struct_ret.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_ret.tm_mon + 1) :
+              std::to_string(struct_ret.tm_mon + 1);  
+    days = (struct_ret.tm_mday < 10) ? 
+            "0" + std::to_string(struct_ret.tm_mday) :
+            std::to_string(struct_ret.tm_mday);
     switch (struct_ret.tm_wday)
     {
     case SUNDAY:
@@ -344,7 +354,61 @@ int test3(){
                "0" + std::to_string(struct_ret.tm_sec) :
                std::to_string(struct_ret.tm_sec);
 
-    ret_str = wday + " " + hours + ":" + minutes + ":" + seconds;    
+    ret_str = years + "-" + months + "-" + days + " " + wday + " " + hours + ":" + minutes + ":" + seconds;
+
+    // Add one minute in seconds to current time
+    time_now_add = time_now + (6 * 24 * 60 * 60);
+
+    // time_t to std::tm*
+    to_struct = std::gmtime(&time_now_add);
+    
+    // std::tm* to std::tm
+    struct_time_now_add = *to_struct;
+
+    years = std::to_string(1900 + struct_time_now_add.tm_year);
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
+    days = (struct_time_now_add.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now_add.tm_mday) :
+            std::to_string(struct_time_now_add.tm_mday);
+    switch (struct_time_now_add.tm_wday)
+    {
+    case SUNDAY:
+        wday = "Sunday";
+        break;
+    case MONDAY:
+        wday = "Monday";
+        break;
+    case TUESDAY:
+        wday = "Tuesday";
+        break;
+    case WEDNESDAY:
+        wday = "Wednesday";
+        break;
+    case THURSDAY:
+        wday = "Thursday";
+        break;
+    case FRIDAY:
+        wday = "Friday";
+        break;
+    case SATURDAY:
+        wday = "Saturday";
+        break;
+    default:
+        break;
+    }
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+
+    datetime_str = years + "-" + months + "-" + days + " " + wday + " " + hours + ":" + minutes + ":" + seconds;
 
     assert(ret_str == datetime_str);
     assert(ret >= time_now);

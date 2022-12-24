@@ -143,5 +143,14 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test5()`|Pass invalid `HH:MM:SS` string. Call should fail and return `time_t` with a value of zero.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
 
 ### **14. today_add_wday_hms.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Verify week day full name. Add one minute in seconds to input `HH:MM:SS` section. Call should succeed and return `time_t` value one minute in the future.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
+|`test2()`|Verify week day abbreviated name. Add one minute in seconds to input `HH:MM:SS` section. Call should succeed and return `time_t` value one minute in the future.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
+|`test3()`|Subtract 24 hours from current time to obtain previous week day name; then, use this week day as input for the function. Call should succeed and return `time_t` value 6 days into the future.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass invalid string input with bad `HH:MM:SS` section. Call should fail and return `time_t` with a value of zero.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass invalid string input with bad `WDAY` section. Call should fail and return `time_t` with a value of zero.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
+
 ### **15. today_add_mmdd.cpp**
 ### **16. today_add_mmdd_hms.cpp**
