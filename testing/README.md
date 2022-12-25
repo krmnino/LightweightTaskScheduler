@@ -164,3 +164,16 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test6()`|Pass `MM-DD` string indicating the current date. This call should fail because the returned `time_t` value is equivalent to the `MM-DD` date at `00:00:00` UTC. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd(std::string)`|<span style="color:green">Passed|
 
 ### **16. today_add_mmdd_hms.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Add 60 seconds in seconds to input `MM-DD HH:MM:SS` string. Call should succeed and return `time_t` with a value of 60 seconds into the future.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test2()`|Add one day seconds in seconds to input `MM-DD HH:MM:SS` string. Call should succeed and return `time_t` with a value of one day into the future.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test3()`|Subtract one day in seconds to input `MM-DD HH:MM:SS` string. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass invalid `MM-DD HH:MM:SS` string with bad `MM-DD` field. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass invalid `MM-DD HH:MM:SS` string with bad `HH:MM:SS` field. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass invalid `MM-DD HH:MM:SS` string with `DD` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass invalid `MM-DD HH:MM:SS` string with `MM` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test8()`|Pass invalid `MM-DD HH:MM:SS` string with `HH` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test9()`|Pass invalid `MM-DD HH:MM:SS` string with `MM` (minutes) field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test10()`|Pass invalid `MM-DD HH:MM:SS` string with `SS` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
