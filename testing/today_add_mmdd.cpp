@@ -68,7 +68,6 @@ int test2(){
     time_t time_now_add;
     std::tm* to_struct;
     std::tm struct_time_now_add;
-    std::tm struct_ret;
     std::string months;
     std::string days;
     std::string datetime_str;
@@ -150,10 +149,8 @@ int test6(){
     // Current time
 
     time_t time_now;
-    time_t time_now_add;
     std::tm* to_struct;
     std::tm struct_time_now_add;
-    std::tm struct_ret;
     std::string months;
     std::string days;
     std::string datetime_str;
@@ -163,7 +160,7 @@ int test6(){
     time_now = std::time(&time_now);
     
     // time_t to std::tm*
-    to_struct = std::gmtime(&time_now_add);
+    to_struct = std::gmtime(&time_now);
 
     // std::tm* to std::tm
     struct_time_now_add = *to_struct;
