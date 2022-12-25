@@ -239,10 +239,40 @@ int test5(){
 }
 
 
+int test6(){
+    // TEST 6: testing today_add_yyyymmdd() function -> FAIL
+    // Invalid years-months-days subtring
+
+    time_t ret;
+    ret = ts::today_add_mmdd("2022-60-20");
+
+    assert(ret == 0);
+       
+    std::cout << ">> today_add_yyyymmdd: Test 6 done" << std::endl;
+    return 0;
+}
+
+
+int test7(){
+    // TEST 7: testing today_add_yyyymmdd() function -> FAIL
+    // Invalid years-months-days subtring
+
+    time_t ret;
+    ret = ts::today_add_mmdd("2022-02-60");
+
+    assert(ret == 0);
+       
+    std::cout << ">> today_add_yyyymmdd: Test 7 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     test1();
     test2();
     test3();
     test4();
     test5();
+    test6();
+    test7();
 }

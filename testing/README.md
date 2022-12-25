@@ -177,3 +177,15 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test8()`|Pass invalid `MM-DD HH:MM:SS` string with `HH` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
 |`test9()`|Pass invalid `MM-DD HH:MM:SS` string with `MM` (minutes) field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
 |`test10()`|Pass invalid `MM-DD HH:MM:SS` string with `SS` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+
+### **16. today_add_yyyymmdd.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Add one day in seconds to input `YYYY-MM-DD` string. Call should succeed and return `time_t` with a value of one day into the future.|`today_add_yyyymmdd(std::string)`|<span style="color:green">Passed|
+|`test2()`|Add 30 days in seconds to input `YYYY-MM-DD` string. Call should succeed and return `time_t` with a value of 30 days into the future.|`today_add_yyyymmdd(std::string)`|<span style="color:green">Passed|
+|`test3()`|Add 365 days in seconds to input `YYYY-MM-DD` string. Call should succeed and return `time_t` with a value of 365 days into the future.|`today_add_yyyymmdd(std::string)`|<span style="color:green">Passed|
+|`test4()`|Subtract one day in seconds to input `YYYY-MM-DD` string. Call should fail and return `time_t` with a value of zero.|`today_add_yyyymmdd(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass invalid `YYYY-MM-DD` string with missing dashes. Call should fail and return `time_t` with a value of zero.|`today_add_yyyymmdd(std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass invalid `YYYY-MM-DD` string with `MM` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass invalid `YYYY-MM-DD` string with `DD` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
