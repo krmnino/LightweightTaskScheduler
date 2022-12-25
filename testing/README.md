@@ -218,17 +218,33 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test5()`|Pass string with a valid `MM-DD HH:MM:SS` datetime format. Call should succeed with return value of `DatetimeFormat::MMDD_HHMMSS`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
 |`test6()`|Pass string with a valid `YYYY-MM-DD` datetime format. Call should succeed with return value of `DatetimeFormat::YYYYMMDD`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
 |`test7()`|Pass string with a valid `YYYY-MM-DD HH:MM:SS` datetime format. Call should succeed with return value of `DatetimeFormat::YYYYMMDD_HHMMSS`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
-|`test8()`|Pass string with invalid datetime format. Call should return `DatetimeFormat::INVALID_DATE_FORMAT` value.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test8()`|Pass string with invalid datetime format. Call should fail with return value of  `DatetimeFormat::INVALID_DATE_FORMAT`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
 
 ### **20. validate_task_parms.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Provide the mandatory valid attributes to instantiate `Task` object. These include `Name`, `ScriptFilename`, `Frequency`, and `Datetime`. Call should succeed with return code `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test2()`|Provide all possible valid attributes to instantiate `Task` object. These include `Name`, `ScriptFilename`, `Frequency`, and `Datetime`. Call should succeed with return code `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test3()`|Fail to pass `Name` attribute. Call should fail with return code `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test4()`|Fail to pass `ScriptFilename` attribute. Call should fail with return code `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test5()`|Fail to pass `Frequency` attribute. Call should fail with return code `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test6()`|Fail to pass `Datetime` attribute. Call should fail with return code `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test7()`|Provide all possible valid attributes to instantiate `Task` object. `ScriptFilename` value should point to an invalid file location. Call should fail with return code `TaskValidate::SCRIPT_NOT_FOUND`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test8()`|Provide all possible valid attributes to instantiate `Task` object. `Frequency` value should be invalid. Call should fail with return code `TaskValidate::BAD_FREQUENCY_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test1()`|Provide the mandatory valid attributes to instantiate `Task` object. These include `Name`, `ScriptFilename`, `Frequency`, and `Datetime`. Call should succeed with return value of  `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test2()`|Provide all possible valid attributes to instantiate `Task` object. These include `Name`, `ScriptFilename`, `Frequency`, and `Datetime`. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test3()`|Fail to pass `Name` attribute. Call should fail with return value of `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test4()`|Fail to pass `ScriptFilename` attribute. Call should fail with return value of `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test5()`|Fail to pass `Frequency` attribute. Call should fail with return value of `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test6()`|Fail to pass `Datetime` attribute. Call should fail with return value of  `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test7()`|Provide all possible valid attributes to instantiate `Task` object. `ScriptFilename` value should point to an invalid file location. Call should fail with return value of  `TaskValidate::SCRIPT_NOT_FOUND`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test8()`|Provide all possible valid attributes to instantiate `Task` object. `Frequency` value should be invalid. Call should fail with return value of `TaskValidate::BAD_FREQUENCY_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+
+### **21. validate_task_parms_Once.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Test the datetime format of the following `Datetime` parameter values: `HH:MM:SS`, `MM-DD HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, and `WDAY HH:MM:SS` (abbreviated and full week day names). Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test2()`|Test the datetime format of the following `Datetime` parameter values: `MM-DD`, and `YYYY-MM-DD`. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass a `Datetime` parameter with `HH:MM:SS` format. The `Datetime` parameter is invalid. Call should fail with return code `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass a `Datetime` parameter with `MM-DD HH:MM:SS` format. The `Datetime` parameter is invalid. Call should fail with return code `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass a `Datetime` parameter with `YYYY-MM-DD HH:MM:SS` format. The `Datetime` parameter is invalid. Call should fail with return code `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass a `Datetime` parameter with `WDAY HH:MM:SS` format. The `Datetime` parameter is invalid. Call should fail with return code `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass a `Datetime` parameter with `MM-DD` format. The `Datetime` parameter is invalid. Call should fail with return code `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test8()`|Pass a `Datetime` parameter with `YYYY-MM-DD` format. The `Datetime` parameter is invalid. Call should fail with return code `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test9()`|Pass a `Datetime` parameter with invalid value that does not follow any datetime format. Call should fail with return code `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test10()`|Test the datetime format of the following `Datetime` parameter values: `HH:MM:SS`, `MM-DD HH:MM:SS`, and `YYYY-MM-DD HH:MM:SS`. The format `WDAY HH:MM:SS` does not require to be tested because it will always rollover to the next week. The datetime value is one minute in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test11()`|Test the datetime format of the following `Datetime` parameter values: `MM-DD`, and `YYYY-MM-DD`. The datetime value is one day in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|

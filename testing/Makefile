@@ -40,7 +40,8 @@ all: task_scheduler.o					\
 	today_add_yyyymmdd					\
 	today_add_yyyymmdd_hms				\
 	get_datetime_format					\
-	validate_task_parms
+	validate_task_parms					\
+	validate_task_parms_Once
 
 task_scheduler.o: 
 	g++ -g -c -std=c++17 -pthread $(SRC_FILES)
@@ -125,6 +126,10 @@ validate_task_parms: task_scheduler.o
 	g++ -g -c -std=c++17 validate_task_parms.cpp
 	g++ -g -o validate_task_parms validate_task_parms.o $(OBJ_FILES) -pthread -lstdc++fs
 
+validate_task_parms_Once: task_scheduler.o 
+	g++ -g -c -std=c++17 validate_task_parms_Once.cpp
+	g++ -g -o validate_task_parms_Once validate_task_parms_Once.o $(OBJ_FILES) -pthread -lstdc++fs
+
 ###################################################################################################
 
 clean:
@@ -150,4 +155,5 @@ clean:
 	today_add_yyyymmdd			\
 	today_add_yyyymmdd_hms		\
 	get_datetime_format			\
-	validate_task_parms
+	validate_task_parms			\
+	validate_task_parms_Once
