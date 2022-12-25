@@ -211,11 +211,24 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Pass string with a valid `HH:MM:SS` datetime format.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
-|`test2()`|Pass strings with a valid `WDAY HH:MM:SS` datetime format with `WDAY` section being abbreviated week day name for all days in the week.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
-|`test3()`|Pass strings with a valid `WDAY HH:MM:SS` datetime format with `WDAY` section being full week day name for all days in the week. The return value may vary depending on the length of the week day name (either `WDAY6_HHMMSS`, `WDAY7_HHMMSS`, `WDAY8_HHMMSS`, or `WDAY9_HHMMSS`).|`get_datetime_format(std::string)`|<span style="color:green">Passed|
-|`test4()`|Pass string with a valid `MM-DD` datetime format.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
-|`test5()`|Pass string with a valid `MM-DD HH:MM:SS` datetime format.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
-|`test6()`|Pass string with a valid `YYYY-MM-DD` datetime format.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
-|`test7()`|Pass string with a valid `YYYY-MM-DD HH:MM:SS` datetime format.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
-|`test8()`|Pass string with invalid datetime format. Call should retrun `DatetimeFormat::INVALID_DATE_FORMAT` value.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test1()`|Pass string with a valid `HH:MM:SS` datetime format. Call should succeed with return value of `DatetimeFormat::HHMMSS`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test2()`|Pass strings with a valid `WDAY HH:MM:SS` datetime format with `WDAY` section being abbreviated week day name for all days in the week. Call should succeed with return value of `DatetimeFormat::WDAY_HHMMSS`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass strings with a valid `WDAY HH:MM:SS` datetime format with `WDAY` section being full week day name for all days in the week. The call should succeed and the return value may vary depending on the length of the week day name (either `WDAY6_HHMMSS`, `WDAY7_HHMMSS`, `WDAY8_HHMMSS`, or `WDAY9_HHMMSS`).|`get_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass string with a valid `MM-DD` datetime format. Call should succeed with return value of `DatetimeFormat::MMDD`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass string with a valid `MM-DD HH:MM:SS` datetime format. Call should succeed with return value of `DatetimeFormat::MMDD_HHMMSS`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass string with a valid `YYYY-MM-DD` datetime format. Call should succeed with return value of `DatetimeFormat::YYYYMMDD`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass string with a valid `YYYY-MM-DD HH:MM:SS` datetime format. Call should succeed with return value of `DatetimeFormat::YYYYMMDD_HHMMSS`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test8()`|Pass string with invalid datetime format. Call should return `DatetimeFormat::INVALID_DATE_FORMAT` value.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
+
+### **20. validate_task_parms.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Provide the mandatory valid attributes to instantiate `Task` object. These include `Name`, `ScriptFilename`, `Frequency`, and `Datetime`. Call should succeed with return code `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test2()`|Provide all possible valid attributes to instantiate `Task` object. These include `Name`, `ScriptFilename`, `Frequency`, and `Datetime`. Call should succeed with return code `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test3()`|Fail to pass `Name` attribute. Call should fail with return code `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test4()`|Fail to pass `ScriptFilename` attribute. Call should fail with return code `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test5()`|Fail to pass `Frequency` attribute. Call should fail with return code `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test6()`|Fail to pass `Datetime` attribute. Call should fail with return code `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test7()`|Provide all possible valid attributes to instantiate `Task` object. `ScriptFilename` value should point to an invalid file location. Call should fail with return code `TaskValidate::SCRIPT_NOT_FOUND`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test8()`|Provide all possible valid attributes to instantiate `Task` object. `Frequency` value should be invalid. Call should fail with return code `TaskValidate::BAD_FREQUENCY_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|

@@ -17,3 +17,4 @@
 ./today_add_yyyymmdd
 ./today_add_yyyymmdd_hms
 ./get_datetime_format
+./validate_task_parms
