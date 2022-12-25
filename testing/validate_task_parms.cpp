@@ -188,7 +188,7 @@ int test6(){
     // Missing Datetime attribute
 
     cl::Config* c = new cl::Config();
-    c->add_entry("Name", "Test 59");
+    c->add_entry("Name", "Test Title");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Once");
@@ -209,7 +209,7 @@ int test7(){
     // Script file not found
 
     cl::Config* c = new cl::Config();
-    c->add_entry("Name", "Test 60");
+    c->add_entry("Name", "Test Title");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "fakename");
     c->add_entry("Frequency", "Once");
@@ -231,7 +231,7 @@ int test8(){
     // Bad frequency value
 
     cl::Config* c = new cl::Config();
-    c->add_entry("Name", "Test 61");
+    c->add_entry("Name", "Test Title");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Bad value");
