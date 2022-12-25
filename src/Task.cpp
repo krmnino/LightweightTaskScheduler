@@ -1797,7 +1797,7 @@ DatetimeFormat get_datetime_format(std::string datetime){
     // Letters: 8 pts
     // A valid datetime will have a unique point sum which will
     //   then be assigned to their specific validation function.
-    int point_sum = 0;
+    unsigned int point_sum = 0;
     char c;
     for(int i = 0; i < datetime.length(); i++){
         c = datetime.at(i);
@@ -1823,6 +1823,24 @@ DatetimeFormat get_datetime_format(std::string datetime){
             }
             break;
         }
+    }
+    // Check that point sum falls within any of the defined DatetimeFormat values
+    // If point sum is valid, then break out from the switch statement and return the DatetimeFormat
+    // Otherwise, INVALID_DATE_FORMAT
+    switch(point_sum){
+        case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
+        case (int)DatetimeFormat::WDAY6_HHMMSS:
+        case (int)DatetimeFormat::WDAY7_HHMMSS:
+        case (int)DatetimeFormat::WDAY8_HHMMSS:
+        case (int)DatetimeFormat::WDAY9_HHMMSS:
+        case (int)DatetimeFormat::MMDD_HHMMSS:
+        case (int)DatetimeFormat::WDAY_HHMMSS:
+        case (int)DatetimeFormat::YYYYMMDD:
+        case (int)DatetimeFormat::HHMMSS:
+        case (int)DatetimeFormat::MMDD:
+        break;
+        default:
+            return DatetimeFormat::INVALID_DATE_FORMAT;
     }
     return (DatetimeFormat)point_sum;
 }
