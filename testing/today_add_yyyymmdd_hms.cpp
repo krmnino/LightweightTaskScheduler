@@ -79,7 +79,7 @@ int test1(){
     assert(ret_str == datetime_str);
     assert(ret >= time_now);
        
-    std::cout << ">> Test 1 done" << std::endl;
+    std::cout << ">> today_add_yyyymmdd_hms: 1 done" << std::endl;
     return 0;
 }
 
@@ -160,7 +160,7 @@ int test2(){
     assert(ret_str == datetime_str);
     assert(ret >= time_now);
        
-    std::cout << ">> Test 2 done" << std::endl;
+    std::cout << ">> today_add_yyyymmdd_hms: 2 done" << std::endl;
     return 0;
 }
 
@@ -241,7 +241,7 @@ int test3(){
     assert(ret_str == datetime_str);
     assert(ret >= time_now);
        
-    std::cout << ">> Test 3 done" << std::endl;
+    std::cout << ">> today_add_yyyymmdd_hms: 3 done" << std::endl;
     return 0;
 }
 
@@ -322,7 +322,7 @@ int test4(){
     assert(ret_str == datetime_str);
     assert(ret >= time_now);
     
-    std::cout << ">> Test 4 done" << std::endl;
+    std::cout << ">> today_add_yyyymmdd_hms: 4 done" << std::endl;
     return 0;
 }
 
@@ -378,7 +378,7 @@ int test5(){
 
     assert(ret == 0);
     
-    std::cout << ">> Test 5 done" << std::endl;
+    std::cout << ">> today_add_yyyymmdd_hms: 5 done" << std::endl;
     return 0;
 }
 
@@ -392,7 +392,7 @@ int test6(){
 
     assert(ret == 0);
        
-    std::cout << ">> Test 6 done" << std::endl;
+    std::cout << ">> today_add_yyyymmdd_hms: 6 done" << std::endl;
     return 0;
 }
 
@@ -406,7 +406,7 @@ int test7(){
 
     assert(ret == 0);
        
-    std::cout << ">> Test 7 done" << std::endl;
+    std::cout << ">> today_add_yyyymmdd_hms: 7 done" << std::endl;
     return 0;
 }
 
@@ -420,7 +420,7 @@ int test8(){
 
     assert(ret == 0);
        
-    std::cout << ">> Test 8 done" << std::endl;
+    std::cout << ">> today_add_yyyymmdd_hms: 8 done" << std::endl;
     return 0;
 }
 
@@ -434,7 +434,7 @@ int test9(){
 
     assert(ret == 0);
        
-    std::cout << ">> Test 9 done" << std::endl;
+    std::cout << ">> today_add_yyyymmdd_hms: 9 done" << std::endl;
     return 0;
 }
 
@@ -448,7 +448,7 @@ int test10(){
 
     assert(ret == 0);
        
-    std::cout << ">> Test 10 done" << std::endl;
+    std::cout << ">> today_add_yyyymmdd_hms: 10 done" << std::endl;
     return 0;
 }
 
@@ -462,7 +462,7 @@ int test11(){
 
     assert(ret == 0);
        
-    std::cout << ">> Test 11 done" << std::endl;
+    std::cout << ">> today_add_yyyymmdd_hms: 11 done" << std::endl;
     return 0;
 }
 
@@ -476,7 +476,7 @@ int test12(){
 
     assert(ret == 0);
        
-    std::cout << ">> Test 12 done" << std::endl;
+    std::cout << ">> today_add_yyyymmdd_hms: 12 done" << std::endl;
     return 0;
 }
 
