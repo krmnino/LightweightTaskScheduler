@@ -38,7 +38,8 @@ all: task_scheduler.o					\
 	today_add_mmdd						\
 	today_add_mmdd_hms					\
 	today_add_yyyymmdd					\
-	today_add_yyyymmdd_hms
+	today_add_yyyymmdd_hms				\
+	get_datetime_format
 
 task_scheduler.o: 
 	g++ -g -c -std=c++17 -pthread $(SRC_FILES)
@@ -115,6 +116,10 @@ today_add_yyyymmdd_hms: task_scheduler.o
 	g++ -g -c -std=c++17 today_add_yyyymmdd_hms.cpp
 	g++ -g -o today_add_yyyymmdd_hms today_add_yyyymmdd_hms.o $(OBJ_FILES) -pthread -lstdc++fs
 
+get_datetime_format: task_scheduler.o 
+	g++ -g -c -std=c++17 get_datetime_format.cpp
+	g++ -g -o get_datetime_format get_datetime_format.o $(OBJ_FILES) -pthread -lstdc++fs
+
 ###################################################################################################
 
 clean:
@@ -138,4 +143,5 @@ clean:
 	today_add_mmdd				\
 	today_add_mmdd_hms			\
 	today_add_yyyymmdd			\
-	today_add_yyyymmdd_hms
+	today_add_yyyymmdd_hms		\
+	get_datetime_format

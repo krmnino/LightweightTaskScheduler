@@ -26,3 +26,4 @@ testing/today_add_mmdd
 testing/today_add_mmdd_hms
 testing/today_add_yyyymmdd
 testing/today_add_yyyymmdd_hms
+testing/get_datetime_format

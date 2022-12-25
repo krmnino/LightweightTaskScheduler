@@ -16,3 +16,4 @@
 ./today_add_mmdd_hms
 ./today_add_yyyymmdd
 ./today_add_yyyymmdd_hms
+./get_datetime_format
