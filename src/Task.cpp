@@ -1922,11 +1922,6 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             break;
         default:
             return TaskValidate::BAD_DATETIME_VALUE;
-            break;
-        }
-        // Check if datetime is in the past
-        if(schedule_datetime <= 0){
-            return TaskValidate::BAD_DATETIME_VALUE;
         }
     }
     else if(value == "Hourly"){
@@ -1943,11 +1938,6 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             schedule_datetime = today_add_hms(datetime_value);
             break;
         default:
-            return TaskValidate::BAD_DATETIME_VALUE;
-            break;
-        }
-        // Check if datetime is in the past
-        if(schedule_datetime <= 0){
             return TaskValidate::BAD_DATETIME_VALUE;
         }
     }
@@ -1997,11 +1987,6 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             break;
         default:
             return TaskValidate::BAD_DATETIME_VALUE;
-            break;
-        }
-        // Check if datetime is in the past
-        if(schedule_datetime <= 0){
-            return TaskValidate::BAD_DATETIME_VALUE;
         }
     }
     else if(value == "Monthly"){
@@ -2040,11 +2025,6 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             break;
         default:
             return TaskValidate::BAD_DATETIME_VALUE;
-            break;
-        }
-        // Check if datetime is in the past
-        if(schedule_datetime <= 0){
-            return TaskValidate::BAD_DATETIME_VALUE;
         }
     }
     else if(value == "Yearly"){
@@ -2061,7 +2041,7 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             if(validate_yyyymmdd_hms(datetime_value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
-            schedule_datetime = today_add_yyyymmdd(datetime_value);
+            schedule_datetime = today_add_yyyymmdd_hms(datetime_value);
             break;
         case (int)DatetimeFormat::MMDD:
             if(validate_mmdd(datetime_value) != DatetimeValidate::OK){
@@ -2077,14 +2057,13 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             break;
         default:
             return TaskValidate::BAD_DATETIME_VALUE;
-            break;
-        }
-        // Check if datetime is in the past
-        if(schedule_datetime <= 0){
-            return TaskValidate::BAD_DATETIME_VALUE;
         }
     }
 
+    // Check if datetime is in the past
+    if(value != "Hourly" && schedule_datetime <= 0){
+        return TaskValidate::BAD_DATETIME_VALUE;
+    }
     return TaskValidate::OK;
 }
 
