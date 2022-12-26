@@ -411,13 +411,13 @@ int test9(){
     // Pass bad datetime value with Frequency = Weekly
 
     cl::Config* c = new cl::Config();
-    c->add_entry("Name", "Test 80");
+    c->add_entry("Name", "Test Title");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Weekly");
     c->add_entry("Datetime", "Something");
 
-    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+    ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
 
     assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
 
@@ -441,8 +441,6 @@ int test10(){
     std::string years;
     std::string months;
     std::string days;
-    std::string wday_full;
-    std::string wday_abbr;
     std::string hours;
     std::string minutes;
     std::string seconds;
@@ -467,39 +465,6 @@ int test10(){
     days = (struct_time_now_add.tm_mday < 10) ? 
             "0" + std::to_string(struct_time_now_add.tm_mday) :
             std::to_string(struct_time_now_add.tm_mday);
-    switch (struct_time_now_add.tm_wday)
-    {
-    case SUNDAY:
-        wday_full = "Sunday";
-        wday_abbr = "Sun";
-        break;
-    case MONDAY:
-        wday_full = "Monday";
-        wday_abbr = "Mon";
-        break;
-    case TUESDAY:
-        wday_full = "Tuesday";
-        wday_abbr = "Tue";
-        break;
-    case WEDNESDAY:
-        wday_full = "Wednesday";
-        wday_abbr = "Wed";
-        break;
-    case THURSDAY:
-        wday_full = "Thursday";
-        wday_abbr = "Thu";
-        break;
-    case FRIDAY:
-        wday_full = "Friday";
-        wday_abbr = "Fri";
-        break;
-    case SATURDAY:
-        wday_full = "Saturday";
-        wday_abbr = "Sat";
-        break;
-    default:
-        break;
-    }
     hours = (struct_time_now_add.tm_hour < 10) ? 
              "0" + std::to_string(struct_time_now_add.tm_hour) :
              std::to_string(struct_time_now_add.tm_hour);
