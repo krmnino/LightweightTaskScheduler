@@ -32,3 +32,4 @@ testing/validate_task_parms_Once
 testing/validate_task_parms_Hourly
 testing/validate_task_parms_Daily
 testing/validate_task_parms_Weekly
+testing/validate_task_parms_Monthly
