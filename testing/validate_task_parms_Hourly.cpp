@@ -31,7 +31,7 @@ int test1(){
         delete c;
     }
 
-    std::cout << ">> validate_task_parms: 1 done" << std::endl;
+    std::cout << ">> validate_task_parms_Hourly: 1 done" << std::endl;
     return 0;
 }
 

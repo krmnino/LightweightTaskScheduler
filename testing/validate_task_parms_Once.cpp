@@ -100,7 +100,7 @@ int test1(){
         c->add_entry("Frequency", "Once");
         c->add_entry("Datetime", datetimes[i]);
 
-        ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
+        ret = ts::validate_task_parms(c, "scripts/");
 
         assert(ret == ts::TaskValidate::OK);
 
@@ -159,7 +159,7 @@ int test2(){
         c->add_entry("Frequency", "Once");
         c->add_entry("Datetime", datetimes[i]);
 
-        ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
+        ret = ts::validate_task_parms(c, "scripts/");
 
         assert(ret == ts::TaskValidate::OK);
 
@@ -417,7 +417,7 @@ int test9(){
     c->add_entry("Frequency", "Once");
     c->add_entry("Datetime", "Something");
 
-    ts::TaskValidate ret = ts::validate_task_parms(c, "../scripts/");
+    ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
 
     assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
 
@@ -523,7 +523,7 @@ int test10(){
         c->add_entry("Frequency", "Once");
         c->add_entry("Datetime", datetimes[i]);
 
-        ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
+        ret = ts::validate_task_parms(c, "scripts/");
 
         assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
 
@@ -582,7 +582,7 @@ int test11(){
         c->add_entry("Frequency", "Once");
         c->add_entry("Datetime", datetimes[i]);
 
-        ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
+        ret = ts::validate_task_parms(c, "scripts/");
 
         assert(ret == ts::TaskValidate::OK);
 
