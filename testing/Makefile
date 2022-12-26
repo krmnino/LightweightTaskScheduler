@@ -42,7 +42,8 @@ all: task_scheduler.o					\
 	get_datetime_format					\
 	validate_task_parms					\
 	validate_task_parms_Once			\
-	validate_task_parms_Hourly
+	validate_task_parms_Hourly			\
+	validate_task_parms_Daily
 
 task_scheduler.o: 
 	g++ -g -c -std=c++17 -pthread $(SRC_FILES)
@@ -135,6 +136,10 @@ validate_task_parms_Hourly: task_scheduler.o
 	g++ -g -c -std=c++17 validate_task_parms_Hourly.cpp
 	g++ -g -o validate_task_parms_Hourly validate_task_parms_Hourly.o $(OBJ_FILES) -pthread -lstdc++fs
 
+validate_task_parms_Daily: task_scheduler.o 
+	g++ -g -c -std=c++17 validate_task_parms_Daily.cpp
+	g++ -g -o validate_task_parms_Daily validate_task_parms_Daily.o $(OBJ_FILES) -pthread -lstdc++fs
+
 ###################################################################################################
 
 clean:
@@ -162,4 +167,5 @@ clean:
 	get_datetime_format			\
 	validate_task_parms			\
 	validate_task_parms_Once	\
-	validate_task_parms_Hourly
+	validate_task_parms_Hourly	\
+	validate_task_parms_Daily

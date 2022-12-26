@@ -20,3 +20,4 @@
 ./validate_task_parms
 ./validate_task_parms_Once
 ./validate_task_parms_Hourly
+./validate_task_parms_Daily
