@@ -56,6 +56,19 @@ Task::Task(std::string name,
         case (int)DatetimeFormat::HHMMSS:
             this->execution_datetime = today_add_hms(execution_datetime_str);
             break;
+        case (int)DatetimeFormat::MMDD_HHMMSS:
+            this->execution_datetime = today_add_mmdd_hms(execution_datetime_str);
+            break;
+        case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
+            this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
+            break;
+        case (int)DatetimeFormat::WDAY_HHMMSS:
+        case (int)DatetimeFormat::WDAY6_HHMMSS:
+        case (int)DatetimeFormat::WDAY7_HHMMSS:
+        case (int)DatetimeFormat::WDAY8_HHMMSS:
+        case (int)DatetimeFormat::WDAY9_HHMMSS:
+            this->execution_datetime = today_add_wday_hms(execution_datetime_str);
+            break;
         default:
             this->execution_datetime = 0;
             break;
@@ -1941,6 +1954,28 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
             schedule_datetime = today_add_hms(datetime_value);
+            break;
+        case (int)DatetimeFormat::MMDD_HHMMSS:
+            if(validate_mmdd_hms(datetime_value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            schedule_datetime = today_add_mmdd_hms(datetime_value);
+            break;
+        case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
+            if(validate_yyyymmdd_hms(datetime_value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            schedule_datetime = today_add_yyyymmdd_hms(datetime_value);
+            break;
+        case (int)DatetimeFormat::WDAY_HHMMSS:
+        case (int)DatetimeFormat::WDAY6_HHMMSS:
+        case (int)DatetimeFormat::WDAY7_HHMMSS:
+        case (int)DatetimeFormat::WDAY8_HHMMSS:
+        case (int)DatetimeFormat::WDAY9_HHMMSS:
+            if(validate_wday_hms(datetime_value) != DatetimeValidate::OK){
+                return TaskValidate::BAD_DATETIME_VALUE;
+            }
+            schedule_datetime = today_add_wday_hms(datetime_value);
             break;
         default:
             return TaskValidate::BAD_DATETIME_VALUE;
