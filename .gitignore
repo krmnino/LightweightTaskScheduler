@@ -33,3 +33,4 @@ testing/validate_task_parms_Hourly
 testing/validate_task_parms_Daily
 testing/validate_task_parms_Weekly
 testing/validate_task_parms_Monthly
+testing/validate_task_parms_Yearly

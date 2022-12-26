@@ -23,3 +23,4 @@
 ./validate_task_parms_Daily
 ./validate_task_parms_Weekly
 ./validate_task_parms_Monthly
+./validate_task_parms_Yearly

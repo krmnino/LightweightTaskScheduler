@@ -45,7 +45,8 @@ all: task_scheduler.o					\
 	validate_task_parms_Hourly			\
 	validate_task_parms_Daily			\
 	validate_task_parms_Weekly			\
-	validate_task_parms_Monthly
+	validate_task_parms_Monthly			\
+	validate_task_parms_Yearly
 
 task_scheduler.o: 
 	g++ -g -c -std=c++17 -pthread $(SRC_FILES)
@@ -150,6 +151,10 @@ validate_task_parms_Monthly: task_scheduler.o
 	g++ -g -c -std=c++17 validate_task_parms_Monthly.cpp
 	g++ -g -o validate_task_parms_Monthly validate_task_parms_Monthly.o $(OBJ_FILES) -pthread -lstdc++fs
 
+validate_task_parms_Yearly: task_scheduler.o 
+	g++ -g -c -std=c++17 validate_task_parms_Yearly.cpp
+	g++ -g -o validate_task_parms_Yearly validate_task_parms_Yearly.o $(OBJ_FILES) -pthread -lstdc++fs
+
 ###################################################################################################
 
 clean:
@@ -180,4 +185,5 @@ clean:
 	validate_task_parms_Hourly	\
 	validate_task_parms_Daily	\
 	validate_task_parms_Weekly	\
-	validate_task_parms_Monthly
+	validate_task_parms_Monthly	\
+	validate_task_parms_Yearly
