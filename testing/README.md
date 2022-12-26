@@ -248,3 +248,9 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test9()`|Pass a `Datetime` parameter with invalid value that does not follow any datetime format. Call should fail with return code `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test10()`|Test the datetime format of the following `Datetime` parameter values: `HH:MM:SS`, `MM-DD HH:MM:SS`, and `YYYY-MM-DD HH:MM:SS`. The format `WDAY HH:MM:SS` does not require to be tested because it will always rollover to the next week. The datetime value is one minute in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test11()`|Test the datetime format of the following `Datetime` parameter values: `MM-DD`, and `YYYY-MM-DD`. The datetime value is one day in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+
+### **22. validate_task_parms_Hourly.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Provide all possible valid attributes to instantiate `Task` object. With an `Hourly` frequency, the `Datetime` value is ignored regardless. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
