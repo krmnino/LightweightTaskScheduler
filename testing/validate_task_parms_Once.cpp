@@ -432,7 +432,7 @@ int test10(){
     // TEST 10: testing validate_task_parms() function -> FAIL
     // Current time minus one minute in seconds 
     // Pass datetime formats HHMMSS, MMDD_HHMMSS, YYYYMMDD_HHMMSS, WDAY_HHMMSS. 
-    // Frequency = Oncee
+    // Frequency = Once
 
     time_t time_now;
     time_t time_now_add;
@@ -554,7 +554,7 @@ int test11(){
     time_now = std::time(&time_now);
 
     // Add one day in seconds from current time
-    time_now_add = time_now + (24 * 60 * 60);
+    time_now_add = time_now - (24 * 60 * 60);
     
     // time_t to std::tm*
     to_struct = std::gmtime(&time_now_add);
@@ -584,7 +584,7 @@ int test11(){
 
         ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::OK);
+        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
 
         delete c;
     }
