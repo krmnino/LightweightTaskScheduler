@@ -327,3 +327,13 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Tasks with `Frequency` of `Hourly` should have the execution datetime value increased by 1 hour after the method call succeeded.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+
+### **29. Task_update_execution_datetime_Daily.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Initialize `Task` with a `HH:MM:SS` datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test2()`|Initialize `Task` with a `MM-DD HH:MM:SS` datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test3()`|Initialize `Task` with a `YYYY-MM-DD HH:MM:SS` datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test4()`|Initialize `Task` with a `WDAY HH:MM:SS` (full week day names) datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test5()`|Initialize `Task` with a `WDAY HH:MM:SS` (abbreviated week day names) datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
