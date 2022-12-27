@@ -314,3 +314,10 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test8()`|Pass a `Datetime` attribute with invalid value that does not follow any datetime format. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test9()`|Test the datetime format of the following `Datetime` attribute values: `MM-DD HH:MM:SS`, and `YYYY-MM-DD HH:MM:SS`. The datetime value is one minute in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test10()`|Test the datetime format of the following `Datetime` attribute values: `MM-DD`, and `YYYY-MM-DD`. The datetime value is one day in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+
+### **27. Task_update_execution_datetime_Once.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Call the method with tasks using the following `Datetime` formats: `HH:MM:SS`, `MM-DD HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, and `WDAY HH:MM:SS` (abbreviated and full week day names). Tasks with `Frequency` of `Once` should not have the execution datetime value updated.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test2()`|Call the method with tasks using the following `Datetime` formats: `MM-DD`, and `YYYY-MM-DD`. Tasks with `Frequency` of `Once` should not have the execution datetime value updated.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
