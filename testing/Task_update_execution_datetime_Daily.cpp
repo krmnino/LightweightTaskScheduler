@@ -53,7 +53,7 @@ int test1(){
 
     time_now = std::time(&time_now);
 
-    // Add one day in seconds to current time
+    // Add one day in seconds to initial execution time
     // Add timezone offset
     time_now_add = time_now_add + (24 * 60 * 60) + (TIMEZONE * 60 * 60);
     
@@ -211,7 +211,7 @@ int test2(){
 
     time_now = std::time(&time_now);
 
-    // Add one day in seconds to current time
+    // Add one day in seconds to initial execution time
     // Add timezone offset
     time_now_add = time_now_add + (24 * 60 * 60) + (TIMEZONE * 60 * 60);
     
@@ -370,7 +370,7 @@ int test3(){
 
     time_now = std::time(&time_now);
 
-    // Add one day in seconds to current time
+    // Add one day in seconds to initial execution time
     // Add timezone offset
     time_now_add = time_now_add + (24 * 60 * 60) + (TIMEZONE * 60 * 60);
     
@@ -549,7 +549,7 @@ int test4(){
 
     time_now = std::time(&time_now);
 
-    // Add one day in seconds to current time
+    // Add one day in seconds to initial execution time
     // Add timezone offset
     time_now_add = time_now_add + (24 * 60 * 60) + (TIMEZONE * 60 * 60);
     
@@ -728,7 +728,7 @@ int test5(){
 
     time_now = std::time(&time_now);
 
-    // Add one day in seconds to current time
+    // Add one day in seconds to initial execution time
     // Add timezone offset
     time_now_add = time_now_add + (24 * 60 * 60) + (TIMEZONE * 60 * 60);
     
