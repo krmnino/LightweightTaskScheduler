@@ -21,8 +21,10 @@ int test1(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    std::string ret_datetime_before;     
-    std::string ret_datetime_after;     
+    std::string ret_datetime_str_before;
+    std::string ret_datetime_str_after;
+    time_t ret_datetime_before;
+    time_t ret_datetime_after;
 
     time_now = std::time(&time_now);
 
@@ -102,11 +104,14 @@ int test1(){
     for(int i = 0; i < datetimes.size(); i++){
         ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
         
-        ret_datetime_before = t->get_execution_datetime_fmt();
+        ret_datetime_str_before = t->get_execution_datetime_fmt();
+        ret_datetime_before = t->get_execution_datetime(false);
         t->update_execution_datetime();
-        ret_datetime_after = t->get_execution_datetime_fmt();
+        ret_datetime_str_after = t->get_execution_datetime_fmt();
+        ret_datetime_after = t->get_execution_datetime(false);
 
-        assert(ret_datetime_before.find(ret_datetime_after) != std::string::npos);
+        assert(ret_datetime_before == ret_datetime_after);
+        assert(ret_datetime_str_before.find(ret_datetime_str_after) != std::string::npos);
 
         delete t;
     }
@@ -134,8 +139,10 @@ int test2(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    std::string ret_datetime_str_before;     
-    std::string ret_datetime_str_after;     
+    std::string ret_datetime_str_before;
+    std::string ret_datetime_str_after;
+    time_t ret_datetime_before;
+    time_t ret_datetime_after;
 
     time_now = std::time(&time_now);
 
@@ -213,9 +220,12 @@ int test2(){
         ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
         
         ret_datetime_str_before = t->get_execution_datetime_fmt();
+        ret_datetime_before = t->get_execution_datetime(false);
         t->update_execution_datetime();
         ret_datetime_str_after = t->get_execution_datetime_fmt();
+        ret_datetime_after = t->get_execution_datetime(false);
 
+        assert(ret_datetime_before == ret_datetime_after);
         assert(ret_datetime_str_before.find(ret_datetime_str_after) != std::string::npos);
 
         delete t;
