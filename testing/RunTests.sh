@@ -25,3 +25,4 @@
 ./validate_task_parms_Monthly
 ./validate_task_parms_Yearly
 ./Task_update_execution_datetime_Once
+./Task_update_execution_datetime_Hourly

@@ -321,3 +321,9 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |-|-|-|-|
 |`test1()`|Call the method with tasks using the following `Datetime` formats: `HH:MM:SS`, `MM-DD HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, and `WDAY HH:MM:SS` (abbreviated and full week day names). Tasks with `Frequency` of `Once` should not have the execution datetime value updated.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 |`test2()`|Call the method with tasks using the following `Datetime` formats: `MM-DD`, and `YYYY-MM-DD`. Tasks with `Frequency` of `Once` should not have the execution datetime value updated.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+
+### **28. Task_update_execution_datetime_Hourly.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Tasks with `Frequency` of `Hourly` should have the execution datetime value increased by 1 hour after the call.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
