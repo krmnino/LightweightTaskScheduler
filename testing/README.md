@@ -326,4 +326,4 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Tasks with `Frequency` of `Hourly` should have the execution datetime value increased by 1 hour after the call.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test1()`|Tasks with `Frequency` of `Hourly` should have the execution datetime value increased by 1 hour after the method call succeeded.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
