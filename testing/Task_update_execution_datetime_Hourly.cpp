@@ -132,7 +132,7 @@ int test1(){
     assert(ret_datetime_str.find(verify_datetime_str) != std::string::npos);
     delete t;
 
-    std::cout << ">> Task_update_execution_datetime_Once: 1 done" << std::endl;
+    std::cout << ">> Task_update_execution_datetime_Hourly: 1 done" << std::endl;
     return 0;
 }
 
