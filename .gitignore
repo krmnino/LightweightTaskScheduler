@@ -31,3 +31,9 @@ testing/validate_task_parms
 testing/validate_task_parms_Once
 testing/validate_task_parms_Hourly
 testing/validate_task_parms_Daily
+testing/validate_task_parms_Weekly
+testing/validate_task_parms_Monthly
+testing/validate_task_parms_Yearly
+testing/Task_update_execution_datetime_Once
+testing/Task_update_execution_datetime_Hourly
+testing/Task_update_execution_datetime_Daily

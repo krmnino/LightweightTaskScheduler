@@ -472,10 +472,7 @@ void Task::set_id(int id){
 }
 
 void Task::update_execution_datetime(void){
-    if(this->frequency == "Once"){
-        return;
-    } 
-    else if(this->frequency == "Hourly"){
+    if(this->frequency == "Hourly"){
         // Add 1 hour in seconds to current execution time
         this->execution_datetime = this->execution_datetime + 3600;
     }
@@ -606,7 +603,6 @@ void Task::update_execution_datetime(void){
                 day = (this->initial_execution_datetime.day < 10) ? 
                        "0" + std::to_string(this->initial_execution_datetime.day) :
                        std::to_string(this->initial_execution_datetime.day);
-
             }
             break;
         case OCTOBER:
@@ -656,8 +652,8 @@ void Task::update_execution_datetime(void){
         else{
             this->execution_datetime = this->execution_datetime + (365 * 24 * 60 * 60);
         }
-
     }
+    return; // Else, Frequency is Once so no update occurs 
 }
 
 DatetimeValidate validate_hms(std::string hms){
@@ -1935,11 +1931,6 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             break;
         default:
             return TaskValidate::BAD_DATETIME_VALUE;
-            break;
-        }
-        // Check if datetime is in the past
-        if(schedule_datetime <= 0){
-            return TaskValidate::BAD_DATETIME_VALUE;
         }
     }
     else if(value == "Hourly"){
@@ -1978,11 +1969,6 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             schedule_datetime = today_add_wday_hms(datetime_value);
             break;
         default:
-            return TaskValidate::BAD_DATETIME_VALUE;
-            break;
-        }
-        // Check if datetime is in the past
-        if(schedule_datetime <= 0){
             return TaskValidate::BAD_DATETIME_VALUE;
         }
     }
@@ -2032,11 +2018,6 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             break;
         default:
             return TaskValidate::BAD_DATETIME_VALUE;
-            break;
-        }
-        // Check if datetime is in the past
-        if(schedule_datetime <= 0){
-            return TaskValidate::BAD_DATETIME_VALUE;
         }
     }
     else if(value == "Monthly"){
@@ -2075,11 +2056,6 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             break;
         default:
             return TaskValidate::BAD_DATETIME_VALUE;
-            break;
-        }
-        // Check if datetime is in the past
-        if(schedule_datetime <= 0){
-            return TaskValidate::BAD_DATETIME_VALUE;
         }
     }
     else if(value == "Yearly"){
@@ -2096,7 +2072,7 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             if(validate_yyyymmdd_hms(datetime_value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
-            schedule_datetime = today_add_yyyymmdd(datetime_value);
+            schedule_datetime = today_add_yyyymmdd_hms(datetime_value);
             break;
         case (int)DatetimeFormat::MMDD:
             if(validate_mmdd(datetime_value) != DatetimeValidate::OK){
@@ -2112,14 +2088,13 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             break;
         default:
             return TaskValidate::BAD_DATETIME_VALUE;
-            break;
-        }
-        // Check if datetime is in the past
-        if(schedule_datetime <= 0){
-            return TaskValidate::BAD_DATETIME_VALUE;
         }
     }
 
+    // Check if datetime is in the past
+    if(value != "Hourly" && schedule_datetime <= 0){
+        return TaskValidate::BAD_DATETIME_VALUE;
+    }
     return TaskValidate::OK;
 }
 

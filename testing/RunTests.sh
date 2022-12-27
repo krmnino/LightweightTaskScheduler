@@ -21,3 +21,9 @@
 ./validate_task_parms_Once
 ./validate_task_parms_Hourly
 ./validate_task_parms_Daily
+./validate_task_parms_Weekly
+./validate_task_parms_Monthly
+./validate_task_parms_Yearly
+./Task_update_execution_datetime_Once
+./Task_update_execution_datetime_Hourly
+./Task_update_execution_datetime_Daily

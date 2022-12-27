@@ -24,10 +24,10 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Obtain the `time_t` value when `Task` is created.|`Task::get_creation_datetime(bool)`|<span style="color:green">Passed|
-|`test2()`|Obtain system's current time + 5 seconds for `Task`'s execution time parameter. Then, verify the returned `time_t` time of execution value.|`Task::get_execution_datetime(bool)`|<span style="color:green">Passed|
+|`test2()`|Obtain system's current time + 5 seconds for `Task`'s execution time attribute. Then, verify the returned `time_t` time of execution value.|`Task::get_execution_datetime(bool)`|<span style="color:green">Passed|
 |`test3()`|Obtain formated time of creation `string` value.|`Task::get_creation_datetime_fmt(void)`|<span style="color:green">Passed|
 |`test4()`|Obtain formated time of execution `string` value.|`Task::get_execution_datetime_fmt(void)`|<span style="color:green">Passed|
-|`test5()`|Obtain system's current time + 5 seconds for `Task`'s execution time parameter in `HH:MM:SS` format. Then, verify the returned `DatetimeFormat` value.|`Task::get_execution_datetime_format_attr(void)`|<span style="color:green">Passed|
+|`test5()`|Obtain system's current time + 5 seconds for `Task`'s execution time attribute in `HH:MM:SS` format. Then, verify the returned `DatetimeFormat` value.|`Task::get_execution_datetime_format_attr(void)`|<span style="color:green">Passed|
 |`test6()`|Set and get task id and status values.|`Task::set_id(int)`<br/>`Task::get_id(void)`<br/>`Task::set_status(TaskStatus)`<br/>`Task::get_status(void)`<br/>|<span style="color:green">Passed|
 |`test7()`|Create `Task` object and run it. Then, verify that the command-line output has been successfully routed to output data member.|`Task::run_task(void)`<br/>`Task::get_output(void)`<br/>|<span style="color:green">Passed|
 
@@ -139,7 +139,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test1()`|Add one minute in seconds to input `HH:MM:SS` string and zero days. Call should succeed and return `time_t` with a value one minute in the future.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
 |`test2()`|Add one minute in seconds to input `HH:MM:SS` string and two days. Call should succeed and return `time_t` with a value two days and one minute in the future.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
 |`test3()`|Subtract one minute in seconds to input `HH:MM:SS` string and zero days. Call should fail and return `time_t` with a value of zero.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
-|`test4()`|Pass negative value for days parameter. Call should fail and return `time_t` with a value of zero.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass negative value for days attribute. Call should fail and return `time_t` with a value of zero.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
 |`test5()`|Pass invalid `HH:MM:SS` string. Call should fail and return `time_t` with a value of zero.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
 
 ### **14. today_add_wday_hms.cpp**
@@ -237,17 +237,17 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Test the datetime format of the following `Datetime` parameter values: `HH:MM:SS`, `MM-DD HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, and `WDAY HH:MM:SS` (abbreviated and full week day names). Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test2()`|Test the datetime format of the following `Datetime` parameter values: `MM-DD`, and `YYYY-MM-DD`. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test3()`|Pass a `Datetime` parameter with `HH:MM:SS` format. The `Datetime` parameter is invalid. Call should fail with return value of`TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test4()`|Pass a `Datetime` parameter with `MM-DD HH:MM:SS` format. The `Datetime` parameter is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test5()`|Pass a `Datetime` parameter with `YYYY-MM-DD HH:MM:SS` format. The `Datetime` parameter is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test6()`|Pass a `Datetime` parameter with `WDAY HH:MM:SS` format. The `Datetime` parameter is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test7()`|Pass a `Datetime` parameter with `MM-DD` format. The `Datetime` parameter is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test8()`|Pass a `Datetime` parameter with `YYYY-MM-DD` format. The `Datetime` parameter is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test9()`|Pass a `Datetime` parameter with invalid value that does not follow any datetime format. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test10()`|Test the datetime format of the following `Datetime` parameter values: `HH:MM:SS`, `MM-DD HH:MM:SS`, and `YYYY-MM-DD HH:MM:SS`. The format `WDAY HH:MM:SS` does not require to be tested because it will always rollover to the next week. The datetime value is one minute in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test11()`|Test the datetime format of the following `Datetime` parameter values: `MM-DD`, and `YYYY-MM-DD`. The datetime value is one day in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test1()`|Test the datetime format of the following `Datetime` attribute values: `HH:MM:SS`, `MM-DD HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, and `WDAY HH:MM:SS` (abbreviated and full week day names). Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test2()`|Test the datetime format of the following `Datetime` attribute values: `MM-DD`, and `YYYY-MM-DD`. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass a `Datetime` attribute with `HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of`TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass a `Datetime` attribute with `MM-DD HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass a `Datetime` attribute with `YYYY-MM-DD HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass a `Datetime` attribute with `WDAY HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass a `Datetime` attribute with `MM-DD` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test8()`|Pass a `Datetime` attribute with `YYYY-MM-DD` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test9()`|Pass a `Datetime` attribute with invalid value that does not follow any datetime format. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test10()`|Test the datetime format of the following `Datetime` attribute values: `HH:MM:SS`, `MM-DD HH:MM:SS`, and `YYYY-MM-DD HH:MM:SS`. The format `WDAY HH:MM:SS` does not require to be tested because it will always rollover to the next week. The datetime value is one minute in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test11()`|Test the datetime format of the following `Datetime` attribute values: `MM-DD`, and `YYYY-MM-DD`. The datetime value is one day in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 
 ### **22. validate_task_parms_Hourly.cpp**
 
@@ -259,11 +259,71 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Test the datetime format of the following `Datetime` parameter values: `HH:MM:SS`, `MM-DD HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, and `WDAY HH:MM:SS` (abbreviated and full week day names). Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:yellow">Pending Implementation Update|
-|`test2()`|Test the datetime format of the following incompatible `Datetime` parameter values: `MM-DD`, and `YYYY-MM-DD`. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test3()`|Pass a `Datetime` parameter with `HH:MM:SS` format. The `Datetime` parameter is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test4()`|Pass a `Datetime` parameter with `MM-DD HH:MM:SS` format. The `Datetime` parameter is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test5()`|Pass a `Datetime` parameter with `YYYY-MM-DD HH:MM:SS` format. The `Datetime` parameter is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test6()`|Pass a `Datetime` parameter with `WDAY HH:MM:SS` format. The `Datetime` parameter is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test7()`|Pass a `Datetime` parameter with invalid value that does not follow any datetime format. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test8()`|Test the datetime format of the following `Datetime` parameter values: `HH:MM:SS`, `MM-DD HH:MM:SS`, and `YYYY-MM-DD HH:MM:SS`. The format `WDAY HH:MM:SS` does not require to be tested because it will always rollover to the next week. The datetime value is one minute in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:yellow">Pending Implementation Update|
+|`test1()`|Test the datetime format of the following `Datetime` attribute values: `HH:MM:SS`, `MM-DD HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, and `WDAY HH:MM:SS` (abbreviated and full week day names). Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test2()`|Test the datetime format of the following incompatible `Datetime` attribute values: `MM-DD`, and `YYYY-MM-DD`. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass a `Datetime` attribute with `HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass a `Datetime` attribute with `MM-DD HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass a `Datetime` attribute with `YYYY-MM-DD HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass a `Datetime` attribute with `WDAY HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass a `Datetime` attribute with invalid value that does not follow any datetime format. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test8()`|Test the datetime format of the following `Datetime` attribute values: `HH:MM:SS`, `MM-DD HH:MM:SS`, and `YYYY-MM-DD HH:MM:SS`. The format `WDAY HH:MM:SS` does not require to be tested because it will always rollover to the next week. The datetime value is one minute in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+
+### **24. validate_task_parms_Weekly.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Test the datetime format of the following `Datetime` attribute values: `HH:MM:SS`, `MM-DD HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, and `WDAY HH:MM:SS` (abbreviated and full week day names). Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test2()`|Test the datetime format of the following `Datetime` attribute values: `MM-DD`, and `YYYY-MM-DD`. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass a `Datetime` attribute with `HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of`TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass a `Datetime` attribute with `MM-DD HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass a `Datetime` attribute with `YYYY-MM-DD HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass a `Datetime` attribute with `WDAY HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass a `Datetime` attribute with `MM-DD` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test8()`|Pass a `Datetime` attribute with `YYYY-MM-DD` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test9()`|Pass a `Datetime` attribute with invalid value that does not follow any datetime format. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test10()`|Test the datetime format of the following `Datetime` attribute values: `HH:MM:SS`, `MM-DD HH:MM:SS`, and `YYYY-MM-DD HH:MM:SS`. The format `WDAY HH:MM:SS` does not require to be tested because it will always rollover to the next week. The datetime value is one minute in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test11()`|Test the datetime format of the following `Datetime` attribute values: `MM-DD`, and `YYYY-MM-DD`. The datetime value is one day in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+
+### **25. validate_task_parms_Monthly.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Test the datetime format of the following `Datetime` attribute values: `HH:MM:SS`, `MM-DD HH:MM:SS`, and `YYYY-MM-DD HH:MM:SS`. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test2()`|Test the datetime format of the following `Datetime` attribute values: `MM-DD`, and `YYYY-MM-DD`. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass a valid `Datetime` value with the format `WDAY HH:MM:SS`. The datetime format `WDAY HH:MM:SS` is incompatible with `Monthly` frequency attribute. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass a `Datetime` attribute with `HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of`TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass a `Datetime` attribute with `MM-DD HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass a `Datetime` attribute with `YYYY-MM-DD HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass a `Datetime` attribute with `MM-DD` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test8()`|Pass a `Datetime` attribute with `YYYY-MM-DD` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test9()`|Pass a `Datetime` attribute with invalid value that does not follow any datetime format. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test10()`|Test the datetime format of the following `Datetime` attribute values: `HH:MM:SS`, `MM-DD HH:MM:SS`, and `YYYY-MM-DD HH:MM:SS`. The datetime value is one minute in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test11()`|Test the datetime format of the following `Datetime` attribute values: `MM-DD`, and `YYYY-MM-DD`. The datetime value is one day in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+
+### **26. validate_task_parms_Yearly.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Test the datetime format of the following `Datetime` attribute values: `MM-DD HH:MM:SS` and `YYYY-MM-DD HH:MM:SS`. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test2()`|Test the datetime format of the following `Datetime` attribute values: `MM-DD`, and `YYYY-MM-DD`. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass a valid `Datetime` values with the format `HH:MM:SS` and `WDAY HH:MM:SS`. The datetime formats `HH:MM:SS` and `WDAY HH:MM:SS` are incompatible with `Yearly` frequency attribute. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass a `Datetime` attribute with `MM-DD HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass a `Datetime` attribute with `YYYY-MM-DD HH:MM:SS` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass a `Datetime` attribute with `MM-DD` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass a `Datetime` attribute with `YYYY-MM-DD` format. The `Datetime` attribute is invalid. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test8()`|Pass a `Datetime` attribute with invalid value that does not follow any datetime format. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test9()`|Test the datetime format of the following `Datetime` attribute values: `MM-DD HH:MM:SS`, and `YYYY-MM-DD HH:MM:SS`. The datetime value is one minute in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test10()`|Test the datetime format of the following `Datetime` attribute values: `MM-DD`, and `YYYY-MM-DD`. The datetime value is one day in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+
+### **27. Task_update_execution_datetime_Once.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Call the method with tasks using the following `Datetime` formats: `HH:MM:SS`, `MM-DD HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, and `WDAY HH:MM:SS` (abbreviated and full week day names). Tasks with `Frequency` of `Once` should not have the execution datetime value updated.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test2()`|Call the method with tasks using the following `Datetime` formats: `MM-DD`, and `YYYY-MM-DD`. Tasks with `Frequency` of `Once` should not have the execution datetime value updated.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+
+### **28. Task_update_execution_datetime_Hourly.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Tasks with `Frequency` of `Hourly` should have the execution datetime value increased by 1 hour after the method call succeeded.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|

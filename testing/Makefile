@@ -20,30 +20,36 @@ OBJ_FILES = Variant.o					\
 
 ###################################################################################################
 
-all: task_scheduler.o					\
-	Task_constructor					\
-	Task_methods						\
-	validate_hms						\
-	validate_wday						\
-	validate_wday_hms					\
-	validate_mmdd						\
-	validate_mmdd_hms					\
-	validate_yyyymmdd					\
-	validate_yyyymmdd_hms				\
-	init_today							\
-	init_year							\
-	today_add_hms						\
-	today_add_dhms						\
-	today_add_wday_hms					\
-	today_add_mmdd						\
-	today_add_mmdd_hms					\
-	today_add_yyyymmdd					\
-	today_add_yyyymmdd_hms				\
-	get_datetime_format					\
-	validate_task_parms					\
-	validate_task_parms_Once			\
-	validate_task_parms_Hourly			\
-	validate_task_parms_Daily
+all: task_scheduler.o						\
+	Task_constructor						\
+	Task_methods							\
+	validate_hms							\
+	validate_wday							\
+	validate_wday_hms						\
+	validate_mmdd							\
+	validate_mmdd_hms						\
+	validate_yyyymmdd						\
+	validate_yyyymmdd_hms					\
+	init_today								\
+	init_year								\
+	today_add_hms							\
+	today_add_dhms							\
+	today_add_wday_hms						\
+	today_add_mmdd							\
+	today_add_mmdd_hms						\
+	today_add_yyyymmdd						\
+	today_add_yyyymmdd_hms					\
+	get_datetime_format						\
+	validate_task_parms						\
+	validate_task_parms_Once				\
+	validate_task_parms_Hourly				\
+	validate_task_parms_Daily				\
+	validate_task_parms_Weekly				\
+	validate_task_parms_Monthly				\
+	validate_task_parms_Yearly				\
+	Task_update_execution_datetime_Once		\
+	Task_update_execution_datetime_Hourly	\
+	Task_update_execution_datetime_Daily
 
 task_scheduler.o: 
 	g++ -g -c -std=c++17 -pthread $(SRC_FILES)
@@ -140,32 +146,62 @@ validate_task_parms_Daily: task_scheduler.o
 	g++ -g -c -std=c++17 validate_task_parms_Daily.cpp
 	g++ -g -o validate_task_parms_Daily validate_task_parms_Daily.o $(OBJ_FILES) -pthread -lstdc++fs
 
+validate_task_parms_Weekly: task_scheduler.o 
+	g++ -g -c -std=c++17 validate_task_parms_Weekly.cpp
+	g++ -g -o validate_task_parms_Weekly validate_task_parms_Weekly.o $(OBJ_FILES) -pthread -lstdc++fs
+
+validate_task_parms_Monthly: task_scheduler.o 
+	g++ -g -c -std=c++17 validate_task_parms_Monthly.cpp
+	g++ -g -o validate_task_parms_Monthly validate_task_parms_Monthly.o $(OBJ_FILES) -pthread -lstdc++fs
+
+validate_task_parms_Yearly: task_scheduler.o 
+	g++ -g -c -std=c++17 validate_task_parms_Yearly.cpp
+	g++ -g -o validate_task_parms_Yearly validate_task_parms_Yearly.o $(OBJ_FILES) -pthread -lstdc++fs
+
+Task_update_execution_datetime_Once: task_scheduler.o 
+	g++ -g -c -std=c++17 Task_update_execution_datetime_Once.cpp
+	g++ -g -o Task_update_execution_datetime_Once Task_update_execution_datetime_Once.o $(OBJ_FILES) -pthread -lstdc++fs
+
+Task_update_execution_datetime_Hourly: task_scheduler.o 
+	g++ -g -c -std=c++17 Task_update_execution_datetime_Hourly.cpp
+	g++ -g -Wall -o Task_update_execution_datetime_Hourly Task_update_execution_datetime_Hourly.o $(OBJ_FILES) -pthread -lstdc++fs
+
+Task_update_execution_datetime_Daily: task_scheduler.o 
+	g++ -g -c -std=c++17 Task_update_execution_datetime_Daily.cpp
+	g++ -g -Wall -o Task_update_execution_datetime_Daily Task_update_execution_datetime_Daily.o $(OBJ_FILES) -pthread -lstdc++fs
+
 ###################################################################################################
 
 clean:
-	rm *.o 						\
-	rm *.gch					\
-	rm ../src/*.gch				\
-	Task_constructor			\
-	Task_methods				\
-	validate_hms				\
-	validate_wday				\
-	validate_wday_hms			\
-	validate_mmdd				\
-	validate_mmdd_hms			\
-	validate_yyyymmdd			\
-	validate_yyyymmdd_hms		\
-	init_today					\
-	init_year					\
-	today_add_hms				\
-	today_add_dhms				\
-	today_add_wday_hms			\
-	today_add_mmdd				\
-	today_add_mmdd_hms			\
-	today_add_yyyymmdd			\
-	today_add_yyyymmdd_hms		\
-	get_datetime_format			\
-	validate_task_parms			\
-	validate_task_parms_Once	\
-	validate_task_parms_Hourly	\
-	validate_task_parms_Daily
+	rm *.o 									\
+	rm *.gch								\
+	rm ../src/*.gch							\
+	Task_constructor						\
+	Task_methods							\
+	validate_hms							\
+	validate_wday							\
+	validate_wday_hms						\
+	validate_mmdd							\
+	validate_mmdd_hms						\
+	validate_yyyymmdd						\
+	validate_yyyymmdd_hms					\
+	init_today								\
+	init_year								\
+	today_add_hms							\
+	today_add_dhms							\
+	today_add_wday_hms						\
+	today_add_mmdd							\
+	today_add_mmdd_hms						\
+	today_add_yyyymmdd						\
+	today_add_yyyymmdd_hms					\
+	get_datetime_format						\
+	validate_task_parms						\
+	validate_task_parms_Once				\
+	validate_task_parms_Hourly				\
+	validate_task_parms_Daily				\
+	validate_task_parms_Weekly				\
+	validate_task_parms_Monthly				\
+	validate_task_parms_Yearly				\
+	Task_update_execution_datetime_Once		\
+	Task_update_execution_datetime_Hourly	\
+	Task_update_execution_datetime_Daily
