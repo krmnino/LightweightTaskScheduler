@@ -459,10 +459,7 @@ void Task::set_id(int id){
 }
 
 void Task::update_execution_datetime(void){
-    if(this->frequency == "Once"){
-        return;
-    } 
-    else if(this->frequency == "Hourly"){
+    if(this->frequency == "Hourly"){
         // Add 1 hour in seconds to current execution time
         this->execution_datetime = this->execution_datetime + 3600;
     }
@@ -593,7 +590,6 @@ void Task::update_execution_datetime(void){
                 day = (this->initial_execution_datetime.day < 10) ? 
                        "0" + std::to_string(this->initial_execution_datetime.day) :
                        std::to_string(this->initial_execution_datetime.day);
-
             }
             break;
         case OCTOBER:
@@ -643,8 +639,8 @@ void Task::update_execution_datetime(void){
         else{
             this->execution_datetime = this->execution_datetime + (365 * 24 * 60 * 60);
         }
-
     }
+    return; // Else, Frequency is Once so no update occurs 
 }
 
 DatetimeValidate validate_hms(std::string hms){
