@@ -337,3 +337,15 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test3()`|Initialize `Task` with a `YYYY-MM-DD HH:MM:SS` datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 |`test4()`|Initialize `Task` with a `WDAY HH:MM:SS` (full week day names) datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 |`test5()`|Initialize `Task` with a `WDAY HH:MM:SS` (abbreviated week day names) datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+
+### **30. Task_update_execution_datetime_Weekly.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Initialize `Task` with a `HH:MM:SS` datetime format and `Frequency` of `Weekly`. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test2()`|Initialize `Task` with a `MM-DD HH:MM:SS` datetime format and `Frequency` of `Weekly`. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test3()`|Initialize `Task` with a `YYYY-MM-DD HH:MM:SS` datetime format and `Frequency` of `Weekly`. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test4()`|Initialize `Task` with a `WDAY HH:MM:SS` (full week day names) datetime format and `Frequency` of `Weekly`. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test5()`|Initialize `Task` with a `WDAY HH:MM:SS` (abbreviated week day names) datetime format and `Frequency` of `Weekly`. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test6()`|Initialize `Task` with a `MM-DD` datetime format and `Frequency` of `Weekly`. Initial execution datetime has an offset of one day into the future. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test7()`|Initialize `Task` with a `YYYY-MM-DD` datetime format and `Frequency` of `Weekly`. Initial execution datetime has an offset of one day into the future. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|

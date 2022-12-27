@@ -49,7 +49,8 @@ all: task_scheduler.o						\
 	validate_task_parms_Yearly				\
 	Task_update_execution_datetime_Once		\
 	Task_update_execution_datetime_Hourly	\
-	Task_update_execution_datetime_Daily
+	Task_update_execution_datetime_Daily	\
+	Task_update_execution_datetime_Weekly
 
 task_scheduler.o: 
 	g++ -g -c -std=c++17 -pthread $(SRC_FILES)
@@ -170,6 +171,10 @@ Task_update_execution_datetime_Daily: task_scheduler.o
 	g++ -g -c -std=c++17 Task_update_execution_datetime_Daily.cpp
 	g++ -g -Wall -o Task_update_execution_datetime_Daily Task_update_execution_datetime_Daily.o $(OBJ_FILES) -pthread -lstdc++fs
 
+Task_update_execution_datetime_Weekly: task_scheduler.o 
+	g++ -g -c -std=c++17 Task_update_execution_datetime_Weekly.cpp
+	g++ -g -Wall -o Task_update_execution_datetime_Weekly Task_update_execution_datetime_Weekly.o $(OBJ_FILES) -pthread -lstdc++fs
+
 ###################################################################################################
 
 clean:
@@ -204,4 +209,5 @@ clean:
 	validate_task_parms_Yearly				\
 	Task_update_execution_datetime_Once		\
 	Task_update_execution_datetime_Hourly	\
-	Task_update_execution_datetime_Daily
+	Task_update_execution_datetime_Daily	\
+	Task_update_execution_datetime_Weekly
