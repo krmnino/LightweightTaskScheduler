@@ -4,7 +4,7 @@
 #include "../src/Task.hpp"
 
 int test1(){
-    // TEST 1: testing Task::update_execution_datetime(), execution time should increase by 1 hour.
+    // TEST 1: testing Task::update_execution_datetime(), execution time should increase by 7 days.
     // Frequency: Weekly
     // Datetime format: HH:MM:SS
 
@@ -156,7 +156,7 @@ int test1(){
 
 
 int test2(){
-    // TEST 2: testing Task::update_execution_datetime(), execution time should increase by 1 hour.
+    // TEST 2: testing Task::update_execution_datetime(), execution time should increase by 7 days.
     // Frequency: Weekly
     // Datetime format: MM-DD HH:MM:SS
 
@@ -314,7 +314,7 @@ int test2(){
 
 
 int test3(){
-    // TEST 3: testing Task::update_execution_datetime(), execution time should increase by 1 hour.
+    // TEST 3: testing Task::update_execution_datetime(), execution time should increase by 7 days.
     // Frequency: Weekly
     // Datetime format: YYYY-MM-DD HH:MM:SS
 
@@ -473,7 +473,7 @@ int test3(){
 
 
 int test4(){
-    // TEST 4: testing Task::update_execution_datetime(), execution time should increase by 1 hour.
+    // TEST 4: testing Task::update_execution_datetime(), execution time should increase by 7 days.
     // Frequency: Weekly
     // Datetime format: WDAY HH:MM:SS (full week day names)
 
@@ -652,7 +652,7 @@ int test4(){
 
 
 int test5(){
-    // TEST 5: testing Task::update_execution_datetime(), execution time should increase by 1 hour.
+    // TEST 5: testing Task::update_execution_datetime(), execution time should increase by 7 days.
     // Frequency: Weekly
     // Datetime format: WDAY HH:MM:SS (abbreviated week day names)
 
@@ -831,7 +831,7 @@ int test5(){
 
 
 int test6(){
-    // TEST 6: testing Task::update_execution_datetime(), execution time should increase by 1 hour.
+    // TEST 6: testing Task::update_execution_datetime(), execution time should increase by 7 days.
     // Frequency: Weekly
     // Datetime format: MM-DD
 
@@ -982,7 +982,7 @@ int test6(){
 
 
 int test7(){
-    // TEST 7: testing Task::update_execution_datetime(), execution time should increase by 1 hour.
+    // TEST 7: testing Task::update_execution_datetime(), execution time should increase by 7 days.
     // Frequency: Weekly
     // Datetime format: YYYY-MM-DD
 
