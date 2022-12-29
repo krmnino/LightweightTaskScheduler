@@ -91,7 +91,6 @@ int test1(){
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Once";
-    std::string t_datetime = hours + ":" + minutes + ":" + seconds;
 
     std::vector<std::string> datetimes = {
         hours + ":" + minutes + ":" + seconds, // HH:MM:SS
@@ -102,7 +101,7 @@ int test1(){
     };
 
     for(int i = 0; i < datetimes.size(); i++){
-        ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+        ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, datetimes[i]);
         
         ret_datetime_str_before = t->get_execution_datetime_fmt();
         ret_datetime_before = t->get_execution_datetime(false);
@@ -124,7 +123,7 @@ int test1(){
 int test2(){
     // TEST 2: testing Task::update_execution_datetime(), execution time should not change after the call.
     // Frequency: Once
-    // Datetime format: HH:MM:SS
+    // Datetime format: MM-DD and YYYY-MM-DD
 
     time_t time_now;
     time_t time_now_add;
@@ -209,7 +208,6 @@ int test2(){
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Once";
-    std::string t_datetime = hours + ":" + minutes + ":" + seconds;
 
     std::vector<std::string> datetimes = {
         months + "-" + days, // MM-DD
@@ -217,7 +215,7 @@ int test2(){
     };
 
     for(int i = 0; i < datetimes.size(); i++){
-        ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+        ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, datetimes[i]);
         
         ret_datetime_str_before = t->get_execution_datetime_fmt();
         ret_datetime_before = t->get_execution_datetime(false);
