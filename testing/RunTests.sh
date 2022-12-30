@@ -30,3 +30,4 @@
 ./Task_update_execution_datetime_Weekly
 ./Task_update_execution_datetime_Monthly
 ./Task_update_execution_datetime_Yearly
+./Task_setting_exec_datetime_Once

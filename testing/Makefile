@@ -52,7 +52,8 @@ all: task_scheduler.o						\
 	Task_update_execution_datetime_Daily	\
 	Task_update_execution_datetime_Weekly	\
 	Task_update_execution_datetime_Monthly	\
-	Task_update_execution_datetime_Yearly
+	Task_update_execution_datetime_Yearly	\
+	Task_setting_exec_datetime_Once
 
 task_scheduler.o: 
 	g++ -g -c -std=c++17 -pthread $(SRC_FILES)
@@ -166,24 +167,28 @@ Task_update_execution_datetime_Once: task_scheduler.o
 	g++ -g -o Task_update_execution_datetime_Once Task_update_execution_datetime_Once.o $(OBJ_FILES) -pthread -lstdc++fs
 
 Task_update_execution_datetime_Hourly: task_scheduler.o 
-	g++ -g -c -std=c++17 Task_update_execution_datetime_Hourly.cpp
+	g++ -g -Wall -c -std=c++17 Task_update_execution_datetime_Hourly.cpp
 	g++ -g -Wall -o Task_update_execution_datetime_Hourly Task_update_execution_datetime_Hourly.o $(OBJ_FILES) -pthread -lstdc++fs
 
 Task_update_execution_datetime_Daily: task_scheduler.o 
-	g++ -g -c -std=c++17 Task_update_execution_datetime_Daily.cpp
+	g++ -g -Wall -c -std=c++17 Task_update_execution_datetime_Daily.cpp
 	g++ -g -Wall -o Task_update_execution_datetime_Daily Task_update_execution_datetime_Daily.o $(OBJ_FILES) -pthread -lstdc++fs
 
 Task_update_execution_datetime_Weekly: task_scheduler.o 
-	g++ -g -c -std=c++17 Task_update_execution_datetime_Weekly.cpp
+	g++ -g -Wall -c -std=c++17 Task_update_execution_datetime_Weekly.cpp
 	g++ -g -Wall -o Task_update_execution_datetime_Weekly Task_update_execution_datetime_Weekly.o $(OBJ_FILES) -pthread -lstdc++fs
 
 Task_update_execution_datetime_Monthly: task_scheduler.o 
-	g++ -g -c -std=c++17 Task_update_execution_datetime_Monthly.cpp
+	g++ -g -Wall -c -std=c++17 Task_update_execution_datetime_Monthly.cpp
 	g++ -g -Wall -o Task_update_execution_datetime_Monthly Task_update_execution_datetime_Monthly.o $(OBJ_FILES) -pthread -lstdc++fs
 
 Task_update_execution_datetime_Yearly: task_scheduler.o 
-	g++ -g -c -std=c++17 Task_update_execution_datetime_Yearly.cpp
+	g++ -g -Wall -c -std=c++17 Task_update_execution_datetime_Yearly.cpp
 	g++ -g -Wall -o Task_update_execution_datetime_Yearly Task_update_execution_datetime_Yearly.o $(OBJ_FILES) -pthread -lstdc++fs
+
+Task_setting_exec_datetime_Once: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 Task_setting_exec_datetime_Once.cpp
+	g++ -g -Wall -o Task_setting_exec_datetime_Once Task_setting_exec_datetime_Once.o $(OBJ_FILES) -pthread -lstdc++fs
 
 ###################################################################################################
 
@@ -222,4 +227,5 @@ clean:
 	Task_update_execution_datetime_Daily	\
 	Task_update_execution_datetime_Weekly	\
 	Task_update_execution_datetime_Monthly	\
-	Task_update_execution_datetime_Yearly
+	Task_update_execution_datetime_Yearly	\
+	Task_setting_exec_datetime_Once
