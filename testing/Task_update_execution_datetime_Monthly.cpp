@@ -61,7 +61,7 @@ int test1(){
         break;
     case FEBRUARY:
         // Check if we are currently on a leap year
-        if(struct_time_now_add.tm_mday > FEBRUARY_DAYS & 1900 + struct_time_now_add.tm_year % 4 == 0){
+        if(struct_time_now_add.tm_mday > FEBRUARY_DAYS && 1900 + struct_time_now_add.tm_year % 4 == 0){
             // Add 29 days in seconds to current time
             time_now_add = time_now + ((FEBRUARY_DAYS + 1) * 24 * 60 * 60);
         }
@@ -280,7 +280,7 @@ int test2(){
         break;
     case FEBRUARY:
         // Check if we are currently on a leap year
-        if(struct_time_now_add.tm_mday > FEBRUARY_DAYS & 1900 + struct_time_now_add.tm_year % 4 == 0){
+        if(struct_time_now_add.tm_mday > FEBRUARY_DAYS && 1900 + struct_time_now_add.tm_year % 4 == 0){
             // Add 29 days in seconds to current time
             time_now_add = time_now + ((FEBRUARY_DAYS + 1) * 24 * 60 * 60);
         }
@@ -500,7 +500,7 @@ int test3(){
         break;
     case FEBRUARY:
         // Check if we are currently on a leap year
-        if(struct_time_now_add.tm_mday > FEBRUARY_DAYS & 1900 + struct_time_now_add.tm_year % 4 == 0){
+        if(struct_time_now_add.tm_mday > FEBRUARY_DAYS && 1900 + struct_time_now_add.tm_year % 4 == 0){
             // Add 29 days in seconds to current time
             time_now_add = time_now + ((FEBRUARY_DAYS + 1) * 24 * 60 * 60);
         }
@@ -711,7 +711,7 @@ int test4(){
         break;
     case FEBRUARY:
         // Check if we are currently on a leap year
-        if(struct_time_now_add.tm_mday > FEBRUARY_DAYS & 1900 + struct_time_now_add.tm_year % 4 == 0){
+        if(struct_time_now_add.tm_mday > FEBRUARY_DAYS && 1900 + struct_time_now_add.tm_year % 4 == 0){
             // Add 29 days in seconds to current time
             time_now_add = time_now_add + ((FEBRUARY_DAYS + 1) * 24 * 60 * 60);
         }
@@ -923,7 +923,7 @@ int test5(){
         break;
     case FEBRUARY:
         // Check if we are currently on a leap year
-        if(struct_time_now_add.tm_mday > FEBRUARY_DAYS & 1900 + struct_time_now_add.tm_year % 4 == 0){
+        if(struct_time_now_add.tm_mday > FEBRUARY_DAYS && 1900 + struct_time_now_add.tm_year % 4 == 0){
             // Add 29 days in seconds to current time
             time_now_add = time_now_add + ((FEBRUARY_DAYS + 1) * 24 * 60 * 60);
         }
