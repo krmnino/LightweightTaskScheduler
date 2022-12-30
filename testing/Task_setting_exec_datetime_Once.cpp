@@ -239,6 +239,7 @@ int test1(){
                           hours + ":" + minutes + ":" + seconds + " " + years;
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
+    assert(time_now_add == t->get_execution_datetime(true));
     assert(t->get_status() == ts::TaskStatus::QUEUED);
 
     delete t;
@@ -483,6 +484,7 @@ int test2(){
                           hours + ":" + minutes + ":" + seconds + " " + years;
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
+    assert(time_now_add == t->get_execution_datetime(true));
     assert(t->get_status() == ts::TaskStatus::QUEUED);
 
     delete t;
@@ -728,6 +730,7 @@ int test3(){
                           hours + ":" + minutes + ":" + seconds + " " + years;
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
+    assert(time_now_add == t->get_execution_datetime(true));
     assert(t->get_status() == ts::TaskStatus::QUEUED);
 
     delete t;
@@ -973,6 +976,7 @@ int test4(){
                           hours + ":" + minutes + ":" + seconds + " " + years;
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
+    assert(time_now_add == t->get_execution_datetime(true));
     assert(t->get_status() == ts::TaskStatus::QUEUED);
 
     delete t;
@@ -1218,6 +1222,7 @@ int test5(){
                           hours + ":" + minutes + ":" + seconds + " " + years;
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
+    assert(time_now_add == t->get_execution_datetime(true));
     assert(t->get_status() == ts::TaskStatus::QUEUED);
 
     delete t;
@@ -1465,6 +1470,7 @@ int test6(){
                           hours + ":" + minutes + ":" + seconds + " " + years;
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
+    assert(time_now_add == t->get_execution_datetime(true));
     assert(t->get_status() == ts::TaskStatus::QUEUED);
 
     delete t;
@@ -1712,6 +1718,7 @@ int test7(){
                           hours + ":" + minutes + ":" + seconds + " " + years;
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
+    assert(time_now_add == t->get_execution_datetime(true));
     assert(t->get_status() == ts::TaskStatus::QUEUED);
 
     delete t;
