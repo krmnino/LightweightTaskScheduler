@@ -370,6 +370,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test4()`|Initialize `Task` with a `YYYY-MM-DD` datetime format and `Frequency` of `Yearly`. Initial execution datetime has an offset of one day into the future. After a successful method call, the execution datetime value should correspond the calendar day of the next year.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 
 ### **33. Task_setting_exec_datetime_Once.cpp**
+
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Initialize `Task` with a `HH:MM:SS` datetime format and `Frequency` of `Once`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
@@ -383,6 +384,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test9()`|Initialize `Task` with constructor `Task::Task(std::string, std::string, std::string, std::string)`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
 
 ### **34. Task_setting_exec_datetime_Hourly.cpp**
+
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Initialize `Task` with no datetime parameter and `Frequency` of `Hourly`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
