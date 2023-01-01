@@ -1229,8 +1229,39 @@ time_t today_add_mmdd(std::string mmdd){
     unsigned long days = ((mmdd.at(3) & 0x0F) * 10) + 
                           (mmdd.at(4) & 0x0F) - 1;
 
-    // Accumulate day count in year plus day in month
     unsigned long acc_days = 0;
+    // Check if input month value is less than current month value
+    // If true, then the return time_t value should wrap around to the next year
+    if(time_start_year_struct->tm_mon < (months - 1)){
+        acc_days += JANUARY_DAYS +
+                    FEBRUARY_DAYS +
+                    MARCH_DAYS +
+                    APRIL_DAYS + 
+                    MAY_DAYS +
+                    JUNE_DAYS +
+                    JULY_DAYS +
+                    AUGUST_DAYS + 
+                    SEPTEMBER_DAYS +
+                    OCTOBER_DAYS +
+                    NOVEMBER_DAYS +
+                    DECEMBER_DAYS + 1;
+    }
+    else if((time_start_year_struct->tm_mon == (months - 1) && 
+             time_start_year_struct->tm_mday <= (days + 1))){
+        acc_days += JANUARY_DAYS +
+                    FEBRUARY_DAYS +
+                    MARCH_DAYS +
+                    APRIL_DAYS + 
+                    MAY_DAYS +
+                    JUNE_DAYS +
+                    JULY_DAYS +
+                    AUGUST_DAYS + 
+                    SEPTEMBER_DAYS +
+                    OCTOBER_DAYS +
+                    NOVEMBER_DAYS +
+                    DECEMBER_DAYS;
+    }
+    // Accumulate day count in year plus day in month
     switch (months - 1)
     {
     case JANUARY:
@@ -1334,7 +1365,6 @@ time_t today_add_mmdd(std::string mmdd){
         acc_days += 1;
     }
 
-    // Subtract 1 hour (3600 seconds)
     time_t added_time = time_start_year + (acc_days * 24 * 60 * 60);
 
     // Get current time and check for past time
@@ -1370,8 +1400,43 @@ time_t today_add_mmdd_hms(std::string mmdd_hms){
     unsigned long seconds = ((mmdd_hms.at(12) & 0x0F) * 10) + 
                              (mmdd_hms.at(13) & 0x0F);
     
-    // Accumulate day count in year plus day in month
     unsigned long acc_days = 0;
+    // Check if input month value is less than current month value
+    // If true, then the return time_t value should wrap around to the next year
+    if(time_start_year_struct->tm_mon < (months - 1) && 
+       time_start_year_struct->tm_mday < (days + 1)){
+        acc_days += JANUARY_DAYS +
+                    FEBRUARY_DAYS +
+                    MARCH_DAYS +
+                    APRIL_DAYS + 
+                    MAY_DAYS +
+                    JUNE_DAYS +
+                    JULY_DAYS +
+                    AUGUST_DAYS + 
+                    SEPTEMBER_DAYS +
+                    OCTOBER_DAYS +
+                    NOVEMBER_DAYS +
+                    DECEMBER_DAYS + 1;
+    }
+    else if(time_start_year_struct->tm_mon == (months - 1) && 
+            time_start_year_struct->tm_mday == (days + 1) &&
+            time_start_year_struct->tm_hour < hours && 
+            time_start_year_struct->tm_min < minutes && 
+            time_start_year_struct->tm_sec < seconds){
+        acc_days += JANUARY_DAYS +
+                    FEBRUARY_DAYS +
+                    MARCH_DAYS +
+                    APRIL_DAYS + 
+                    MAY_DAYS +
+                    JUNE_DAYS +
+                    JULY_DAYS +
+                    AUGUST_DAYS + 
+                    SEPTEMBER_DAYS +
+                    OCTOBER_DAYS +
+                    NOVEMBER_DAYS +
+                    DECEMBER_DAYS;
+    }
+    // Accumulate day count in year plus day in month
     switch (months - 1)
     {
     case JANUARY:
@@ -1621,7 +1686,17 @@ time_t today_add_yyyymmdd(std::string yyyymmdd){
     // is found, then increase the counter.
     unsigned long february_29s = 0;
     for(unsigned long y = current_year; y < years + 1; y++){
-        if(y % 4 == 0){
+        // Check if current iterating year is a leap year AND is not the
+        // last year to iterate through
+        if(y % 4 == 0 && y != years){
+            february_29s++;
+        }
+        // If the task is scheduled to run on February 29th
+        else if(y % 4 == 0 && y == years && months == FEBRUARY && days + 1 > FEBRUARY_DAYS){
+            february_29s++;
+        }
+        // If the task is scheduled beyond February on a leap year
+        else if(y == years && months > FEBRUARY){
             february_29s++;
         }
     }
@@ -1778,7 +1853,17 @@ time_t today_add_yyyymmdd_hms(std::string yyyymmdd_hms){
     // is found, then increase the counter.
     unsigned long february_29s = 0;
     for(unsigned long y = current_year; y < years + 1; y++){
-        if(y % 4 == 0){
+        // Check if current iterating year is a leap year AND is not the
+        // last year to iterate through
+        if(y % 4 == 0 && y != years){
+            february_29s++;
+        }
+        // If the task is scheduled to run on February 29th
+        else if(y % 4 == 0 && y == years && months == FEBRUARY && days + 1 > FEBRUARY_DAYS){
+            february_29s++;
+        }
+        // If the task is scheduled beyond February on a leap year
+        else if(y == years && months > FEBRUARY){
             february_29s++;
         }
     }
