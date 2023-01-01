@@ -157,11 +157,11 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Add one day in seconds to input `MM-DD` string. Call should succeed and return `time_t` with a value of one day in the future.|`today_add_mmdd(std::string)`|<span style="color:green">Passed|
-|`test2()`|Subtract one day in seconds to input `MM-DD` string. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd(std::string)`|<span style="color:green">Passed|
+|`test2()`|Subtract one day in seconds to input `MM-DD` string. If a datetime is set in the past, the resulting value should wrap to the next year. Call should succeed and return `time_t` with a value of 364 days in the future.|`today_add_mmdd(std::string)`|<span style="color:yellow">Pending|
 |`test3()`|Pass invalid `MM-DD` string with missing dash. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd(std::string)`|<span style="color:green">Passed|
 |`test4()`|Pass invalid `MM-DD` string with `DD` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd(std::string)`|<span style="color:green">Passed|
 |`test5()`|Pass invalid `MM-DD` string with `MM` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd(std::string)`|<span style="color:green">Passed|
-|`test6()`|Pass `MM-DD` string indicating the current date. This call should fail because the returned `time_t` value is equivalent to the `MM-DD` date at `00:00:00` UTC. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd(std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass `MM-DD` string indicating the current date. If a datetime is set to the be exact current date, the resulting value should wrap to the next year. Call should succeed and return `time_t` with a value of 365 days in the future.|`today_add_mmdd(std::string)`|<span style="color:yellow">Pending|
 
 ### **16. today_add_mmdd_hms.cpp**
 
@@ -169,14 +169,15 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |-|-|-|-|
 |`test1()`|Add 60 seconds in seconds to input `MM-DD HH:MM:SS` string. Call should succeed and return `time_t` with a value of 60 seconds into the future.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
 |`test2()`|Add one day seconds in seconds to input `MM-DD HH:MM:SS` string. Call should succeed and return `time_t` with a value of one day into the future.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
-|`test3()`|Subtract one day in seconds to input `MM-DD HH:MM:SS` string. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
-|`test4()`|Pass invalid `MM-DD HH:MM:SS` string with bad `MM-DD` field. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
-|`test5()`|Pass invalid `MM-DD HH:MM:SS` string with bad `HH:MM:SS` field. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
-|`test6()`|Pass invalid `MM-DD HH:MM:SS` string with `DD` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
-|`test7()`|Pass invalid `MM-DD HH:MM:SS` string with `MM` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
-|`test8()`|Pass invalid `MM-DD HH:MM:SS` string with `HH` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
-|`test9()`|Pass invalid `MM-DD HH:MM:SS` string with `MM` (minutes) field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
-|`test10()`|Pass invalid `MM-DD HH:MM:SS` string with `SS` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test3()`|Subtract 60 seconds to input `MM-DD HH:MM:SS` string. If a datetime is set in the past, the resulting value should wrap to the next year. Call should succeed and return `time_t` with a value of ~364 days in the future.|`today_add_mmdd_hms(std::string)`|<span style="color:yellow">Pending|
+|`test4()`|Subtract one day in seconds to input `MM-DD HH:MM:SS` string. If a datetime is set in the past, the resulting value should wrap to the next year. Call should succeed and return `time_t` with a value of ~364 days in the future.|`today_add_mmdd_hms(std::string)`|<span style="color:yellow">Pending|
+|`test5()`|Pass invalid `MM-DD HH:MM:SS` string with bad `MM-DD` field. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass invalid `MM-DD HH:MM:SS` string with bad `HH:MM:SS` field. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass invalid `MM-DD HH:MM:SS` string with `DD` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test8()`|Pass invalid `MM-DD HH:MM:SS` string with `MM` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test9()`|Pass invalid `MM-DD HH:MM:SS` string with `HH` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test10()`|Pass invalid `MM-DD HH:MM:SS` string with `MM` (minutes) field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
+|`test11()`|Pass invalid `MM-DD HH:MM:SS` string with `SS` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_mmdd_hms(std::string)`|<span style="color:green">Passed|
 
 ### **17. today_add_yyyymmdd.cpp**
 
@@ -327,3 +328,66 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Tasks with `Frequency` of `Hourly` should have the execution datetime value increased by 1 hour after the method call succeeded.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+
+### **29. Task_update_execution_datetime_Daily.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Initialize `Task` with a `HH:MM:SS` datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test2()`|Initialize `Task` with a `MM-DD HH:MM:SS` datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test3()`|Initialize `Task` with a `YYYY-MM-DD HH:MM:SS` datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test4()`|Initialize `Task` with a `WDAY HH:MM:SS` (full week day names) datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test5()`|Initialize `Task` with a `WDAY HH:MM:SS` (abbreviated week day names) datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+
+### **30. Task_update_execution_datetime_Weekly.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Initialize `Task` with a `HH:MM:SS` datetime format and `Frequency` of `Weekly`. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test2()`|Initialize `Task` with a `MM-DD HH:MM:SS` datetime format and `Frequency` of `Weekly`. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test3()`|Initialize `Task` with a `YYYY-MM-DD HH:MM:SS` datetime format and `Frequency` of `Weekly`. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test4()`|Initialize `Task` with a `WDAY HH:MM:SS` (full week day names) datetime format and `Frequency` of `Weekly`. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test5()`|Initialize `Task` with a `WDAY HH:MM:SS` (abbreviated week day names) datetime format and `Frequency` of `Weekly`. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test6()`|Initialize `Task` with a `MM-DD` datetime format and `Frequency` of `Weekly`. Initial execution datetime has an offset of one day into the future. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test7()`|Initialize `Task` with a `YYYY-MM-DD` datetime format and `Frequency` of `Weekly`. Initial execution datetime has an offset of one day into the future. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+
+### **31. Task_update_execution_datetime_Monthly.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Initialize `Task` with a `HH:MM:SS` datetime format and `Frequency` of `Monthly`. After a successful method call, the execution datetime value should correspond the calendar day of the next month.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test2()`|Initialize `Task` with a `MM-DD HH:MM:SS` datetime format and `Frequency` of `Monthly`. After a successful method call, the execution datetime value should correspond the calendar day of the next month.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test3()`|Initialize `Task` with a `YYYY-MM-DD HH:MM:SS` datetime format and `Frequency` of `Monthly`. After a successful method call, the execution datetime value should correspond the calendar day of the next month.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test4()`|Initialize `Task` with a `MM-DD` datetime format and `Frequency` of `Monthly`. Initial execution datetime has an offset of one day into the future. After a successful method call, the execution datetime value should correspond the calendar day of the next month.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test5()`|Initialize `Task` with a `YYYY-MM-DD` datetime format and `Frequency` of `Monthly`. Initial execution datetime has an offset of one day into the future. After a successful method call, the execution datetime value should correspond the calendar day of the next month.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+
+### **32. Task_update_execution_datetime_Yearly.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Initialize `Task` with a `MM-DD HH:MM:SS` datetime format and `Frequency` of `Yearly`. After a successful method call, the execution datetime value should correspond the calendar day of the next year.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test2()`|Initialize `Task` with a `YYYY-MM-DD HH:MM:SS` datetime format and `Frequency` of `Yearly`. After a successful method call, the execution datetime value should correspond the calendar day of the next year.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test3()`|Initialize `Task` with a `MM-DD` datetime format and `Frequency` of `Yearly`. Initial execution datetime has an offset of one day into the future. After a successful method call, the execution datetime value should correspond the calendar day of the next year.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+|`test4()`|Initialize `Task` with a `YYYY-MM-DD` datetime format and `Frequency` of `Yearly`. Initial execution datetime has an offset of one day into the future. After a successful method call, the execution datetime value should correspond the calendar day of the next year.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
+
+### **33. Task_setting_exec_datetime_Once.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Initialize `Task` with a `HH:MM:SS` datetime format and `Frequency` of `Once`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test2()`|Initialize `Task` with a `MM-DD HH:MM:SS` datetime format and `Frequency` of `Once`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test3()`|Initialize `Task` with a `YYYY-MM-DD HH:MM:SS` datetime format and `Frequency` of `Once`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test4()`|Initialize `Task` with a `WDAY HH:MM:SS` (full week day names) datetime format and `Frequency` of `Once`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test5()`|Initialize `Task` with a `WDAY HH:MM:SS` (abbreviated week day names) datetime format and `Frequency` of `Once`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test6()`|Initialize `Task` with a `MM-DD` datetime format and `Frequency` of `Once`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test7()`|Initialize `Task` with a `YYYY-MM-DD` datetime format and `Frequency` of `Once`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test8()`|Initialize `Task` with an invalid `YYYY-MM-DD` datetime format and `Frequency` of `Once`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test9()`|Initialize `Task` with constructor `Task::Task(std::string, std::string, std::string, std::string)`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+
+### **34. Task_setting_exec_datetime_Hourly.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Initialize `Task` with no datetime parameter and `Frequency` of `Hourly`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test2()`|Initialize `Task` with valid datetime parameters and `Frequency` of `Hourly`. The datetime formats tested are the following: `HH:MM:SS`, `MM-DD HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, `WDAY HH:MM:SS` (full week day names), `WDAY HH:MM:SS` (abbreviated week day names), `MM-DD`, and `YYYY-MM-DD`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test3()`|Initialize `Task` with a datetime parameter, with an invalid datetime format, and `Frequency` of `Hourly`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|

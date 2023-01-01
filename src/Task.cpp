@@ -42,6 +42,7 @@ Task::Task(std::string name,
             break;
         default:
             this->execution_datetime = 0;
+            this->status = TaskStatus::ERROR;
             break;
         }
     }
@@ -71,6 +72,7 @@ Task::Task(std::string name,
             break;
         default:
             this->execution_datetime = 0;
+            this->status = TaskStatus::ERROR;
             break;
         }
     }
@@ -103,6 +105,7 @@ Task::Task(std::string name,
             break;
         default:
             this->execution_datetime = 0;
+            this->status = TaskStatus::ERROR;
             break;
         }
     }
@@ -128,6 +131,7 @@ Task::Task(std::string name,
             break;
         default:
             this->execution_datetime = 0;
+            this->status = TaskStatus::ERROR;
             break;
         }
     }
@@ -150,8 +154,12 @@ Task::Task(std::string name,
             break;
         default:
             this->execution_datetime = 0;
+            this->status = TaskStatus::ERROR;
             break;
         }
+    }
+    else{
+        this->status = TaskStatus::ERROR;
     }
 
     // Save datetime format
@@ -172,6 +180,9 @@ Task::Task(std::string name,
     this->creation_datetime = this->creation_datetime;
 
     this->output = "";
+    if(this->status != TaskStatus::ERROR){
+        this->status = TaskStatus::QUEUED;
+    }
 }
 
 Task::Task(std::string name, 
@@ -188,6 +199,7 @@ Task::Task(std::string name,
     }
     else{
         this->execution_datetime = 0;
+        this->status = TaskStatus::ERROR;
     }
 
     // Set initial execution datetime struct
@@ -205,6 +217,9 @@ Task::Task(std::string name,
     this->creation_datetime = this->creation_datetime;
 
     this->output = "";
+    if(this->status != TaskStatus::ERROR){
+        this->status = TaskStatus::QUEUED;
+    }
 }
 
 Task::Task(){}

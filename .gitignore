@@ -8,6 +8,7 @@ src/*.gch
 
 # TESTING 
 testing/*.o
+testing/*.dat
 testing/Task_constructor
 testing/Task_methods
 testing/validate_hms
@@ -37,3 +38,8 @@ testing/validate_task_parms_Yearly
 testing/Task_update_execution_datetime_Once
 testing/Task_update_execution_datetime_Hourly
 testing/Task_update_execution_datetime_Daily
+testing/Task_update_execution_datetime_Weekly
+testing/Task_update_execution_datetime_Monthly
+testing/Task_update_execution_datetime_Yearly
+testing/Task_setting_exec_datetime_Once
+testing/Task_setting_exec_datetime_Hourly

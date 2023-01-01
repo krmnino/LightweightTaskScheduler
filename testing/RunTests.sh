@@ -27,3 +27,8 @@
 ./Task_update_execution_datetime_Once
 ./Task_update_execution_datetime_Hourly
 ./Task_update_execution_datetime_Daily
+./Task_update_execution_datetime_Weekly
+./Task_update_execution_datetime_Monthly
+./Task_update_execution_datetime_Yearly
+./Task_setting_exec_datetime_Once
+./Task_setting_exec_datetime_Hourly
