@@ -61,13 +61,15 @@ int test1(){
 
 
 int test2(){
-    // TEST 2: testing today_add_mmdd() function -> FAIL
+    // TEST 2: testing today_add_mmdd() function -> PASS
+    // Wraps to the next year
     // Current time - 1 day
 
     time_t time_now;
     time_t time_now_add;
     std::tm* to_struct;
     std::tm struct_time_now_add;
+    std::tm struct_ret;
     std::string months;
     std::string days;
     std::string datetime_str;
@@ -96,7 +98,20 @@ int test2(){
         
     ret = ts::today_add_mmdd(datetime_str);
 
-    assert(ret == 0);
+    to_struct = std::gmtime(&ret);
+    struct_ret = *to_struct;
+
+    months = (struct_ret.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_ret.tm_mon + 1) :
+              std::to_string(struct_ret.tm_mon + 1);  
+    days = (struct_ret.tm_mday < 10) ? 
+            "0" + std::to_string(struct_ret.tm_mday) :
+            std::to_string(struct_ret.tm_mday);
+
+    ret_str = months + "-" + days;
+
+    assert(ret_str == datetime_str);
+    assert(ret >= time_now);
        
     std::cout << ">> today_add_mmdd: Test 2 done" << std::endl;
     return 0;
@@ -145,12 +160,14 @@ int test5(){
 
 
 int test6(){
-    // TEST 6: testing today_add_mmdd() function -> FAIL
+    // TEST 6: testing today_add_mmdd() function -> PASS
     // Current time
 
     time_t time_now;
+    time_t time_now_add;
     std::tm* to_struct;
     std::tm struct_time_now_add;
+    std::tm struct_ret;
     std::string months;
     std::string days;
     std::string datetime_str;
@@ -176,7 +193,20 @@ int test6(){
         
     ret = ts::today_add_mmdd(datetime_str);
 
-    assert(ret == 0);
+    to_struct = std::gmtime(&ret);
+    struct_ret = *to_struct;
+
+    months = (struct_ret.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_ret.tm_mon + 1) :
+              std::to_string(struct_ret.tm_mon + 1);  
+    days = (struct_ret.tm_mday < 10) ? 
+            "0" + std::to_string(struct_ret.tm_mday) :
+            std::to_string(struct_ret.tm_mday);
+
+    ret_str = months + "-" + days;
+
+    assert(ret_str == datetime_str);
+    assert(ret >= time_now);
        
     std::cout << ">> today_add_mmdd: Test 6 done" << std::endl;
     return 0;
