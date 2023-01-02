@@ -438,7 +438,7 @@ int test9(){
     // TEST 9: testing validate_task_parms() function -> PASS
     // Current time minus one minute in seconds 
     // Pass datetime formats MMDD_HHMMSS. 
-    // Frequency = Once
+    // Frequency = Daily
 
     time_t time_now;
     time_t time_now_add;
@@ -503,7 +503,7 @@ int test10(){
     // TEST 10: testing validate_task_parms() function -> PASS
     // Current time plus one minute in seconds. Test different week day names (full and abbreviated)
     // Pass datetime format WDAY_HHMMSS. 
-    // Frequency = Once
+    // Frequency = Daily
 
     time_t time_now;
     time_t time_now_add;
