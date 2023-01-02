@@ -96,7 +96,7 @@ int test1(){
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
         c->add_entry("ScriptFilename", "ls_test.sh");
-        c->add_entry("Frequency", "Once");
+        c->add_entry("Frequency", "Daily");
         c->add_entry("Datetime", datetimes[i]);
 
         ret = ts::validate_task_parms(c, "scripts/");
@@ -124,7 +124,7 @@ int test2(){
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
         c->add_entry("ScriptFilename", "ls_test.sh");
-        c->add_entry("Frequency", "Once");
+        c->add_entry("Frequency", "Daily");
         c->add_entry("Datetime", datetimes[i]);
 
         ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
@@ -332,7 +332,7 @@ int test7(){
 int test8(){
     // TEST 8: testing validate_task_parms() function -> FAIL
     // Pass HH:MM:SS datetime values in the past with Frequency = Daily
-    // TODO: add support for MMDD_HHMMSS, YYYYMMDD_HHMMSS, and WDAY_HHMMSS
+    // TODO: add support for YYYYMMDD_HHMMSS, and WDAY_HHMMSS
 
     time_t time_now;
     time_t time_now_add;
@@ -412,7 +412,6 @@ int test8(){
 
     std::vector<std::string> datetimes = {
         hours + ":" + minutes + ":" + seconds, // HH:MM:SS
-        months + "-" + days + " " + hours + ":" + minutes + ":" + seconds, // MM-DD HH:MM:SS
         years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds, // YYYY-MM-DD HH:MM:SS
     };
     for(int i = 0; i < datetimes.size(); i++){
@@ -420,7 +419,7 @@ int test8(){
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
         c->add_entry("ScriptFilename", "ls_test.sh");
-        c->add_entry("Frequency", "Once");
+        c->add_entry("Frequency", "Daily");
         c->add_entry("Datetime", datetimes[i]);
 
         ret = ts::validate_task_parms(c, "scripts/");
@@ -435,6 +434,144 @@ int test8(){
 }
 
 
+int test9(){
+    // TEST 9: testing validate_task_parms() function -> PASS
+    // Current time minus one minute in seconds 
+    // Pass datetime formats MMDD_HHMMSS. 
+    // Frequency = Once
+
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    ts::TaskValidate ret;     
+
+    time_now = std::time(&time_now);
+
+    // Subtract one minute in seconds from current time
+    time_now_add = time_now - 60;
+    
+    // time_t to std::tm*
+    to_struct = std::gmtime(&time_now_add);
+
+    // std::tm* to std::tm
+    struct_time_now_add = *to_struct;
+
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
+    days = (struct_time_now_add.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now_add.tm_mday) :
+            std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+
+    datetime_str = months + "-" + days + " " + hours + ":" + minutes + ":" + seconds; // MM-DD HH:MM:SS
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test Title");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Daily");
+    c->add_entry("Datetime", datetime_str);
+
+    ret = ts::validate_task_parms(c, "scripts/");
+
+    assert(ret == ts::TaskValidate::OK);
+
+    delete c;
+
+    std::cout << ">> validate_task_parms_Daily: 9 done" << std::endl;
+    return 0;
+}
+
+
+int test10(){
+    // TEST 10: testing validate_task_parms() function -> PASS
+    // Current time plus one minute in seconds. Test different week day names (full and abbreviated)
+    // Pass datetime format WDAY_HHMMSS. 
+    // Frequency = Once
+
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    ts::TaskValidate ret;     
+
+    time_now = std::time(&time_now);
+
+    // Add one minute in seconds from current time
+    time_now_add = time_now + 60;
+    
+    // time_t to std::tm*
+    to_struct = std::gmtime(&time_now_add);
+
+    // std::tm* to std::tm
+    struct_time_now_add = *to_struct;
+
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+
+    std::vector<std::string> datetimes = {
+        std::string("Monday") + " " + hours + ":" + minutes + ":" + seconds,    // WDAY HH:MM:SS (full week day name)
+        std::string("Tuesday") + " " + hours + ":" + minutes + ":" + seconds,   // WDAY HH:MM:SS (full week day name)
+        std::string("Wednesday") + " " + hours + ":" + minutes + ":" + seconds, // WDAY HH:MM:SS (full week day name)
+        std::string("Thursday") + " " + hours + ":" + minutes + ":" + seconds,  // WDAY HH:MM:SS (full week day name)
+        std::string("Friday") + " " + hours + ":" + minutes + ":" + seconds,    // WDAY HH:MM:SS (full week day name)
+        std::string("Saturday") + " " + hours + ":" + minutes + ":" + seconds,  // WDAY HH:MM:SS (full week day name)
+        std::string("Sunday") + " " + hours + ":" + minutes + ":" + seconds,    // WDAY HH:MM:SS (full week day name)
+        std::string("Mon") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
+        std::string("Tue") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
+        std::string("Wed") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
+        std::string("Thu") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
+        std::string("Fri") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
+        std::string("Sat") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
+        std::string("Sun") + " " + hours + ":" + minutes + ":" + seconds        // WDAY HH:MM:SS (abbreviated week day name)
+    };
+    for(int i = 0; i < datetimes.size(); i++){
+        cl::Config* c = new cl::Config();
+        c->add_entry("Name", "Test Title");
+        c->add_entry("Description", "A short description");
+        c->add_entry("ScriptFilename", "ls_test.sh");
+        c->add_entry("Frequency", "Daily");
+        c->add_entry("Datetime", datetimes[i]);
+
+        ret = ts::validate_task_parms(c, "scripts/");
+
+        assert(ret == ts::TaskValidate::OK);
+
+        delete c;
+    }
+
+    std::cout << ">> validate_task_parms_Daily: 10 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     test1();
     test2();
@@ -444,4 +581,6 @@ int main(){
     test6();
     test7();
     test8();
+    test9();
+    test10();
 }
