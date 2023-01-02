@@ -347,7 +347,6 @@ int test7(){
         "0a-15",
         "02-a5",
         "02a15",
-        "02-15",
         "80-15",
         "02-70"
     };
@@ -431,7 +430,7 @@ int test9(){
 int test10(){
     // TEST 10: testing validate_task_parms() function -> FAIL
     // Current time minus one minute in seconds 
-    // Pass datetime formats HHMMSS, MMDD_HHMMSS, YYYYMMDD_HHMMSS, WDAY_HHMMSS. 
+    // Pass datetime formats HHMMSS, YYYYMMDD_HHMMSS. 
     // Frequency = Once
 
     time_t time_now;
@@ -467,39 +466,6 @@ int test10(){
     days = (struct_time_now_add.tm_mday < 10) ? 
             "0" + std::to_string(struct_time_now_add.tm_mday) :
             std::to_string(struct_time_now_add.tm_mday);
-    switch (struct_time_now_add.tm_wday)
-    {
-    case SUNDAY:
-        wday_full = "Sunday";
-        wday_abbr = "Sun";
-        break;
-    case MONDAY:
-        wday_full = "Monday";
-        wday_abbr = "Mon";
-        break;
-    case TUESDAY:
-        wday_full = "Tuesday";
-        wday_abbr = "Tue";
-        break;
-    case WEDNESDAY:
-        wday_full = "Wednesday";
-        wday_abbr = "Wed";
-        break;
-    case THURSDAY:
-        wday_full = "Thursday";
-        wday_abbr = "Thu";
-        break;
-    case FRIDAY:
-        wday_full = "Friday";
-        wday_abbr = "Fri";
-        break;
-    case SATURDAY:
-        wday_full = "Saturday";
-        wday_abbr = "Sat";
-        break;
-    default:
-        break;
-    }
     hours = (struct_time_now_add.tm_hour < 10) ? 
              "0" + std::to_string(struct_time_now_add.tm_hour) :
              std::to_string(struct_time_now_add.tm_hour);
@@ -512,7 +478,6 @@ int test10(){
 
     std::vector<std::string> datetimes = {
         hours + ":" + minutes + ":" + seconds, // HH:MM:SS
-        months + "-" + days + " " + hours + ":" + minutes + ":" + seconds, // MM-DD HH:MM:SS
         years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds, // YYYY-MM-DD HH:MM:SS
     };
     for(int i = 0; i < datetimes.size(); i++){
@@ -538,7 +503,7 @@ int test10(){
 int test11(){
     // TEST 11: testing validate_task_parms() function -> FAIL
     // Current time minus one day in seconds 
-    // Pass datetime formats MMDD, YYYYMMDD. 
+    // Pass datetime format YYYYMMDD. 
     // Frequency = Once
 
     time_t time_now;
@@ -569,10 +534,197 @@ int test11(){
     days = (struct_time_now_add.tm_mday < 10) ? 
             "0" + std::to_string(struct_time_now_add.tm_mday) :
             std::to_string(struct_time_now_add.tm_mday);
+    
+    datetime_str = years + "-" + months + "-" + days; // YYYY-MM-DD
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test Title");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", datetime_str);
+
+    ret = ts::validate_task_parms(c, "scripts/");
+
+    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+
+    delete c;
+
+    std::cout << ">> validate_task_parms_Once: 11 done" << std::endl;
+    return 0;
+}
+
+
+int test12(){
+    // TEST 12: testing validate_task_parms() function -> PASS
+    // Current time minus one minute in seconds 
+    // Pass datetime formats MMDD_HHMMSS. 
+    // Frequency = Once
+
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    ts::TaskValidate ret;     
+
+    time_now = std::time(&time_now);
+
+    // Subtract one minute in seconds from current time
+    time_now_add = time_now - 60;
+    
+    // time_t to std::tm*
+    to_struct = std::gmtime(&time_now_add);
+
+    // std::tm* to std::tm
+    struct_time_now_add = *to_struct;
+
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
+    days = (struct_time_now_add.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now_add.tm_mday) :
+            std::to_string(struct_time_now_add.tm_mday);
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+
+    datetime_str = months + "-" + days + " " + hours + ":" + minutes + ":" + seconds; // MM-DD HH:MM:SS
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test Title");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", datetime_str);
+
+    ret = ts::validate_task_parms(c, "scripts/");
+
+    assert(ret == ts::TaskValidate::OK);
+
+    delete c;
+
+    std::cout << ">> validate_task_parms_Once: 12 done" << std::endl;
+    return 0;
+}
+
+
+int test13(){
+    // TEST 13: testing validate_task_parms() function -> PASS
+    // Current time minus one day in seconds 
+    // Pass datetime format MMDD. 
+    // Frequency = Once
+
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string months;
+    std::string days;
+    std::string datetime_str;
+    ts::TaskValidate ret;     
+
+    time_now = std::time(&time_now);
+
+    // Subtract one minute in seconds from current time
+    time_now_add = time_now - (24 * 60 * 60);
+    
+    // time_t to std::tm*
+    to_struct = std::gmtime(&time_now_add);
+
+    // std::tm* to std::tm
+    struct_time_now_add = *to_struct;
+
+    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
+              std::to_string(struct_time_now_add.tm_mon + 1);  
+    days = (struct_time_now_add.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now_add.tm_mday) :
+            std::to_string(struct_time_now_add.tm_mday);
+
+    datetime_str = months + "-" + days; // MM-DD
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test Title");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", datetime_str);
+
+    ret = ts::validate_task_parms(c, "scripts/");
+
+    assert(ret == ts::TaskValidate::OK);
+
+    delete c;
+
+    std::cout << ">> validate_task_parms_Once: 13 done" << std::endl;
+    return 0;
+}
+
+
+int test14(){
+    // TEST 1: testing validate_task_parms() function -> PASS
+    // Current time plus one minute in seconds. Test different week day names (full and abbreviated)
+    // Pass datetime format WDAY_HHMMSS. 
+    // Frequency = Once
+
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string datetime_str;
+    ts::TaskValidate ret;     
+
+    time_now = std::time(&time_now);
+
+    // Add one minute in seconds from current time
+    time_now_add = time_now + 60;
+    
+    // time_t to std::tm*
+    to_struct = std::gmtime(&time_now_add);
+
+    // std::tm* to std::tm
+    struct_time_now_add = *to_struct;
+
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
 
     std::vector<std::string> datetimes = {
-        months + "-" + days, // MM-DD
-        years + "-" + months + "-" + days, // YYYY-MM-DD
+        std::string("Monday") + " " + hours + ":" + minutes + ":" + seconds,    // WDAY HH:MM:SS (full week day name)
+        std::string("Tuesday") + " " + hours + ":" + minutes + ":" + seconds,   // WDAY HH:MM:SS (full week day name)
+        std::string("Wednesday") + " " + hours + ":" + minutes + ":" + seconds, // WDAY HH:MM:SS (full week day name)
+        std::string("Thursday") + " " + hours + ":" + minutes + ":" + seconds,  // WDAY HH:MM:SS (full week day name)
+        std::string("Friday") + " " + hours + ":" + minutes + ":" + seconds,    // WDAY HH:MM:SS (full week day name)
+        std::string("Saturday") + " " + hours + ":" + minutes + ":" + seconds,  // WDAY HH:MM:SS (full week day name)
+        std::string("Sunday") + " " + hours + ":" + minutes + ":" + seconds,    // WDAY HH:MM:SS (full week day name)
+        std::string("Mon") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
+        std::string("Tue") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
+        std::string("Wed") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
+        std::string("Thu") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
+        std::string("Fri") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
+        std::string("Sat") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
+        std::string("Sun") + " " + hours + ":" + minutes + ":" + seconds        // WDAY HH:MM:SS (abbreviated week day name)
     };
     for(int i = 0; i < datetimes.size(); i++){
         cl::Config* c = new cl::Config();
@@ -584,12 +736,12 @@ int test11(){
 
         ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+        assert(ret == ts::TaskValidate::OK);
 
         delete c;
     }
 
-    std::cout << ">> validate_task_parms_Once: 11 done" << std::endl;
+    std::cout << ">> validate_task_parms_Once: 14 done" << std::endl;
     return 0;
 }
 
@@ -606,4 +758,7 @@ int main(){
     test9();
     test10();
     test11();
+    test12();
+    test13();
+    test14();
 }
