@@ -1233,10 +1233,15 @@ time_t today_add_mmdd(std::string mmdd){
         return 0;
     }
 
-    // Get time at start of current day
+    // Get time at start of current year
     time_t time_start_year = init_year();
     std::tm* time_start_year_struct;
     time_start_year_struct = gmtime(&time_start_year);
+
+    time_t time_now;
+    std::time(&time_now);
+    std::tm* time_now_struct;
+    time_now_struct = gmtime(&time_now);
 
     // Extract months and days and convert to integers
     unsigned long months = ((mmdd.at(0) & 0x0F) * 10) + 
@@ -1246,8 +1251,8 @@ time_t today_add_mmdd(std::string mmdd){
 
     unsigned long acc_days = 0;
     // Check if input month value is less than current month value
-    // If true, then the return time_t value should wrap around to the next year
-    if(time_start_year_struct->tm_mon < (months - 1)){
+    // If true, then the return time_t value should wrap around to the next year + 1 day
+    if((months - 1) < time_now_struct->tm_mon){
         acc_days += JANUARY_DAYS +
                     FEBRUARY_DAYS +
                     MARCH_DAYS +
@@ -1261,8 +1266,11 @@ time_t today_add_mmdd(std::string mmdd){
                     NOVEMBER_DAYS +
                     DECEMBER_DAYS + 1;
     }
-    else if((time_start_year_struct->tm_mon == (months - 1) && 
-             time_start_year_struct->tm_mday <= (days + 1))){
+    // Check if input month value and current month value are the same, and 
+    // input day value is less or equal than current day value
+    // If true, then the return time_t value should wrap around to the next year
+    else if(((months - 1) == time_now_struct->tm_mon && 
+             (days + 1) <= time_now_struct->tm_mday)){
         acc_days += JANUARY_DAYS +
                     FEBRUARY_DAYS +
                     MARCH_DAYS +
@@ -1383,7 +1391,6 @@ time_t today_add_mmdd(std::string mmdd){
     time_t added_time = time_start_year + (acc_days * 24 * 60 * 60);
 
     // Get current time and check for past time
-    time_t time_now;
     std::time(&time_now);
     if(time_now >= added_time){
         return 0;
@@ -1397,10 +1404,15 @@ time_t today_add_mmdd_hms(std::string mmdd_hms){
         return 0;
     }
 
-    // Get time at start of current day
+    // Get time at start of current year
     time_t time_start_year = init_year();
     std::tm* time_start_year_struct;
     time_start_year_struct = gmtime(&time_start_year);
+
+    time_t time_now;
+    std::time(&time_now);
+    std::tm* time_now_struct;
+    time_now_struct = gmtime(&time_now);
     
     // Convert hours and minutes to seconds and add them together
     // Subtract 1 day
@@ -1416,10 +1428,11 @@ time_t today_add_mmdd_hms(std::string mmdd_hms){
                              (mmdd_hms.at(13) & 0x0F);
     
     unsigned long acc_days = 0;
-    // Check if input month value is less than current month value
+    // Check if input month value is less than current month value and if 
+    // input day value is less than current day value
     // If true, then the return time_t value should wrap around to the next year
-    if(time_start_year_struct->tm_mon < (months - 1) && 
-       time_start_year_struct->tm_mday < (days + 1)){
+    if((months - 1) < time_now_struct->tm_mon  && 
+       (days + 1) < time_now_struct->tm_mday){
         acc_days += JANUARY_DAYS +
                     FEBRUARY_DAYS +
                     MARCH_DAYS +
@@ -1433,11 +1446,18 @@ time_t today_add_mmdd_hms(std::string mmdd_hms){
                     NOVEMBER_DAYS +
                     DECEMBER_DAYS + 1;
     }
-    else if(time_start_year_struct->tm_mon == (months - 1) && 
-            time_start_year_struct->tm_mday == (days + 1) &&
-            time_start_year_struct->tm_hour < hours && 
-            time_start_year_struct->tm_min < minutes && 
-            time_start_year_struct->tm_sec < seconds){
+    // Check if input month value matches the current month value and the input
+    // day value matches the current day value and (check if hours-minutes-seconds
+    // pairs match or hours-minutes pairs match or hours pairs match) 
+    // If true, then the return time_t value should wrap around to the next year
+    else if(((months - 1) == time_now_struct->tm_mon && 
+             (days + 1) == time_now_struct->tm_mday) && 
+            (hours == time_now_struct->tm_hour &&
+             minutes == time_now_struct->tm_min &&
+             seconds == time_now_struct->tm_sec) || 
+            (hours == time_now_struct->tm_hour &&
+             minutes == time_now_struct->tm_min) ||
+            (hours == time_now_struct->tm_hour)){
         acc_days += JANUARY_DAYS +
                     FEBRUARY_DAYS +
                     MARCH_DAYS +
@@ -1559,7 +1579,6 @@ time_t today_add_mmdd_hms(std::string mmdd_hms){
     time_t added_time = time_start_year + seconds;
 
     // Get current time and check for past time
-    time_t time_now;
     std::time(&time_now);
     if(time_now >= added_time){
         return 0;
@@ -1573,7 +1592,7 @@ time_t today_add_yyyymmdd(std::string yyyymmdd){
         return 0;
     }
 
-    // Get time at start of current day
+    // Get time at start of current year
     time_t time_start_year = init_year();
     std::tm* time_start_year_struct;
     time_start_year_struct = gmtime(&time_start_year);
@@ -1711,7 +1730,7 @@ time_t today_add_yyyymmdd(std::string yyyymmdd){
             february_29s++;
         }
         // If the task is scheduled beyond February on a leap year
-        else if(y == years && months > FEBRUARY){
+        else if(y % 4 == 0 && y == years && months > FEBRUARY){
             february_29s++;
         }
     }
@@ -1734,7 +1753,7 @@ time_t today_add_yyyymmdd_hms(std::string yyyymmdd_hms){
         return 0;
     }
 
-    // Get time at start of current day
+    // Get time at start of current year
     time_t time_start_year = init_year();
     std::tm* time_start_year_struct;
     time_start_year_struct = gmtime(&time_start_year);
@@ -1878,7 +1897,7 @@ time_t today_add_yyyymmdd_hms(std::string yyyymmdd_hms){
             february_29s++;
         }
         // If the task is scheduled beyond February on a leap year
-        else if(y == years && months > FEBRUARY){
+        else if(y % 4 == 0 && y == years && months > FEBRUARY){
             february_29s++;
         }
     }
