@@ -437,7 +437,7 @@ int test8(){
 int test9(){
     // TEST 9: testing validate_task_parms() function -> PASS
     // Current time minus one minute in seconds 
-    // Pass datetime formats MMDD_HHMMSS. 
+    // Pass datetime format MMDD_HHMMSS. 
     // Frequency = Daily
 
     time_t time_now;

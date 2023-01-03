@@ -430,7 +430,7 @@ int test9(){
 int test10(){
     // TEST 10: testing validate_task_parms() function -> FAIL
     // Current time minus one minute in seconds 
-    // Pass datetime formats HHMMSS, YYYYMMDD_HHMMSS. 
+    // Pass datetime formats HHMMSS and YYYYMMDD_HHMMSS
     // Frequency = Once
 
     time_t time_now;
@@ -558,7 +558,7 @@ int test11(){
 int test12(){
     // TEST 12: testing validate_task_parms() function -> PASS
     // Current time minus one minute in seconds 
-    // Pass datetime formats MMDD_HHMMSS. 
+    // Pass datetime format MMDD_HHMMSS
     // Frequency = Once
 
     time_t time_now;

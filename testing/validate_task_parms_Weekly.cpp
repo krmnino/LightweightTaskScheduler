@@ -115,7 +115,7 @@ int test1(){
 int test2(){
     // TEST 2: testing validate_task_parms() function -> PASS
     // Current time plus one day in seconds 
-    // Pass datetime formats MMDD, YYYYMMDD. 
+    // Pass datetime formats MMDD and YYYYMMDD. 
     // Frequency = Weekly
 
     time_t time_now;
@@ -501,7 +501,7 @@ int test10(){
 int test11(){
     // TEST 11: testing validate_task_parms() function -> FAIL
     // Current time minus one day in seconds 
-    // Pass datetime formats YYYYMMDD. 
+    // Pass datetime format YYYYMMDD. 
     // Frequency = Weekly
 
     time_t time_now;
@@ -556,7 +556,7 @@ int test11(){
 int test12(){
     // TEST 12: testing validate_task_parms() function -> PASS
     // Current time minus one minute in seconds 
-    // Pass datetime formats MMDD_HHMMSS. 
+    // Pass datetime format MMDD_HHMMSS. 
     // Frequency = Weekly
 
     time_t time_now;
