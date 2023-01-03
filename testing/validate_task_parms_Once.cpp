@@ -674,7 +674,7 @@ int test13(){
 
 
 int test14(){
-    // TEST 1: testing validate_task_parms() function -> PASS
+    // TEST 14: testing validate_task_parms() function -> PASS
     // Current time plus one minute in seconds. Test different week day names (full and abbreviated)
     // Pass datetime format WDAY_HHMMSS. 
     // Frequency = Once
