@@ -95,11 +95,9 @@ enum class DatetimeFormat {
     WDAY7_HHMMSS = 76,
     WDAY8_HHMMSS = 84,
     WDAY9_HHMMSS = 92,
-    MMDD_HHMMSS = 26,
     WDAY_HHMMSS = 44,
     YYYYMMDD = 12,
     HHMMSS = 14,
-    MMDD = 6,
     INVALID_DATE_FORMAT = -1
 };
 
@@ -152,8 +150,6 @@ public:
 DatetimeValidate validate_hms(std::string);
 DatetimeValidate validate_wday(std::string);
 DatetimeValidate validate_wday_hms(std::string);
-DatetimeValidate validate_mmdd(std::string);
-DatetimeValidate validate_mmdd_hms(std::string);
 DatetimeValidate validate_yyyymmdd(std::string);
 DatetimeValidate validate_yyyymmdd_hms(std::string);
 time_t init_today(void);
@@ -162,8 +158,6 @@ time_t today_add_hrs(int);
 time_t today_add_hms(std::string);
 time_t today_add_dhms(int, std::string);
 time_t today_add_wday_hms(std::string);
-time_t today_add_mmdd(std::string);
-time_t today_add_mmdd_hms(std::string);
 time_t today_add_yyyymmdd(std::string);
 time_t today_add_yyyymmdd_hms(std::string);
 DatetimeFormat get_datetime_format(std::string);

@@ -21,9 +21,6 @@ Task::Task(std::string name,
         case (int)DatetimeFormat::HHMMSS:
             this->execution_datetime = today_add_hms(execution_datetime_str);
             break;
-        case (int)DatetimeFormat::MMDD_HHMMSS:
-            this->execution_datetime = today_add_mmdd_hms(execution_datetime_str);
-            break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
             break;
@@ -33,9 +30,6 @@ Task::Task(std::string name,
         case (int)DatetimeFormat::WDAY8_HHMMSS:
         case (int)DatetimeFormat::WDAY9_HHMMSS:
             this->execution_datetime = today_add_wday_hms(execution_datetime_str);
-            break;
-        case (int)DatetimeFormat::MMDD:
-            this->execution_datetime = today_add_mmdd(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
             this->execution_datetime = today_add_yyyymmdd(execution_datetime_str);
@@ -56,9 +50,6 @@ Task::Task(std::string name,
         switch ((int)format){
         case (int)DatetimeFormat::HHMMSS:
             this->execution_datetime = today_add_hms(execution_datetime_str);
-            break;
-        case (int)DatetimeFormat::MMDD_HHMMSS:
-            this->execution_datetime = today_add_mmdd_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
@@ -84,9 +75,6 @@ Task::Task(std::string name,
         case (int)DatetimeFormat::HHMMSS:
             this->execution_datetime = today_add_hms(execution_datetime_str);
             break;
-        case (int)DatetimeFormat::MMDD_HHMMSS:
-            this->execution_datetime = today_add_mmdd_hms(execution_datetime_str);
-            break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
             break;
@@ -96,9 +84,6 @@ Task::Task(std::string name,
         case (int)DatetimeFormat::WDAY8_HHMMSS:
         case (int)DatetimeFormat::WDAY9_HHMMSS:
             this->execution_datetime = today_add_wday_hms(execution_datetime_str);
-            break;
-        case (int)DatetimeFormat::MMDD:
-            this->execution_datetime = today_add_mmdd(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
             this->execution_datetime = today_add_yyyymmdd(execution_datetime_str);
@@ -117,14 +102,8 @@ Task::Task(std::string name,
         case (int)DatetimeFormat::HHMMSS:
             this->execution_datetime = today_add_hms(execution_datetime_str);
             break;
-        case (int)DatetimeFormat::MMDD_HHMMSS:
-            this->execution_datetime = today_add_mmdd_hms(execution_datetime_str);
-            break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
-            break;
-        case (int)DatetimeFormat::MMDD:
-            this->execution_datetime = today_add_mmdd(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
             this->execution_datetime = today_add_yyyymmdd(execution_datetime_str);
@@ -140,14 +119,8 @@ Task::Task(std::string name,
         format = get_datetime_format(execution_datetime_str);
         // Datetime string validation occurs at Scheduler constructor
         switch ((int)format){
-        case (int)DatetimeFormat::MMDD_HHMMSS:
-            this->execution_datetime = today_add_mmdd_hms(execution_datetime_str);
-            break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
-            break;
-        case (int)DatetimeFormat::MMDD:
-            this->execution_datetime = today_add_mmdd(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
             this->execution_datetime = today_add_yyyymmdd(execution_datetime_str);
@@ -762,148 +735,6 @@ DatetimeValidate validate_wday_hms(std::string wday_hms){
     return DatetimeValidate::OK;
 }
 
-DatetimeValidate validate_mmdd(std::string mmdd){
-    if(mmdd.length() != 5){
-        return DatetimeValidate::BAD_MMDD_LENGTH;
-    }
-    
-    time_t today = init_today();
-    std::tm* today_struct = std::gmtime(&today);
-
-    // tm_year counts years starting at 1900
-    unsigned int year = today_struct->tm_year + 1900;
-    unsigned int num;
-    unsigned int month;
-    unsigned int day;
-
-    // Validate month individual characters
-    num = mmdd.at(0);
-    if(num < '0' | num > '9'){
-        return DatetimeValidate::BAD_NUMBER_CHARACTER;
-    }
-    num = mmdd.at(1);
-    if(num < '0' | num > '9'){
-        return DatetimeValidate::BAD_NUMBER_CHARACTER;
-    }
-    // Validate range of months
-    month = ((mmdd.at(0) & 0x0F) * 10) + 
-             (mmdd.at(1) & 0x0F);
-    if(month < 1 | month > 12){
-        return DatetimeValidate::MONTH_OUT_OF_RANGE;
-    }
-    // Subtract 1 from month to match the std::tm format
-    month = month - 1;
-    // Check if dash delimiter exists
-    if(mmdd.at(2) != '-'){
-        return DatetimeValidate::MISSING_DASH;
-    }
-    // Validate day individual characters
-    num = mmdd.at(3);
-    if(num < '0' | num > '9'){
-        return DatetimeValidate::BAD_NUMBER_CHARACTER;
-    }
-    num = mmdd.at(4);
-    if(num < '0' | num > '9'){
-        return DatetimeValidate::BAD_NUMBER_CHARACTER;
-    }
-    // Validate range of days by month
-    day = ((mmdd.at(3) & 0x0F) * 10) + 
-           (mmdd.at(4) & 0x0F);
-    switch (month){
-    case JANUARY:
-        if(day < 1 || day > 31){
-            return DatetimeValidate::DAY_OUT_OF_RANGE;
-        }
-        break;
-    case FEBRUARY:
-        // If year is a leap year, then up to 29 days
-        if(year % 4 == 0){
-            if(day < 1 || day > 29){
-                return DatetimeValidate::DAY_OUT_OF_RANGE;
-            }
-        }
-        else{
-            if(day < 1 || day > 28){
-                return DatetimeValidate::DAY_OUT_OF_RANGE;
-            }
-        }
-        break;
-    case MARCH:
-        if(day < 1 || day > 31){
-            return DatetimeValidate::DAY_OUT_OF_RANGE;
-        }
-        break;
-    case APRIL:
-        if(day < 1 || day > 30){
-            return DatetimeValidate::DAY_OUT_OF_RANGE;
-        }
-        break;
-    case MAY:
-        if(day < 1 || day > 31){
-            return DatetimeValidate::DAY_OUT_OF_RANGE;
-        }
-        break;
-    case JUNE:
-        if(day < 1 || day > 30){
-            return DatetimeValidate::DAY_OUT_OF_RANGE;
-        }
-        break;
-    case JULY:
-        if(day < 1 || day > 31){
-            return DatetimeValidate::DAY_OUT_OF_RANGE;
-        }    
-        break;
-    case AUGUST:
-        if(day < 1 || day > 31){
-            return DatetimeValidate::DAY_OUT_OF_RANGE;
-        }       
-        break;
-    case SEPTEMBER:
-        if(day < 1 || day > 30){
-            return DatetimeValidate::DAY_OUT_OF_RANGE;
-        }    
-        break;
-    case OCTOBER:
-        if(day < 1 || day > 31){
-            return DatetimeValidate::DAY_OUT_OF_RANGE;
-        }    
-        break;
-    case NOVEMBER:
-        if(day < 1 || day > 30){
-            return DatetimeValidate::DAY_OUT_OF_RANGE;
-        }    
-        break;
-    case DECEMBER:
-        if(day < 1 || day > 31){
-            return DatetimeValidate::DAY_OUT_OF_RANGE;
-        }    
-        break;
-    default:
-        return DatetimeValidate::INVALID_DATETIME_INPUT;
-        break;
-    }
-    return DatetimeValidate::OK;
-}
-
-DatetimeValidate validate_mmdd_hms(std::string mmdd_hms){
-    int space_idx = mmdd_hms.find(" ");
-    if(space_idx < 0){
-        return DatetimeValidate::MISSING_SPACE;
-    }
-    std::string date = mmdd_hms.substr(0, space_idx);
-    std::string time = mmdd_hms.substr(space_idx + 1, mmdd_hms.length());
-    DatetimeValidate ret;
-    ret = validate_mmdd(date);
-    if(ret != DatetimeValidate::OK){
-        return ret;
-    }
-    ret = validate_hms(time);
-    if(ret != DatetimeValidate::OK){
-        return ret;
-    }
-    return DatetimeValidate::OK;
-}
-
 DatetimeValidate validate_yyyymmdd(std::string yyyymmdd){
     if(yyyymmdd.length() != 10){
         return DatetimeValidate::BAD_YYYYMMDD_LENGTH;
@@ -1228,526 +1059,6 @@ time_t today_add_wday_hms(std::string wday_hms){
     return time_now;
 }
 
-time_t today_add_mmdd(std::string mmdd){
-    if(validate_mmdd(mmdd) != DatetimeValidate::OK){
-        return 0;
-    }
-
-    // Get time at start of current year
-    time_t time_start_year = init_year();
-    std::tm* time_start_year_struct;
-    time_start_year_struct = gmtime(&time_start_year);
-
-    time_t time_now;
-    std::time(&time_now);
-    std::tm* time_now_struct;
-    time_now_struct = gmtime(&time_now);
-
-    // Extract months and days and convert to integers
-    unsigned long months = ((mmdd.at(0) & 0x0F) * 10) + 
-                           (mmdd.at(1) & 0x0F);
-    unsigned long days = ((mmdd.at(3) & 0x0F) * 10) + 
-                          (mmdd.at(4) & 0x0F) - 1;
-
-    unsigned long acc_days = 0;
-    // Check if input month value is less than current month value
-    // If true, then the return time_t value should wrap around to the next year + 1 day
-    if((months - 1) < time_now_struct->tm_mon){
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + 
-                    SEPTEMBER_DAYS +
-                    OCTOBER_DAYS +
-                    NOVEMBER_DAYS +
-                    DECEMBER_DAYS + 1;
-    }
-    // Check if input month value and current month value are the same, and 
-    // input day value is less or equal than current day value
-    // If true, then the return time_t value should wrap around to the next year
-    else if(((months - 1) == time_now_struct->tm_mon && 
-             (days + 1) <= time_now_struct->tm_mday)){
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + 
-                    SEPTEMBER_DAYS +
-                    OCTOBER_DAYS +
-                    NOVEMBER_DAYS +
-                    DECEMBER_DAYS;
-    }
-    // Accumulate day count in year plus day in month
-    switch (months - 1)
-    {
-    case JANUARY:
-        acc_days += days;
-        break;
-    case FEBRUARY:
-        acc_days += JANUARY_DAYS + days;
-        break;
-    case MARCH:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS + days;
-        break;
-    case APRIL:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS + days;
-        break;
-    case MAY:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + days;
-        break;
-    case JUNE:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS + days;
-        break;
-    case JULY:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS + days;   
-        break;
-    case AUGUST:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS + days;      
-        break;
-    case SEPTEMBER:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + days;  
-        break;
-    case OCTOBER:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + 
-                    SEPTEMBER_DAYS + days;   
-        break;
-    case NOVEMBER:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + 
-                    SEPTEMBER_DAYS +
-                    OCTOBER_DAYS + days;      
-        break;
-    case DECEMBER:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + 
-                    SEPTEMBER_DAYS +
-                    OCTOBER_DAYS +
-                    NOVEMBER_DAYS + days;    
-        break;
-    default:
-        return 0;
-        break;
-    }
-
-    // If current year is a leap year, then add 1 extra day
-    if((time_start_year_struct->tm_year + 1900) % 4 == 0){
-        acc_days += 1;
-    }
-
-    time_t added_time = time_start_year + (acc_days * 24 * 60 * 60);
-
-    // Get current time and check for past time
-    std::time(&time_now);
-    if(time_now >= added_time){
-        return 0;
-    }    
-    
-    return added_time;
-}
-
-time_t today_add_mmdd_hms(std::string mmdd_hms){
-    if(validate_mmdd_hms(mmdd_hms) != DatetimeValidate::OK){
-        return 0;
-    }
-
-    // Get time at start of current year
-    time_t time_start_year = init_year();
-    std::tm* time_start_year_struct;
-    time_start_year_struct = gmtime(&time_start_year);
-
-    time_t time_now;
-    std::time(&time_now);
-    std::tm* time_now_struct;
-    time_now_struct = gmtime(&time_now);
-    
-    // Convert hours and minutes to seconds and add them together
-    // Subtract 1 day
-    unsigned long months = ((mmdd_hms.at(0) & 0x0F) * 10) + 
-                            (mmdd_hms.at(1) & 0x0F);
-    unsigned long days = ((mmdd_hms.at(3) & 0x0F) * 10) + 
-                          (mmdd_hms.at(4) & 0x0F) - 1;
-    unsigned long hours = ((mmdd_hms.at(6) & 0x0F) * 10) + 
-                           (mmdd_hms.at(7) & 0x0F);
-    unsigned long minutes = ((mmdd_hms.at(9) & 0x0F) * 10) + 
-                             (mmdd_hms.at(10) & 0x0F);
-    unsigned long seconds = ((mmdd_hms.at(12) & 0x0F) * 10) + 
-                             (mmdd_hms.at(13) & 0x0F);
-    
-    unsigned long acc_days = 0;
-    // Check if input month value is less than current month value and if 
-    // input day value is less than current day value
-    // If true, then the return time_t value should wrap around to the next year
-    if((months - 1) < time_now_struct->tm_mon  && 
-       (days + 1) < time_now_struct->tm_mday){
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + 
-                    SEPTEMBER_DAYS +
-                    OCTOBER_DAYS +
-                    NOVEMBER_DAYS +
-                    DECEMBER_DAYS + 1;
-    }
-    // Check if input month value matches the current month value and the input
-    // day value matches the current day value and (check if hours-minutes-seconds
-    // pairs match or hours-minutes pairs match or hours pairs match) 
-    // If true, then the return time_t value should wrap around to the next year
-    else if(((months - 1) == time_now_struct->tm_mon && 
-             (days + 1) == time_now_struct->tm_mday) && 
-            (hours == time_now_struct->tm_hour &&
-             minutes == time_now_struct->tm_min &&
-             seconds == time_now_struct->tm_sec) || 
-            (hours == time_now_struct->tm_hour &&
-             minutes == time_now_struct->tm_min) ||
-            (hours == time_now_struct->tm_hour)){
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + 
-                    SEPTEMBER_DAYS +
-                    OCTOBER_DAYS +
-                    NOVEMBER_DAYS +
-                    DECEMBER_DAYS;
-    }
-    // Accumulate day count in year plus day in month
-    switch (months - 1)
-    {
-    case JANUARY:
-        acc_days += days;
-        break;
-    case FEBRUARY:
-        acc_days += JANUARY_DAYS + days;
-        break;
-    case MARCH:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS + days;
-        break;
-    case APRIL:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS + days;
-        break;
-    case MAY:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + days;
-        break;
-    case JUNE:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS + days;
-        break;
-    case JULY:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS + days;   
-        break;
-    case AUGUST:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS + days;      
-        break;
-    case SEPTEMBER:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + days;  
-        break;
-    case OCTOBER:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + 
-                    SEPTEMBER_DAYS + days;   
-        break;
-    case NOVEMBER:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + 
-                    SEPTEMBER_DAYS +
-                    OCTOBER_DAYS + days;      
-        break;
-    case DECEMBER:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + 
-                    SEPTEMBER_DAYS +
-                    OCTOBER_DAYS +
-                    NOVEMBER_DAYS + days;    
-        break;
-    default:
-        return 0;
-        break;
-    }
-
-    // If current year is a leap year, then add 1 extra day
-    if((time_start_year_struct->tm_year + 1900) % 4 == 0){
-        acc_days += 1;
-    }
-
-    seconds += (acc_days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60);
-    time_t added_time = time_start_year + seconds;
-
-    // Get current time and check for past time
-    std::time(&time_now);
-    if(time_now >= added_time){
-        return 0;
-    }    
-    
-    return added_time;
-}
-
-time_t today_add_yyyymmdd(std::string yyyymmdd){
-    if(validate_yyyymmdd(yyyymmdd) != DatetimeValidate::OK){
-        return 0;
-    }
-
-    // Get time at start of current year
-    time_t time_start_year = init_year();
-    std::tm* time_start_year_struct;
-    time_start_year_struct = gmtime(&time_start_year);
-
-    // Convert hours and minutes to seconds and add them together
-    unsigned long years = ((yyyymmdd.at(0) & 0x0F) * 1000) + 
-                          ((yyyymmdd.at(1) & 0x0F) * 100) + 
-                          ((yyyymmdd.at(2) & 0x0F) * 10) + 
-                           (yyyymmdd.at(3) & 0x0F);
-    unsigned long months = ((yyyymmdd.at(5) & 0x0F) * 10) + 
-                           (yyyymmdd.at(6) & 0x0F);
-    unsigned long days = ((yyyymmdd.at(8) & 0x0F) * 10) + 
-                          (yyyymmdd.at(9) & 0x0F) - 1;
-
-    // Since tm_year counts years since 1900, add 1900
-    time_t current_year = time_start_year_struct->tm_year + 1900;
-
-    // Get delta years and a check if less than 0
-    unsigned long diff_years = years - current_year;
-    if(diff_years < 0){
-        return 0;
-    }
-
-    // Accumulate day count in year plus day in month
-    unsigned long acc_days = 0;
-    switch (months - 1)
-    {
-    case JANUARY:
-        acc_days += days;
-        break;
-    case FEBRUARY:
-        acc_days += JANUARY_DAYS + days;
-        break;
-    case MARCH:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS + days;
-        break;
-    case APRIL:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS + days;
-        break;
-    case MAY:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + days;
-        break;
-    case JUNE:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS + days;
-        break;
-    case JULY:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS + days;   
-        break;
-    case AUGUST:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS + days;      
-        break;
-    case SEPTEMBER:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + days;  
-        break;
-    case OCTOBER:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + 
-                    SEPTEMBER_DAYS + days;   
-        break;
-    case NOVEMBER:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + 
-                    SEPTEMBER_DAYS +
-                    OCTOBER_DAYS + days;      
-        break;
-    case DECEMBER:
-        acc_days += JANUARY_DAYS +
-                    FEBRUARY_DAYS +
-                    MARCH_DAYS +
-                    APRIL_DAYS + 
-                    MAY_DAYS +
-                    JUNE_DAYS +
-                    JULY_DAYS +
-                    AUGUST_DAYS + 
-                    SEPTEMBER_DAYS +
-                    OCTOBER_DAYS +
-                    NOVEMBER_DAYS + days;    
-        break;
-    default:
-        return 0;
-        break;
-    }
-
-    // Loop through the years checking for leap years. If a leap year
-    // is found, then increase the counter.
-    unsigned long february_29s = 0;
-    for(unsigned long y = current_year; y < years + 1; y++){
-        // Check if current iterating year is a leap year AND is not the
-        // last year to iterate through
-        if(y % 4 == 0 && y != years){
-            february_29s++;
-        }
-        // If the task is scheduled to run on February 29th
-        else if(y % 4 == 0 && y == years && months == FEBRUARY && days + 1 > FEBRUARY_DAYS){
-            february_29s++;
-        }
-        // If the task is scheduled beyond February on a leap year
-        else if(y % 4 == 0 && y == years && months > FEBRUARY){
-            february_29s++;
-        }
-    }
-
-    time_t added_time = time_start_year + (diff_years * 365 * 24 * 60 * 60) +
-                        ((acc_days + february_29s) * 24 * 60 * 60);
-
-    // Get current time and check for past time
-    time_t time_now;
-    std::time(&time_now);
-    if(time_now >= added_time){
-        return 0;
-    }    
-    
-    return added_time;
-}
-
 time_t today_add_yyyymmdd_hms(std::string yyyymmdd_hms){
     if(validate_yyyymmdd_hms(yyyymmdd_hms) != DatetimeValidate::OK){
         return 0;
@@ -1961,11 +1272,9 @@ DatetimeFormat get_datetime_format(std::string datetime){
         case (int)DatetimeFormat::WDAY7_HHMMSS:
         case (int)DatetimeFormat::WDAY8_HHMMSS:
         case (int)DatetimeFormat::WDAY9_HHMMSS:
-        case (int)DatetimeFormat::MMDD_HHMMSS:
         case (int)DatetimeFormat::WDAY_HHMMSS:
         case (int)DatetimeFormat::YYYYMMDD:
         case (int)DatetimeFormat::HHMMSS:
-        case (int)DatetimeFormat::MMDD:
         break;
         default:
             return DatetimeFormat::INVALID_DATE_FORMAT;
@@ -2014,12 +1323,6 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             }
             schedule_datetime = today_add_hms(datetime_value);
             break;
-        case (int)DatetimeFormat::MMDD_HHMMSS:
-            if(validate_mmdd_hms(datetime_value) != DatetimeValidate::OK){
-                return TaskValidate::BAD_DATETIME_VALUE;
-            }
-            schedule_datetime = today_add_mmdd_hms(datetime_value);
-            break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             if(validate_yyyymmdd_hms(datetime_value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
@@ -2035,12 +1338,6 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
             schedule_datetime = today_add_wday_hms(datetime_value);
-            break;
-        case (int)DatetimeFormat::MMDD:
-            if(validate_mmdd(datetime_value) != DatetimeValidate::OK){
-                return TaskValidate::BAD_DATETIME_VALUE;
-            }
-            schedule_datetime = today_add_mmdd(datetime_value);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
             if(validate_yyyymmdd(datetime_value) != DatetimeValidate::OK){
@@ -2064,12 +1361,6 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
             schedule_datetime = today_add_hms(datetime_value);
-            break;
-        case (int)DatetimeFormat::MMDD_HHMMSS:
-            if(validate_mmdd_hms(datetime_value) != DatetimeValidate::OK){
-                return TaskValidate::BAD_DATETIME_VALUE;
-            }
-            schedule_datetime = today_add_mmdd_hms(datetime_value);
             break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             if(validate_yyyymmdd_hms(datetime_value) != DatetimeValidate::OK){
@@ -2101,12 +1392,6 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             }
             schedule_datetime = today_add_hms(datetime_value);
             break;
-        case (int)DatetimeFormat::MMDD_HHMMSS:
-            if(validate_mmdd_hms(datetime_value) != DatetimeValidate::OK){
-                return TaskValidate::BAD_DATETIME_VALUE;
-            }
-            schedule_datetime = today_add_mmdd_hms(datetime_value);
-            break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             if(validate_yyyymmdd_hms(datetime_value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
@@ -2122,12 +1407,6 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
             schedule_datetime = today_add_wday_hms(datetime_value);
-            break;
-        case (int)DatetimeFormat::MMDD:
-            if(validate_mmdd(datetime_value) != DatetimeValidate::OK){
-                return TaskValidate::BAD_DATETIME_VALUE;
-            }
-            schedule_datetime = today_add_mmdd(datetime_value);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
             if(validate_yyyymmdd(datetime_value) != DatetimeValidate::OK){
@@ -2149,23 +1428,11 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
             }
             schedule_datetime = today_add_hms(datetime_value);
             break;
-        case (int)DatetimeFormat::MMDD_HHMMSS:
-            if(validate_mmdd_hms(datetime_value) != DatetimeValidate::OK){
-                return TaskValidate::BAD_DATETIME_VALUE;
-            }
-            schedule_datetime = today_add_mmdd_hms(datetime_value);
-            break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             if(validate_yyyymmdd_hms(datetime_value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
             schedule_datetime = today_add_yyyymmdd_hms(datetime_value);
-            break;
-        case (int)DatetimeFormat::MMDD:
-            if(validate_mmdd(datetime_value) != DatetimeValidate::OK){
-                return TaskValidate::BAD_DATETIME_VALUE;
-            }
-            schedule_datetime = today_add_mmdd(datetime_value);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
             if(validate_yyyymmdd(datetime_value) != DatetimeValidate::OK){
@@ -2181,23 +1448,11 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
         // Get datetime format, no validation performed at this step
         format = get_datetime_format(datetime_value);
         switch ((int)format){
-        case (int)DatetimeFormat::MMDD_HHMMSS:
-            if(validate_mmdd_hms(datetime_value) != DatetimeValidate::OK){
-                return TaskValidate::BAD_DATETIME_VALUE;
-            }
-            schedule_datetime = today_add_mmdd_hms(datetime_value);
-            break;
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             if(validate_yyyymmdd_hms(datetime_value) != DatetimeValidate::OK){
                 return TaskValidate::BAD_DATETIME_VALUE;
             }
             schedule_datetime = today_add_yyyymmdd_hms(datetime_value);
-            break;
-        case (int)DatetimeFormat::MMDD:
-            if(validate_mmdd(datetime_value) != DatetimeValidate::OK){
-                return TaskValidate::BAD_DATETIME_VALUE;
-            }
-            schedule_datetime = today_add_mmdd(datetime_value);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
             if(validate_yyyymmdd(datetime_value) != DatetimeValidate::OK){
