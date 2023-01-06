@@ -12,14 +12,14 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 ---
 ## **Tests**
-### **1. Task_constructor.cpp**
+### **Task_constructor.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Verify Task object instantiation with constructor.|`Task(std::string, std::string, std::string, std::string)`<br/>`Task::get_name(void)`<br/> `Task::get_description(void)`<br/>`Task::get_script_name(void)`<br/>`Task::get_frequency(void)` |<span style="color:green">Passed|
 |`test2()`|Verify Task object instantiation with constructor.|`Task(std::string, std::string, std::string, std::string, std::string)`<br/>`Task::get_name(void)`<br/> `Task::get_description(void)`<br/>`Task::get_script_name(void)`<br/>`Task::get_frequency(void)` |<span style="color:green">Passed|
 
-### **2. Task_methods.cpp**
+### **Task_methods.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -31,7 +31,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test6()`|Set and get task id and status values.|`Task::set_id(int)`<br/>`Task::get_id(void)`<br/>`Task::set_status(TaskStatus)`<br/>`Task::get_status(void)`<br/>|<span style="color:green">Passed|
 |`test7()`|Create `Task` object and run it. Then, verify that the command-line output has been successfully routed to output data member.|`Task::run_task(void)`<br/>`Task::get_output(void)`<br/>|<span style="color:green">Passed|
 
-### **3. validate_hms.cpp**
+### **validate_hms.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -49,7 +49,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test12()`|Pass an invalid `HH:MM:SS` string with bad length and all alphabetic characters.|`validate_hms(std::string)`|<span style="color:green">Passed|
 |`test13()`|Pass an invalid `HH:MM:SS` string with valid length and all alphabetic characters.|`validate_hms(std::string)`|<span style="color:green">Passed|
 
-### **4. validate_wday.cpp**
+### **validate_wday.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -57,7 +57,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test2()`|Pass valid abbreviated week day names.|`validate_wday(std::string)`|<span style="color:green">Passed|
 |`test3()`|Invalid week day name.|`validate_wday(std::string)`|<span style="color:green">Passed|
 
-### **5. validate_wday_hms.cpp**
+### **validate_wday_hms.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -67,7 +67,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test4()`|Pass invalid `WDAY HH:MM:SS` string with bad `WDAY` field.|`validate_wday_hms(std::string)`|<span style="color:green">Passed|
 |`test5()`|Pass invalid `WDAY HH:MM:SS` string with bad `HH:MM:SS` field.|`validate_wday_hms(std::string)`|<span style="color:green">Passed|
 
-### **8. validate_yyyymmdd.cpp**
+### **validate_yyyymmdd.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -78,7 +78,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test5()`|Pass invalid `YYYY-MM-DD` string with `MM` out of range.|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
 |`test6()`|Pass invalid `YYYY-MM-DD` string with `DD` out of range.|`validate_yyyymmdd(std::string)`|<span style="color:green">Passed|
 
-### **9. validate_yyyymmdd_hms.cpp**
+### **validate_yyyymmdd_hms.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -88,19 +88,19 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test4()`|Pass invalid `YYYY-MM-DD HH:MM:SS` strings with missing dash characters.|`validate_yyyymmdd_hms(std::string)`|<span style="color:green">Passed|
 |`test5()`|Pass invalid `YYYY-MM-DD HH:MM:SS` strings with missing colon characters.|`validate_yyyymmdd_hms(std::string)`|<span style="color:green">Passed|
 
-### **10. init_today.cpp**
+### **init_today.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Verify that `init_today()` returns the correct `time_t` value that corresponds to the very beginning of the current day in UTC time.|`init_today()`|<span style="color:green">Passed|
 
-### **11. init_year.cpp**
+### **init_year.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Verify that `init_year()` returns the correct `time_t` value that corresponds to the very beginning of the current year in UTC time.|`init_year()`|<span style="color:green">Passed|
 
-### **12. today_add_hms.cpp**
+### **today_add_hms.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -108,7 +108,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test2()`|Subtract one minute in seconds to input `HH:MM:SS` string. Call should fail and return `time_t` with a value of zero.|`today_add_hms(std::string)`|<span style="color:green">Passed|
 |`test3()`|Pass invalid `HH:MM:SS` string. Call should fail and return `time_t` with a value of zero.|`today_add_hms(std::string)`|<span style="color:green">Passed|
 
-### **13. today_add_dhms.cpp**
+### **today_add_dhms.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -118,7 +118,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test4()`|Pass negative value for days attribute. Call should fail and return `time_t` with a value of zero.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
 |`test5()`|Pass invalid `HH:MM:SS` string. Call should fail and return `time_t` with a value of zero.|`today_add_dhms(std::string)`|<span style="color:green">Passed|
 
-### **14. today_add_wday_hms.cpp**
+### **today_add_wday_hms.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -128,7 +128,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test4()`|Pass invalid string input with bad `HH:MM:SS` section. Call should fail and return `time_t` with a value of zero.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
 |`test5()`|Pass invalid string input with bad `WDAY` section. Call should fail and return `time_t` with a value of zero.|`today_add_wday_hms(std::string)`|<span style="color:green">Passed|
 
-### **17. today_add_yyyymmdd.cpp**
+### **today_add_yyyymmdd.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -140,7 +140,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test6()`|Pass invalid `YYYY-MM-DD` string with `MM` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_yyyymmdd(std::string)`|<span style="color:green">Passed|
 |`test7()`|Pass invalid `YYYY-MM-DD` string with `DD` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_yyyymmdd(std::string)`|<span style="color:green">Passed|
 
-### **18. today_add_yyyymmdd_hms.cpp**
+### **today_add_yyyymmdd_hms.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -157,7 +157,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test11()`|Pass invalid `YYYY-MM-DD HH:MM:SS` string with `MM` (minutes) field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_yyyymmdd_hms(std::string)`|<span style="color:green">Passed|
 |`test12()`|Pass invalid `YYYY-MM-DD HH:MM:SS` string with `SS` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_yyyymmdd_hms(std::string)`|<span style="color:green">Passed|
 
-### **19. get_datetime_format.cpp**
+### **get_datetime_format.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -168,7 +168,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test5()`|Pass string with a valid `YYYY-MM-DD HH:MM:SS` datetime format. Call should succeed with return value of `DatetimeFormat::YYYYMMDD_HHMMSS`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
 |`test6()`|Pass string with invalid datetime format. Call should fail with return value of  `DatetimeFormat::INVALID_DATE_FORMAT`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
 
-### **20. validate_task_parms.cpp**
+### **validate_task_parms.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -181,7 +181,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test7()`|Provide all possible valid attributes to instantiate `Task` object. `ScriptFilename` value should point to an invalid file location. Call should fail with return value of  `TaskValidate::SCRIPT_NOT_FOUND`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test8()`|Provide all possible valid attributes to instantiate `Task` object. `Frequency` value should be invalid. Call should fail with return value of `TaskValidate::BAD_FREQUENCY_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 
-### **21. validate_task_parms_Once.cpp**
+### **validate_task_parms_Once.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -196,13 +196,13 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test9()`|Test the datetime format `YYYY-MM-DD` of the `Datetime` attribute. The datetime value is one day in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test10()`|Test the datetime format `WDAY HH:MM:SS` of the `Datetime` attribute. The datetime value is 60 seconds in the past. This format allows wrapping the resulting `time_t` to the next week day if the indicated week day already passed. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 
-### **22. validate_task_parms_Hourly.cpp**
+### **validate_task_parms_Hourly.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Provide all possible valid attributes to instantiate `Task` object. With an `Hourly` frequency, the `Datetime` value is ignored regardless. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 
-### **23. validate_task_parms_Daily.cpp**
+### **validate_task_parms_Daily.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -215,7 +215,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test7()`|Test the datetime format of the following `Datetime` attribute values: `HH:MM:SS` and `YYYY-MM-DD HH:MM:SS`. The format `WDAY HH:MM:SS` does not require to be tested because it will always rollover to the next week and next year, respectively. The datetime value is one minute in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test8()`|Test the datetime format `WDAY HH:MM:SS` of the `Datetime` attribute. The datetime value is 60 seconds in the past. This format allows wrapping the resulting `time_t` to the next week day if the indicated week day already passed. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 
-### **24. validate_task_parms_Weekly.cpp**
+### **validate_task_parms_Weekly.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -230,7 +230,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test9()`|Test the datetime format `YYYY-MM-DD` of the `Datetime` attribute. The datetime value is one day in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test10()`|Test the datetime format `WDAY HH:MM:SS` of the `Datetime` attribute. The datetime value is 60 seconds in the past. This format allows wrapping the resulting `time_t` to the next week day if the indicated week day already passed. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 
-### **25. validate_task_parms_Monthly.cpp**
+### **validate_task_parms_Monthly.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -245,7 +245,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test9()`|Test the datetime format `YYYY-MM-DD` of the `Datetime` attribute. The datetime value is one day in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test10()`|Test incompatible datetime format `WDAY HH:MM:SS` of the `Datetime` attribute. The datetime value is 60 seconds in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 
-### **26. validate_task_parms_Yearly.cpp**
+### **validate_task_parms_Yearly.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -258,20 +258,20 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test7()`|Test the datetime format `YYYY-MM-DD HH:MM:SS` of the `Datetime` attribute. The datetime value is one minute in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test8()`|Test the datetime format `YYYY-MM-DD` of the `Datetime` attribute. The datetime value is one minute in the past. Call should fail with return value of `TaskValidate::BAD_DATETIME_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 
-### **27. Task_update_execution_datetime_Once.cpp**
+### **Task_update_execution_datetime_Once.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Call the method with tasks using the following `Datetime` formats: `HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, and `WDAY HH:MM:SS` (abbreviated and full week day names). Tasks with `Frequency` of `Once` should not have the execution datetime value updated.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 |`test2()`|Call the method with task using the `Datetime` format `YYYY-MM-DD`. Tasks with `Frequency` of `Once` should not have the execution datetime value updated.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 
-### **28. Task_update_execution_datetime_Hourly.cpp**
+### **Task_update_execution_datetime_Hourly.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Tasks with `Frequency` of `Hourly` should have the execution datetime value increased by 1 hour after the method call succeeded.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 
-### **29. Task_update_execution_datetime_Daily.cpp**
+### **Task_update_execution_datetime_Daily.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -280,7 +280,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test3()`|Initialize `Task` with a `WDAY HH:MM:SS` (full week day names) datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 |`test4()`|Initialize `Task` with a `WDAY HH:MM:SS` (abbreviated week day names) datetime format and `Frequency` of `Daily`. After a successful method call, the execution datetime value should have increased by 1 day.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 
-### **30. Task_update_execution_datetime_Weekly.cpp**
+### **Task_update_execution_datetime_Weekly.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -290,7 +290,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test4()`|Initialize `Task` with a `WDAY HH:MM:SS` (abbreviated week day names) datetime format and `Frequency` of `Weekly`. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 |`test5()`|Initialize `Task` with a `YYYY-MM-DD` datetime format and `Frequency` of `Weekly`. Initial execution datetime has an offset of one day into the future. After a successful method call, the execution datetime value should have increased by 7 days.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 
-### **31. Task_update_execution_datetime_Monthly.cpp**
+### **Task_update_execution_datetime_Monthly.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -298,14 +298,14 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test2()`|Initialize `Task` with a `YYYY-MM-DD HH:MM:SS` datetime format and `Frequency` of `Monthly`. After a successful method call, the execution datetime value should correspond the calendar day of the next month.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 |`test3()`|Initialize `Task` with a `YYYY-MM-DD` datetime format and `Frequency` of `Monthly`. Initial execution datetime has an offset of one day into the future. After a successful method call, the execution datetime value should correspond the calendar day of the next month.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 
-### **32. Task_update_execution_datetime_Yearly.cpp**
+### **Task_update_execution_datetime_Yearly.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Initialize `Task` with a `YYYY-MM-DD HH:MM:SS` datetime format and `Frequency` of `Yearly`. After a successful method call, the execution datetime value should correspond the calendar day of the next year.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 |`test2()`|Initialize `Task` with a `YYYY-MM-DD` datetime format and `Frequency` of `Yearly`. Initial execution datetime has an offset of one day into the future. After a successful method call, the execution datetime value should correspond the calendar day of the next year.|`Task::update_execution_datetime(void)`|<span style="color:green">Passed|
 
-### **33. Task_setting_exec_datetime_Once.cpp**
+### **Task_setting_exec_datetime_Once.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
@@ -315,9 +315,9 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test4()`|Initialize `Task` with a `WDAY HH:MM:SS` (abbreviated week day names) datetime format and `Frequency` of `Once`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
 |`test5()`|Initialize `Task` with a `YYYY-MM-DD` datetime format and `Frequency` of `Once`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
 |`test6()`|Initialize `Task` with an invalid datetime format and `Frequency` of `Once`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
-|`test7()`|Initialize `Task` with constructor `Task::Task(std::string, std::string, std::string, std::string)`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test7()`|Initialize `Task` with constructor `Task::Task(std::string, std::string, std::string, std::string)` and `Frequency` of `Once`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
 
-### **34. Task_setting_exec_datetime_Hourly.cpp**
+### **Task_setting_exec_datetime_Hourly.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
