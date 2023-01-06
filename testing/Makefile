@@ -26,8 +26,6 @@ all: task_scheduler.o						\
 	validate_hms							\
 	validate_wday							\
 	validate_wday_hms						\
-	validate_mmdd							\
-	validate_mmdd_hms						\
 	validate_yyyymmdd						\
 	validate_yyyymmdd_hms					\
 	init_today								\
@@ -35,8 +33,6 @@ all: task_scheduler.o						\
 	today_add_hms							\
 	today_add_dhms							\
 	today_add_wday_hms						\
-	today_add_mmdd							\
-	today_add_mmdd_hms						\
 	today_add_yyyymmdd						\
 	today_add_yyyymmdd_hms					\
 	get_datetime_format						\
@@ -79,14 +75,6 @@ validate_wday_hms: task_scheduler.o
 	g++ -g -c -std=c++17 validate_wday_hms.cpp
 	g++ -g -o validate_wday_hms validate_wday_hms.o $(OBJ_FILES) -pthread -lstdc++fs
 
-validate_mmdd: task_scheduler.o 
-	g++ -g -c -std=c++17 validate_mmdd.cpp
-	g++ -g -o validate_mmdd validate_mmdd.o $(OBJ_FILES) -pthread -lstdc++fs
-
-validate_mmdd_hms: task_scheduler.o 
-	g++ -g -c -std=c++17 validate_mmdd_hms.cpp
-	g++ -g -o validate_mmdd_hms validate_mmdd_hms.o $(OBJ_FILES) -pthread -lstdc++fs
-
 validate_yyyymmdd: task_scheduler.o 
 	g++ -g -c -std=c++17 validate_yyyymmdd.cpp
 	g++ -g -o validate_yyyymmdd validate_yyyymmdd.o $(OBJ_FILES) -pthread -lstdc++fs
@@ -114,14 +102,6 @@ today_add_dhms: task_scheduler.o
 today_add_wday_hms: task_scheduler.o 
 	g++ -g -c -std=c++17 today_add_wday_hms.cpp
 	g++ -g -o today_add_wday_hms today_add_wday_hms.o $(OBJ_FILES) -pthread -lstdc++fs
-
-today_add_mmdd: task_scheduler.o 
-	g++ -g -c -std=c++17 today_add_mmdd.cpp
-	g++ -g -o today_add_mmdd today_add_mmdd.o $(OBJ_FILES) -pthread -lstdc++fs
-
-today_add_mmdd_hms: task_scheduler.o 
-	g++ -g -c -std=c++17 today_add_mmdd_hms.cpp
-	g++ -g -o today_add_mmdd_hms today_add_mmdd_hms.o $(OBJ_FILES) -pthread -lstdc++fs
 
 today_add_yyyymmdd: task_scheduler.o 
 	g++ -g -c -std=c++17 today_add_yyyymmdd.cpp
@@ -206,8 +186,6 @@ clean:
 	validate_hms							\
 	validate_wday							\
 	validate_wday_hms						\
-	validate_mmdd							\
-	validate_mmdd_hms						\
 	validate_yyyymmdd						\
 	validate_yyyymmdd_hms					\
 	init_today								\
@@ -215,8 +193,6 @@ clean:
 	today_add_hms							\
 	today_add_dhms							\
 	today_add_wday_hms						\
-	today_add_mmdd							\
-	today_add_mmdd_hms						\
 	today_add_yyyymmdd						\
 	today_add_yyyymmdd_hms					\
 	get_datetime_format						\
