@@ -1,10 +1,8 @@
 ./Task_constructor
 ./Task_methods
 ./validate_hms
-./validate_mmdd
 ./validate_wday
 ./validate_wday_hms
-./validate_mmdd_hms
 ./validate_yyyymmdd
 ./validate_yyyymmdd_hms
 ./init_today
@@ -12,8 +10,6 @@
 ./today_add_hms
 ./today_add_dhms
 ./today_add_wday_hms
-./today_add_mmdd
-./today_add_mmdd_hms
 ./today_add_yyyymmdd
 ./today_add_yyyymmdd_hms
 ./get_datetime_format
