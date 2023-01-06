@@ -230,7 +230,7 @@ int test5(){
     // Invalid years-months-days subtring
 
     time_t ret;
-    ret = ts::today_add_mmdd("20220212");
+    ret = ts::today_add_yyyymmdd("20220212");
 
     assert(ret == 0);
        
@@ -244,7 +244,7 @@ int test6(){
     // Invalid years-months-days subtring
 
     time_t ret;
-    ret = ts::today_add_mmdd("2022-60-20");
+    ret = ts::today_add_yyyymmdd("2022-60-20");
 
     assert(ret == 0);
        
@@ -258,7 +258,7 @@ int test7(){
     // Invalid years-months-days subtring
 
     time_t ret;
-    ret = ts::today_add_mmdd("2022-02-60");
+    ret = ts::today_add_yyyymmdd("2022-02-60");
 
     assert(ret == 0);
        

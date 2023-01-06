@@ -248,254 +248,9 @@ int test1(){
     return 0;
 }
 
+
 int test2(){
     // TEST 2: verify that execution datetime is set properly when initializing Task object
-    // Frequency: Once
-    // Datetime format: MM-DD HH:MM:SS
-
-    time_t time_now;
-    time_t time_now_add;
-    std::tm* to_struct;
-    std::tm struct_time_now_add;
-    std::string years;
-    std::string months;
-    std::string months_str;
-    std::string days;
-    std::string wday_full;
-    std::string wday_abbr;
-    std::string hours;
-    std::string minutes;
-    std::string seconds;
-    std::string verify_datetime_str;
-    std::string ret_datetime_str;
-
-    time_now = std::time(&time_now);
-
-    // Add one minute in seconds from current time
-    time_now_add = time_now + 60;
-    
-    // time_t to std::tm*
-    to_struct = std::gmtime(&time_now_add);
-
-    // std::tm* to std::tm
-    struct_time_now_add = *to_struct;
-
-    years = std::to_string(1900 + struct_time_now_add.tm_year);
-    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
-              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
-              std::to_string(struct_time_now_add.tm_mon + 1);
-    switch (struct_time_now_add.tm_mon)
-    {
-    case JANUARY:
-        months_str = "Jan";
-        break;
-    case FEBRUARY:
-        months_str = "Feb";
-        break;
-    case MARCH:
-        months_str = "Mar";
-        break;
-    case APRIL:
-        months_str = "Apr";
-        break;
-    case MAY:
-        months_str = "May";
-        break;
-    case JUNE:
-        months_str = "Jun";
-        break;
-    case JULY:
-        months_str = "Jul";
-        break;
-    case AUGUST:
-        months_str = "Aug";
-        break;
-    case SEPTEMBER:
-        months_str = "Sep";
-        break;
-    case OCTOBER:
-        months_str = "Oct";
-        break;
-    case NOVEMBER:
-        months_str = "Nov";
-        break;
-    case DECEMBER:
-        months_str = "Dec";
-        break;
-    default:
-        months_str = "";
-        break;
-    }  
-    days = (struct_time_now_add.tm_mday < 10) ? 
-            "0" + std::to_string(struct_time_now_add.tm_mday) :
-            std::to_string(struct_time_now_add.tm_mday);
-    switch (struct_time_now_add.tm_wday)
-    {
-    case SUNDAY:
-        wday_full = "Sunday";
-        wday_abbr = "Sun";
-        break;
-    case MONDAY:
-        wday_full = "Monday";
-        wday_abbr = "Mon";
-        break;
-    case TUESDAY:
-        wday_full = "Tuesday";
-        wday_abbr = "Tue";
-        break;
-    case WEDNESDAY:
-        wday_full = "Wednesday";
-        wday_abbr = "Wed";
-        break;
-    case THURSDAY:
-        wday_full = "Thursday";
-        wday_abbr = "Thu";
-        break;
-    case FRIDAY:
-        wday_full = "Friday";
-        wday_abbr = "Fri";
-        break;
-    case SATURDAY:
-        wday_full = "Saturday";
-        wday_abbr = "Sat";
-        break;
-    default:
-        break;
-    }
-    hours = (struct_time_now_add.tm_hour < 10) ? 
-             "0" + std::to_string(struct_time_now_add.tm_hour) :
-             std::to_string(struct_time_now_add.tm_hour);
-    minutes = (struct_time_now_add.tm_min < 10) ? 
-               "0" + std::to_string(struct_time_now_add.tm_min) :
-               std::to_string(struct_time_now_add.tm_min);
-    seconds = (struct_time_now_add.tm_sec < 10) ? 
-               "0" + std::to_string(struct_time_now_add.tm_sec) :
-               std::to_string(struct_time_now_add.tm_sec);
-
-    std::string t_name = "Task Name";
-    std::string t_description = "A short description for this task";
-    std::string t_script_name = "cat_test.sh";
-    std::string t_frequency = "Once";
-    std::string t_datetime = months + "-" + days + " " + hours + ":" + minutes + ":" + seconds;
-
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
-    
-    ret_datetime_str = t->get_execution_datetime_fmt();
-
-    // Add timezone offset to initial execution datetime
-    time_now_add = time_now_add + (TIMEZONE * 60 * 60);
-    
-    // time_t to std::tm*
-    to_struct = std::gmtime(&time_now_add);
-
-    // std::tm* to std::tm
-    struct_time_now_add = *to_struct;
-
-    years = std::to_string(1900 + struct_time_now_add.tm_year);
-    switch (struct_time_now_add.tm_mon)
-    {
-    case JANUARY:
-        months = "Jan";
-        break;
-    case FEBRUARY:
-        months = "Feb";
-        break;
-    case MARCH:
-        months = "Mar";
-        break;
-    case APRIL:
-        months = "Apr";
-        break;
-    case MAY:
-        months = "May";
-        break;
-    case JUNE:
-        months = "Jun";
-        break;
-    case JULY:
-        months = "Jul";
-        break;
-    case AUGUST:
-        months = "Aug";
-        break;
-    case SEPTEMBER:
-        months = "Sep";
-        break;
-    case OCTOBER:
-        months = "Oct";
-        break;
-    case NOVEMBER:
-        months = "Nov";
-        break;
-    case DECEMBER:
-        months = "Dec";
-        break;
-    default:
-        months = "";
-        break;
-    }
-    days = (struct_time_now_add.tm_mday < 10) ? 
-            "0" + std::to_string(struct_time_now_add.tm_mday) :
-            std::to_string(struct_time_now_add.tm_mday);
-    switch (struct_time_now_add.tm_wday)
-    {
-    case SUNDAY:
-        wday_full = "Sunday";
-        wday_abbr = "Sun";
-        break;
-    case MONDAY:
-        wday_full = "Monday";
-        wday_abbr = "Mon";
-        break;
-    case TUESDAY:
-        wday_full = "Tuesday";
-        wday_abbr = "Tue";
-        break;
-    case WEDNESDAY:
-        wday_full = "Wednesday";
-        wday_abbr = "Wed";
-        break;
-    case THURSDAY:
-        wday_full = "Thursday";
-        wday_abbr = "Thu";
-        break;
-    case FRIDAY:
-        wday_full = "Friday";
-        wday_abbr = "Fri";
-        break;
-    case SATURDAY:
-        wday_full = "Saturday";
-        wday_abbr = "Sat";
-        break;
-    default:
-        break;
-    }
-    hours = (struct_time_now_add.tm_hour < 10) ? 
-             "0" + std::to_string(struct_time_now_add.tm_hour) :
-             std::to_string(struct_time_now_add.tm_hour);
-    minutes = (struct_time_now_add.tm_min < 10) ? 
-               "0" + std::to_string(struct_time_now_add.tm_min) :
-               std::to_string(struct_time_now_add.tm_min);
-    seconds = (struct_time_now_add.tm_sec < 10) ? 
-               "0" + std::to_string(struct_time_now_add.tm_sec) :
-               std::to_string(struct_time_now_add.tm_sec);
-
-    verify_datetime_str = wday_abbr + " " + months + " " + days + " " +
-                          hours + ":" + minutes + ":" + seconds + " " + years;
-
-    assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
-    assert(time_now_add == t->get_execution_datetime(true));
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
-
-    delete t;
-
-    std::cout << ">> Task_setting_exec_datetime_Once: 2 done" << std::endl;
-    return 0;
-}
-
-
-int test3(){
-    // TEST 3: verify that execution datetime is set properly when initializing Task object
     // Frequency: Once
     // Datetime format: YYYY-MM-DD HH:MM:SS
 
@@ -622,7 +377,7 @@ int test3(){
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Once";
-    std::string t_datetime = months + "-" + days + " " + hours + ":" + minutes + ":" + seconds;
+    std::string t_datetime = years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds;
 
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
     
@@ -735,13 +490,13 @@ int test3(){
 
     delete t;
 
-    std::cout << ">> Task_setting_exec_datetime_Once: 3 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Once: 2 done" << std::endl;
     return 0;
 }
 
 
-int test4(){
-    // TEST 4: verify that execution datetime is set properly when initializing Task object
+int test3(){
+    // TEST 3: verify that execution datetime is set properly when initializing Task object
     // Frequency: Once
     // Datetime format: WDAY HH:MM:SS (full week day names)
 
@@ -981,13 +736,13 @@ int test4(){
 
     delete t;
 
-    std::cout << ">> Task_setting_exec_datetime_Once: 4 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Once: 3 done" << std::endl;
     return 0;
 }
 
 
-int test5(){
-    // TEST 5: verify that execution datetime is set properly when initializing Task object
+int test4(){
+    // TEST 4: verify that execution datetime is set properly when initializing Task object
     // Frequency: Once
     // Datetime format: WDAY HH:MM:SS (abbreviated week day names)
 
@@ -1227,261 +982,13 @@ int test5(){
 
     delete t;
 
-    std::cout << ">> Task_setting_exec_datetime_Once: 5 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Once: 4 done" << std::endl;
     return 0;
 }
 
 
-int test6(){
-    // TEST 6: verify that execution datetime is set properly when initializing Task object
-    // Frequency: Once
-    // Datetime format: MM-DD
-
-    time_t time_now;
-    time_t time_now_add;
-    std::tm* to_struct;
-    std::tm struct_time_now_add;
-    std::string years;
-    std::string months;
-    std::string months_str;
-    std::string days;
-    std::string wday_full;
-    std::string wday_abbr;
-    std::string hours;
-    std::string minutes;
-    std::string seconds;
-    std::string verify_datetime_str;
-    std::string ret_datetime_str;
-
-    time_now = std::time(&time_now);
-
-    // Add one day in seconds from current time
-    time_now_add = time_now + (24 * 60 * 60);
-    
-    // time_t to std::tm*
-    to_struct = std::gmtime(&time_now_add);
-
-    // std::tm* to std::tm
-    struct_time_now_add = *to_struct;
-
-    years = std::to_string(1900 + struct_time_now_add.tm_year);
-    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
-              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
-              std::to_string(struct_time_now_add.tm_mon + 1);
-    switch (struct_time_now_add.tm_mon)
-    {
-    case JANUARY:
-        months_str = "Jan";
-        break;
-    case FEBRUARY:
-        months_str = "Feb";
-        break;
-    case MARCH:
-        months_str = "Mar";
-        break;
-    case APRIL:
-        months_str = "Apr";
-        break;
-    case MAY:
-        months_str = "May";
-        break;
-    case JUNE:
-        months_str = "Jun";
-        break;
-    case JULY:
-        months_str = "Jul";
-        break;
-    case AUGUST:
-        months_str = "Aug";
-        break;
-    case SEPTEMBER:
-        months_str = "Sep";
-        break;
-    case OCTOBER:
-        months_str = "Oct";
-        break;
-    case NOVEMBER:
-        months_str = "Nov";
-        break;
-    case DECEMBER:
-        months_str = "Dec";
-        break;
-    default:
-        months_str = "";
-        break;
-    }  
-    days = (struct_time_now_add.tm_mday < 10) ? 
-            "0" + std::to_string(struct_time_now_add.tm_mday) :
-            std::to_string(struct_time_now_add.tm_mday);
-    switch (struct_time_now_add.tm_wday)
-    {
-    case SUNDAY:
-        wday_full = "Sunday";
-        wday_abbr = "Sun";
-        break;
-    case MONDAY:
-        wday_full = "Monday";
-        wday_abbr = "Mon";
-        break;
-    case TUESDAY:
-        wday_full = "Tuesday";
-        wday_abbr = "Tue";
-        break;
-    case WEDNESDAY:
-        wday_full = "Wednesday";
-        wday_abbr = "Wed";
-        break;
-    case THURSDAY:
-        wday_full = "Thursday";
-        wday_abbr = "Thu";
-        break;
-    case FRIDAY:
-        wday_full = "Friday";
-        wday_abbr = "Fri";
-        break;
-    case SATURDAY:
-        wday_full = "Saturday";
-        wday_abbr = "Sat";
-        break;
-    default:
-        break;
-    }
-    hours = (struct_time_now_add.tm_hour < 10) ? 
-             "0" + std::to_string(struct_time_now_add.tm_hour) :
-             std::to_string(struct_time_now_add.tm_hour);
-    minutes = (struct_time_now_add.tm_min < 10) ? 
-               "0" + std::to_string(struct_time_now_add.tm_min) :
-               std::to_string(struct_time_now_add.tm_min);
-    seconds = (struct_time_now_add.tm_sec < 10) ? 
-               "0" + std::to_string(struct_time_now_add.tm_sec) :
-               std::to_string(struct_time_now_add.tm_sec);
-
-    std::string t_name = "Task Name";
-    std::string t_description = "A short description for this task";
-    std::string t_script_name = "cat_test.sh";
-    std::string t_frequency = "Once";
-    std::string t_datetime = months + "-" + days;
-
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
-    
-    ret_datetime_str = t->get_execution_datetime_fmt();
-
-    // Obtain current time value with init_today()
-    // Add one day to current time value
-    // Add timezone offset 
-    time_now_add = ts::init_today() + (TIMEZONE * 60 * 60) + (24 * 60 * 60);
-    
-    // time_t to std::tm*
-    to_struct = std::gmtime(&time_now_add);
-
-    // std::tm* to std::tm
-    struct_time_now_add = *to_struct;
-
-    years = std::to_string(1900 + struct_time_now_add.tm_year);
-    switch (struct_time_now_add.tm_mon)
-    {
-    case JANUARY:
-        months = "Jan";
-        break;
-    case FEBRUARY:
-        months = "Feb";
-        break;
-    case MARCH:
-        months = "Mar";
-        break;
-    case APRIL:
-        months = "Apr";
-        break;
-    case MAY:
-        months = "May";
-        break;
-    case JUNE:
-        months = "Jun";
-        break;
-    case JULY:
-        months = "Jul";
-        break;
-    case AUGUST:
-        months = "Aug";
-        break;
-    case SEPTEMBER:
-        months = "Sep";
-        break;
-    case OCTOBER:
-        months = "Oct";
-        break;
-    case NOVEMBER:
-        months = "Nov";
-        break;
-    case DECEMBER:
-        months = "Dec";
-        break;
-    default:
-        months = "";
-        break;
-    }
-    days = (struct_time_now_add.tm_mday < 10) ? 
-            "0" + std::to_string(struct_time_now_add.tm_mday) :
-            std::to_string(struct_time_now_add.tm_mday);
-    switch (struct_time_now_add.tm_wday)
-    {
-    case SUNDAY:
-        wday_full = "Sunday";
-        wday_abbr = "Sun";
-        break;
-    case MONDAY:
-        wday_full = "Monday";
-        wday_abbr = "Mon";
-        break;
-    case TUESDAY:
-        wday_full = "Tuesday";
-        wday_abbr = "Tue";
-        break;
-    case WEDNESDAY:
-        wday_full = "Wednesday";
-        wday_abbr = "Wed";
-        break;
-    case THURSDAY:
-        wday_full = "Thursday";
-        wday_abbr = "Thu";
-        break;
-    case FRIDAY:
-        wday_full = "Friday";
-        wday_abbr = "Fri";
-        break;
-    case SATURDAY:
-        wday_full = "Saturday";
-        wday_abbr = "Sat";
-        break;
-    default:
-        break;
-    }
-    hours = (struct_time_now_add.tm_hour < 10) ? 
-             "0" + std::to_string(struct_time_now_add.tm_hour) :
-             std::to_string(struct_time_now_add.tm_hour);
-    minutes = (struct_time_now_add.tm_min < 10) ? 
-               "0" + std::to_string(struct_time_now_add.tm_min) :
-               std::to_string(struct_time_now_add.tm_min);
-    seconds = (struct_time_now_add.tm_sec < 10) ? 
-               "0" + std::to_string(struct_time_now_add.tm_sec) :
-               std::to_string(struct_time_now_add.tm_sec);
-
-    verify_datetime_str = wday_abbr + " " + months + " " + days + " " +
-                          hours + ":" + minutes + ":" + seconds + " " + years;
-
-    assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
-    assert(time_now_add == t->get_execution_datetime(true));
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
-
-    delete t;
-
-    std::cout << ">> Task_setting_exec_datetime_Once: 6 done" << std::endl;
-    return 0;
-}
-
-
-int test7(){
-    // TEST 7: verify that execution datetime is set properly when initializing Task object
+int test5(){
+    // TEST 5: verify that execution datetime is set properly when initializing Task object
     // Frequency: Once
     // Datetime format: YYYY-MM-DD
 
@@ -1608,7 +1115,7 @@ int test7(){
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Once";
-    std::string t_datetime = months + "-" + days;
+    std::string t_datetime = years + "-" + months + "-" + days;
 
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
     
@@ -1723,13 +1230,13 @@ int test7(){
 
     delete t;
 
-    std::cout << ">> Task_setting_exec_datetime_Once: 7 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Once: 5 done" << std::endl;
     return 0;
 }
 
 
-int test8(){
-    // TEST 8: verify that execution datetime is set properly when initializing Task object
+int test6(){
+    // TEST 6: verify that execution datetime is set properly when initializing Task object
     // Frequency: Once
     // Datetime format: invalid format
 
@@ -1746,13 +1253,13 @@ int test8(){
 
     delete t;
 
-    std::cout << ">> Task_setting_exec_datetime_Once: 8 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Once: 6 done" << std::endl;
     return 0;
 }
 
 
-int test9(){
-    // TEST 9: verify that execution datetime is set properly when initializing Task object
+int test7(){
+    // TEST 7: verify that execution datetime is set properly when initializing Task object
     // Use Task constructor Task::Task(std::string, std::string, std::string, std::string)
     // Frequency: Once
     // Datetime format: n/a
@@ -1769,7 +1276,7 @@ int test9(){
 
     delete t;
 
-    std::cout << ">> Task_setting_exec_datetime_Once: 9 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Once: 7 done" << std::endl;
     return 0;
 }
 
@@ -1782,6 +1289,4 @@ int main(){
     test5();
     test6();
     test7();
-    test8();
-    test9();
 }

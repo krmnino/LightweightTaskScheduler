@@ -6,7 +6,7 @@
 int test1(){
     // TEST 1: testing validate_task_parms() function -> PASS
     // Current time plus one minute in seconds 
-    // Pass datetime formats HHMMSS, MMDD_HHMMSS, YYYYMMDD_HHMMSS.
+    // Pass datetime formats HHMMSS and YYYYMMDD_HHMMSS.
     // Frequency = Monthly
 
     time_t time_now;
@@ -52,7 +52,6 @@ int test1(){
 
     std::vector<std::string> datetimes = {
         hours + ":" + minutes + ":" + seconds, // HH:MM:SS
-        months + "-" + days + " " + hours + ":" + minutes + ":" + seconds, // MM-DD HH:MM:SS
         years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds, // YYYY-MM-DD HH:MM:SS
     };
     for(int i = 0; i < datetimes.size(); i++){
@@ -78,7 +77,7 @@ int test1(){
 int test2(){
     // TEST 2: testing validate_task_parms() function -> PASS
     // Current time plus one day in seconds 
-    // Pass datetime formats MMDD, YYYYMMDD. 
+    // Pass datetime format YYYYMMDD. 
     // Frequency = Monthly
 
     time_t time_now;
@@ -110,24 +109,20 @@ int test2(){
             "0" + std::to_string(struct_time_now_add.tm_mday) :
             std::to_string(struct_time_now_add.tm_mday);
 
-    std::vector<std::string> datetimes = {
-        months + "-" + days, // MM-DD
-        years + "-" + months + "-" + days, // YYYY-MM-DD
-    };
-    for(int i = 0; i < datetimes.size(); i++){
-        cl::Config* c = new cl::Config();
-        c->add_entry("Name", "Test Title");
-        c->add_entry("Description", "A short description");
-        c->add_entry("ScriptFilename", "ls_test.sh");
-        c->add_entry("Frequency", "Monthly");
-        c->add_entry("Datetime", datetimes[i]);
+    datetime_str = years + "-" + months + "-" + days; // YYYY-MM-DD
 
-        ret = ts::validate_task_parms(c, "scripts/");
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "Test Title");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Monthly");
+    c->add_entry("Datetime", datetime_str);
 
-        assert(ret == ts::TaskValidate::OK);
+    ret = ts::validate_task_parms(c, "scripts/");
 
-        delete c;
-    }
+    assert(ret == ts::TaskValidate::OK);
+
+    delete c;
 
     std::cout << ">> validate_task_parms_Monthly: 2 done" << std::endl;
     return 0;
@@ -276,46 +271,6 @@ int test4(){
 
 int test5(){
     // TEST 5: testing validate_task_parms() function -> FAIL
-    // Pass bad MM-DD HH:MM:SS datetime value with Frequency = Monthly
-    
-    std::vector<std::string> datetimes = {
-        "02-15 60:20:00",
-        "02-15 12:60:00",
-        "02-15 12:20:60",
-        "02-15 60:20a00",
-        "02-15 60a20:00",
-        "02-15 1a:20:00",
-        "02-15 12:a0:00",
-        "02-15 12:00:0A",
-        "0a-15 12:00:00",
-        "02-a5 12:00:00",
-        "02a15 12:00:00",
-        "02-15a12:00:00",
-        "80-15 12:00:00",
-        "02-70 12:00:00"
-    };
-    for(int i = 0; i < datetimes.size(); i++){
-        cl::Config* c = new cl::Config();
-        c->add_entry("Name", "Test Title");
-        c->add_entry("Description", "A short description");
-        c->add_entry("ScriptFilename", "ls_test.sh");
-        c->add_entry("Frequency", "Monthly");
-        c->add_entry("Datetime", datetimes[i]);
-
-        ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
-
-        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
-
-        delete c;
-    }
-
-    std::cout << ">> validate_task_parms_Monthly: 5 done" << std::endl;
-    return 0;
-}
-
-
-int test6(){
-    // TEST 6: testing validate_task_parms() function -> FAIL
     // Pass bad YYYY-MM-DD HH:MM:SS datetime value with Frequency = Monthly
 
     std::vector<std::string> datetimes = {
@@ -352,44 +307,13 @@ int test6(){
         delete c;
     }
 
-    std::cout << ">> validate_task_parms_Monthly: 6 done" << std::endl;
+    std::cout << ">> validate_task_parms_Monthly: 5 done" << std::endl;
     return 0;
 }
 
 
-int test7(){
-    // TEST 7: testing validate_task_parms() function -> FAIL
-    // Pass bad MM-DD datetime value with Frequency = Monthly
-
-    std::vector<std::string> datetimes = {
-        "0a-15",
-        "02-a5",
-        "02a15",
-        "80-15",
-        "02-70"
-    };
-    for(int i = 0; i < datetimes.size(); i++){
-        cl::Config* c = new cl::Config();
-        c->add_entry("Name", "Test Title");
-        c->add_entry("Description", "A short description");
-        c->add_entry("ScriptFilename", "ls_test.sh");
-        c->add_entry("Frequency", "Monthly");
-        c->add_entry("Datetime", datetimes[i]);
-
-        ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
-
-        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
-
-        delete c;
-    }
-
-    std::cout << ">> validate_task_parms_Monthly: 7 done" << std::endl;
-    return 0;
-}
-
-
-int test8(){
-    // TEST 8: testing validate_task_parms() function -> FAIL
+int test6(){
+    // TEST 6: testing validate_task_parms() function -> FAIL
     // Pass bad YYYY-MM-DD datetime value with Frequency = Monthly
 
     std::vector<std::string> datetimes = {
@@ -418,13 +342,13 @@ int test8(){
         delete c;
     }
 
-    std::cout << ">> validate_task_parms_Monthly: 8 done" << std::endl;
+    std::cout << ">> validate_task_parms_Monthly: 6 done" << std::endl;
     return 0;
 }
 
 
-int test9(){
-    // TEST 9: testing validate_task_parms() function -> FAIL
+int test7(){
+    // TEST 7: testing validate_task_parms() function -> FAIL
     // Pass bad datetime value with Frequency = Monthly
 
     cl::Config* c = new cl::Config();
@@ -445,8 +369,8 @@ int test9(){
 }
 
 
-int test10(){
-    // TEST 10: testing validate_task_parms() function -> FAIL
+int test8(){
+    // TEST 8: testing validate_task_parms() function -> FAIL
     // Current time minus one minute in seconds 
     // Pass datetime formats HHMMSS and YYYYMMDD_HHMMSS. 
     // Frequency = Monthly
@@ -511,13 +435,13 @@ int test10(){
         delete c;
     }
 
-    std::cout << ">> validate_task_parms_Monthly: 10 done" << std::endl;
+    std::cout << ">> validate_task_parms_Monthly: 8 done" << std::endl;
     return 0;
 }
 
 
-int test11(){
-    // TEST 11: testing validate_task_parms() function -> FAIL
+int test9(){
+    // TEST 9: testing validate_task_parms() function -> FAIL
     // Current time minus one day in seconds 
     // Pass datetime format YYYYMMDD. 
     // Frequency = Monthly
@@ -566,131 +490,13 @@ int test11(){
 
     delete c;
 
-    std::cout << ">> validate_task_parms_Monthly: 11 done" << std::endl;
+    std::cout << ">> validate_task_parms_Monthly: 9 done" << std::endl;
     return 0;
 }
 
 
-int test12(){
-    // TEST 12: testing validate_task_parms() function -> PASS
-    // Current time minus one minute in seconds 
-    // Pass datetime format MMDD_HHMMSS. 
-    // Frequency = Monthly
-
-    time_t time_now;
-    time_t time_now_add;
-    std::tm* to_struct;
-    std::tm struct_time_now_add;
-    std::string months;
-    std::string days;
-    std::string hours;
-    std::string minutes;
-    std::string seconds;
-    std::string datetime_str;
-    ts::TaskValidate ret;     
-
-    time_now = std::time(&time_now);
-
-    // Subtract one minute in seconds from current time
-    time_now_add = time_now - 60;
-    
-    // time_t to std::tm*
-    to_struct = std::gmtime(&time_now_add);
-
-    // std::tm* to std::tm
-    struct_time_now_add = *to_struct;
-
-    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
-              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
-              std::to_string(struct_time_now_add.tm_mon + 1);  
-    days = (struct_time_now_add.tm_mday < 10) ? 
-            "0" + std::to_string(struct_time_now_add.tm_mday) :
-            std::to_string(struct_time_now_add.tm_mday);
-    hours = (struct_time_now_add.tm_hour < 10) ? 
-             "0" + std::to_string(struct_time_now_add.tm_hour) :
-             std::to_string(struct_time_now_add.tm_hour);
-    minutes = (struct_time_now_add.tm_min < 10) ? 
-               "0" + std::to_string(struct_time_now_add.tm_min) :
-               std::to_string(struct_time_now_add.tm_min);
-    seconds = (struct_time_now_add.tm_sec < 10) ? 
-               "0" + std::to_string(struct_time_now_add.tm_sec) :
-               std::to_string(struct_time_now_add.tm_sec);
-
-    datetime_str = months + "-" + days + " " + hours + ":" + minutes + ":" + seconds; // MM-DD HH:MM:SS
-
-    cl::Config* c = new cl::Config();
-    c->add_entry("Name", "Test Title");
-    c->add_entry("Description", "A short description");
-    c->add_entry("ScriptFilename", "ls_test.sh");
-    c->add_entry("Frequency", "Monthly");
-    c->add_entry("Datetime", datetime_str);
-
-    ret = ts::validate_task_parms(c, "scripts/");
-
-    assert(ret == ts::TaskValidate::OK);
-
-    delete c;
-
-    std::cout << ">> validate_task_parms_Monthly: 12 done" << std::endl;
-    return 0;
-}
-
-
-int test13(){
-    // TEST 13: testing validate_task_parms() function -> PASS
-    // Current time minus one day in seconds 
-    // Pass datetime format MMDD. 
-    // Frequency = Monthly
-
-    time_t time_now;
-    time_t time_now_add;
-    std::tm* to_struct;
-    std::tm struct_time_now_add;
-    std::string months;
-    std::string days;
-    std::string datetime_str;
-    ts::TaskValidate ret;     
-
-    time_now = std::time(&time_now);
-
-    // Subtract one minute in seconds from current time
-    time_now_add = time_now - (24 * 60 * 60);
-    
-    // time_t to std::tm*
-    to_struct = std::gmtime(&time_now_add);
-
-    // std::tm* to std::tm
-    struct_time_now_add = *to_struct;
-
-    months = (struct_time_now_add.tm_mon + 1 < 10) ? 
-              "0" + std::to_string(struct_time_now_add.tm_mon + 1) :
-              std::to_string(struct_time_now_add.tm_mon + 1);  
-    days = (struct_time_now_add.tm_mday < 10) ? 
-            "0" + std::to_string(struct_time_now_add.tm_mday) :
-            std::to_string(struct_time_now_add.tm_mday);
-
-    datetime_str = months + "-" + days; // MM-DD
-
-    cl::Config* c = new cl::Config();
-    c->add_entry("Name", "Test Title");
-    c->add_entry("Description", "A short description");
-    c->add_entry("ScriptFilename", "ls_test.sh");
-    c->add_entry("Frequency", "Monthly");
-    c->add_entry("Datetime", datetime_str);
-
-    ret = ts::validate_task_parms(c, "scripts/");
-
-    assert(ret == ts::TaskValidate::OK);
-
-    delete c;
-
-    std::cout << ">> validate_task_parms_Monthly: 13 done" << std::endl;
-    return 0;
-}
-
-
-int test14(){
-    // TEST 14: testing validate_task_parms() function -> FAIL
+int test10(){
+    // TEST 10: testing validate_task_parms() function -> FAIL
     // Current time plus one minute in seconds. Test different week day names (full and abbreviated)
     // Pass datetime format WDAY_HHMMSS. 
     // Frequency = Monthly
@@ -757,7 +563,7 @@ int test14(){
         delete c;
     }
 
-    std::cout << ">> validate_task_parms_Monthly: 14 done" << std::endl;
+    std::cout << ">> validate_task_parms_Monthly: 10 done" << std::endl;
     return 0;
 }
 
@@ -773,8 +579,4 @@ int main(){
     test8();
     test9();
     test10();
-    test11();
-    test12();
-    test13();
-    test14();
 }

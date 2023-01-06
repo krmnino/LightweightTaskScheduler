@@ -84,12 +84,12 @@ int test3(){
 
 int test4(){
     // TEST 4: testing get_datetime_format() function -> PASS
-    // Datetime format MM-DD
+    // Datetime format YYYY-MM-DD
     
-    std::string datetime = "02-22";
+    std::string datetime = "2022-02-22";
     ts::DatetimeFormat ret = ts::get_datetime_format(datetime);
 
-    assert(ret == ts::DatetimeFormat::MMDD);
+    assert(ret == ts::DatetimeFormat::YYYYMMDD);
 
     std::cout << ">> get_datetime_format: 4 done" << std::endl;
     return 0;
@@ -98,34 +98,6 @@ int test4(){
 
 int test5(){
     // TEST 5: testing get_datetime_format() function -> PASS
-    // Datetime format MM-DD HH:MM:SS
-    
-    std::string datetime = "02-22 13:00:00";
-    ts::DatetimeFormat ret = ts::get_datetime_format(datetime);
-
-    assert(ret == ts::DatetimeFormat::MMDD_HHMMSS);
-
-    std::cout << ">> get_datetime_format: 5 done" << std::endl;
-    return 0;
-}
-
-
-int test6(){
-    // TEST 6: testing get_datetime_format() function -> PASS
-    // Datetime format YYYY-MM-DD
-    
-    std::string datetime = "2022-02-22";
-    ts::DatetimeFormat ret = ts::get_datetime_format(datetime);
-
-    assert(ret == ts::DatetimeFormat::YYYYMMDD);
-
-    std::cout << ">> get_datetime_format: 6 done" << std::endl;
-    return 0;
-}
-
-
-int test7(){
-    // TEST 7: testing get_datetime_format() function -> PASS
     // Datetime format YYYY-MM-DD HH:MM:SS
     
     std::string datetime = "2022-02-22 13:00:00";
@@ -133,13 +105,13 @@ int test7(){
 
     assert(ret == ts::DatetimeFormat::YYYYMMDD_HHMMSS);
 
-    std::cout << ">> get_datetime_format: 7 done" << std::endl;
+    std::cout << ">> get_datetime_format: 5 done" << std::endl;
     return 0;
 }
 
 
-int test8(){
-    // TEST 8: testing get_datetime_format() function -> FAIL
+int test6(){
+    // TEST 6: testing get_datetime_format() function -> FAIL
     // Datetime format YYYY-MM-DD HH:MM:SS
     
     std::string datetime = "anything";
@@ -147,7 +119,7 @@ int test8(){
 
     assert(ret == ts::DatetimeFormat::INVALID_DATE_FORMAT);
 
-    std::cout << ">> get_datetime_format: 8 done" << std::endl;
+    std::cout << ">> get_datetime_format: 6 done" << std::endl;
     return 0;
 }
 
@@ -159,6 +131,4 @@ int main(){
     test4();
     test5();
     test6();
-    test7();
-    test8();
 }

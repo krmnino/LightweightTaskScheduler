@@ -6,7 +6,7 @@
 int test1(){
     // TEST 1: testing Task::update_execution_datetime(), execution time should not change after the call.
     // Frequency: Once
-    // Datetime format: HH:MM:SS, MM-DD HH:MM:SS, and YYYY-MM-DD HH:MM:SS 
+    // Datetime format: HH:MM:SS, WDAY HH:MM:SS, and YYYY-MM-DD HH:MM:SS 
 
     time_t time_now;
     time_t time_now_add;
@@ -94,7 +94,6 @@ int test1(){
 
     std::vector<std::string> datetimes = {
         hours + ":" + minutes + ":" + seconds, // HH:MM:SS
-        months + "-" + days + " " + hours + ":" + minutes + ":" + seconds, // MM-DD HH:MM:SS
         years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds, // YYYY-MM-DD HH:MM:SS
         wday_abbr + " " + hours + ":" + minutes + ":" + seconds, // WDAY HH:MM:SS (abbreviated week day name)
         wday_full + " " + hours + ":" + minutes + ":" + seconds // WDAY HH:MM:SS (full week day name)
@@ -123,7 +122,7 @@ int test1(){
 int test2(){
     // TEST 2: testing Task::update_execution_datetime(), execution time should not change after the call.
     // Frequency: Once
-    // Datetime format: MM-DD and YYYY-MM-DD
+    // Datetime format YYYY-MM-DD
 
     time_t time_now;
     time_t time_now_add;
@@ -209,25 +208,20 @@ int test2(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Once";
 
-    std::vector<std::string> datetimes = {
-        months + "-" + days, // MM-DD
-        years + "-" + months + "-" + days, // YYYY-MM-DD
-    };
+    datetime_str = years + "-" + months + "-" + days; // YYYY-MM-DD
 
-    for(int i = 0; i < datetimes.size(); i++){
-        ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, datetimes[i]);
-        
-        ret_datetime_str_before = t->get_execution_datetime_fmt();
-        ret_datetime_before = t->get_execution_datetime(false);
-        t->update_execution_datetime();
-        ret_datetime_str_after = t->get_execution_datetime_fmt();
-        ret_datetime_after = t->get_execution_datetime(false);
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, datetime_str);
+    
+    ret_datetime_str_before = t->get_execution_datetime_fmt();
+    ret_datetime_before = t->get_execution_datetime(false);
+    t->update_execution_datetime();
+    ret_datetime_str_after = t->get_execution_datetime_fmt();
+    ret_datetime_after = t->get_execution_datetime(false);
 
-        assert(ret_datetime_before == ret_datetime_after);
-        assert(ret_datetime_str_before.find(ret_datetime_str_after) != std::string::npos);
+    assert(ret_datetime_before == ret_datetime_after);
+    assert(ret_datetime_str_before.find(ret_datetime_str_after) != std::string::npos);
 
-        delete t;
-    }
+    delete t;
 
     std::cout << ">> Task_update_execution_datetime_Once: 2 done" << std::endl;
     return 0;

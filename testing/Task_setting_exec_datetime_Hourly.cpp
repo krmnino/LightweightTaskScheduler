@@ -151,9 +151,8 @@ int test2(){
     // TEST 2: verify that execution datetime is set properly when initializing Task object
     // Task constructor used: Task(std::string, std::string, std::string, std::string, std::string)
     // Frequency: Hourly
-    // Datetime format: HH:MM:SS, MM-DD HH:MM:SS, YYYY-MM-DD HH:MM:SS
-    //                  WDAY HH:MM:SS (full week day names), WDAY HH:MM:SS (abbreviated week day names)
-    //                  MM-DD, YYYY-MM-DD
+    // Datetime format: HH:MM:SS, YYYY-MM-DD HH:MM:SS, WDAY HH:MM:SS (full week day names),
+    //                  WDAY HH:MM:SS (abbreviated week day names), and YYYY-MM-DD
 
     time_t time_now;
     time_t time_now_add;
@@ -280,11 +279,9 @@ int test2(){
     std::string t_frequency = "Hourly";
     std::vector<std::string> datetimes = {
         hours + ":" + minutes + ":" + seconds, // HH:MM:SS
-        months + "-" + days + " " + hours + ":" + minutes + ":" + seconds, // MM-DD HH:MM:SS
         years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds, // YYYY-MM-DD HH:MM:SS
         wday_abbr + " " + hours + ":" + minutes + ":" + seconds, // WDAY HH:MM:SS (abbreviated week day name)
         wday_full + " " + hours + ":" + minutes + ":" + seconds, // WDAY HH:MM:SS (full week day name)
-        months + "-" + days, // MM-DD
         years + "-" + months + "-" + days, // YYYY-MM-DD
     };
 
