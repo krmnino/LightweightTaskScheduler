@@ -316,6 +316,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test5()`|Initialize `Task` with a `YYYY-MM-DD` datetime format and `Frequency` of `Once`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
 |`test6()`|Initialize `Task` with an invalid datetime format and `Frequency` of `Once`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
 |`test7()`|Initialize `Task` with constructor `Task::Task(std::string, std::string, std::string, std::string)` and `Frequency` of `Once`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test8()`|Attempt to initialize `Task` with invalid datetime values with datetime formats `HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, `WDAY HH:MM:SS`, and `YYYY-MM-DD` and `Frequency` of `Daily`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
 
 ### **Task_setting_exec_datetime_Hourly.cpp**
 

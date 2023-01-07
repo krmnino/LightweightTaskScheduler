@@ -1281,6 +1281,91 @@ int test7(){
 }
 
 
+int test8(){
+    // TEST 8: attempt to initialize Task with invalid datetime values
+    // Frequency: Daily
+    // Datetime format: HH:MM:SS, YYYY-MM-DD HH:MM:SS, WDAY HH:MM:SS, YYYY-MM-DD
+
+    std::string t_name = "Task Name";
+    std::string t_description = "A short description for this task";
+    std::string t_script_name = "cat_test.sh";
+    std::string t_frequency = "Daily";
+    std::vector<std::string> datetimes = {
+        "60:20:00",
+        "12:60:00",
+        "12:20:60",
+        "60:20a00",
+        "60a20:00",
+        "1a:20:00",
+        "12:a0:00",
+        "12:00:0A",
+        "2022-02-15 60:20:00",
+        "2022-02-15 12:60:00",
+        "2022-02-15 12:20:60",
+        "2022-02-15 60:20a00",
+        "2022-02-15 60a20:00",
+        "2022-02-15 1a:20:00",
+        "2022-02-15 12:a0:00",
+        "2022-02-15 12:00:0A",
+        "20a2-02-15 12:00:00",
+        "2022-0a-15 12:00:00",
+        "2022-02-a5 12:00:00",
+        "2022a02-15 12:00:00",
+        "2022-02a15 12:00:00",
+        "2022-02-15a12:00:00",
+        "1980-02-15 12:00:00",
+        "2022-80-15 12:00:00",
+        "2022-02-70 12:00:00",
+        "Monday 60:20:00",
+        "Monday 12:60:00",
+        "Monday 12:20:60",
+        "Monday 60:20a00",
+        "Monday 60a20:00",
+        "Mondaya12:00:00",
+        "Monday 1a:20:00",
+        "Monday 12:a0:00",
+        "Monday 12:00:0A",
+        "Mxnday 12:00:00",
+        "Tuexday 12:00:00",
+        "Wednxsday 12:00:00",
+        "Thurxday 12:00:00",
+        "Fridxy 12:00:00",
+        "Satuxday 12:00:00",
+        "Sundax 12:00:00",
+        "Mxn 12:00:00",
+        "Txe 12:00:00",
+        "Wxd 12:00:00",
+        "Txu 12:00:00",
+        "Fxi 12:00:00",
+        "Sxt 12:00:00",
+        "Sxn 12:00:00",
+        "XYZ 12:00:00",
+        "000 12:00:00",
+        "20a2-02-15",
+        "2022-0a-15",
+        "2022-02-a5",
+        "2022a02-15",
+        "2022-02a15",
+        "2022-02-15",
+        "1980-02-15",
+        "2022-80-15",
+        "2022-02-70"
+    };
+
+    for(size_t i = 0; i < datetimes.size(); i++){
+        ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, datetimes[i]);
+
+        assert(t->get_execution_datetime(false) == 0);
+        assert(t->get_status() == ts::TaskStatus::ERROR);
+
+        delete t;
+    }
+
+    std::cout << ">> Task_setting_exec_datetime_Once: 8 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     test1();
     test2();
@@ -1289,4 +1374,5 @@ int main(){
     test5();
     test6();
     test7();
+    test8();
 }
