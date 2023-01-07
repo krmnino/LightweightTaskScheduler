@@ -50,7 +50,8 @@ all: task_scheduler.o						\
 	Task_update_execution_datetime_Monthly	\
 	Task_update_execution_datetime_Yearly	\
 	Task_setting_exec_datetime_Once			\
-	Task_setting_exec_datetime_Hourly
+	Task_setting_exec_datetime_Hourly		\
+	Task_setting_exec_datetime_Daily
 
 task_scheduler.o: 
 	g++ -g -c -std=c++17 -pthread $(SRC_FILES)
@@ -175,6 +176,10 @@ Task_setting_exec_datetime_Hourly: task_scheduler.o
 	g++ -g -Wall -c -std=c++17 Task_setting_exec_datetime_Hourly.cpp
 	g++ -g -Wall -o Task_setting_exec_datetime_Hourly Task_setting_exec_datetime_Hourly.o $(OBJ_FILES) -pthread -lstdc++fs
 
+Task_setting_exec_datetime_Daily: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 Task_setting_exec_datetime_Daily.cpp
+	g++ -g -Wall -o Task_setting_exec_datetime_Daily Task_setting_exec_datetime_Daily.o $(OBJ_FILES) -pthread -lstdc++fs
+
 ###################################################################################################
 
 clean:
@@ -210,4 +215,5 @@ clean:
 	Task_update_execution_datetime_Monthly	\
 	Task_update_execution_datetime_Yearly	\
 	Task_setting_exec_datetime_Once			\
-	Task_setting_exec_datetime_Hourly
+	Task_setting_exec_datetime_Hourly		\
+	Task_setting_exec_datetime_Daily

@@ -28,3 +28,4 @@
 ./Task_update_execution_datetime_Yearly
 ./Task_setting_exec_datetime_Once
 ./Task_setting_exec_datetime_Hourly
+./Task_setting_exec_datetime_Daily
