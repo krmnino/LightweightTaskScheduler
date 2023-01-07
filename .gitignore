@@ -41,3 +41,4 @@ testing/Task_setting_exec_datetime_Once
 testing/Task_setting_exec_datetime_Hourly
 testing/Task_setting_exec_datetime_Daily
 testing/Task_setting_exec_datetime_Weekly
+testing/Task_setting_exec_datetime_Yearly
