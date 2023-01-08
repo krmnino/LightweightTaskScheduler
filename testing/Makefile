@@ -53,6 +53,7 @@ all: task_scheduler.o						\
 	Task_setting_exec_datetime_Hourly		\
 	Task_setting_exec_datetime_Daily		\
 	Task_setting_exec_datetime_Weekly		\
+	Task_setting_exec_datetime_Monthly		\
 	Task_setting_exec_datetime_Yearly
 
 task_scheduler.o: 
