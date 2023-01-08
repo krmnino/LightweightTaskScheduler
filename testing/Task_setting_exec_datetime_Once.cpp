@@ -1283,13 +1283,13 @@ int test7(){
 
 int test8(){
     // TEST 8: attempt to initialize Task with invalid datetime values
-    // Frequency: Daily
+    // Frequency: Once
     // Datetime format: HH:MM:SS, YYYY-MM-DD HH:MM:SS, WDAY HH:MM:SS, YYYY-MM-DD
 
     std::string t_name = "Task Name";
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
-    std::string t_frequency = "Daily";
+    std::string t_frequency = "Once";
     std::vector<std::string> datetimes = {
         "60:20:00",
         "12:60:00",
