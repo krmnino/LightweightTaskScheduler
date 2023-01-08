@@ -354,7 +354,16 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 ### **Task_setting_exec_datetime_Monthly.cpp**
 
-
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Initialize `Task` with a `HH:MM:SS` datetime format and `Frequency` of `Monthly`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test2()`|Initialize `Task` with a `YYYY-MM-DD HH:MM:SS` datetime format and `Frequency` of `Monthly`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test3()`|Initialize `Task` with a `YYYY-MM-DD` datetime format and `Frequency` of `Monthly`. After a successful `Task` initialization, the execution datetime value should correspond to the verification execution datetime string.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test4()`|Initialize `Task` with an invalid datetime format and `Frequency` of `Monthly`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test5()`|Initialize `Task` with constructor `Task::Task(std::string, std::string, std::string, std::string)` and `Frequency` of `Monthly`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test6()`|Initialize `Task` with incompatible datetime format `WDAY HH:MM:SS` (full week day names) datetime format and `Frequency` of `Monthly`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test7()`|Initialize `Task` with incompatible datetime format `WDAY HH:MM:SS` (abbreviated week day names) datetime format and `Frequency` of `Monthly`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+|`test8()`|Attempt to initialize `Task` with invalid datetime values with datetime formats `HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, and `YYYY-MM-DD` and `Frequency` of `Monthly`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
 
 ### **Task_setting_exec_datetime_Yearly.cpp**
 
