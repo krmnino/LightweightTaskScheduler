@@ -59,4 +59,4 @@ scratch:
 		-lstdc++fs
 
 clean:
-	rm scheduler scheduler_testing test Test scratch Scratch
+	rm *.gch scheduler scheduler_testing test Test scratch Scratch
