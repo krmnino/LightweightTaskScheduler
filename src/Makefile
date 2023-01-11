@@ -10,6 +10,7 @@ debug:
 		CLErrorHandler.cpp 		\
 		ConfigLoader.hpp 		\
 		ConfigLoader.cpp 		\
+		CommandLine.hpp			\
 		Scheduler.hpp			\
 		Scheduler.cpp			\
 		Task.hpp				\
@@ -33,24 +34,6 @@ release:
 		Task.hpp				\
 		Task.cpp				\
 		Main.cpp -o scheduler 	\
-		-lstdc++fs
-
-testing: 
-		g++ -g -std=c++17 		\
-		-pthread				\
-		Variant.hpp				\
-		Variant.cpp				\
-		Value.hpp				\
-		Value.cpp				\
-		CLErrorHandler.hpp 		\
-		CLErrorHandler.cpp 		\
-		ConfigLoader.hpp 		\
-		ConfigLoader.cpp 		\
-		Scheduler.hpp			\
-		Scheduler.cpp			\
-		Task.hpp				\
-		Task.cpp				\
-		Testing.cpp -o scheduler_testing 	\
 		-lstdc++fs
 
 scratch:
