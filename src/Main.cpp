@@ -3,6 +3,8 @@
 #include "Scheduler.hpp"
 #include "Task.hpp"
 
+ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+
 int main(int argc, char* argv[]){
     cl::Config* main_config = new cl::Config("config/main_config.cl");
 
@@ -12,8 +14,9 @@ int main(int argc, char* argv[]){
 
     delete main_config;
 
-    ts::Scheduler* s = new ts::Scheduler(top_level_dir, tasks_dir, scripts_dir);
-    delete s;
+    ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
+    s->Scheduler_init(top_level_dir, tasks_dir, scripts_dir);
+    s->Scheduler_delete();
 
     return 0;
 }
