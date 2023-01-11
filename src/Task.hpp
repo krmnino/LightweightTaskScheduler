@@ -1,5 +1,5 @@
-#ifndef TSTASK
-#define TSTASK
+#ifndef LTS_TASK
+#define LTS_TASK
 
 #define DAYS_IN_WEEK 7
 #define TIMEZONE -5
@@ -164,4 +164,4 @@ DatetimeFormat get_datetime_format(std::string);
 TaskValidate validate_task_parms(cl::Config*, std::string);
 } // namespace ts
 
-#endif // TSTASK
+#endif // LTS_TASK
