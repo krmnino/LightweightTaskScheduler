@@ -2,7 +2,7 @@
 
 namespace ts{
 
-Scheduler::Scheduler(std::string& top_level_dir, std::string& tasks_dir, std::string& scripts_dir){
+void Scheduler::Scheduler_init(std::string& top_level_dir, std::string& tasks_dir, std::string& scripts_dir){
     this->top_level_dir = top_level_dir;
     this->tasks_dir = tasks_dir;
     this->scripts_dir = scripts_dir;
@@ -55,18 +55,12 @@ Scheduler::Scheduler(std::string& top_level_dir, std::string& tasks_dir, std::st
     }
 }
 
-Scheduler::Scheduler(){
-    this->n_tasks = 0;
-    this->top_level_dir = "";
-    this->tasks_dir = "";
-    this->scripts_dir = "";
-}
-
-Scheduler::~Scheduler(){
+void Scheduler::Scheduler_delete(){
     // Delete tasks by iterating through task registry
     for (std::map<std::string, Task*>::iterator it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
         delete it->second;
     }
+    delete this->scheduler_ptr;
 }
 
 void Scheduler::launch_task_thread(std::string& task_name){
