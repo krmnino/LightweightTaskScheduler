@@ -1,3 +1,3 @@
-TopLevel = /home/kurt/remote/github/BatchTaskScheduler/;
+TopLevel = /home/kurt/remote/github/LightweightTaskScheduler/;
 ScriptsDir = scripts/;
 TasksDir = tasks/;
