@@ -2,6 +2,9 @@
 #include <iostream>
 
 #include "../src/Task.hpp"
+#include "../src/Scheduler.hpp"
+
+ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing validate_yyyymmdd() function. Valid YYYY-MM-DD HH:MM:SS string.
