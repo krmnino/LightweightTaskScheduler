@@ -2,6 +2,9 @@
 #include <iostream>
 
 #include "../src/Task.hpp"
+#include "../src/Scheduler.hpp"
+
+ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing validate_task_parms() function -> PASS
@@ -132,7 +135,7 @@ int test3(){
 
     ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::TaskValidate::MISSING_REQUIRED_KEYVALS);
+    assert(ret == ts::TaskValidate::MISSING_NAME_KEYVAL);
 
     delete c;
 
@@ -153,7 +156,7 @@ int test4(){
 
     ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::TaskValidate::MISSING_REQUIRED_KEYVALS);
+    assert(ret == ts::TaskValidate::MISSING_SCRIPTFN_KEYVAL);
 
     delete c;
 
@@ -174,7 +177,7 @@ int test5(){
 
     ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::TaskValidate::MISSING_REQUIRED_KEYVALS);
+    assert(ret == ts::TaskValidate::MISSING_FREQUENCY_KEYVAL);
 
     delete c;
 
@@ -195,7 +198,7 @@ int test6(){
 
     ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::TaskValidate::MISSING_REQUIRED_KEYVALS);
+    assert(ret == ts::TaskValidate::MISSING_DATETIME_KEYVAL);
 
     delete c;
 

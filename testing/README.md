@@ -174,10 +174,10 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |-|-|-|-|
 |`test1()`|Provide the mandatory valid attributes to instantiate `Task` object. These include `Name`, `ScriptFilename`, `Frequency`, and `Datetime`. Call should succeed with return value of  `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test2()`|Provide all possible valid attributes to instantiate `Task` object. These include `Name`, `ScriptFilename`, `Frequency`, and `Datetime`. Call should succeed with return value of `TaskValidate::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test3()`|Fail to pass `Name` attribute. Call should fail with return value of `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test4()`|Fail to pass `ScriptFilename` attribute. Call should fail with return value of `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test5()`|Fail to pass `Frequency` attribute. Call should fail with return value of `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test6()`|Fail to pass `Datetime` attribute. Call should fail with return value of  `TaskValidate::MISSING_REQUIRED_KEYVALS`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test3()`|Fail to pass `Name` attribute. Call should fail with return value of `TaskValidate::MISSING_NAME_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test4()`|Fail to pass `ScriptFilename` attribute. Call should fail with return value of `TaskValidate::MISSING_SCRIPTFN_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test5()`|Fail to pass `Frequency` attribute. Call should fail with return value of `TaskValidate::MISSING_FREQUENCY_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test6()`|Fail to pass `Datetime` attribute. Call should fail with return value of  `TaskValidate::MISSING_DATETIME_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test7()`|Provide all possible valid attributes to instantiate `Task` object. `ScriptFilename` value should point to an invalid file location. Call should fail with return value of  `TaskValidate::SCRIPT_NOT_FOUND`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test8()`|Provide all possible valid attributes to instantiate `Task` object. `Frequency` value should be invalid. Call should fail with return value of `TaskValidate::BAD_FREQUENCY_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 
