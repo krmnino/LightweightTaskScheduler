@@ -54,7 +54,8 @@ all: task_scheduler.o						\
 	Task_setting_exec_datetime_Daily		\
 	Task_setting_exec_datetime_Weekly		\
 	Task_setting_exec_datetime_Monthly		\
-	Task_setting_exec_datetime_Yearly
+	Task_setting_exec_datetime_Yearly		\
+	Scheduler_get_instance
 
 task_scheduler.o: 
 	g++ -g -c -std=c++17 -pthread $(SRC_FILES)
@@ -195,6 +196,10 @@ Task_setting_exec_datetime_Yearly: task_scheduler.o
 	g++ -g -Wall -c -std=c++17 Task_setting_exec_datetime_Yearly.cpp
 	g++ -g -Wall -o Task_setting_exec_datetime_Yearly Task_setting_exec_datetime_Yearly.o $(OBJ_FILES) -pthread -lstdc++fs
 
+Scheduler_get_instance: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 Scheduler_get_instance.cpp
+	g++ -g -Wall -o Scheduler_get_instance Scheduler_get_instance.o $(OBJ_FILES) -pthread -lstdc++fs
+
 ###################################################################################################
 
 clean:
@@ -234,4 +239,5 @@ clean:
 	Task_setting_exec_datetime_Daily		\
 	Task_setting_exec_datetime_Weekly		\
 	Task_setting_exec_datetime_Monthly		\
-	Task_setting_exec_datetime_Yearly
+	Task_setting_exec_datetime_Yearly		\
+	Scheduler_get_instance

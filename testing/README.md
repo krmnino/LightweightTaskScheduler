@@ -377,3 +377,9 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test6()`|Initialize `Task` with incompatible datetime format `WDAY HH:MM:SS` (full week day names) datetime format and `Frequency` of `Yearly`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
 |`test7()`|Initialize `Task` with incompatible datetime format `WDAY HH:MM:SS` (abbreviated week day names) datetime format and `Frequency` of `Yearly`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
 |`test8()`|Attempt to initialize `Task` with invalid datetime values with datetime formats `YYYY-MM-DD HH:MM:SS` and `YYYY-MM-DD` and `Frequency` of `Yearly`. The constructor call must end with the `Task->status` set to `TaskStatus::ERROR`.|`Task::Task(std::string, std::string, std::string, std::string, std::string)`|<span style="color:green">Passed|
+
+### **Scheduler_get_instance.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Instantiate `Scheduler` singleton object.|`Scheduler::Scheduler_get_instance()`|<span style="color:green">Passed|

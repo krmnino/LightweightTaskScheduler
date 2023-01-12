@@ -43,3 +43,4 @@ testing/Task_setting_exec_datetime_Daily
 testing/Task_setting_exec_datetime_Weekly
 testing/Task_setting_exec_datetime_Monthly
 testing/Task_setting_exec_datetime_Yearly
+testing/Scheduler_get_instance
