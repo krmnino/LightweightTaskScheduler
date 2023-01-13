@@ -62,7 +62,10 @@ enum class TaskStatus {
 
 enum class TaskValidate {
 	OK,
-	MISSING_REQUIRED_KEYVALS,
+	MISSING_NAME_KEYVAL,
+	MISSING_SCRIPTFN_KEYVAL,
+	MISSING_FREQUENCY_KEYVAL,
+	MISSING_DATETIME_KEYVAL,
 	SCRIPT_NOT_FOUND,
 	BAD_FREQUENCY_VALUE,
     BAD_DATETIME_VALUE,
@@ -130,13 +133,13 @@ public:
     Task(std::string, std::string, std::string, std::string);
     ~Task();
     void run_task(void);
-    std::string get_name(void);
-    std::string get_description(void);
-    std::string get_script_filename(void);
-    std::string get_frequency(void);
+    const std::string& get_name(void);
+    const std::string& get_description(void);
+    const std::string& get_script_filename(void);
+    const std::string& get_frequency(void);
+    const std::string& get_output(void);
     time_t get_creation_datetime(bool);
     time_t get_execution_datetime(bool);
-    std::string get_output(void);
     std::string get_creation_datetime_fmt(void);
     std::string get_execution_datetime_fmt(void);
     TaskStatus get_status(void);

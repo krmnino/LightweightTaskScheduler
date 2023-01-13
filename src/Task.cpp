@@ -211,20 +211,24 @@ void Task::run_task(void){
     }
 }
 
-std::string Task::get_name(void){
+const std::string& Task::get_name(void){
     return this->name;
 }
 
-std::string Task::get_description(void){
+const std::string& Task::get_description(void){
     return this->description;
 }
 
-std::string Task::get_script_filename(void){
+const std::string& Task::get_script_filename(void){
     return this->script_filename;
 }
 
-std::string Task::get_frequency(void){
+const std::string& Task::get_frequency(void){
     return this->frequency;
+}
+
+const std::string& Task::get_output(void){
+    return this->output;
 }
 
 time_t Task::get_creation_datetime(bool add_timezone){
@@ -239,10 +243,6 @@ time_t Task::get_execution_datetime(bool add_timezone){
         return this->execution_datetime + (TIMEZONE * 60 * 60);
     }
     return this->execution_datetime;
-}
-
-std::string Task::get_output(void){
-    return this->output;
 }
 
 std::string Task::get_creation_datetime_fmt(void){
@@ -1445,11 +1445,14 @@ DatetimeFormat get_datetime_format(std::string datetime){
 
 TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_dir){
     // Check if required fields exist
-    if(!task_config->key_exists("Name") ||
-       !task_config->key_exists("ScriptFilename") ||
-       !task_config->key_exists("Frequency") ||
-       !task_config->key_exists("Datetime")){
-           return TaskValidate::MISSING_REQUIRED_KEYVALS;
+    if(!task_config->key_exists("Name")){
+           return TaskValidate::MISSING_NAME_KEYVAL;
+    }
+    if(!task_config->key_exists("ScriptFilename")){
+           return TaskValidate::MISSING_SCRIPTFN_KEYVAL;
+    }
+    if(!task_config->key_exists("Frequency")){
+           return TaskValidate::MISSING_FREQUENCY_KEYVAL;
     }
     
     std::string value;
@@ -1475,6 +1478,9 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
         datetime_value = task_config->get_value("Datetime")->get_data<std::string>();
     }
     if(value == "Once"){
+        if(!task_config->key_exists("Datetime")){
+           return TaskValidate::MISSING_DATETIME_KEYVAL;
+        }
         // Get datetime format, no validation performed at this step
         format = get_datetime_format(datetime_value);
         switch ((int)format){
@@ -1514,6 +1520,9 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
         // Datetime value ignored
     }
     else if(value == "Daily"){
+        if(!task_config->key_exists("Datetime")){
+           return TaskValidate::MISSING_DATETIME_KEYVAL;
+        }
         // Get datetime format, no validation performed at this step
         format = get_datetime_format(datetime_value);
         switch ((int)format){
@@ -1544,6 +1553,9 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
         }
     }
     else if(value == "Weekly"){
+        if(!task_config->key_exists("Datetime")){
+           return TaskValidate::MISSING_DATETIME_KEYVAL;
+        }
         // Get datetime format, no validation performed at this step
         format = get_datetime_format(datetime_value);
         switch ((int)format){
@@ -1580,6 +1592,9 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
         }
     }
     else if(value == "Monthly"){
+        if(!task_config->key_exists("Datetime")){
+           return TaskValidate::MISSING_DATETIME_KEYVAL;
+        }
         // Get datetime format, no validation performed at this step
         format = get_datetime_format(datetime_value);
         switch ((int)format){
@@ -1606,6 +1621,9 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
         }
     }
     else if(value == "Yearly"){
+        if(!task_config->key_exists("Datetime")){
+           return TaskValidate::MISSING_DATETIME_KEYVAL;
+        }
         // Get datetime format, no validation performed at this step
         format = get_datetime_format(datetime_value);
         switch ((int)format){
