@@ -1252,7 +1252,7 @@ int test6(){
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
 
     assert(t->get_execution_datetime(false) == 0);
-    assert(t->get_status() == ts::TaskStatus::ERROR);
+    assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
 
     delete t;
 
@@ -1275,7 +1275,7 @@ int test7(){
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency);
 
     assert(t->get_execution_datetime(false) == 0);
-    assert(t->get_status() == ts::TaskStatus::ERROR);
+    assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
 
     delete t;
 
@@ -1359,7 +1359,7 @@ int test8(){
         ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, datetimes[i]);
 
         assert(t->get_execution_datetime(false) == 0);
-        assert(t->get_status() == ts::TaskStatus::ERROR);
+        assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
 
         delete t;
     }
