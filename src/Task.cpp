@@ -15,7 +15,7 @@ Task::Task(std::string name,
     ts::DatetimeFormat format;
     if(this->frequency == "Once"){
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(execution_datetime_str);
+        format = compute_datetime_format(execution_datetime_str);
         // Datetime string validation occurs at Scheduler constructor
         switch ((int)format){
         case (int)DatetimeFormat::HHMMSS:
@@ -45,7 +45,7 @@ Task::Task(std::string name,
     }
     else if(this->frequency == "Daily"){
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(execution_datetime_str);
+        format = compute_datetime_format(execution_datetime_str);
         // Datetime string validation occurs at Scheduler constructor
         switch ((int)format){
         case (int)DatetimeFormat::HHMMSS:
@@ -69,7 +69,7 @@ Task::Task(std::string name,
     }
     else if(this->frequency == "Weekly"){
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(execution_datetime_str);
+        format = compute_datetime_format(execution_datetime_str);
         // Datetime string validation occurs at Scheduler constructor
         switch ((int)format){
         case (int)DatetimeFormat::HHMMSS:
@@ -96,7 +96,7 @@ Task::Task(std::string name,
     }
     else if(this->frequency == "Monthly"){
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(execution_datetime_str);
+        format = compute_datetime_format(execution_datetime_str);
         // Datetime string validation occurs at Scheduler constructor
         switch ((int)format){
         case (int)DatetimeFormat::HHMMSS:
@@ -116,7 +116,7 @@ Task::Task(std::string name,
     }
     else if(this->frequency == "Yearly"){
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(execution_datetime_str);
+        format = compute_datetime_format(execution_datetime_str);
         // Datetime string validation occurs at Scheduler constructor
         switch ((int)format){
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
@@ -1388,7 +1388,7 @@ time_t today_add_yyyymmdd_hms(std::string yyyymmdd_hms){
     return added_time;
 }
 
-DatetimeFormat get_datetime_format(std::string datetime){
+DatetimeFormat compute_datetime_format(std::string datetime){
     // Each character in datetime will have a score
     // Numbers : 1 pts
     // Dash: 2 pts
@@ -1482,7 +1482,7 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
            return TaskValidate::MISSING_DATETIME_KEYVAL;
         }
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(datetime_value);
+        format = compute_datetime_format(datetime_value);
         switch ((int)format){
         case (int)DatetimeFormat::HHMMSS:
             if(validate_hms(datetime_value) != DatetimeValidate::OK){
@@ -1524,7 +1524,7 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
            return TaskValidate::MISSING_DATETIME_KEYVAL;
         }
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(datetime_value);
+        format = compute_datetime_format(datetime_value);
         switch ((int)format){
         case (int)DatetimeFormat::HHMMSS:
             if(validate_hms(datetime_value) != DatetimeValidate::OK){
@@ -1557,7 +1557,7 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
            return TaskValidate::MISSING_DATETIME_KEYVAL;
         }
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(datetime_value);
+        format = compute_datetime_format(datetime_value);
         switch ((int)format){
         case (int)DatetimeFormat::HHMMSS:
             if(validate_hms(datetime_value) != DatetimeValidate::OK){
@@ -1596,7 +1596,7 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
            return TaskValidate::MISSING_DATETIME_KEYVAL;
         }
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(datetime_value);
+        format = compute_datetime_format(datetime_value);
         switch ((int)format){
         case (int)DatetimeFormat::HHMMSS:
             if(validate_hms(datetime_value) != DatetimeValidate::OK){
@@ -1625,7 +1625,7 @@ TaskValidate validate_task_parms(cl::Config* task_config, std::string scripts_di
            return TaskValidate::MISSING_DATETIME_KEYVAL;
         }
         // Get datetime format, no validation performed at this step
-        format = get_datetime_format(datetime_value);
+        format = compute_datetime_format(datetime_value);
         switch ((int)format){
         case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
             if(validate_yyyymmdd_hms(datetime_value) != DatetimeValidate::OK){

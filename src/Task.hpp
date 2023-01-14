@@ -164,7 +164,7 @@ time_t today_add_dhms(int, std::string);
 time_t today_add_wday_hms(std::string);
 time_t today_add_yyyymmdd(std::string);
 time_t today_add_yyyymmdd_hms(std::string);
-DatetimeFormat get_datetime_format(std::string);
+DatetimeFormat compute_datetime_format(std::string);
 TaskValidate validate_task_parms(cl::Config*, std::string);
 } // namespace ts
 
