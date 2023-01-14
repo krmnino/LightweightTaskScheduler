@@ -12,7 +12,7 @@
 ./today_add_wday_hms
 ./today_add_yyyymmdd
 ./today_add_yyyymmdd_hms
-./get_datetime_format
+./compute_datetime_format
 ./validate_task_parms
 ./validate_task_parms_Once
 ./validate_task_parms_Hourly

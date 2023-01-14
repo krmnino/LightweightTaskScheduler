@@ -157,16 +157,16 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test11()`|Pass invalid `YYYY-MM-DD HH:MM:SS` string with `MM` (minutes) field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_yyyymmdd_hms(std::string)`|<span style="color:green">Passed|
 |`test12()`|Pass invalid `YYYY-MM-DD HH:MM:SS` string with `SS` field out of range. Call should fail and return `time_t` with a value of zero.|`today_add_yyyymmdd_hms(std::string)`|<span style="color:green">Passed|
 
-### **get_datetime_format.cpp**
+### **compute_datetime_format.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Pass string with a valid `HH:MM:SS` datetime format. Call should succeed with return value of `DatetimeFormat::HHMMSS`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
-|`test2()`|Pass strings with a valid `WDAY HH:MM:SS` datetime format with `WDAY` section being abbreviated week day name for all days in the week. Call should succeed with return value of `DatetimeFormat::WDAY_HHMMSS`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
-|`test3()`|Pass strings with a valid `WDAY HH:MM:SS` datetime format with `WDAY` section being full week day name for all days in the week. The call should succeed and the return value may vary depending on the length of the week day name (either `WDAY6_HHMMSS`, `WDAY7_HHMMSS`, `WDAY8_HHMMSS`, or `WDAY9_HHMMSS`).|`get_datetime_format(std::string)`|<span style="color:green">Passed|
-|`test4()`|Pass string with a valid `YYYY-MM-DD` datetime format. Call should succeed with return value of `DatetimeFormat::YYYYMMDD`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
-|`test5()`|Pass string with a valid `YYYY-MM-DD HH:MM:SS` datetime format. Call should succeed with return value of `DatetimeFormat::YYYYMMDD_HHMMSS`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
-|`test6()`|Pass string with invalid datetime format. Call should fail with return value of  `DatetimeFormat::INVALID_DATE_FORMAT`.|`get_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test1()`|Pass string with a valid `HH:MM:SS` datetime format. Call should succeed with return value of `DatetimeFormat::HHMMSS`.|`compute_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test2()`|Pass strings with a valid `WDAY HH:MM:SS` datetime format with `WDAY` section being abbreviated week day name for all days in the week. Call should succeed with return value of `DatetimeFormat::WDAY_HHMMSS`.|`compute_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass strings with a valid `WDAY HH:MM:SS` datetime format with `WDAY` section being full week day name for all days in the week. The call should succeed and the return value may vary depending on the length of the week day name (either `WDAY6_HHMMSS`, `WDAY7_HHMMSS`, `WDAY8_HHMMSS`, or `WDAY9_HHMMSS`).|`compute_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass string with a valid `YYYY-MM-DD` datetime format. Call should succeed with return value of `DatetimeFormat::YYYYMMDD`.|`compute_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass string with a valid `YYYY-MM-DD HH:MM:SS` datetime format. Call should succeed with return value of `DatetimeFormat::YYYYMMDD_HHMMSS`.|`compute_datetime_format(std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass string with invalid datetime format. Call should fail with return value of  `DatetimeFormat::INVALID_DATE_FORMAT`.|`compute_datetime_format(std::string)`|<span style="color:green">Passed|
 
 ### **validate_task_parms.cpp**
 
