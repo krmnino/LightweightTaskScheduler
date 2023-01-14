@@ -36,7 +36,7 @@ Task::Task(std::string name,
             break;
         default:
             this->execution_datetime = 0;
-            this->status = TaskStatus::ERROR;
+            this->status = TaskStatus::INIT_ERROR;
             break;
         }
     }
@@ -63,7 +63,7 @@ Task::Task(std::string name,
             break;
         default:
             this->execution_datetime = 0;
-            this->status = TaskStatus::ERROR;
+            this->status = TaskStatus::INIT_ERROR;
             break;
         }
     }
@@ -90,7 +90,7 @@ Task::Task(std::string name,
             break;
         default:
             this->execution_datetime = 0;
-            this->status = TaskStatus::ERROR;
+            this->status = TaskStatus::INIT_ERROR;
             break;
         }
     }
@@ -110,7 +110,7 @@ Task::Task(std::string name,
             break;
         default:
             this->execution_datetime = 0;
-            this->status = TaskStatus::ERROR;
+            this->status = TaskStatus::INIT_ERROR;
             break;
         }
     }
@@ -127,12 +127,12 @@ Task::Task(std::string name,
             break;
         default:
             this->execution_datetime = 0;
-            this->status = TaskStatus::ERROR;
+            this->status = TaskStatus::INIT_ERROR;
             break;
         }
     }
     else{
-        this->status = TaskStatus::ERROR;
+        this->status = TaskStatus::INIT_ERROR;
     }
 
     // Save datetime format
@@ -153,7 +153,7 @@ Task::Task(std::string name,
     this->creation_datetime = this->creation_datetime;
 
     this->output = "";
-    if(this->status != TaskStatus::ERROR){
+    if(this->status != TaskStatus::INIT_ERROR){
         this->status = TaskStatus::QUEUED;
     }
 }
@@ -172,7 +172,7 @@ Task::Task(std::string name,
     }
     else{
         this->execution_datetime = 0;
-        this->status = TaskStatus::ERROR;
+        this->status = TaskStatus::INIT_ERROR;
     }
 
     // Set initial execution datetime struct
@@ -190,7 +190,7 @@ Task::Task(std::string name,
     this->creation_datetime = this->creation_datetime;
 
     this->output = "";
-    if(this->status != TaskStatus::ERROR){
+    if(this->status != TaskStatus::INIT_ERROR){
         this->status = TaskStatus::QUEUED;
     }
 }

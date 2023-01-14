@@ -55,7 +55,8 @@
 namespace ts{
 enum class TaskStatus {
 	FINISHED,
-	ERROR,
+	INIT_ERROR,
+	EXEC_ERROR,
 	QUEUED,
 	RUNNING
 };
