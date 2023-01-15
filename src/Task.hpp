@@ -134,6 +134,7 @@ public:
     Task(std::string, std::string, std::string, std::string);
     ~Task();
     void run_task(void);
+    void update_execution_datetime(void);
     const std::string& get_name(void);
     const std::string& get_description(void);
     const std::string& get_script_filename(void);
@@ -148,7 +149,6 @@ public:
     DatetimeFormat get_execution_datetime_format_attr(void);
     void set_status(TaskStatus);
     void set_id(int);
-    void update_execution_datetime(void);
 };
 
 DatetimeValidate validate_hms(std::string);
@@ -166,6 +166,7 @@ time_t today_add_yyyymmdd(std::string);
 time_t today_add_yyyymmdd_hms(std::string);
 DatetimeFormat compute_datetime_format(std::string);
 TaskValidate validate_task_parms(cl::Config*, std::string);
+
 } // namespace ts
 
 #endif // LTS_TASK

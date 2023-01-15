@@ -211,6 +211,191 @@ void Task::run_task(void){
     }
 }
 
+void Task::update_execution_datetime(void){
+    if(this->frequency == "Hourly"){
+        // Add 1 hour in seconds to current execution time
+        this->execution_datetime = this->execution_datetime + 3600;
+    }
+    else if(this->frequency == "Daily"){
+        // Add 24 hours in seconds to current execution time
+        this->execution_datetime = this->execution_datetime + (24 * 3600);
+    }
+    else if(this->frequency == "Weekly"){
+        // Add 7 days in seconds to current execution time
+        this->execution_datetime = this->execution_datetime + (7 * 24 * 3600);
+    }
+    else if(this->frequency == "Monthly"){
+        // Add necessary days until nth day of next month
+        std::string year;
+        std::string month;
+        std::string day;
+        std::string hour;
+        std::string minute;
+        std::string second;
+        std::string updated_datetime_str;
+        unsigned long updated_year;
+        unsigned long updated_month;
+        unsigned long updated_day;
+
+        std::tm* exec_date_struct = std::gmtime(&this->execution_datetime);
+
+        // If current execution month is december, we need to roll back to January and set next year
+        if(exec_date_struct->tm_mon == DECEMBER){
+            updated_year = 1900 + exec_date_struct->tm_year + 1;
+            updated_month = JANUARY; 
+        }
+        else{
+            updated_year = 1900 + exec_date_struct->tm_year;
+            updated_month = exec_date_struct->tm_mon + 1;
+        }
+
+        // String-ify datetime values
+        year = std::to_string(updated_year);
+        month = (updated_month + 1 < 10) ? 
+                "0" + std::to_string(updated_month + 1) :
+                std::to_string(updated_month + 1);
+        hour = (this->initial_execution_datetime.hour < 10) ? 
+                "0" + std::to_string(this->initial_execution_datetime.hour) :
+                std::to_string(this->initial_execution_datetime.hour);
+        minute = (this->initial_execution_datetime.minute < 10) ? 
+                 "0" + std::to_string(this->initial_execution_datetime.minute) :
+                 std::to_string(this->initial_execution_datetime.minute);
+        second = (this->initial_execution_datetime.second < 10) ? 
+                 "0" + std::to_string(this->initial_execution_datetime.second) :
+                 std::to_string(this->initial_execution_datetime.second);
+
+        // Check for the appropiate day of the month for the next month
+        // If a month has less number than the initial execution datetime, then pick the very last day of the next month
+        // No need to subtract month value here
+        switch(updated_month)
+        {
+        case JANUARY:
+            // January has max day count of 31
+            day = (this->initial_execution_datetime.day < 10) ? 
+                   "0" + std::to_string(this->initial_execution_datetime.day) :
+                   std::to_string(this->initial_execution_datetime.day);
+            break;
+        case FEBRUARY:
+            // Check if we are currently on a leap year
+            if(this->initial_execution_datetime.day > FEBRUARY_DAYS){
+                if(1900 + exec_date_struct->tm_year % 4 == 0){
+                    day = std::to_string(FEBRUARY_DAYS + 1);
+                }
+                else{
+                    day = std::to_string(FEBRUARY_DAYS);
+                }
+            }
+            else{
+                day = (this->initial_execution_datetime.day < 10) ? 
+                       "0" + std::to_string(this->initial_execution_datetime.day) :
+                       std::to_string(this->initial_execution_datetime.day);
+            }
+            break;
+        case MARCH:
+            // March has max day count of 31
+            day = (this->initial_execution_datetime.day < 10) ? 
+                   "0" + std::to_string(this->initial_execution_datetime.day) :
+                   std::to_string(this->initial_execution_datetime.day);
+            break;
+        case APRIL:
+            if(this->initial_execution_datetime.day > APRIL_DAYS){
+                day = std::to_string(APRIL_DAYS);
+            }
+            else{
+                day = (this->initial_execution_datetime.day < 10) ? 
+                       "0" + std::to_string(this->initial_execution_datetime.day) :
+                       std::to_string(this->initial_execution_datetime.day);
+            }
+            break;
+        case MAY:
+            // May has max day count of 31
+            day = (this->initial_execution_datetime.day < 10) ? 
+                   "0" + std::to_string(this->initial_execution_datetime.day) :
+                   std::to_string(this->initial_execution_datetime.day);
+            break;
+        case JUNE:
+            if(this->initial_execution_datetime.day > JUNE_DAYS){
+                day = std::to_string(JUNE_DAYS);
+            }
+            else{
+                day = (this->initial_execution_datetime.day < 10) ? 
+                       "0" + std::to_string(this->initial_execution_datetime.day) :
+                       std::to_string(this->initial_execution_datetime.day);
+            }
+            break;
+        case JULY:
+            // July has max day count of 31
+            day = (this->initial_execution_datetime.day < 10) ? 
+                   "0" + std::to_string(this->initial_execution_datetime.day) :
+                   std::to_string(this->initial_execution_datetime.day);
+            break;
+        case AUGUST:
+            // August has max day count of 31
+            day = (this->initial_execution_datetime.day < 10) ? 
+                   "0" + std::to_string(this->initial_execution_datetime.day) :
+                   std::to_string(this->initial_execution_datetime.day);
+            break;
+        case SEPTEMBER:
+            if(this->initial_execution_datetime.day > SEPTEMBER_DAYS){
+                day = std::to_string(SEPTEMBER_DAYS);
+            }
+            else{
+                day = (this->initial_execution_datetime.day < 10) ? 
+                       "0" + std::to_string(this->initial_execution_datetime.day) :
+                       std::to_string(this->initial_execution_datetime.day);
+            }
+            break;
+        case OCTOBER:
+            // October has max day count of 31
+            day = (this->initial_execution_datetime.day < 10) ? 
+                   "0" + std::to_string(this->initial_execution_datetime.day) :
+                   std::to_string(this->initial_execution_datetime.day);
+            break;
+        case NOVEMBER:
+            if(this->initial_execution_datetime.day > NOVEMBER_DAYS){
+                day = std::to_string(NOVEMBER_DAYS);
+            }
+            else{
+                day = (this->initial_execution_datetime.day < 10) ? 
+                       "0" + std::to_string(this->initial_execution_datetime.day) :
+                       std::to_string(this->initial_execution_datetime.day);
+            }
+            break;
+        case DECEMBER:
+            // December has max day count of 31
+            day = (this->initial_execution_datetime.day < 10) ? 
+                   "0" + std::to_string(this->initial_execution_datetime.day) :
+                   std::to_string(this->initial_execution_datetime.day);
+            break;
+        default:
+            month = "";
+            break;
+        }
+        this->execution_datetime = today_add_yyyymmdd_hms(year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second);
+    }
+    else if(this->frequency == "Yearly"){
+        // Add necessary days until nth day of next year
+        std::tm* exec_date_struct = std::gmtime(&this->execution_datetime);
+        // Edge case if case is scheduled to run on February 29th
+        // If next year is not a leap year, then run on the 28th (see else statement)
+        if(this->initial_execution_datetime.month == FEBRUARY && 
+           this->initial_execution_datetime.day == 29 && 
+           (1900 + exec_date_struct->tm_year + 1) % 4 == 0){
+            this->execution_datetime = this->execution_datetime + (366 * 24 * 60 * 60);
+        }
+        // Else if next year is a leap year and task is scheduled after February 28th, then add 366 days
+        else if((1900 + exec_date_struct->tm_year + 1) % 4 == 0 && 
+           (exec_date_struct->tm_mon >= FEBRUARY || 
+           (exec_date_struct->tm_mon == FEBRUARY && exec_date_struct->tm_mday >= 28))){
+            this->execution_datetime = this->execution_datetime + (366 * 24 * 60 * 60);
+        }
+        else{
+            this->execution_datetime = this->execution_datetime + (365 * 24 * 60 * 60);
+        }
+    }
+    return; // Else, Frequency is Once so no update occurs 
+}
+
 const std::string& Task::get_name(void){
     return this->name;
 }
@@ -457,191 +642,6 @@ void Task::set_status(TaskStatus status){
 
 void Task::set_id(int id){
     this->id = id;
-}
-
-void Task::update_execution_datetime(void){
-    if(this->frequency == "Hourly"){
-        // Add 1 hour in seconds to current execution time
-        this->execution_datetime = this->execution_datetime + 3600;
-    }
-    else if(this->frequency == "Daily"){
-        // Add 24 hours in seconds to current execution time
-        this->execution_datetime = this->execution_datetime + (24 * 3600);
-    }
-    else if(this->frequency == "Weekly"){
-        // Add 7 days in seconds to current execution time
-        this->execution_datetime = this->execution_datetime + (7 * 24 * 3600);
-    }
-    else if(this->frequency == "Monthly"){
-        // Add necessary days until nth day of next month
-        std::string year;
-        std::string month;
-        std::string day;
-        std::string hour;
-        std::string minute;
-        std::string second;
-        std::string updated_datetime_str;
-        unsigned long updated_year;
-        unsigned long updated_month;
-        unsigned long updated_day;
-
-        std::tm* exec_date_struct = std::gmtime(&this->execution_datetime);
-
-        // If current execution month is december, we need to roll back to January and set next year
-        if(exec_date_struct->tm_mon == DECEMBER){
-            updated_year = 1900 + exec_date_struct->tm_year + 1;
-            updated_month = JANUARY; 
-        }
-        else{
-            updated_year = 1900 + exec_date_struct->tm_year;
-            updated_month = exec_date_struct->tm_mon + 1;
-        }
-
-        // String-ify datetime values
-        year = std::to_string(updated_year);
-        month = (updated_month + 1 < 10) ? 
-                "0" + std::to_string(updated_month + 1) :
-                std::to_string(updated_month + 1);
-        hour = (this->initial_execution_datetime.hour < 10) ? 
-                "0" + std::to_string(this->initial_execution_datetime.hour) :
-                std::to_string(this->initial_execution_datetime.hour);
-        minute = (this->initial_execution_datetime.minute < 10) ? 
-                 "0" + std::to_string(this->initial_execution_datetime.minute) :
-                 std::to_string(this->initial_execution_datetime.minute);
-        second = (this->initial_execution_datetime.second < 10) ? 
-                 "0" + std::to_string(this->initial_execution_datetime.second) :
-                 std::to_string(this->initial_execution_datetime.second);
-
-        // Check for the appropiate day of the month for the next month
-        // If a month has less number than the initial execution datetime, then pick the very last day of the next month
-        // No need to subtract month value here
-        switch(updated_month)
-        {
-        case JANUARY:
-            // January has max day count of 31
-            day = (this->initial_execution_datetime.day < 10) ? 
-                   "0" + std::to_string(this->initial_execution_datetime.day) :
-                   std::to_string(this->initial_execution_datetime.day);
-            break;
-        case FEBRUARY:
-            // Check if we are currently on a leap year
-            if(this->initial_execution_datetime.day > FEBRUARY_DAYS){
-                if(1900 + exec_date_struct->tm_year % 4 == 0){
-                    day = std::to_string(FEBRUARY_DAYS + 1);
-                }
-                else{
-                    day = std::to_string(FEBRUARY_DAYS);
-                }
-            }
-            else{
-                day = (this->initial_execution_datetime.day < 10) ? 
-                       "0" + std::to_string(this->initial_execution_datetime.day) :
-                       std::to_string(this->initial_execution_datetime.day);
-            }
-            break;
-        case MARCH:
-            // March has max day count of 31
-            day = (this->initial_execution_datetime.day < 10) ? 
-                   "0" + std::to_string(this->initial_execution_datetime.day) :
-                   std::to_string(this->initial_execution_datetime.day);
-            break;
-        case APRIL:
-            if(this->initial_execution_datetime.day > APRIL_DAYS){
-                day = std::to_string(APRIL_DAYS);
-            }
-            else{
-                day = (this->initial_execution_datetime.day < 10) ? 
-                       "0" + std::to_string(this->initial_execution_datetime.day) :
-                       std::to_string(this->initial_execution_datetime.day);
-            }
-            break;
-        case MAY:
-            // May has max day count of 31
-            day = (this->initial_execution_datetime.day < 10) ? 
-                   "0" + std::to_string(this->initial_execution_datetime.day) :
-                   std::to_string(this->initial_execution_datetime.day);
-            break;
-        case JUNE:
-            if(this->initial_execution_datetime.day > JUNE_DAYS){
-                day = std::to_string(JUNE_DAYS);
-            }
-            else{
-                day = (this->initial_execution_datetime.day < 10) ? 
-                       "0" + std::to_string(this->initial_execution_datetime.day) :
-                       std::to_string(this->initial_execution_datetime.day);
-            }
-            break;
-        case JULY:
-            // July has max day count of 31
-            day = (this->initial_execution_datetime.day < 10) ? 
-                   "0" + std::to_string(this->initial_execution_datetime.day) :
-                   std::to_string(this->initial_execution_datetime.day);
-            break;
-        case AUGUST:
-            // August has max day count of 31
-            day = (this->initial_execution_datetime.day < 10) ? 
-                   "0" + std::to_string(this->initial_execution_datetime.day) :
-                   std::to_string(this->initial_execution_datetime.day);
-            break;
-        case SEPTEMBER:
-            if(this->initial_execution_datetime.day > SEPTEMBER_DAYS){
-                day = std::to_string(SEPTEMBER_DAYS);
-            }
-            else{
-                day = (this->initial_execution_datetime.day < 10) ? 
-                       "0" + std::to_string(this->initial_execution_datetime.day) :
-                       std::to_string(this->initial_execution_datetime.day);
-            }
-            break;
-        case OCTOBER:
-            // October has max day count of 31
-            day = (this->initial_execution_datetime.day < 10) ? 
-                   "0" + std::to_string(this->initial_execution_datetime.day) :
-                   std::to_string(this->initial_execution_datetime.day);
-            break;
-        case NOVEMBER:
-            if(this->initial_execution_datetime.day > NOVEMBER_DAYS){
-                day = std::to_string(NOVEMBER_DAYS);
-            }
-            else{
-                day = (this->initial_execution_datetime.day < 10) ? 
-                       "0" + std::to_string(this->initial_execution_datetime.day) :
-                       std::to_string(this->initial_execution_datetime.day);
-            }
-            break;
-        case DECEMBER:
-            // December has max day count of 31
-            day = (this->initial_execution_datetime.day < 10) ? 
-                   "0" + std::to_string(this->initial_execution_datetime.day) :
-                   std::to_string(this->initial_execution_datetime.day);
-            break;
-        default:
-            month = "";
-            break;
-        }
-        this->execution_datetime = today_add_yyyymmdd_hms(year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second);
-    }
-    else if(this->frequency == "Yearly"){
-        // Add necessary days until nth day of next year
-        std::tm* exec_date_struct = std::gmtime(&this->execution_datetime);
-        // Edge case if case is scheduled to run on February 29th
-        // If next year is not a leap year, then run on the 28th (see else statement)
-        if(this->initial_execution_datetime.month == FEBRUARY && 
-           this->initial_execution_datetime.day == 29 && 
-           (1900 + exec_date_struct->tm_year + 1) % 4 == 0){
-            this->execution_datetime = this->execution_datetime + (366 * 24 * 60 * 60);
-        }
-        // Else if next year is a leap year and task is scheduled after February 28th, then add 366 days
-        else if((1900 + exec_date_struct->tm_year + 1) % 4 == 0 && 
-           (exec_date_struct->tm_mon >= FEBRUARY || 
-           (exec_date_struct->tm_mon == FEBRUARY && exec_date_struct->tm_mday >= 28))){
-            this->execution_datetime = this->execution_datetime + (366 * 24 * 60 * 60);
-        }
-        else{
-            this->execution_datetime = this->execution_datetime + (365 * 24 * 60 * 60);
-        }
-    }
-    return; // Else, Frequency is Once so no update occurs 
 }
 
 DatetimeValidate validate_hms(std::string hms){
