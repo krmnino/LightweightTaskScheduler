@@ -2,65 +2,22 @@
 
 namespace ts{
 
-void Scheduler::Scheduler_init(std::string& top_level_dir, std::string& tasks_dir, std::string& scripts_dir){
-    this->top_level_dir = top_level_dir;
-    this->tasks_dir = tasks_dir;
-    this->scripts_dir = scripts_dir;
-
-    cl::Config* task_config;
-    bool valid_task;
-    std::string task_name;
-    std::string task_description;
-    std::string task_script_name;
-    std::string task_frequency;
-    std::string task_execution_datetime;
-    Task* t;
-    for(const auto & file : std::filesystem::directory_iterator(this->top_level_dir + this->tasks_dir)){
-        task_config = new cl::Config(file.path());
-        if(ts::validate_task_parms(task_config, this->top_level_dir + this->scripts_dir) != TaskValidate::OK){
-            std::cout << "invalid config" << std::endl;
-            continue;
-        }
-
-        // Get task attributes from config file and validate them, check if task name is repeated
-        task_name = task_config->get_value("Name")->get_data<std::string>();
-        std::map<std::string, Task*>::const_iterator it = this->task_registry.find(task_name);
-	    if (it != this->task_registry.end()) {
-		    std::cout << "duplicate name" << std::endl;
-            continue;
-	    }
-
-        task_description = task_config->get_value("Description")->get_data<std::string>();
-        task_frequency = task_config->get_value("Frequency")->get_data<std::string>();
-        if(task_config->key_exists("Datetime")){
-            task_execution_datetime = task_frequency = task_config->get_value("Datetime")->get_data<std::string>();
-        }
-        delete task_config;
-
-        // An hourly task does not require execution time parameter
-        if(task_frequency == "Hourly"){
-            t = new Task(task_name, task_description, task_frequency, task_frequency);
-        }
-        else{
-            t = new Task(task_name, task_description, task_frequency, task_frequency, task_execution_datetime);
-        }
-
-        // Assign task id to task object
-        int task_id = generate_task_id(t);
-        t->set_id(task_id);
-
-        t->set_status(ts::TaskStatus::QUEUED);
-
-        this->task_registry.insert(std::make_pair(task_name, t));
-    }
+void Scheduler::Scheduler_init(void){
+    this->n_tasks = 0;
+    this->exec_path = "";
 }
 
-void Scheduler::Scheduler_delete(){
+void Scheduler::Scheduler_delete(void){
     // Delete tasks by iterating through task registry
     for (std::map<std::string, Task*>::iterator it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
         delete it->second;
+        this->n_tasks--;
     }
     delete this->scheduler_ptr;
+}
+
+void Scheduler::obtain_exec_path(void){
+    this->exec_path = std::filesystem::current_path();
 }
 
 void Scheduler::launch_task_thread(std::string& task_name){
@@ -95,7 +52,7 @@ void Scheduler::launch_task_thread(std::string& task_name){
     this->thread_collection.insert(key_thread);
 }
 
-int Scheduler::generate_task_id(Task* task){
+unsigned int Scheduler::generate_task_id(Task* task){
     // Get task attributes
     std::string task_name = task->get_name();
     std::string task_description = task->get_description();
@@ -111,6 +68,7 @@ int Scheduler::generate_task_id(Task* task){
     int task_creation_datetime_fmt_len = task_creation_datetime_fmt.length();
 
     unsigned int acc_seed = 0;
+    unsigned int id;
 
     // Add string char values and lengths together to create seed
     for(int i = 0; i < task_name_len; i++){
@@ -140,13 +98,17 @@ int Scheduler::generate_task_id(Task* task){
 
     acc_seed += (int)task->get_execution_datetime_format_attr() % 255;
 
+    #ifndef DEBUG
     // Set seed and generate id
     srand(acc_seed);
-    int id = rand();
+    id = rand();
+    #else
+    id = acc_seed;
+    #endif
 
     // If task id exists, then increase by one until unique id is found
     while(true){
-        std::map<int, std::thread>::const_iterator it = this->thread_collection.find(id);
+        std::map<unsigned int, std::thread>::const_iterator it = this->thread_collection.find(id);
         if (it == this->thread_collection.end()) {
             break;
         }
@@ -156,23 +118,143 @@ int Scheduler::generate_task_id(Task* task){
     return id;
 }
 
-void Scheduler::run(){
-    std::string input;
-    while(true){
-        std::cout << ">> ";
-        std::cin >> input;
-        if(input == "exit"){
-            break;
+void Scheduler::load_tasks_from_dir(void){
+    cl::Config* task_config;
+    ts::TaskValidate ret_task_validate;
+    std::map<std::string, Task*>::const_iterator task_dir_itr;
+    bool valid_task;
+    std::string task_name;
+    std::string task_description;
+    std::string task_script_name;
+    std::string task_frequency;
+    std::string task_execution_datetime;
+    Task* t;
+
+    if(!std::filesystem::exists(this->exec_path + "/tasks")){
+        // TODO: implement Reporter class
+        std::cout << "tasks directory does not exist" << std::endl;
+        return;
+    }
+
+    if(!std::filesystem::exists(this->exec_path + "/scripts")){
+        // TODO: implement Reporter class
+        std::cout << "scripts directory does not exist" << std::endl;
+        return;
+    }
+
+    for(const auto & file : std::filesystem::directory_iterator(this->exec_path + "/tasks/")){
+        task_config = new cl::Config(file.path());
+        ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
+        if(ret_task_validate != TaskValidate::OK){
+            // TODO: implement Reporter class
+            std::cout << "invalid config" << std::endl;
+            continue;
         }
-        else if(input == "help"){
-            break;
+
+        // Get task attributes from config file and validate them, check if task name is repeated
+        task_name = task_config->get_value("Name")->get_data<std::string>();
+        task_dir_itr = this->task_registry.find(task_name);
+	    if (task_dir_itr != this->task_registry.end()) {
+            // TODO: implement Reporter class
+		    std::cout << "duplicate name" << std::endl;
+            continue;
+	    }
+
+        task_description = task_config->get_value("Description")->get_data<std::string>();
+        task_frequency = task_config->get_value("Frequency")->get_data<std::string>();
+        if(task_config->key_exists("Datetime")){
+            task_execution_datetime = task_frequency = task_config->get_value("Datetime")->get_data<std::string>();
         }
+        delete task_config;
+
+        // An hourly task does not require execution time parameter
+        if(task_frequency == "Hourly"){
+            t = new Task(task_name, task_description, task_frequency, task_frequency);
+        }
+        else{
+            t = new Task(task_name, task_description, task_frequency, task_frequency, task_execution_datetime);
+        }
+
+        // Assign task id to task object
+        int task_id = generate_task_id(t);
+        t->set_id(task_id);
+        t->set_status(ts::TaskStatus::QUEUED);
+
+        this->task_registry.insert(std::make_pair(task_name, t));
+        this->n_tasks++;
     }
 }
 
-void Scheduler::help(){
-    std::cout << "exit: Close the program." << std::endl;
-    std::cout << "help: Display this menu." << std::endl;
+void Scheduler::load_task(std::string& task_filename){
+    cl::Config* task_config;
+    ts::TaskValidate ret_task_validate;
+    std::map<std::string, Task*>::const_iterator task_dir_itr;
+    std::string task_name;
+    std::string task_description;
+    std::string task_script_name;
+    std::string task_frequency;
+    std::string task_execution_datetime;
+    Task* t;
+
+    if(!std::filesystem::exists(this->exec_path + "/tasks")){
+        // TODO: implement Reporter class
+        std::cout << "tasks directory does not exist" << std::endl;
+        return;
+    }
+
+    if(!std::filesystem::exists(this->exec_path + "/scripts")){
+        // TODO: implement Reporter class
+        std::cout << "scripts directory does not exist" << std::endl;
+        return;
+    }
+
+    task_config = new cl::Config(this->exec_path + "/tasks/" + task_filename);
+    ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
+    if(ret_task_validate != TaskValidate::OK){
+        // TODO: implement Reporter class
+        std::cout << "invalid config" << std::endl;
+        return;
+    }
+
+    // Get task attributes from config file and validate them, check if task name is repeated
+    task_name = task_config->get_value("Name")->get_data<std::string>();
+    task_dir_itr = this->task_registry.find(task_name);
+    if (task_dir_itr != this->task_registry.end()) {
+        // TODO: implement Reporter class
+        std::cout << "duplicate name" << std::endl;
+        return;
+    }
+
+    task_description = task_config->get_value("Description")->get_data<std::string>();
+    task_frequency = task_config->get_value("Frequency")->get_data<std::string>();
+    if(task_config->key_exists("Datetime")){
+        task_execution_datetime = task_frequency = task_config->get_value("Datetime")->get_data<std::string>();
+    }
+    delete task_config;
+
+    // An hourly task does not require execution time parameter
+    if(task_frequency == "Hourly"){
+        t = new Task(task_name, task_description, task_frequency, task_frequency);
+    }
+    else{
+        t = new Task(task_name, task_description, task_frequency, task_frequency, task_execution_datetime);
+    }
+
+    // Assign task id to task object
+    int task_id = generate_task_id(t);
+    t->set_id(task_id);
+    t->set_status(ts::TaskStatus::QUEUED);
+
+    this->task_registry.insert(std::make_pair(task_name, t));
+    this->n_tasks++;
+}
+
+const std::string& Scheduler::get_current_path(void){
+    return this->exec_path;
+}
+
+unsigned int Scheduler::get_n_tasks(){
+    return this->n_tasks;
 }
 
 } // namespace ts
