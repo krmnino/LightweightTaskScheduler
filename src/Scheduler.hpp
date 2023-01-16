@@ -22,6 +22,7 @@ private:
     std::map<unsigned int, std::thread> thread_collection;
     
     Scheduler() {};
+    unsigned int generate_task_id(Task*);
 
 public:
     static Scheduler* Scheduler_get_instance(){
@@ -36,7 +37,6 @@ public:
     void Scheduler_delete(void);
     void obtain_exec_path(void);
     void launch_task_thread(std::string&);
-    unsigned int generate_task_id(Task*);
     void load_tasks_from_dir(void);
     void load_task(std::string&);
     const std::string& get_current_path(void);

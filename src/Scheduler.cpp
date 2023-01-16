@@ -2,56 +2,6 @@
 
 namespace ts{
 
-void Scheduler::Scheduler_init(void){
-    this->n_tasks = 0;
-    this->exec_path = "";
-}
-
-void Scheduler::Scheduler_delete(void){
-    // Delete tasks by iterating through task registry
-    for (std::map<std::string, Task*>::iterator it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
-        delete it->second;
-        this->n_tasks--;
-    }
-    delete this->scheduler_ptr;
-}
-
-void Scheduler::obtain_exec_path(void){
-    this->exec_path = std::filesystem::current_path();
-}
-
-void Scheduler::launch_task_thread(std::string& task_name){
-    Task* task = this->task_registry[task_name];
-    std::function<void(void)> run_task_fn = [&]{task->run_task();};
-    auto key_thread = std::make_pair(task->get_id(), [task](){
-        while(true){
-            // Get task scheduled execution time 
-            time_t execution_datetime = task->get_execution_datetime(false);
-            // Convert time_t to std::chrono::system_clock::time_point and put thread to sleep until then
-            std::this_thread::sleep_until(std::chrono::system_clock::from_time_t(execution_datetime));
-            // Update next execution time based on frequency
-            task->update_execution_datetime();
-            
-            // Before running task, update its status
-            task->set_status(TaskStatus::RUNNING);
-            
-            // Run the task
-            task->run_task();
-
-            // If task frequency is Once, then it is finished
-            if(task->get_frequency() == "Once"){
-                task->set_status(TaskStatus::FINISHED);
-            }
-            else{
-                // Otherwise, set it to queued status again
-                task->set_status(TaskStatus::QUEUED);
-            }
-        }
-    });
-    // Add task name - thread pair to thread collection map
-    this->thread_collection.insert(key_thread);
-}
-
 unsigned int Scheduler::generate_task_id(Task* task){
     // Get task attributes
     std::string task_name = task->get_name();
@@ -116,6 +66,56 @@ unsigned int Scheduler::generate_task_id(Task* task){
     }
 
     return id;
+}
+
+void Scheduler::Scheduler_init(void){
+    this->n_tasks = 0;
+    this->exec_path = "";
+}
+
+void Scheduler::Scheduler_delete(void){
+    // Delete tasks by iterating through task registry
+    for (std::map<std::string, Task*>::iterator it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
+        delete it->second;
+        this->n_tasks--;
+    }
+    delete this->scheduler_ptr;
+}
+
+void Scheduler::obtain_exec_path(void){
+    this->exec_path = std::filesystem::current_path();
+}
+
+void Scheduler::launch_task_thread(std::string& task_name){
+    Task* task = this->task_registry[task_name];
+    std::function<void(void)> run_task_fn = [&]{task->run_task();};
+    auto key_thread = std::make_pair(task->get_id(), [task](){
+        while(true){
+            // Get task scheduled execution time 
+            time_t execution_datetime = task->get_execution_datetime(false);
+            // Convert time_t to std::chrono::system_clock::time_point and put thread to sleep until then
+            std::this_thread::sleep_until(std::chrono::system_clock::from_time_t(execution_datetime));
+            // Update next execution time based on frequency
+            task->update_execution_datetime();
+            
+            // Before running task, update its status
+            task->set_status(TaskStatus::RUNNING);
+            
+            // Run the task
+            task->run_task();
+
+            // If task frequency is Once, then it is finished
+            if(task->get_frequency() == "Once"){
+                task->set_status(TaskStatus::FINISHED);
+            }
+            else{
+                // Otherwise, set it to queued status again
+                task->set_status(TaskStatus::QUEUED);
+            }
+        }
+    });
+    // Add task name - thread pair to thread collection map
+    this->thread_collection.insert(key_thread);
 }
 
 void Scheduler::load_tasks_from_dir(void){
