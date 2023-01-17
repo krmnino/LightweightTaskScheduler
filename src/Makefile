@@ -11,6 +11,7 @@ debug:
 		ConfigLoader.hpp 		\
 		ConfigLoader.cpp 		\
 		CommandLine.hpp			\
+		CommandLine.cpp			\
 		Scheduler.hpp			\
 		Scheduler.cpp			\
 		Task.hpp				\
@@ -29,6 +30,8 @@ release:
 		CLErrorHandler.cpp 		\
 		ConfigLoader.hpp 		\
 		ConfigLoader.cpp 		\
+		CommandLine.hpp			\
+		CommandLine.cpp			\
 		Scheduler.hpp			\
 		Scheduler.cpp			\
 		Task.hpp				\
@@ -42,4 +45,4 @@ scratch:
 		-lstdc++fs
 
 clean:
-	rm *.gch scheduler scheduler_testing test Test scratch Scratch
+	rm *.gch scheduler test Test scratch Scratch
