@@ -27,7 +27,9 @@ int main(int argc, char* argv[]){
 
     // Delete any tasks in Scheduler's task registry
     s->Scheduler_delete();
+
+    // Delete command line object
     c->CommandLine_delete();
-    
+
     return 0;
 }
