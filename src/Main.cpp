@@ -1,22 +1,33 @@
 #include <iomanip>
 
 #include "Scheduler.hpp"
-#include "Task.hpp"
+#include "CommandLine.hpp"
 
 ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
 
 int main(int argc, char* argv[]){
-    cl::Config* main_config = new cl::Config("config/main_config.cl");
-
-    std::string top_level_dir = main_config->get_value("TopLevel")->get_data<std::string>();
-    std::string tasks_dir = main_config->get_value("TasksDir")->get_data<std::string>();
-    std::string scripts_dir = main_config->get_value("ScriptsDir")->get_data<std::string>();
-
-    delete main_config;
-
     ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
-    s->Scheduler_init(top_level_dir, tasks_dir, scripts_dir);
-    s->Scheduler_delete();
+    ts::CommandLine* c = ts::CommandLine::CommandLine_get_instance();
+    
+    // Initialize Scheduler data members
+    s->Scheduler_init();
+    
+    // Obtain directory where LTS executable , scripts and tasks directories live
+    s->obtain_exec_path();
 
+    // Load all Task configuration files from the task directory
+    s->load_tasks_from_dir();
+    std::string fn = "cat_test.cl";
+    s->load_task(fn);
+    
+    // Initialize and launch command line 
+    c->CommandLine_init();
+    c->start();
+
+    // Delete any tasks in Scheduler's task registry
+    s->Scheduler_delete();
+    c->CommandLine_delete();
+    
     return 0;
 }
