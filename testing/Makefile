@@ -6,6 +6,8 @@ SRC_FILES = ../src/Variant.hpp			\
 			../src/CLErrorHandler.cpp 	\
 			../src/ConfigLoader.hpp 	\
 			../src/ConfigLoader.cpp 	\
+			../src/CommandLine.hpp 		\
+			../src/CommandLine.cpp 		\
 			../src/Scheduler.hpp		\
 			../src/Scheduler.cpp		\
 			../src/Task.hpp				\
@@ -15,6 +17,7 @@ OBJ_FILES = Variant.o					\
 			Value.o						\
 			CLErrorHandler.o 			\
 			ConfigLoader.o	 			\
+			CommandLine.o	 			\
 			Scheduler.o					\
 			Task.o
 

@@ -1,1 +1,1 @@
-cat ../scripts/ls_test.sh
+cat scripts/ls_test.sh
