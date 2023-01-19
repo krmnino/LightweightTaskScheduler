@@ -38,8 +38,6 @@
 #define NOVEMBER_DAYS 30
 #define DECEMBER_DAYS 31
 
-#define DELAY_OFFSET 60
-
 #include <string>
 #include <iomanip>
 #include <unistd.h>

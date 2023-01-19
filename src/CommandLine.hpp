@@ -33,6 +33,6 @@ public:
     void start(void);
 };
 
-}
+} // namespace ts
 
 #endif // LTS_CMD
