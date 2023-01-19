@@ -3,8 +3,10 @@
 
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
+#include "../src/CommandLine.hpp"
 
 ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing method get_creation_datetime()
@@ -454,8 +456,8 @@ int test6(){
 
     std::string t_name = "Task Name";
     std::string t_description = "A short description for this task";
-    std::string t_script_name = "../scripts/cat_test.sh";
-    std::string t_frequency = "Once";
+    std::string t_script_name = "scripts/cat_test.sh";
+    std::string t_frequency = "Hourly";
 
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency);
     
@@ -478,7 +480,7 @@ int test7(){
     std::string t_name = "Task Name";
     std::string t_description = "A short description for this task";
     std::string t_script_name = "scripts/cat_test.sh";
-    std::string t_frequency = "Once";
+    std::string t_frequency = "Hourly";
 
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency);
     
