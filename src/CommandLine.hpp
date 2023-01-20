@@ -19,6 +19,12 @@ private:
 
     CommandLine() {};
     void parse_command(void);
+    void verb_check(std::vector<std::string>&);
+    void verb_remove(std::vector<std::string>&);
+    void verb_load(std::vector<std::string>&);
+    void verb_update(std::vector<std::string>&);
+    void verb_help(std::vector<std::string>&);
+    
 public:
     static CommandLine* CommandLine_get_instance(){
         if(command_line_ptr == nullptr){
