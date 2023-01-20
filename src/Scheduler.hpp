@@ -39,6 +39,7 @@ public:
     void launch_task_thread(std::string&);
     void load_tasks_from_dir(void);
     void load_task(std::string&);
+    void delete_task(std::string&);
     const std::string& get_current_path(void);
     unsigned int get_n_tasks(void);
 };

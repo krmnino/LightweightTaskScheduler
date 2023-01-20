@@ -18,8 +18,6 @@ int main(int argc, char* argv[]){
 
     // Load all Task configuration files from the task directory
     s->load_tasks_from_dir();
-    std::string fn = "cat_test.cl";
-    s->load_task(fn);
     
     // Initialize and launch command line 
     c->CommandLine_init();

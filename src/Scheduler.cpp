@@ -56,7 +56,7 @@ unsigned int Scheduler::generate_task_id(Task* task){
     id = acc_seed;
     #endif
 
-    // If task id exists, then increase by one until unique id is found
+    // If task id exists, then increase it by one until unique id is found
     while(true){
         std::map<unsigned int, std::thread>::const_iterator it = this->thread_collection.find(id);
         if (it == this->thread_collection.end()) {
@@ -247,6 +247,24 @@ void Scheduler::load_task(std::string& task_filename){
 
     this->task_registry.insert(std::make_pair(task_name, t));
     this->n_tasks++;
+}
+
+void Scheduler::delete_task(std::string& key){
+    Task* t;
+    std::map<std::string, Task*>::iterator it;
+    for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
+        if(it->first == key){
+            break;
+        }
+    }
+    if(it == this->task_registry.end()){
+        std::cout << "task does not exist" << std::endl;
+        return;
+    }
+    t = it->second;
+    this->task_registry.erase(key);
+    this->thread_collection.erase(t->get_id());
+    delete t;
 }
 
 const std::string& Scheduler::get_current_path(void){
