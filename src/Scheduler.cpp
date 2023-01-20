@@ -249,7 +249,7 @@ void Scheduler::load_task(std::string& task_filename){
     this->n_tasks++;
 }
 
-void Scheduler::delete_task(std::string& key){
+void Scheduler::remove_task(std::string& key){
     Task* t;
     std::map<std::string, Task*>::iterator it;
     for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
