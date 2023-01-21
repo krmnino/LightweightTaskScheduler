@@ -388,4 +388,11 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Instantiate `Scheduler` singleton object.|`Scheduler::Scheduler_get_instance()`|<span style="color:green">Passed|
+|`test1()`|Instantiate and remove instance of `Scheduler` singleton object.|`Scheduler::Scheduler_get_instance()`<br/>`Scheduler::Scheduler_end_instance()`|<span style="color:green">Passed|
+
+### **Scheduler_methods.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Initialize Scheduler object and verify its data members were properly zeroed out.|`Scheduler::Scheduler_init()`<br/>`Scheduler::Scheduler_delete()`<br/>`Scheduler::get_n_tasks()`<br/>`Scheduler::Scheduler_get_current_path()`|<span style="color:green">Passed|
+|`test2()`|Verify that the `exec_path` data member is updated to the directory path where the test build is located.|`Scheduler::obtain_exec_path()`|<span style="color:green">Passed|

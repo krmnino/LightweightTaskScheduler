@@ -14,6 +14,8 @@ int test1(){
 
     s->Scheduler_delete();
 
+    s->Scheduler_end_instance();
+
     std::cout << ">> Scheduler_get_instance: 1 done" << std::endl;
     return 0;
 }

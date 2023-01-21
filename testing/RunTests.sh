@@ -33,3 +33,4 @@
 ./Task_setting_exec_datetime_Monthly
 ./Task_setting_exec_datetime_Yearly
 ./Scheduler_get_instance
+./Scheduler_methods
