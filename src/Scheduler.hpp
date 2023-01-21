@@ -25,11 +25,14 @@ private:
     unsigned int generate_task_id(Task*);
 
 public:
-    static Scheduler* Scheduler_get_instance(){
+    static Scheduler* Scheduler_get_instance(void){
         if(scheduler_ptr == nullptr){
             scheduler_ptr = new Scheduler();
         }
         return scheduler_ptr;
+    }
+    static void Scheduler_end_instance(void){
+        delete scheduler_ptr;
     }
 
     Scheduler(const Scheduler& s) = delete;

@@ -79,7 +79,6 @@ void Scheduler::Scheduler_delete(void){
         delete it->second;
         this->n_tasks--;
     }
-    delete this->scheduler_ptr;
 }
 
 void Scheduler::obtain_exec_path(void){
