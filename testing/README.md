@@ -388,11 +388,16 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Instantiate and remove instance of `Scheduler` singleton object.|`Scheduler::Scheduler_get_instance()`<br/>`Scheduler::Scheduler_end_instance()`|<span style="color:green">Passed|
+|`test1()`|Instantiate and remove instance of `Scheduler` singleton object.|`Scheduler::Scheduler_get_instance(void)`<br/>`Scheduler::Scheduler_end_instance(void)`|<span style="color:green">Passed|
 
 ### **Scheduler_methods.cpp**
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Initialize Scheduler object and verify its data members were properly zeroed out.|`Scheduler::Scheduler_init()`<br/>`Scheduler::Scheduler_delete()`<br/>`Scheduler::get_n_tasks()`<br/>`Scheduler::Scheduler_get_current_path()`|<span style="color:green">Passed|
-|`test2()`|Verify that the `exec_path` data member is updated to the directory path where the test build is located.|`Scheduler::obtain_exec_path()`|<span style="color:green">Passed|
+|`test1()`|Initialize Scheduler object and verify its data members were properly zeroed out.|`Scheduler::Scheduler_init(void)`<br/>`Scheduler::Scheduler_delete(void)`<br/>`Scheduler::get_n_tasks(void)`<br/>`Scheduler::Scheduler_get_current_path(void)`|<span style="color:green">Passed|
+|`test2()`|Verify that the `exec_path` data member is updated to the directory path where the test build is located.|`Scheduler::obtain_exec_path(void)`|<span style="color:green">Passed|
+|`test3()`|Load tasks from `tasks` directory. After a successful call, all tasks defined in the `tasks` directory (total of 2) should be loaded to the `Scheduler`.|`Scheduler::load_tasks_from_dir(void)`|<span style="color:green">Passed|
+|`test4()`|Load one task from `tasks` directory. After a successful call, just one task should be loaded to the `Scheduler`.|`Scheduler::load_task(std::string&)`|<span style="color:green">Passed|
+|`test5()`|Load tasks from `tasks` directory. Then, remove one task from `Scheduler`. After a successful call, there should only be 1 task left in  the `Scheduler`.|`Scheduler::remove_task(std::string&)`|<span style="color:red">Failed|
+|`test6()`|Load tasks from `tasks` directory. Then, remove two tasks from `Scheduler`, one by one. After a successful call, there should be 0 tasks in  the `Scheduler`.|`Scheduler::remove_task(std::string&)`|<span style="color:green">Passed|
+|`test7()`|TODO.|`Scheduler::launch_task_thread(std::string&)`|<span style="color:yellow">Pending|
