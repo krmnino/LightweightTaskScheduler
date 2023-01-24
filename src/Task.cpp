@@ -2,6 +2,14 @@
 
 namespace ts{
 
+void Task::stop_thread(void){
+    std::unique_lock<std::mutex> lock(this->mtx);
+    this->thread_running = false;
+    lock.unlock();
+    this->cv.notify_one();
+    this->thr.join();
+}
+
 Task::Task(std::string name, 
            std::string description,
            std::string script_filename,
@@ -11,6 +19,7 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
+    this->thread_running = true;
     
     ts::DatetimeFormat format;
     if(this->frequency == "Once"){
@@ -154,6 +163,7 @@ Task::Task(std::string name,
 
     this->output = "";
     if(this->status != TaskStatus::INIT_ERROR){
+        this->thr = std::thread(&Task::run_task, this);
         this->status = TaskStatus::QUEUED;
     }
 }
@@ -166,6 +176,7 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
+    this->thread_running = true;
 
     if(this->frequency == "Hourly"){
         this->execution_datetime = today_add_hrs(1);
@@ -191,13 +202,16 @@ Task::Task(std::string name,
 
     this->output = "";
     if(this->status != TaskStatus::INIT_ERROR){
+        this->thr = std::thread(&Task::run_task, this);
         this->status = TaskStatus::QUEUED;
     }
 }
 
 Task::Task(){}
 
-Task::~Task() {}
+Task::~Task(){
+    this->stop_thread();
+}
 
 void Task::run_task(void){
     std::array<char, 128> buffer;

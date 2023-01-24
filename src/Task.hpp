@@ -46,7 +46,8 @@
 #include <memory>
 #include <exception>
 #include <filesystem>
-#include <mutex>
+#include <condition_variable>
+#include <thread>
 
 #include "ConfigLoader.hpp"
 
@@ -114,6 +115,9 @@ private:
         unsigned long minute;
         unsigned long second;
     } initial_execution_datetime;
+    std::thread thr;
+    std::mutex mtx;
+    std::condition_variable cv;
     time_t execution_datetime;
     time_t creation_datetime;
     std::string name;
@@ -121,10 +125,22 @@ private:
     std::string script_filename;
     std::string frequency;
     std::string output;
-    pid_t pid;
     TaskStatus status;
     DatetimeFormat execution_datetime_fmt;
     int id;
+    bool thread_running;
+
+    static void launch_thread(Task* t){
+        std::unique_lock<std::mutex> lock(t->mtx);
+        time_t execution_datetime = t->get_execution_datetime(false);
+        std::chrono::_V2::system_clock::time_point end_time = std::chrono::system_clock::now();
+        while(!t->cv.wait_until(lock, std::chrono::system_clock::from_time_t(execution_datetime), [t] {return !t->thread_running;})){
+            t->run_task();
+            t->update_execution_datetime();
+            execution_datetime = t->get_execution_datetime(false);
+        }
+    }
+    void stop_thread(void);
 
 public:
     Task();
