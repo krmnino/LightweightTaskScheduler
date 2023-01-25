@@ -19,7 +19,6 @@ private:
     unsigned int n_tasks;
     std::string exec_path;
     std::map<std::string, Task*> task_registry;
-    std::map<unsigned int, std::thread> thread_collection;
     
     Scheduler() {};
     unsigned int generate_task_id(Task*);
@@ -45,6 +44,7 @@ public:
     void remove_task(std::string&);
     const std::string& get_current_path(void);
     unsigned int get_n_tasks(void);
+    const Task* get_task(std::string&);
 };
 
 } // namespace ts

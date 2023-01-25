@@ -19,7 +19,7 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
-    this->thread_running = true;
+    this->thread_running = false;
     
     ts::DatetimeFormat format;
     if(this->frequency == "Once"){
@@ -163,7 +163,8 @@ Task::Task(std::string name,
 
     this->output = "";
     if(this->status != TaskStatus::INIT_ERROR){
-        this->thr = std::thread(&Task::run_task, this);
+        this->thr = std::thread(&Task::launch_thread, this);
+        this->thread_running = true;
         this->status = TaskStatus::QUEUED;
     }
 }
@@ -176,7 +177,7 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
-    this->thread_running = true;
+    this->thread_running = false;
 
     if(this->frequency == "Hourly"){
         this->execution_datetime = today_add_hrs(1);
@@ -202,7 +203,8 @@ Task::Task(std::string name,
 
     this->output = "";
     if(this->status != TaskStatus::INIT_ERROR){
-        this->thr = std::thread(&Task::run_task, this);
+        this->thr = std::thread(&Task::launch_thread, this);
+        this->thread_running = true;
         this->status = TaskStatus::QUEUED;
     }
 }
