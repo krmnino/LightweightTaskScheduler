@@ -31,7 +31,6 @@ private:
         std::unique_lock<std::mutex> lock(t->mtx);
         t->set_running_thread_flag(true);
         time_t execution_datetime = t->get_execution_datetime(false);
-        std::chrono::_V2::system_clock::time_point end_time = std::chrono::system_clock::now();
         while(!t->cv.wait_until(lock, std::chrono::system_clock::from_time_t(execution_datetime), [t] {return !t->get_running_thread_flag();})){
             // Before running task, update its status
             t->set_status(TaskStatus::RUNNING);
