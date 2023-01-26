@@ -115,9 +115,6 @@ private:
         unsigned long minute;
         unsigned long second;
     } initial_execution_datetime;
-    std::thread thr;
-    std::mutex mtx;
-    std::condition_variable cv;
     time_t execution_datetime;
     time_t creation_datetime;
     std::string name;
@@ -128,21 +125,12 @@ private:
     TaskStatus status;
     DatetimeFormat execution_datetime_fmt;
     int id;
-    bool thread_running;
-
-    static void launch_thread(Task* t){
-        std::unique_lock<std::mutex> lock(t->mtx);
-        time_t execution_datetime = t->get_execution_datetime(false);
-        std::chrono::_V2::system_clock::time_point end_time = std::chrono::system_clock::now();
-        while(!t->cv.wait_until(lock, std::chrono::system_clock::from_time_t(execution_datetime), [t] {return !t->thread_running;})){
-            t->run_task();
-            t->update_execution_datetime();
-            execution_datetime = t->get_execution_datetime(false);
-        }
-    }
-    void stop_thread(void);
+    bool running_thread;
 
 public:
+    std::mutex mtx;
+    std::condition_variable cv;
+
     Task();
     Task(std::string, std::string, std::string, std::string, std::string);
     Task(std::string, std::string, std::string, std::string);
@@ -161,8 +149,11 @@ public:
     TaskStatus get_status(void);
     int get_id(void);
     DatetimeFormat get_execution_datetime_format_attr(void);
+    bool get_running_thread_flag(void);
     void set_status(TaskStatus);
     void set_id(int);
+    void set_running_thread_flag(bool);
+
 };
 
 DatetimeValidate validate_hms(std::string);

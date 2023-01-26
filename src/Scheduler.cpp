@@ -59,6 +59,17 @@ unsigned int Scheduler::generate_task_id(Task* task){
     return id;
 }
 
+void Scheduler::stop_thread(Task* t){
+    if(!t->get_running_thread_flag()){
+        return;
+    }
+    std::unique_lock<std::mutex> lock(t->mtx);
+    t->set_running_thread_flag(false);
+    lock.unlock();
+    t->cv.notify_one();
+    this->thread_collection[t->get_id()].join();
+}
+
 void Scheduler::Scheduler_init(void){
     this->n_tasks = 0;
     this->exec_path = "";
@@ -67,48 +78,17 @@ void Scheduler::Scheduler_init(void){
 void Scheduler::Scheduler_delete(void){
     // Delete tasks by iterating through task registry
     for (std::map<std::string, Task*>::iterator it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
+        this->stop_thread(it->second);
         delete it->second;
         this->n_tasks--;
     }
     this->task_registry.clear();
+    this->thread_collection.clear();
 }
 
 void Scheduler::obtain_exec_path(void){
     this->exec_path = std::filesystem::current_path();
 }
-
-// ADD THIS LOGIC TO TASK IMPLEMENTATION
-//void Scheduler::launch_task_thread(std::string& task_name){
-//    Task* task = this->task_registry[task_name];
-//    std::function<void(void)> run_task_fn = [&]{task->run_task();};
-//    auto key_thread = std::make_pair(task->get_id(), [task](){
-//        while(true){
-//            // Get task scheduled execution time 
-//            time_t execution_datetime = task->get_execution_datetime(false);
-//            // Convert time_t to std::chrono::system_clock::time_point and put thread to sleep until then
-//            std::this_thread::sleep_until(std::chrono::system_clock::from_time_t(execution_datetime));
-//            // Update next execution time based on frequency
-//            task->update_execution_datetime();
-//            
-//            // Before running task, update its status
-//            task->set_status(TaskStatus::RUNNING);
-//            
-//            // Run the task
-//            task->run_task();
-//
-//            // If task frequency is Once, then it is finished
-//            if(task->get_frequency() == "Once"){
-//                task->set_status(TaskStatus::FINISHED);
-//            }
-//            else{
-//                // Otherwise, set it to queued status again
-//                task->set_status(TaskStatus::QUEUED);
-//            }
-//        }
-//    });
-//    // Add task name - thread pair to thread collection map
-//    //this->thread_collection.insert(key_thread);
-//}
 
 void Scheduler::load_tasks_from_dir(void){
     cl::Config* task_config;
@@ -174,6 +154,7 @@ void Scheduler::load_tasks_from_dir(void){
         t->set_status(ts::TaskStatus::QUEUED);
 
         this->task_registry.insert(std::make_pair(task_name, t));
+        this->thread_collection.insert(std::make_pair(task_id, std::thread(&Scheduler::launch_thread, t)));
         this->n_tasks++;
     }
 }
@@ -264,8 +245,10 @@ void Scheduler::remove_task(std::string& key){
     }
     t = it->second;
     this->task_registry.erase(key);
-    this->n_tasks--;
+    this->stop_thread(t);
+    this->thread_collection.erase(t->get_id());
     delete t;
+    this->n_tasks--;
 }
 
 const std::string& Scheduler::get_current_path(void){

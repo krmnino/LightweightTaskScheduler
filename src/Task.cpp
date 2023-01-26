@@ -2,14 +2,6 @@
 
 namespace ts{
 
-void Task::stop_thread(void){
-    std::unique_lock<std::mutex> lock(this->mtx);
-    this->thread_running = false;
-    lock.unlock();
-    this->cv.notify_one();
-    this->thr.join();
-}
-
 Task::Task(std::string name, 
            std::string description,
            std::string script_filename,
@@ -19,7 +11,7 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
-    this->thread_running = false;
+    this->running_thread = false;
     
     ts::DatetimeFormat format;
     if(this->frequency == "Once"){
@@ -163,8 +155,6 @@ Task::Task(std::string name,
 
     this->output = "";
     if(this->status != TaskStatus::INIT_ERROR){
-        this->thr = std::thread(&Task::launch_thread, this);
-        this->thread_running = true;
         this->status = TaskStatus::QUEUED;
     }
 }
@@ -177,7 +167,7 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
-    this->thread_running = false;
+    this->running_thread = false;
 
     if(this->frequency == "Hourly"){
         this->execution_datetime = today_add_hrs(1);
@@ -203,8 +193,6 @@ Task::Task(std::string name,
 
     this->output = "";
     if(this->status != TaskStatus::INIT_ERROR){
-        this->thr = std::thread(&Task::launch_thread, this);
-        this->thread_running = true;
         this->status = TaskStatus::QUEUED;
     }
 }
@@ -212,7 +200,7 @@ Task::Task(std::string name,
 Task::Task(){}
 
 Task::~Task(){
-    this->stop_thread();
+    //this->stop_thread();
 }
 
 void Task::run_task(void){
@@ -652,12 +640,20 @@ DatetimeFormat Task::get_execution_datetime_format_attr(void){
     return this->execution_datetime_fmt;
 }
 
+bool Task::get_running_thread_flag(void){
+    return this->running_thread;
+}
+
 void Task::set_status(TaskStatus status){
     this->status = status;
 }
 
 void Task::set_id(int id){
     this->id = id;
+}
+
+void Task::set_running_thread_flag(bool new_val){
+    this->running_thread = new_val;   
 }
 
 DatetimeValidate validate_hms(std::string hms){
