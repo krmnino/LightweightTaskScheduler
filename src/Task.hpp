@@ -46,7 +46,8 @@
 #include <memory>
 #include <exception>
 #include <filesystem>
-#include <mutex>
+#include <condition_variable>
+#include <thread>
 
 #include "ConfigLoader.hpp"
 
@@ -121,12 +122,15 @@ private:
     std::string script_filename;
     std::string frequency;
     std::string output;
-    pid_t pid;
     TaskStatus status;
     DatetimeFormat execution_datetime_fmt;
     int id;
+    bool running_thread;
 
 public:
+    std::mutex mtx;
+    std::condition_variable cv;
+
     Task();
     Task(std::string, std::string, std::string, std::string, std::string);
     Task(std::string, std::string, std::string, std::string);
@@ -145,8 +149,11 @@ public:
     TaskStatus get_status(void);
     int get_id(void);
     DatetimeFormat get_execution_datetime_format_attr(void);
+    bool get_running_thread_flag(void);
     void set_status(TaskStatus);
     void set_id(int);
+    void set_running_thread_flag(bool);
+
 };
 
 DatetimeValidate validate_hms(std::string);

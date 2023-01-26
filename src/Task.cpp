@@ -11,6 +11,7 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
+    this->running_thread = false;
     
     ts::DatetimeFormat format;
     if(this->frequency == "Once"){
@@ -166,6 +167,7 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
+    this->running_thread = false;
 
     if(this->frequency == "Hourly"){
         this->execution_datetime = today_add_hrs(1);
@@ -197,7 +199,9 @@ Task::Task(std::string name,
 
 Task::Task(){}
 
-Task::~Task() {}
+Task::~Task(){
+    //this->stop_thread();
+}
 
 void Task::run_task(void){
     std::array<char, 128> buffer;
@@ -636,12 +640,20 @@ DatetimeFormat Task::get_execution_datetime_format_attr(void){
     return this->execution_datetime_fmt;
 }
 
+bool Task::get_running_thread_flag(void){
+    return this->running_thread;
+}
+
 void Task::set_status(TaskStatus status){
     this->status = status;
 }
 
 void Task::set_id(int id){
     this->id = id;
+}
+
+void Task::set_running_thread_flag(bool new_val){
+    this->running_thread = new_val;   
 }
 
 DatetimeValidate validate_hms(std::string hms){

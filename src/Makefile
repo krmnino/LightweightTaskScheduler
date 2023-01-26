@@ -41,6 +41,7 @@ release:
 
 scratch:
 		g++ -g -std=c++17		\
+		-pthread				\
 		Scratch.cpp -o scratch 	\
 		-lstdc++fs
 
