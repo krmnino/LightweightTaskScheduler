@@ -60,6 +60,7 @@ unsigned int Scheduler::generate_task_id(Task* task){
 }
 
 void Scheduler::stop_thread(Task* t){
+    // If thread is not running, then no need to stop it
     if(!t->get_running_thread_flag()){
         return;
     }
@@ -93,7 +94,6 @@ void Scheduler::obtain_exec_path(void){
 void Scheduler::load_tasks_from_dir(void){
     cl::Config* task_config;
     ts::TaskValidate ret_task_validate;
-    std::map<std::string, Task*>::const_iterator task_dir_itr;
     bool valid_task;
     std::string task_name;
     std::string task_description;
@@ -102,12 +102,14 @@ void Scheduler::load_tasks_from_dir(void){
     std::string task_execution_datetime;
     Task* t;
 
+    // Check if tasks directory exists 
     if(!std::filesystem::exists(this->exec_path + "/tasks")){
         // TODO: implement Reporter class
         std::cout << "tasks directory does not exist" << std::endl;
         return;
     }
 
+    // Check if scripts directory exists 
     if(!std::filesystem::exists(this->exec_path + "/scripts")){
         // TODO: implement Reporter class
         std::cout << "scripts directory does not exist" << std::endl;
@@ -125,15 +127,21 @@ void Scheduler::load_tasks_from_dir(void){
 
         // Get task attributes from config file and validate them, check if task name is repeated
         task_name = task_config->get_value("Name")->get_data<std::string>();
-        task_dir_itr = this->task_registry.find(task_name);
-	    if (task_dir_itr != this->task_registry.end()) {
+        if (this->task_exists(task_name)) {
             // TODO: implement Reporter class
-		    std::cout << "duplicate name" << std::endl;
-            continue;
-	    }
+            std::cout << "duplicate name" << std::endl;
+            return;
+        }
 
         task_description = task_config->get_value("Description")->get_data<std::string>();
         task_script_name = task_config->get_value("ScriptFilename")->get_data<std::string>();
+        // Check if script file associated with task exists
+        if(!std::filesystem::exists(this->exec_path + "/scripts/" + task_script_name)){
+            // TODO: implement Reporter class
+            std::cout << "scripts directory does not exist" << std::endl;
+            return;
+        }
+
         task_frequency = task_config->get_value("Frequency")->get_data<std::string>();
         if(task_config->key_exists("Datetime")){
             task_execution_datetime = task_config->get_value("Datetime")->get_data<std::string>();
@@ -162,7 +170,6 @@ void Scheduler::load_tasks_from_dir(void){
 void Scheduler::load_task(std::string& task_filename){
     cl::Config* task_config;
     ts::TaskValidate ret_task_validate;
-    std::map<std::string, Task*>::const_iterator task_dir_itr;
     std::string task_name;
     std::string task_description;
     std::string task_script_name;
@@ -198,8 +205,7 @@ void Scheduler::load_task(std::string& task_filename){
 
     // Get task attributes from config file and validate them, check if task name is repeated
     task_name = task_config->get_value("Name")->get_data<std::string>();
-    task_dir_itr = this->task_registry.find(task_name);
-    if (task_dir_itr != this->task_registry.end()) {
+    if (this->task_exists(task_name)) {
         // TODO: implement Reporter class
         std::cout << "duplicate name" << std::endl;
         return;
@@ -207,6 +213,13 @@ void Scheduler::load_task(std::string& task_filename){
 
     task_description = task_config->get_value("Description")->get_data<std::string>();
     task_script_name = task_config->get_value("ScriptFilename")->get_data<std::string>();
+    // Check if script file associated with task exists
+    if(!std::filesystem::exists(this->exec_path + "/scripts/" + task_script_name)){
+        // TODO: implement Reporter class
+        std::cout << "scripts directory does not exist" << std::endl;
+        return;
+    }
+
     task_frequency = task_config->get_value("Frequency")->get_data<std::string>();
     if(task_config->key_exists("Datetime")){
         task_execution_datetime = task_config->get_value("Datetime")->get_data<std::string>();
@@ -231,24 +244,29 @@ void Scheduler::load_task(std::string& task_filename){
 }
 
 void Scheduler::remove_task(std::string& key){
-    Task* t;
-    std::map<std::string, Task*>::iterator it;
-    for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
-        if(it->first == key){
-            break;
-        }
-    }
-    if(it == this->task_registry.end()){
+    // Check if key exists in task registry
+    if(!this->task_exists(key)){
         // TODO: implement Reporter class
         std::cout << "task does not exist" << std::endl;
         return;
     }
-    t = it->second;
-    this->task_registry.erase(key);
+    Task* t = this->task_registry[key];
+    // Stop thread if running
     this->stop_thread(t);
+    this->task_registry.erase(key);
     this->thread_collection.erase(t->get_id());
     delete t;
     this->n_tasks--;
+}
+
+bool Scheduler::task_exists(std::string& key){
+    std::map<std::string, Task*>::iterator it;
+    for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
+        if(it->first == key){
+            return true;
+        }
+    }
+    return false;
 }
 
 const std::string& Scheduler::get_current_path(void){
@@ -260,18 +278,13 @@ unsigned int Scheduler::get_n_tasks(){
 }
 
 const Task* Scheduler::get_task(std::string& key){
-    std::map<std::string, Task*>::iterator it;
-    for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
-        if(it->first == key){
-            break;
-        }
-    }
-    if(it == this->task_registry.end()){
+    // Check if key exists in task registry
+    if(!this->task_exists(key)){
         // TODO: implement Reporter class
         std::cout << "task does not exist" << std::endl;
         return nullptr;
     }
-    return it->second;
+    return this->task_registry[key];
 }
 
 } // namespace ts

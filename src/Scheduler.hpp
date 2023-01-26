@@ -23,7 +23,7 @@ private:
     std::map<std::string, Task*> task_registry;
     std::map<unsigned int, std::thread> thread_collection;
     
-    Scheduler() {};
+    Scheduler() {}
     unsigned int generate_task_id(Task*);
     void stop_thread(Task*);
 
@@ -70,6 +70,7 @@ public:
     void load_tasks_from_dir(void);
     void load_task(std::string&);
     void remove_task(std::string&);
+    bool task_exists(std::string&);
     const std::string& get_current_path(void);
     unsigned int get_n_tasks(void);
     const Task* get_task(std::string&);
