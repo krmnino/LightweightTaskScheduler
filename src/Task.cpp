@@ -2,14 +2,6 @@
 
 namespace ts{
 
-void Task::stop_thread(void){
-    std::unique_lock<std::mutex> lock(this->mtx);
-    this->thread_running = false;
-    lock.unlock();
-    this->cv.notify_one();
-    this->thr.join();
-}
-
 Task::Task(std::string name, 
            std::string description,
            std::string script_filename,
@@ -19,7 +11,7 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
-    this->thread_running = false;
+    this->running_thread_flag = false;
     
     ts::DatetimeFormat format;
     if(this->frequency == "Once"){
@@ -164,7 +156,7 @@ Task::Task(std::string name,
     this->output = "";
     if(this->status != TaskStatus::INIT_ERROR){
         this->thr = std::thread(&Task::launch_thread, this);
-        this->thread_running = true;
+        this->running_thread_flag = true;
         this->status = TaskStatus::QUEUED;
     }
 }
@@ -177,7 +169,7 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
-    this->thread_running = false;
+    this->running_thread_flag = false;
 
     if(this->frequency == "Hourly"){
         this->execution_datetime = today_add_hrs(1);
@@ -204,7 +196,7 @@ Task::Task(std::string name,
     this->output = "";
     if(this->status != TaskStatus::INIT_ERROR){
         this->thr = std::thread(&Task::launch_thread, this);
-        this->thread_running = true;
+        this->running_thread_flag = true;
         this->status = TaskStatus::QUEUED;
     }
 }
@@ -212,19 +204,32 @@ Task::Task(std::string name,
 Task::Task(){}
 
 Task::~Task(){
-    this->stop_thread();
+    // If thread is not running, then no need to stop it
+    if(this->running_thread_flag){
+        this->stop_thread();
+    }
 }
 
 void Task::run_task(void){
     std::array<char, 128> buffer;
     std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(this->script_filename.c_str(), "r"), pclose);
+    std::string script_path = "scripts/" + this->script_filename;
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(script_path.c_str(), "r"), pclose);
     if (!pipe) {
         throw std::runtime_error("popen() failed!");
     }
     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
         this->output += buffer.data();
     }
+}
+
+void Task::stop_thread(void){
+    std::unique_lock<std::mutex> lock(this->mtx);
+    std::cout << "STOP" << std::endl;
+    this->running_thread_flag = false;
+    lock.unlock();
+    this->cv.notify_one();
+    this->thr.join();
 }
 
 void Task::update_execution_datetime(void){

@@ -128,19 +128,31 @@ private:
     TaskStatus status;
     DatetimeFormat execution_datetime_fmt;
     int id;
-    bool thread_running;
+    bool running_thread_flag;
 
     static void launch_thread(Task* t){
         std::unique_lock<std::mutex> lock(t->mtx);
+        std::cout << "START" << std::endl;
         time_t execution_datetime = t->get_execution_datetime(false);
-        std::chrono::_V2::system_clock::time_point end_time = std::chrono::system_clock::now();
-        while(!t->cv.wait_until(lock, std::chrono::system_clock::from_time_t(execution_datetime), [t] {return !t->thread_running;})){
+        while(!t->cv.wait_until(lock, std::chrono::system_clock::from_time_t(execution_datetime), [t] {return !t->running_thread_flag;})){
+            // Before running task, update its status
+            t->set_status(TaskStatus::RUNNING);
+            // Run the task
             t->run_task();
+            // Update next execution time based on frequency
             t->update_execution_datetime();
-            execution_datetime = t->get_execution_datetime(false);
+            // If task frequency is Once, then it is finished
+            if(t->get_frequency() == "Once"){
+                t->set_status(TaskStatus::FINISHED);
+                t->running_thread_flag = false;
+            }
+            else{
+                // Otherwise, set it to queued status again
+                t->set_status(TaskStatus::QUEUED);
+                execution_datetime = t->get_execution_datetime(false);
+            }
         }
     }
-    void stop_thread(void);
 
 public:
     Task();
@@ -148,6 +160,7 @@ public:
     Task(std::string, std::string, std::string, std::string);
     ~Task();
     void run_task(void);
+    void stop_thread(void);
     void update_execution_datetime(void);
     const std::string& get_name(void);
     const std::string& get_description(void);
