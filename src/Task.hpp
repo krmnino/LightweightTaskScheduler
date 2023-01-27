@@ -115,16 +115,16 @@ private:
         unsigned long minute;
         unsigned long second;
     } initial_execution_datetime;
-    std::thread thr;
-    std::mutex mtx;
     std::condition_variable cv;
-    time_t execution_datetime;
-    time_t creation_datetime;
     std::string name;
     std::string description;
     std::string script_filename;
     std::string frequency;
     std::string output;
+    std::mutex mtx;
+    std::thread thr;
+    time_t execution_datetime;
+    time_t creation_datetime;
     TaskStatus status;
     DatetimeFormat execution_datetime_fmt;
     int id;
@@ -132,7 +132,6 @@ private:
 
     static void launch_thread(Task* t){
         std::unique_lock<std::mutex> lock(t->mtx);
-        std::cout << "START" << std::endl;
         time_t execution_datetime = t->get_execution_datetime(false);
         while(!t->cv.wait_until(lock, std::chrono::system_clock::from_time_t(execution_datetime), [t] {return !t->running_thread_flag;})){
             // Before running task, update its status

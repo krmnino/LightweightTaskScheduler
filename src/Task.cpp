@@ -225,7 +225,6 @@ void Task::run_task(void){
 
 void Task::stop_thread(void){
     std::unique_lock<std::mutex> lock(this->mtx);
-    std::cout << "STOP" << std::endl;
     this->running_thread_flag = false;
     lock.unlock();
     this->cv.notify_one();
