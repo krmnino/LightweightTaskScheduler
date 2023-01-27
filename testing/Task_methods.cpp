@@ -479,7 +479,7 @@ int test7(){
 
     std::string t_name = "Task Name";
     std::string t_description = "A short description for this task";
-    std::string t_script_name = "scripts/cat_test.sh";
+    std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Hourly";
 
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency);
