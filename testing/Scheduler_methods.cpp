@@ -87,6 +87,7 @@ int test5(ts::Scheduler* s){
     assert(s->get_n_tasks() == 2);
 
     s->remove_task(t_name);
+    assert(!s->task_exists(t_name));
     assert(s->get_n_tasks() == 1);
 
     s->Scheduler_delete();
@@ -110,9 +111,11 @@ int test6(ts::Scheduler* s){
     assert(s->get_n_tasks() == 2);
 
     s->remove_task(t_name1);
+    assert(!s->task_exists(t_name1));
     assert(s->get_n_tasks() == 1);
 
     s->remove_task(t_name2);
+    assert(!s->task_exists(t_name2));
     assert(s->get_n_tasks() == 0);
 
     s->Scheduler_delete();
@@ -121,8 +124,24 @@ int test6(ts::Scheduler* s){
     return 0;
 }
 
+
 int test7(ts::Scheduler* s){
-    // TEST 7: TODO
+    // TEST 7: search for a task that does not exist in Scheduler
+    std::string t_name = "any_name";
+
+    s->Scheduler_init();
+
+    assert(!s->task_exists(t_name));
+
+    s->Scheduler_delete();
+
+    std::cout << ">> Scheduler_methods: 7 done" << std::endl;
+    return 0;
+}
+
+int test8(ts::Scheduler* s){
+    // TEST 8: generate new task to be executed in the next second. 
+    // Check for the output after it runs.
 
     time_t time_now;
     time_t time_now_add;
@@ -146,8 +165,8 @@ int test7(ts::Scheduler* s){
 
     time_now = std::time(&time_now);
 
-    // Add one minute in seconds from current time
-    time_now_add = time_now + 2;
+    // Add one second from current time
+    time_now_add = time_now + 1;
     
     // time_t to std::tm*
     to_struct = std::gmtime(&time_now_add);
@@ -248,12 +267,12 @@ int test7(ts::Scheduler* s){
                std::to_string(struct_time_now_add.tm_sec);
 
     c = new cl::Config();
-    task_path_fn = "tasks/TestTitle.cl";
-    task_filename = "TestTitle.cl";
-    t_name = "TestTitle";
-    c->add_entry("Name", "TestTitle");
+    task_path_fn = "tasks/TestTask.cl";
+    task_filename = "TestTask.cl";
+    t_name = "TestTask";
+    c->add_entry("Name", "TestTask");
     c->add_entry("Description", "A short description");
-    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("ScriptFilename", "cat_test.sh");
     c->add_entry("Frequency", "Daily");
     c->add_entry("Datetime", hours + ":" + minutes + ":" + seconds);
     c->save_config(task_path_fn);
@@ -265,12 +284,19 @@ int test7(ts::Scheduler* s){
 
     assert(s->get_n_tasks() == 1);
 
-    //s->launch_task_thread(t_name);
+    // Sleep for 2 seconds to let task run
+    sleep(2); 
+
+    ts::Task* t = s->get_task(t_name);
+    assert(s->get_n_tasks() == 1);
+    assert(s->task_exists(t_name));
+    assert(t->get_output() == "ls -l");
+    assert(t->get_status() == ts::TaskStatus::QUEUED);
 
     s->Scheduler_delete();
     remove(task_path_fn.c_str());
 
-    std::cout << ">> Scheduler_methods: 7 done" << std::endl;
+    std::cout << ">> Scheduler_methods: 8 done" << std::endl;
     return 0;
 }
 
@@ -285,6 +311,7 @@ int main(int argc, char* argv[]){
     test5(s);
     test6(s);
     test7(s);
+    test8(s);
 
     s->Scheduler_end_instance();
 }

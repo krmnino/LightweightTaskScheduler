@@ -395,9 +395,10 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Initialize Scheduler object and verify its data members were properly zeroed out.|`Scheduler::Scheduler_init(void)`<br/>`Scheduler::Scheduler_delete(void)`<br/>`Scheduler::get_n_tasks(void)`<br/>`Scheduler::Scheduler_get_current_path(void)`|<span style="color:green">Passed|
-|`test2()`|Verify that the `exec_path` data member is updated to the directory path where the test build is located.|`Scheduler::obtain_exec_path(void)`|<span style="color:green">Passed|
+|`test2()`|Verify that the `exec_path` data member is updated to the directory path where the test build is located.|`Scheduler::obtain_exec_path(void)`<br/>`Scheduler::Scheduler_get_current_path(void)`|<span style="color:green">Passed|
 |`test3()`|Load tasks from `tasks` directory. After a successful call, all tasks defined in the `tasks` directory (total of 2) should be loaded to the `Scheduler`.|`Scheduler::load_tasks_from_dir(void)`|<span style="color:green">Passed|
 |`test4()`|Load one task from `tasks` directory. After a successful call, just one task should be loaded to the `Scheduler`.|`Scheduler::load_task(std::string&)`|<span style="color:green">Passed|
-|`test5()`|Load tasks from `tasks` directory. Then, remove one task from `Scheduler`. After a successful call, there should only be 1 task left in  the `Scheduler`.|`Scheduler::remove_task(std::string&)`|<span style="color:red">Failed|
+|`test5()`|Load tasks from `tasks` directory. Then, remove one task from `Scheduler`. After a successful call, there should only be 1 task left in  the `Scheduler`.|`Scheduler::remove_task(std::string&)`|<span style="color:green">Passed|
 |`test6()`|Load tasks from `tasks` directory. Then, remove two tasks from `Scheduler`, one by one. After a successful call, there should be 0 tasks in  the `Scheduler`.|`Scheduler::remove_task(std::string&)`|<span style="color:green">Passed|
-|`test7()`|TODO.|`Scheduler::launch_task_thread(std::string&)`|<span style="color:yellow">Pending|
+|`test7()`|Query a task name for a task that does not exist in `Scheduker`. The call should return false. |`Scheduler::task_exists(std::string&)`|<span style="color:green">Passed|
+|`test8()`|Generate a temporary `Task` called `TestTask` and load it in the `Scheduler`. This task is set to run 1 second after its creation. Check that the `Task` remains in `Scheduler` and its output value.|`Scheduler::load_task(std::string&)`|<span style="color:green">Passed|
