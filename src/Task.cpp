@@ -11,7 +11,7 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
-    this->running_thread = false;
+    this->running_thread_flag = false;
     
     ts::DatetimeFormat format;
     if(this->frequency == "Once"){
@@ -155,6 +155,8 @@ Task::Task(std::string name,
 
     this->output = "";
     if(this->status != TaskStatus::INIT_ERROR){
+        this->thr = std::thread(&Task::launch_thread, this);
+        this->running_thread_flag = true;
         this->status = TaskStatus::QUEUED;
     }
 }
@@ -167,7 +169,7 @@ Task::Task(std::string name,
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
-    this->running_thread = false;
+    this->running_thread_flag = false;
 
     if(this->frequency == "Hourly"){
         this->execution_datetime = today_add_hrs(1);
@@ -193,6 +195,8 @@ Task::Task(std::string name,
 
     this->output = "";
     if(this->status != TaskStatus::INIT_ERROR){
+        this->thr = std::thread(&Task::launch_thread, this);
+        this->running_thread_flag = true;
         this->status = TaskStatus::QUEUED;
     }
 }
@@ -200,19 +204,31 @@ Task::Task(std::string name,
 Task::Task(){}
 
 Task::~Task(){
-    //this->stop_thread();
+    // If thread is not running, then no need to stop it
+    if(this->running_thread_flag){
+        this->stop_thread();
+    }
 }
 
 void Task::run_task(void){
     std::array<char, 128> buffer;
     std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(this->script_filename.c_str(), "r"), pclose);
+    std::string script_path = "scripts/" + this->script_filename;
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(script_path.c_str(), "r"), pclose);
     if (!pipe) {
         throw std::runtime_error("popen() failed!");
     }
     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
         this->output += buffer.data();
     }
+}
+
+void Task::stop_thread(void){
+    std::unique_lock<std::mutex> lock(this->mtx);
+    this->running_thread_flag = false;
+    lock.unlock();
+    this->cv.notify_one();
+    this->thr.join();
 }
 
 void Task::update_execution_datetime(void){
@@ -640,20 +656,12 @@ DatetimeFormat Task::get_execution_datetime_format_attr(void){
     return this->execution_datetime_fmt;
 }
 
-bool Task::get_running_thread_flag(void){
-    return this->running_thread;
-}
-
 void Task::set_status(TaskStatus status){
     this->status = status;
 }
 
 void Task::set_id(int id){
     this->id = id;
-}
-
-void Task::set_running_thread_flag(bool new_val){
-    this->running_thread = new_val;   
 }
 
 DatetimeValidate validate_hms(std::string hms){
