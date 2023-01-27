@@ -9,6 +9,7 @@ src/*.gch
 # TESTING 
 testing/*.o
 testing/*.dat
+testing/tasks/TestTitle.cl
 testing/Task_constructor
 testing/Task_methods
 testing/validate_hms
