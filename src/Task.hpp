@@ -115,27 +115,51 @@ private:
         unsigned long minute;
         unsigned long second;
     } initial_execution_datetime;
-    time_t execution_datetime;
-    time_t creation_datetime;
+    std::condition_variable cv;
     std::string name;
     std::string description;
     std::string script_filename;
     std::string frequency;
     std::string output;
+    std::mutex mtx;
+    std::thread thr;
+    time_t execution_datetime;
+    time_t creation_datetime;
     TaskStatus status;
     DatetimeFormat execution_datetime_fmt;
     int id;
-    bool running_thread;
+    bool running_thread_flag;
+
+    static void launch_thread(Task* t){
+        std::unique_lock<std::mutex> lock(t->mtx);
+        time_t execution_datetime = t->get_execution_datetime(false);
+        while(!t->cv.wait_until(lock, std::chrono::system_clock::from_time_t(execution_datetime), [t] {return !t->running_thread_flag;})){
+            // Before running task, update its status
+            t->set_status(TaskStatus::RUNNING);
+            // Run the task
+            t->run_task();
+            // Update next execution time based on frequency
+            t->update_execution_datetime();
+            // If task frequency is Once, then it is finished
+            if(t->get_frequency() == "Once"){
+                t->set_status(TaskStatus::FINISHED);
+                t->running_thread_flag = false;
+            }
+            else{
+                // Otherwise, set it to queued status again
+                t->set_status(TaskStatus::QUEUED);
+                execution_datetime = t->get_execution_datetime(false);
+            }
+        }
+    }
 
 public:
-    std::mutex mtx;
-    std::condition_variable cv;
-
     Task();
     Task(std::string, std::string, std::string, std::string, std::string);
     Task(std::string, std::string, std::string, std::string);
     ~Task();
     void run_task(void);
+    void stop_thread(void);
     void update_execution_datetime(void);
     const std::string& get_name(void);
     const std::string& get_description(void);
@@ -149,11 +173,8 @@ public:
     TaskStatus get_status(void);
     int get_id(void);
     DatetimeFormat get_execution_datetime_format_attr(void);
-    bool get_running_thread_flag(void);
     void set_status(TaskStatus);
     void set_id(int);
-    void set_running_thread_flag(bool);
-
 };
 
 DatetimeValidate validate_hms(std::string);
