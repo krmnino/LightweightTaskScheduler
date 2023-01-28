@@ -404,6 +404,12 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 ### **Scheduler_Task_run_task.cpp**
 
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
 |`test1()`|Generate a temporary `Task` called `TestTask` and load it in the `Scheduler`. This task has a `Once` frequency value and set to run 1 second after its creation. Check its output value and that the `Task` remains in `Scheduler`.|`Scheduler::load_task(std::string&)`<br/>`Task::run_task(void)`<br/>`Task::launch_thread(Task*)`<br/>`Task::stop_thread(void)`|<span style="color:green">Passed|
+|`test2()`|Generate a temporary `Task` called `TestTask` and load it in the `Scheduler`. This task has a `Daily` frequency value and set to run 1 second after its creation. Check its output value and that the `Task` remains in `Scheduler`.|`Scheduler::load_task(std::string&)`<br/>`Task::run_task(void)`<br/>`Task::launch_thread(Task*)`<br/>`Task::stop_thread(void)`|<span style="color:green">Passed|
+|`test3()`|Generate a temporary `Task` called `TestTask` and load it in the `Scheduler`. This task has a `Weekly` frequency value and set to run 1 second after its creation. Check its output value and that the `Task` remains in `Scheduler`.|`Scheduler::load_task(std::string&)`<br/>`Task::run_task(void)`<br/>`Task::launch_thread(Task*)`<br/>`Task::stop_thread(void)`|<span style="color:green">Passed|
+|`test4()`|Generate a temporary `Task` called `TestTask` and load it in the `Scheduler`. This task has a `Monthly` frequency value and set to run 1 second after its creation. Check its output value and that the `Task` remains in `Scheduler`.|`Scheduler::load_task(std::string&)`<br/>`Task::run_task(void)`<br/>`Task::launch_thread(Task*)`<br/>`Task::stop_thread(void)`|<span style="color:green">Passed|
+|`test5()`|Generate a temporary `Task` called `TestTask` and load it in the `Scheduler`. This task has a `Yearly` frequency value and set to run 1 second after its creation. Check its output value and that the `Task` remains in `Scheduler`.|`Scheduler::load_task(std::string&)`<br/>`Task::run_task(void)`<br/>`Task::launch_thread(Task*)`<br/>`Task::stop_thread(void)`|<span style="color:green">Passed|
 
 ### **Scheduler_load_tasks_from_dir.cpp**
