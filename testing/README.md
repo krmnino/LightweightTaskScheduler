@@ -401,4 +401,9 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test5()`|Load tasks from `tasks` directory. Then, remove one task from `Scheduler`. After a successful call, there should only be 1 task left in  the `Scheduler`.|`Scheduler::remove_task(std::string&)`|<span style="color:green">Passed|
 |`test6()`|Load tasks from `tasks` directory. Then, remove two tasks from `Scheduler`, one by one. After a successful call, there should be 0 tasks in  the `Scheduler`.|`Scheduler::remove_task(std::string&)`|<span style="color:green">Passed|
 |`test7()`|Query a task name for a task that does not exist in `Scheduker`. The call should return false. |`Scheduler::task_exists(std::string&)`|<span style="color:green">Passed|
-|`test8()`|Generate a temporary `Task` called `TestTask` and load it in the `Scheduler`. This task is set to run 1 second after its creation. Check that the `Task` remains in `Scheduler` and its output value.|`Scheduler::load_task(std::string&)`|<span style="color:green">Passed|
+
+### **Scheduler_Task_run_task.cpp**
+
+|`test1()`|Generate a temporary `Task` called `TestTask` and load it in the `Scheduler`. This task has a `Once` frequency value and set to run 1 second after its creation. Check its output value and that the `Task` remains in `Scheduler`.|`Scheduler::load_task(std::string&)`<br/>`Task::run_task(void)`<br/>`Task::launch_thread(Task*)`<br/>`Task::stop_thread(void)`|<span style="color:green">Passed|
+
+### **Scheduler_load_tasks_from_dir.cpp**

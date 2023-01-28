@@ -59,7 +59,9 @@ all: task_scheduler.o						\
 	Task_setting_exec_datetime_Monthly		\
 	Task_setting_exec_datetime_Yearly		\
 	Scheduler_get_instance					\
-	Scheduler_methods
+	Scheduler_methods						\
+	Scheduler_Task_run_task					\
+	Scheduler_load_tasks_from_dir
 
 task_scheduler.o: 
 	g++ -g -c -std=c++17 -pthread $(SRC_FILES)
@@ -208,12 +210,21 @@ Scheduler_methods: task_scheduler.o
 	g++ -g -Wall -c -std=c++17 Scheduler_methods.cpp
 	g++ -g -Wall -o Scheduler_methods Scheduler_methods.o $(OBJ_FILES) -pthread -lstdc++fs
 
+Scheduler_Task_run_task: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 Scheduler_Task_run_task.cpp
+	g++ -g -Wall -o Scheduler_Task_run_task Scheduler_Task_run_task.o $(OBJ_FILES) -pthread -lstdc++fs
+
+Scheduler_load_tasks_from_dir: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 Scheduler_load_tasks_from_dir.cpp
+	g++ -g -Wall -o Scheduler_load_tasks_from_dir Scheduler_load_tasks_from_dir.o $(OBJ_FILES) -pthread -lstdc++fs
+
 ###################################################################################################
 
 clean:
 	rm *.o 									\
-	rm *.gch								\
-	rm ../src/*.gch							\
+	*.gch									\
+	../src/*.gch							\
+	tasks/TestTask.cl						\
 	Task_constructor						\
 	Task_methods							\
 	validate_hms							\
@@ -249,4 +260,6 @@ clean:
 	Task_setting_exec_datetime_Monthly		\
 	Task_setting_exec_datetime_Yearly		\
 	Scheduler_get_instance					\
-	Scheduler_methods
+	Scheduler_methods						\
+	Scheduler_Task_run_task					\
+	Scheduler_load_tasks_from_dir			

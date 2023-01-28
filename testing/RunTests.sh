@@ -34,3 +34,5 @@
 ./Task_setting_exec_datetime_Yearly
 ./Scheduler_get_instance
 ./Scheduler_methods
+./Scheduler_Task_run_task
+./Scheduler_load_tasks_from_dir
