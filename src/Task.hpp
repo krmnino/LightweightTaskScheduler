@@ -143,7 +143,7 @@ private:
             // If task frequency is Once, then it is finished
             if(t->get_frequency() == "Once"){
                 t->set_status(TaskStatus::FINISHED);
-                t->running_thread_flag = false;
+                break;
             }
             else{
                 // Otherwise, set it to queued status again
