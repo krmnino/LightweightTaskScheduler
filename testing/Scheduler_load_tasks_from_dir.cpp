@@ -13,7 +13,7 @@ int test1(ts::Scheduler* s){
     // TEST 1: load tasks from tasks directory
     // Tasks to be loaded: cat_test.cl and ls_test.cl
     // Validate tasks' name, decription, script name, frequency, and output
-    ts::Task t_deref;
+    ts::Task* t_ret;
     std::string t_name;
     std::string t_description;
     std::string t_script_filename;
@@ -30,23 +30,25 @@ int test1(ts::Scheduler* s){
     t_description = "Test task: call command cat";
     t_script_filename = "cat_test.sh";
     t_frequency = "Once";
-    t_deref = *s->get_task(t_name);
-    assert(t_deref.get_name() == t_name);
-    assert(t_deref.get_description() == t_description);
-    assert(t_deref.get_script_filename() == t_script_filename);
-    assert(t_deref.get_frequency() == t_frequency);
-    assert(t_deref.get_output() == "");
+    t_ret = s->get_task(t_name);
+    assert(t_ret->get_name() == t_name);
+    assert(t_ret->get_description() == t_description);
+    assert(t_ret->get_script_filename() == t_script_filename);
+    assert(t_ret->get_frequency() == t_frequency);
+    assert(t_ret->get_output() == "");
+    assert(t_ret->get_status() == ts::TaskStatus::QUEUED);
 
     t_name = "ls";
     t_description = "Test task: call command ls";
     t_script_filename = "ls_test.sh";
     t_frequency = "Once";
-    t_deref = *s->get_task(t_name);
-    assert(t_deref.get_name() == t_name);
-    assert(t_deref.get_description() == t_description);
-    assert(t_deref.get_script_filename() == t_script_filename);
-    assert(t_deref.get_frequency() == t_frequency);
-    assert(t_deref.get_output() == "");
+    t_ret = s->get_task(t_name);
+    assert(t_ret->get_name() == t_name);
+    assert(t_ret->get_description() == t_description);
+    assert(t_ret->get_script_filename() == t_script_filename);
+    assert(t_ret->get_frequency() == t_frequency);
+    assert(t_ret->get_output() == "");
+    assert(t_ret->get_status() == ts::TaskStatus::QUEUED);
 
     s->Scheduler_delete();
 
@@ -55,10 +57,26 @@ int test1(ts::Scheduler* s){
 }
 
 
+int test2(ts::Scheduler* s){
+    // TEST 2: load tasks from tasks directory
+    // Tasks to be loaded: cat_test.cl and ls_test.cl
+    // Validate tasks' name, decription, script name, frequency, and output
+    s->Scheduler_init();
+
+    s->load_tasks_from_dir();
+
+    s->Scheduler_delete();
+    
+    std::cout << ">> Scheduler_load_tasks_from_dir: 2 done" << std::endl;
+    return 0;
+}
+
+
 int main(int argc, char* argv[]){
     ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
 
     test1(s);
+    test2(s);
 
     s->Scheduler_end_instance();
 }
