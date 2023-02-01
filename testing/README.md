@@ -413,3 +413,6 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test5()`|Generate a temporary `Task` called `TestTask` and load it in the `Scheduler`. This task has a `Yearly` frequency value and set to run 1 second after its creation. Check its output value and that the `Task` remains in `Scheduler`.|`Scheduler::load_task(std::string&)`<br/>`Task::run_task(void)`<br/>`Task::launch_thread(Task*)`<br/>`Task::stop_thread(void)`|<span style="color:green">Passed|
 
 ### **Scheduler_load_tasks_from_dir.cpp**
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Load tasks `cat_test.cl` and `ls_test.cl` from tasks directory. Verify that tasks' attributes are loaded correctly by checking they match the expected values.|`Scheduler::load_tasks_from_dir(void)`|<span style="color:green">Passed|
