@@ -9,11 +9,31 @@
 #include <condition_variable>
 #include <filesystem>
 #include <functional>
+#include <deque>
 
 #include "Task.hpp"
 #include "ConfigLoader.hpp"
 
 namespace ts{
+
+enum class EventType{
+    INFO,
+    WARNING,
+    ERROR
+};
+
+struct Event{
+    time_t event_time;
+    EventType type;
+    std::string message;
+
+    Event(EventType type, std::string message){
+        this->type = type;
+        this->message = message;
+    }
+
+    ~Event() {}
+};
 
 class Scheduler{
 private:
@@ -21,9 +41,11 @@ private:
     unsigned int n_tasks;
     std::string exec_path;
     std::map<std::string, Task*> task_registry;
+    std::deque<Event> event_registry;
     
     Scheduler() {}
     unsigned int generate_task_id(Task*);
+    std::string generate_TaskValidate_msg(ts::TaskValidate, cl::Config*);
 
 public:
     static Scheduler* Scheduler_get_instance(void){

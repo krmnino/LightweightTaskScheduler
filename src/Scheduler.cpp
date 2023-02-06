@@ -59,6 +59,40 @@ unsigned int Scheduler::generate_task_id(Task* task){
     return id;
 }
 
+std::string Scheduler::generate_TaskValidate_msg(ts::TaskValidate code, cl::Config* task_config){
+    std::string err_message;
+    switch(code){
+        case TaskValidate::MISSING_NAME_KEYVAL:
+            err_message = "Name key-value pair does not exist in task configuration file.";
+            break;
+        case TaskValidate::MISSING_SCRIPTFN_KEYVAL:
+            err_message = "Script filename key-value pair does not exist in task configuration file.";
+            break;
+        case TaskValidate::MISSING_FREQUENCY_KEYVAL:
+            err_message = "Frequency key-value pair does not exist in task configuration file.";
+            break;
+        case TaskValidate::SCRIPT_NOT_FOUND:
+            err_message = "The task script file associated with the task could not be found in the scripts directory.";
+            break;
+        case TaskValidate::BAD_FREQUENCY_VALUE:
+            err_message = "An invalid Frequency value has been specified in the task configuration file.";
+            break;
+        case TaskValidate::MISSING_DATETIME_KEYVAL:
+            err_message = "Datetime key-value pair does not exist in task configuration file.";
+            err_message += "The task Frequency ";
+            err_message += task_config->get_value("Frequency")->get_data<std::string>();
+            err_message += "requrires it.";
+            break;
+        case TaskValidate::BAD_DATETIME_VALUE:
+            err_message = "An invalid Datetime value has been specified in the task configuration file.";
+            break;
+        default:
+            err_message = "Undefined error.";
+            break;
+    }
+    return err_message;
+}
+
 void Scheduler::Scheduler_init(void){
     this->n_tasks = 0;
     this->exec_path = "";
@@ -86,20 +120,21 @@ void Scheduler::load_tasks_from_dir(void){
     std::string task_script_name;
     std::string task_frequency;
     std::string task_execution_datetime;
+    std::string err_message;
     Task* t;
     int task_id;
 
     // Check if tasks directory exists 
     if(!std::filesystem::exists(this->exec_path + "/tasks")){
-        // TODO: implement Reporter class
-        std::cout << "tasks directory does not exist" << std::endl;
+        err_message = "Could not find tasks directory";
+        this->event_registry.push_back(Event(EventType::ERROR, err_message));
         return;
     }
 
     // Check if scripts directory exists 
     if(!std::filesystem::exists(this->exec_path + "/scripts")){
-        // TODO: implement Reporter class
-        std::cout << "scripts directory does not exist" << std::endl;
+        err_message = "Could not find scripts directory";
+        this->event_registry.push_back(Event(EventType::ERROR, err_message));
         return;
     }
 
@@ -107,16 +142,16 @@ void Scheduler::load_tasks_from_dir(void){
         task_config = new cl::Config(file.path());
         ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
         if(ret_task_validate != TaskValidate::OK){
-            // TODO: implement Reporter class
-            std::cout << "invalid config" << std::endl;
+            err_message = this->generate_TaskValidate_msg(ret_task_validate, task_config);
+            this->event_registry.push_back(Event(EventType::ERROR, err_message));
             continue;
         }
 
         // Get task attributes from config file and validate them, check if task name is repeated
         task_name = task_config->get_value("Name")->get_data<std::string>();
         if (this->task_exists(task_name)) {
-            // TODO: implement Reporter class
-            std::cout << "duplicate name" << std::endl;
+            err_message = "A task with the name " + task_name + " already exists in the scheduler." ;
+            this->event_registry.push_back(Event(EventType::ERROR, err_message));
             return;
         }
 
@@ -137,13 +172,14 @@ void Scheduler::load_tasks_from_dir(void){
         }
 
         // Assign task id to task object
-        task_id = generate_task_id(t);
+        task_id = this->generate_task_id(t);
         t->set_id(task_id);
         t->set_status(ts::TaskStatus::QUEUED);
 
         this->task_registry.insert(std::make_pair(task_name, t));
         this->n_tasks++;
     }
+    // 
 }
 
 void Scheduler::load_task(std::string& task_filename){
@@ -154,40 +190,41 @@ void Scheduler::load_task(std::string& task_filename){
     std::string task_script_name;
     std::string task_frequency;
     std::string task_execution_datetime;
+    std::string err_message;
     Task* t;
     int task_id;
 
     if(!std::filesystem::exists(this->exec_path + "/tasks")){
-        // TODO: implement Reporter class
-        std::cout << "tasks directory does not exist" << std::endl;
+        err_message = "Could not find tasks directory";
+        this->event_registry.push_back(Event(EventType::ERROR, err_message));
         return;
     }
 
     if(!std::filesystem::exists(this->exec_path + "/scripts")){
-        // TODO: implement Reporter class
-        std::cout << "scripts directory does not exist" << std::endl;
+        err_message = "Could not find scripts directory";
+        this->event_registry.push_back(Event(EventType::ERROR, err_message));
         return;
     }
 
     if(!std::filesystem::exists(this->exec_path + "/tasks/" + task_filename)){
-        // TODO: implement Reporter class
-        std::cout << "task does not exist in tasks directory" << std::endl;
+        err_message = "The task file configuration file " + task_filename + "could not be found.";
+        this->event_registry.push_back(Event(EventType::ERROR, err_message));
         return;
     }
 
     task_config = new cl::Config(this->exec_path + "/tasks/" + task_filename);
     ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
     if(ret_task_validate != TaskValidate::OK){
-        // TODO: implement Reporter class
-        std::cout << "invalid config" << std::endl;
+        err_message = this->generate_TaskValidate_msg(ret_task_validate, task_config);
+        this->event_registry.push_back(Event(EventType::ERROR, err_message));
         return;
     }
 
     // Get task attributes from config file and validate them, check if task name is repeated
     task_name = task_config->get_value("Name")->get_data<std::string>();
     if (this->task_exists(task_name)) {
-        // TODO: implement Reporter class
-        std::cout << "duplicate name" << std::endl;
+        err_message = "A task with the name " + task_name + " already exists in the scheduler." ;
+        this->event_registry.push_back(Event(EventType::ERROR, err_message));
         return;
     }
 
@@ -208,7 +245,7 @@ void Scheduler::load_task(std::string& task_filename){
     }
 
     // Assign task id to task object
-    task_id = generate_task_id(t);
+    task_id = this->generate_task_id(t);
     t->set_id(task_id);
     t->set_status(ts::TaskStatus::QUEUED);
 
@@ -219,13 +256,12 @@ void Scheduler::load_task(std::string& task_filename){
 void Scheduler::remove_task(std::string& key){
     // Check if key exists in task registry
     if(!this->task_exists(key)){
-        // TODO: implement Reporter class
-        std::cout << "task does not exist" << std::endl;
+        std::string err_message = "The task " + key + " does not exist in the scheduler." ;
+        this->event_registry.push_back(Event(EventType::INFO, err_message));
         return;
     }
     Task* t = this->task_registry[key];
     // Stop thread if running
-    //this->stop_thread(t);
     t->stop_thread();
     this->task_registry.erase(key);
     delete t;
@@ -253,8 +289,8 @@ unsigned int Scheduler::get_n_tasks(){
 Task* Scheduler::get_task(std::string& key){
     // Check if key exists in task registry
     if(!this->task_exists(key)){
-        // TODO: implement Reporter class
-        std::cout << "task does not exist" << std::endl;
+        std::string err_message = "The task " + key + " does not exist in the scheduler." ;
+        this->event_registry.push_back(Event(EventType::INFO, err_message));
         return nullptr;
     }
     return this->task_registry[key];
