@@ -1218,11 +1218,11 @@ time_t today_add_yyyymmdd(std::string yyyymmdd){
             february_29s++;
         }
         // If the task is scheduled to run on February 29th
-        else if(y % 4 == 0 && y == years && months == FEBRUARY && days + 1 > FEBRUARY_DAYS){
+        else if(y % 4 == 0 && y == years && months - 1 == FEBRUARY && days + 1 > FEBRUARY_DAYS){
             february_29s++;
         }
         // If the task is scheduled beyond February on a leap year
-        else if(y % 4 == 0 && y == years && months > FEBRUARY){
+        else if(y % 4 == 0 && y == years && months - 1 > FEBRUARY){
             february_29s++;
         }
     }
