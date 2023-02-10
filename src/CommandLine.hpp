@@ -2,8 +2,10 @@
 #define LTS_CMD
 
 #include <vector>
+
 #include <string>
 
+#include "Constants.hpp"
 #include "Scheduler.hpp"
 
 namespace ts{

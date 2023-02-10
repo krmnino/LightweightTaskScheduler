@@ -11,16 +11,11 @@
 #include <functional>
 #include <deque>
 
+#include "Constants.hpp"
 #include "Task.hpp"
 #include "ConfigLoader.hpp"
 
 namespace ts{
-
-enum class EventType{
-    INFO,
-    WARNING,
-    ERROR
-};
 
 struct Event{
     const time_t event_time;

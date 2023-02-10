@@ -10,6 +10,7 @@ debug:
 		CLErrorHandler.cpp 		\
 		ConfigLoader.hpp 		\
 		ConfigLoader.cpp 		\
+		Constants.hpp			\
 		CommandLine.hpp			\
 		CommandLine.cpp			\
 		Scheduler.hpp			\
@@ -30,6 +31,7 @@ release:
 		CLErrorHandler.cpp 		\
 		ConfigLoader.hpp 		\
 		ConfigLoader.cpp 		\
+		Constants.hpp			\
 		CommandLine.hpp			\
 		CommandLine.cpp			\
 		Scheduler.hpp			\
