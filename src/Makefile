@@ -13,6 +13,8 @@ debug:
 		Constants.hpp			\
 		CommandLine.hpp			\
 		CommandLine.cpp			\
+		EventReporter.hpp		\
+		EventReporter.cpp		\
 		Scheduler.hpp			\
 		Scheduler.cpp			\
 		Task.hpp				\
@@ -34,6 +36,8 @@ release:
 		Constants.hpp			\
 		CommandLine.hpp			\
 		CommandLine.cpp			\
+		EventReporter.hpp		\
+		EventReporter.cpp		\
 		Scheduler.hpp			\
 		Scheduler.cpp			\
 		Task.hpp				\

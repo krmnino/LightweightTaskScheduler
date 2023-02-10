@@ -17,37 +17,15 @@
 
 namespace ts{
 
-struct Event{
-    const time_t event_time;
-    EventType type;
-    std::string message;
-
-    Event(time_t in_event_time, EventType in_type, std::string in_message) :
-        event_time{event_time},
-        type{in_type},
-        message{in_message}
-    {}
-
-    Event(const Event& src) :
-        event_time{src.event_time},
-        type{src.type},
-        message{src.message}
-    {}
-
-    ~Event() {}
-};
-
 class Scheduler{
 private:
     static Scheduler* scheduler_ptr;
     unsigned int n_tasks;
     std::string exec_path;
     std::map<std::string, Task*> task_registry;
-    std::deque<Event> event_registry;
     
     Scheduler() {}
     unsigned int generate_task_id(Task*);
-    std::string generate_TaskValidate_msg(ts::TaskValidate, cl::Config*);
 
 public:
     static Scheduler* Scheduler_get_instance(void){
@@ -72,9 +50,6 @@ public:
     const std::string& get_current_path(void);
     unsigned int get_n_tasks(void);
     Task* get_task(std::string&);
-    void log_event(EventType, std::string&);
-    Event get_last_event(void);
-    void publish_last_event(void);
 };
 
 } // namespace ts

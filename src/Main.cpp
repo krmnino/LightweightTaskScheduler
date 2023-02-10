@@ -2,13 +2,16 @@
 
 #include "Scheduler.hpp"
 #include "CommandLine.hpp"
+#include "EventReporter.hpp"
 
 ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
 ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
+ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
 
 int main(int argc, char* argv[]){
     ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
     ts::CommandLine* c = ts::CommandLine::CommandLine_get_instance();
+    ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
     
     // Initialize Scheduler data members
     s->Scheduler_init();

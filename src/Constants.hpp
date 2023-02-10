@@ -39,6 +39,7 @@
 #define DECEMBER_DAYS 31
 
 namespace ts{
+
 enum class TaskStatus {
 	FINISHED,
 	INIT_ERROR,
