@@ -37,6 +37,10 @@ public:
         return command_line_ptr;
     }
 
+    static void CommandLine_end_instance(void){
+        delete command_line_ptr;
+    }
+
     CommandLine(const CommandLine& cmdline) = delete;
     void CommandLine_init(EventReporter*);
     void CommandLine_delete();

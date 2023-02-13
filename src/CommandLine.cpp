@@ -105,10 +105,6 @@ void CommandLine::CommandLine_init(EventReporter* er_ptr){
     this->event_reporter = er_ptr;
 }
 
-void CommandLine::CommandLine_delete(void){
-    delete command_line_ptr;
-}
-
 void CommandLine::start(void){
     while(this->running_cmd){
         std::cout << ">> ";
