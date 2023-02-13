@@ -28,7 +28,7 @@ private:
     
     Scheduler() {}
     unsigned int generate_task_id(Task*);
-    std::string generate_TaskValidate_msg(ts::TaskValidate, cl::Config*);
+    std::string generate_ValidationCode_msg(ts::ValidationCode, cl::Config*);
 
 public:
     static Scheduler* Scheduler_get_instance(void){

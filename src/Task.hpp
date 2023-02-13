@@ -90,11 +90,11 @@ public:
     void set_id(int);
 };
 
-DatetimeValidate validate_hms(std::string);
-DatetimeValidate validate_wday(std::string);
-DatetimeValidate validate_wday_hms(std::string);
-DatetimeValidate validate_yyyymmdd(std::string);
-DatetimeValidate validate_yyyymmdd_hms(std::string);
+ValidationCode validate_hms(std::string);
+ValidationCode validate_wday(std::string);
+ValidationCode validate_wday_hms(std::string);
+ValidationCode validate_yyyymmdd(std::string);
+ValidationCode validate_yyyymmdd_hms(std::string);
 time_t init_today(void);
 time_t init_year(void);
 time_t today_add_hrs(int);
@@ -104,7 +104,7 @@ time_t today_add_wday_hms(std::string);
 time_t today_add_yyyymmdd(std::string);
 time_t today_add_yyyymmdd_hms(std::string);
 DatetimeFormat compute_datetime_format(std::string);
-TaskValidate validate_task_parms(cl::Config*, std::string);
+ValidationCode validate_task_parms(cl::Config*, std::string);
 
 } // namespace ts
 

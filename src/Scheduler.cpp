@@ -59,32 +59,29 @@ unsigned int Scheduler::generate_task_id(Task* task){
     return id;
 }
 
-std::string Scheduler::generate_TaskValidate_msg(ts::TaskValidate code, cl::Config* task_config){
+std::string Scheduler::generate_ValidationCode_msg(ts::ValidationCode code, cl::Config* task_config){
     std::string report_message;
     switch(code){
-        case TaskValidate::MISSING_NAME_KEYVAL:
+        case ValidationCode::MISSING_NAME_KEYVAL:
             report_message = "Name key-value pair does not exist in task configuration file.";
             break;
-        case TaskValidate::MISSING_SCRIPTFN_KEYVAL:
+        case ValidationCode::MISSING_SCRIPTFN_KEYVAL:
             report_message = "Script filename key-value pair does not exist in task configuration file.";
             break;
-        case TaskValidate::MISSING_FREQUENCY_KEYVAL:
+        case ValidationCode::MISSING_FREQUENCY_KEYVAL:
             report_message = "Frequency key-value pair does not exist in task configuration file.";
             break;
-        case TaskValidate::SCRIPT_NOT_FOUND:
+        case ValidationCode::SCRIPT_NOT_FOUND:
             report_message = "The task script file associated with the task could not be found in the scripts directory.";
             break;
-        case TaskValidate::BAD_FREQUENCY_VALUE:
+        case ValidationCode::BAD_FREQUENCY_VALUE:
             report_message = "An invalid Frequency value has been specified in the task configuration file.";
             break;
-        case TaskValidate::MISSING_DATETIME_KEYVAL:
+        case ValidationCode::MISSING_DATETIME_KEYVAL:
             report_message = "Datetime key-value pair does not exist in task configuration file.";
             report_message += "The task Frequency ";
             report_message += task_config->get_value("Frequency")->get_data<std::string>();
             report_message += "requrires it.";
-            break;
-        case TaskValidate::BAD_DATETIME_VALUE:
-            report_message = "An invalid Datetime value has been specified in the task configuration file.";
             break;
         default:
             report_message = "Undefined error.";
@@ -115,7 +112,7 @@ void Scheduler::obtain_exec_path(void){
 
 void Scheduler::load_tasks_from_dir(void){
     cl::Config* task_config;
-    ts::TaskValidate ret_task_validate;
+    ts::ValidationCode ret_task_validate;
     bool valid_task;
     std::string task_name;
     std::string task_description;
@@ -145,8 +142,8 @@ void Scheduler::load_tasks_from_dir(void){
     for(const auto & file : std::filesystem::directory_iterator(this->exec_path + "/tasks/")){
         task_config = new cl::Config(file.path());
         ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
-        if(ret_task_validate != TaskValidate::OK){
-            event_message = this->generate_TaskValidate_msg(ret_task_validate, task_config);
+        if(ret_task_validate != ValidationCode::OK){
+            event_message = this->generate_ValidationCode_msg(ret_task_validate, task_config);
             this->event_reporter->log_event(EventType::ERROR, event_message);
             this->event_reporter->publish_last_event();
             continue;
@@ -193,7 +190,7 @@ void Scheduler::load_tasks_from_dir(void){
 
 void Scheduler::load_task(std::string& task_filename){
     cl::Config* task_config;
-    ts::TaskValidate ret_task_validate;
+    ts::ValidationCode ret_task_validate;
     std::string task_name;
     std::string task_description;
     std::string task_script_name;
@@ -226,8 +223,8 @@ void Scheduler::load_task(std::string& task_filename){
 
     task_config = new cl::Config(this->exec_path + "/tasks/" + task_filename);
     ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
-    if(ret_task_validate != TaskValidate::OK){
-        event_message = this->generate_TaskValidate_msg(ret_task_validate, task_config);
+    if(ret_task_validate != ValidationCode::OK){
+        event_message = this->generate_ValidationCode_msg(ret_task_validate, task_config);
         this->event_reporter->log_event(EventType::ERROR, event_message);
         this->event_reporter->publish_last_event();
         return;
