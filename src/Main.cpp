@@ -9,12 +9,14 @@ ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
 ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
 
 int main(int argc, char* argv[]){
+    ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
     ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
     ts::CommandLine* c = ts::CommandLine::CommandLine_get_instance();
-    ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
     
-    // Initialize Scheduler data members
-    s->Scheduler_init();
+    // Initialize Scheduler and CommandLine data members
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e);
     
     // Obtain directory where LTS executable , scripts and tasks directories live
     s->obtain_exec_path();
@@ -23,13 +25,10 @@ int main(int argc, char* argv[]){
     s->load_tasks_from_dir();
     
     // Initialize and launch command line 
-    c->CommandLine_init();
     c->start();
 
-    // Delete any tasks in Scheduler's task registry
+    // Delete Scheduler and CommandLine
     s->Scheduler_delete();
-
-    // Delete command line object
     c->CommandLine_delete();
 
     return 0;

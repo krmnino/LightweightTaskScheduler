@@ -96,11 +96,13 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
     }
 }
 
-void CommandLine::CommandLine_init(void){
+void CommandLine::CommandLine_init(EventReporter* er_ptr){
     this->cmds_issued = 0;
     this->max_cmd_history = 100;
     this->cmd_input = "";
     this->running_cmd = true;
+    // Link Event Reporter to Command Line
+    this->event_reporter = er_ptr;
 }
 
 void CommandLine::CommandLine_delete(void){

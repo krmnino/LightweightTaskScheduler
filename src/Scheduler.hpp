@@ -12,20 +12,23 @@
 #include <deque>
 
 #include "Constants.hpp"
-#include "Task.hpp"
 #include "ConfigLoader.hpp"
+#include "Task.hpp"
+#include "EventReporter.hpp"
 
 namespace ts{
 
 class Scheduler{
 private:
-    static Scheduler* scheduler_ptr;
-    unsigned int n_tasks;
-    std::string exec_path;
     std::map<std::string, Task*> task_registry;
+    std::string exec_path;
+    static Scheduler* scheduler_ptr;
+    EventReporter* event_reporter;
+    unsigned int n_tasks;
     
     Scheduler() {}
     unsigned int generate_task_id(Task*);
+    std::string generate_TaskValidate_msg(ts::TaskValidate, cl::Config*);
 
 public:
     static Scheduler* Scheduler_get_instance(void){
@@ -40,7 +43,7 @@ public:
     }
 
     Scheduler(const Scheduler& s) = delete;
-    void Scheduler_init(void);
+    void Scheduler_init(EventReporter*);
     void Scheduler_delete(void);
     void obtain_exec_path(void);
     void load_tasks_from_dir(void);

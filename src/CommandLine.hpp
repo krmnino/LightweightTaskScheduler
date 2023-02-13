@@ -7,16 +7,18 @@
 
 #include "Constants.hpp"
 #include "Scheduler.hpp"
+#include "EventReporter.hpp"
 
 namespace ts{
 
 class CommandLine{
 private:
-    static CommandLine* command_line_ptr;
     std::vector<std::string> cmd_history;
+    std::string cmd_input;
+    static CommandLine* command_line_ptr;
+    EventReporter* event_reporter;
     unsigned int max_cmd_history;
     unsigned int cmds_issued;
-    std::string cmd_input;
     bool running_cmd;
 
     CommandLine() {};
@@ -36,7 +38,7 @@ public:
     }
 
     CommandLine(const CommandLine& cmdline) = delete;
-    void CommandLine_init();
+    void CommandLine_init(EventReporter*);
     void CommandLine_delete();
     void start(void);
 };

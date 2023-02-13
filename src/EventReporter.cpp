@@ -27,6 +27,9 @@ std::string& Event::get_message(){
     return this->message;
 }
 
+void EventReporter::EventReporter_init(){
+    this->events_recorded = 0;
+}
 
 void EventReporter::log_event(EventType event_type, std::string& event_message){
     time_t time_now;

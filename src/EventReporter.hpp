@@ -46,6 +46,7 @@ public:
     }
 
     EventReporter(const EventReporter& s) = delete;
+    void EventReporter_init();
     void log_event(EventType, std::string&);
     Event get_last_event(void);
     void publish_last_event(void);
