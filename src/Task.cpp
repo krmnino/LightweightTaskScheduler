@@ -895,7 +895,7 @@ DatetimeValidate validate_yyyymmdd(std::string yyyymmdd){
         }    
         break;
     default:
-        return DatetimeValidate::INVALID_DATETIME_INPUT;
+        return DatetimeValidate::MONTH_OUT_OF_RANGE;
         break;
     }
     return DatetimeValidate::OK;

@@ -64,7 +64,6 @@ enum class DatetimeValidate{
     OK,
     BAD_HMS_LENGTH,
     BAD_YYYYMMDD_LENGTH,
-    BAD_MMDD_LENGTH,
     BAD_NUMBER_CHARACTER,
     BAD_APHABETIC_CHARACTER,
     MISSING_COLON,
@@ -77,7 +76,6 @@ enum class DatetimeValidate{
     HOURS_OUT_OF_RANGE,
     MINUTES_OUT_OF_RANGE,
     SECONDS_OUT_OF_RANGE,
-    INVALID_DATETIME_INPUT
 };
 
 enum class DatetimeFormat {
