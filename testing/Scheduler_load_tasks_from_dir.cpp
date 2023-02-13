@@ -4,12 +4,12 @@
 
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
-#include "../src/CommandLine.hpp"
+#include "../src/EventReporter.hpp"
 
 ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
-ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
+ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
 
-int test1(ts::Scheduler* s){
+int test1(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 1: load tasks from tasks directory
     // Tasks to be loaded: cat_test.cl and ls_test.cl
     // Validate tasks' name, decription, script name, frequency, and output
@@ -19,7 +19,7 @@ int test1(ts::Scheduler* s){
     std::string t_script_filename;
     std::string t_frequency;
 
-    s->Scheduler_init();
+    s->Scheduler_init(e);
 
     s->obtain_exec_path();
     s->load_tasks_from_dir();
@@ -57,13 +57,15 @@ int test1(ts::Scheduler* s){
 }
 
 
-int test2(ts::Scheduler* s){
+int test2(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 2: load tasks from tasks directory
     // Tasks to be loaded: cat_test.cl and ls_test.cl
     // Validate tasks' name, decription, script name, frequency, and output
-    s->Scheduler_init();
+    // !!! TODO !!!
+    s->Scheduler_init(e);
 
     s->load_tasks_from_dir();
+
 
     s->Scheduler_delete();
     
@@ -73,10 +75,12 @@ int test2(ts::Scheduler* s){
 
 
 int main(int argc, char* argv[]){
+    ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
     ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
 
-    test1(s);
-    test2(s);
+    test1(s, e);
+    test2(s, e);
 
     s->Scheduler_end_instance();
+    e->EventReporter_end_instance();
 }

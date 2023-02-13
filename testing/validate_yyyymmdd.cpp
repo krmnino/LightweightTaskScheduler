@@ -2,11 +2,6 @@
 #include <iostream>
 
 #include "../src/Task.hpp"
-#include "../src/Scheduler.hpp"
-#include "../src/CommandLine.hpp"
-
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
-ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing validate_yyyymmdd() function. Valid YYYY-MM-DD string.

@@ -2,10 +2,8 @@
 #include <iostream>
 
 #include "../src/Scheduler.hpp"
-#include "../src/CommandLine.hpp"
 
 ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
-ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
 
 int test1(){
     ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();

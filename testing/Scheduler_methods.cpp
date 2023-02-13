@@ -5,15 +5,15 @@
 
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
-#include "../src/CommandLine.hpp"
+#include "../src/EventReporter.hpp"
 
 ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
-ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
+ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
 
-int test1(ts::Scheduler* s){
+int test1(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 1: verify that n_tasks and exec_path data members are set 0 and "" respectively.
     // Check with Scheduler::get_n_tasks() and Scheduler::get_current_path()
-    s->Scheduler_init();
+    s->Scheduler_init(e);
 
     assert(s->get_n_tasks() == 0);
     assert(s->get_current_path() == "");
@@ -25,10 +25,10 @@ int test1(ts::Scheduler* s){
 }
 
 
-int test2(ts::Scheduler* s){
+int test2(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 2: verify exec_path data member has been updated after Scheduler::obtain_exec_path()
     // Check with Scheduler::get_current_path()
-    s->Scheduler_init();
+    s->Scheduler_init(e);
 
     std::string current_path = std::filesystem::current_path();
     s->obtain_exec_path();
@@ -41,10 +41,10 @@ int test2(ts::Scheduler* s){
 }
 
 
-int test3(ts::Scheduler* s){
+int test3(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 3: load tasks from tasks directory with Scheduler::load_tasks_from_dir()
     // Tasks to be loaded: cat_test.cl and ls_test.cl
-    s->Scheduler_init();
+    s->Scheduler_init(e);
 
     s->obtain_exec_path();
     s->load_tasks_from_dir();
@@ -57,11 +57,11 @@ int test3(ts::Scheduler* s){
 }
 
 
-int test4(ts::Scheduler* s){
+int test4(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 4: load a single task from tasks directory with Scheduler::load_task()
     std::string task_config_fn = "cat_test.cl";
 
-    s->Scheduler_init();
+    s->Scheduler_init(e);
 
     s->obtain_exec_path();
     s->load_task(task_config_fn);
@@ -74,13 +74,13 @@ int test4(ts::Scheduler* s){
 }
 
 
-int test5(ts::Scheduler* s){
+int test5(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 5: remove one task from scheduler after loading tasks from tasks directory
     // Tasks to be loaded: cat_test.cl and ls_test.cl
     // Task to be removed: cat
     std::string t_name = "cat";
 
-    s->Scheduler_init();
+    s->Scheduler_init(e);
 
     s->obtain_exec_path();
     s->load_tasks_from_dir();
@@ -97,14 +97,14 @@ int test5(ts::Scheduler* s){
 }
 
 
-int test6(ts::Scheduler* s){
+int test6(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 6: remove two tasks from scheduler after loading tasks from tasks directory
     // Tasks to be loaded: cat_test.cl and ls_test.cl
     // Task to be removed: cat and ls
     std::string t_name1 = "cat";
     std::string t_name2 = "ls";
 
-    s->Scheduler_init();
+    s->Scheduler_init(e);
 
     s->obtain_exec_path();
     s->load_tasks_from_dir();
@@ -125,11 +125,11 @@ int test6(ts::Scheduler* s){
 }
 
 
-int test7(ts::Scheduler* s){
+int test7(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 7: search for a task that does not exist in Scheduler
     std::string t_name = "any_name";
 
-    s->Scheduler_init();
+    s->Scheduler_init(e);
 
     assert(!s->task_exists(t_name));
 
@@ -141,15 +141,17 @@ int test7(ts::Scheduler* s){
 
 
 int main(int argc, char* argv[]){
+    ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
     ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
 
-    test1(s);
-    test2(s);
-    test3(s);
-    test4(s);
-    test5(s);
-    test6(s);
-    test7(s);
+    test1(s, e);
+    test2(s, e);
+    test3(s, e);
+    test4(s, e);
+    test5(s, e);
+    test6(s, e);
+    test7(s, e);
 
     s->Scheduler_end_instance();
+    e->EventReporter_end_instance();
 }

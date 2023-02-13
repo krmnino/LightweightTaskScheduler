@@ -5,12 +5,12 @@
 
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
-#include "../src/CommandLine.hpp"
+#include "../src/EventReporter.hpp"
 
 ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
-ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
+ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
 
-int test1(ts::Scheduler* s){
+int test1(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 1: generate new task to be executed in the next second. Check for the output after it runs.
     // Task Frequency: Once
 
@@ -149,7 +149,7 @@ int test1(ts::Scheduler* s){
     c->save_config(task_path_fn);
     delete c;
 
-    s->Scheduler_init();
+    s->Scheduler_init(e);
     s->obtain_exec_path();
     s->load_task(task_filename);
 
@@ -172,7 +172,7 @@ int test1(ts::Scheduler* s){
 }
 
 
-int test2(ts::Scheduler* s){
+int test2(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 2: generate new task to be executed in the next second. Check for the output after it runs.
     // Task Frequency: Daily
 
@@ -311,7 +311,7 @@ int test2(ts::Scheduler* s){
     c->save_config(task_path_fn);
     delete c;
 
-    s->Scheduler_init();
+    s->Scheduler_init(e);
     s->obtain_exec_path();
     s->load_task(task_filename);
 
@@ -334,7 +334,7 @@ int test2(ts::Scheduler* s){
 }
 
 
-int test3(ts::Scheduler* s){
+int test3(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 3: generate new task to be executed in the next second. Check for the output after it runs.
     // Task Frequency: Weekly
 
@@ -473,7 +473,7 @@ int test3(ts::Scheduler* s){
     c->save_config(task_path_fn);
     delete c;
 
-    s->Scheduler_init();
+    s->Scheduler_init(e);
     s->obtain_exec_path();
     s->load_task(task_filename);
 
@@ -496,7 +496,7 @@ int test3(ts::Scheduler* s){
 }
 
 
-int test4(ts::Scheduler* s){
+int test4(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 4: generate new task to be executed in the next second. Check for the output after it runs.
     // Task Frequency: Monthly
 
@@ -635,7 +635,7 @@ int test4(ts::Scheduler* s){
     c->save_config(task_path_fn);
     delete c;
 
-    s->Scheduler_init();
+    s->Scheduler_init(e);
     s->obtain_exec_path();
     s->load_task(task_filename);
 
@@ -658,7 +658,7 @@ int test4(ts::Scheduler* s){
 }
 
 
-int test5(ts::Scheduler* s){
+int test5(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 5: generate new task to be executed in the next second. Check for the output after it runs.
     // Task Frequency: Yearly
 
@@ -797,7 +797,7 @@ int test5(ts::Scheduler* s){
     c->save_config(task_path_fn);
     delete c;
 
-    s->Scheduler_init();
+    s->Scheduler_init(e);
     s->obtain_exec_path();
     s->load_task(task_filename);
 
@@ -821,13 +821,15 @@ int test5(ts::Scheduler* s){
 
 
 int main(int argc, char* argv[]){
+    ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
     ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
 
-    test1(s);
-    test2(s);
-    test3(s);
-    test4(s);
-    test5(s);
+    test1(s, e);
+    test2(s, e);
+    test3(s, e);
+    test4(s, e);
+    test5(s, e);
 
     s->Scheduler_end_instance();
+    e->EventReporter_end_instance();
 }
