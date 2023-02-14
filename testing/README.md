@@ -44,10 +44,10 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test7()`|Pass an invalid `HH:MM:SS` string with `MM` field out of range. Expected return code of `ValidationCode::MINUTES_OUT_OF_RANGE`.|`validate_hms(std::string)`|<span style="color:green">Passed|
 |`test8()`|Pass an invalid `HH:MM:SS` string with `SS` field out of range. Expected return code of `ValidationCode::SECONDS_OUT_OF_RANGE`.|`validate_hms(std::string)`|<span style="color:green">Passed|
 |`test9()`|Pass an invalid `HH:MM:SS` string with missing first colon. Expected return code of `ValidationCode::MISSING_DATETIME_COLON`.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test10()`|Pass an invalid `HH:MM:SS` string with missing second colon.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test11()`|Pass an invalid `HH:MM:SS` string with missing `:MM:SS` fields.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test12()`|Pass an invalid `HH:MM:SS` string with bad length and all alphabetic characters.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test13()`|Pass an invalid `HH:MM:SS` string with valid length and all alphabetic characters.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test10()`|Pass an invalid `HH:MM:SS` string with missing second colon. Expected return code of `ValidationCode::MISSING_DATETIME_COLON`.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test11()`|Pass an invalid `HH:MM:SS` string with missing `:MM:SS` fields. Expected return code of `ValidationCode::BAD_HMS_LENGTH`.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test12()`|Pass an invalid `HH:MM:SS` string with bad length and all alphabetic characters. Expected return code of `ValidationCode::BAD_HMS_LENGTH`.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test13()`|Pass an invalid `HH:MM:SS` string with valid length and all alphabetic characters. Expected return code of `ValidationCode::BAD_NUMBER_CHARACTER`.|`validate_hms(std::string)`|<span style="color:green">Passed|
 
 ### **validate_wday.cpp**
 
