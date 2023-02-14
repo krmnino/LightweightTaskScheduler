@@ -1408,59 +1408,175 @@ time_t today_add_yyyymmdd_hms(std::string yyyymmdd_hms){
     return added_time;
 }
 
-DatetimeFormat compute_datetime_format(std::string datetime){
-    // Each character in datetime will have a score
-    // Numbers : 1 pts
-    // Dash: 2 pts
-    // Colon: 4 pts
-    // Space: 6 pts
-    // Letters: 8 pts
-    // A valid datetime will have a unique point sum which will
-    //   then be assigned to their specific validation function.
-    unsigned int point_sum = 0;
+DatetimeFormat compute_datetime_format(std::string dt){
+    DatetimeFormat dt_format = DatetimeFormat::INVALID_DATE_FORMAT;
     char c;
-    for(int i = 0; i < datetime.length(); i++){
-        c = datetime.at(i);
-        switch(c){
-        case ' ':
-            point_sum += 6;
-            break;
-        case '-':
-            point_sum += 2;
-            break;
-        case ':':
-            point_sum += 4;
-            break;
-        default:
-            if((c >= 0x41 && c <= 0x5a) || (c >= 0x61 && c <= 0x7a)){
-                point_sum += 8; // Alphabetic char
-            }
-            else if(c >= 0x30 && c <= 0x39){
-                point_sum += 1; // Number char
-            }
-            else{
-                point_sum += 0; // Invalid char
-            }
+    unsigned int i = 0;
+    
+    if(dt.length() == 0){
+        return dt_format;
+    }
+    c = dt.at(i);
+    if(isdigit(c)){
+        i++;
+        goto P1;
+    }
+    else if(isalpha(c)){
+        i++;
+        goto P2;
+    }
+    return dt_format;
+    P1:
+    while(true){
+        if(i >= dt.length()){
             break;
         }
+        c = dt.at(i);
+        if(c == '-'){
+            c = dt.at(++i);
+            goto P3;
+        }
+        else if(c == ':'){
+            i++;
+            goto P4;
+        }
+        i++;
     }
-    // Check that point sum falls within any of the defined DatetimeFormat values
-    // If point sum is valid, then break out from the switch statement and return the DatetimeFormat
-    // Otherwise, INVALID_DATE_FORMAT
-    switch(point_sum){
-        case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
-        case (int)DatetimeFormat::WDAY6_HHMMSS:
-        case (int)DatetimeFormat::WDAY7_HHMMSS:
-        case (int)DatetimeFormat::WDAY8_HHMMSS:
-        case (int)DatetimeFormat::WDAY9_HHMMSS:
-        case (int)DatetimeFormat::WDAY_HHMMSS:
-        case (int)DatetimeFormat::YYYYMMDD:
-        case (int)DatetimeFormat::HHMMSS:
-        break;
-        default:
-            return DatetimeFormat::INVALID_DATE_FORMAT;
+    return dt_format;
+    P2:
+    while(true){
+        if(i >= dt.length()){
+            break;
+        }
+        c = dt.at(i);
+        if(c == ' '){
+            i++;
+            goto P5;
+        }
+        i++;
     }
-    return (DatetimeFormat)point_sum;
+    return dt_format;
+    P3:
+    while(true){
+        if(i >= dt.length()){
+            break;
+        }
+        c = dt.at(i);
+        if(c == '-'){
+            i++;
+            goto P6;
+        }
+        i++;
+    }
+    return dt_format;
+    P4:
+    while(true){
+        if(i >= dt.length()){
+            break;
+        }
+        c = dt.at(i);
+        if(c == ':'){
+            i++;
+            goto P7;
+        }
+        i++;
+    }
+    return dt_format;
+    P5:
+    while(true){
+        if(i >= dt.length()){
+            break;
+        }
+        c = dt.at(i);
+        if(c == ':'){
+            i++;
+            goto P8;
+        }
+        i++;
+    }
+    return dt_format;
+    P6:
+    while(true){
+        if(i >= dt.length()){
+            dt_format = DatetimeFormat::YYYYMMDD;
+            break;
+        }
+        c = dt.at(i);
+        if(c == ' '){
+            i++;
+            goto P9;
+        }
+        i++;
+    }
+    return dt_format;
+    P7:
+    while(true){
+        if(i >= dt.length()){
+            dt_format = DatetimeFormat::HHMMSS;
+            break;
+        }
+        i++;
+    }
+    return dt_format;
+    P8:
+    while(true){
+        if(i >= dt.length()){
+            break;
+        }
+        c = dt.at(i);
+        if(c == ':'){
+            i++;
+            goto P10;
+        }
+        i++;
+    }
+    return dt_format;
+    P9:
+    while(true){
+        if(i >= dt.length()){
+            break;
+        }
+        c = dt.at(i);
+        if(c == ':'){
+            i++;
+            goto P11;
+        }
+        i++;
+    }
+    return dt_format;
+    P10:
+    while(true){
+        if(i >= dt.length()){
+            dt_format = DatetimeFormat::WDAY_HHMMSS;
+            break;
+        }
+        c = dt.at(i);
+        i++;
+    }
+    return dt_format;
+    P11:
+    while(true){
+        if(i >= dt.length()){
+            break;
+        }
+        c = dt.at(i);
+        if(c == ':'){
+            i++;
+            goto P12;
+        }
+        i++;
+    }
+    return dt_format;
+    P12:
+    while(true){
+        if(i >= dt.length()){
+            dt_format = DatetimeFormat::YYYYMMDD_HHMMSS;
+            break;
+        }
+        c = dt.at(i);
+        i++;
+    }
+    return dt_format;
 }
 
 ValidationCode validate_task_parms(cl::Config* task_config, std::string scripts_dir){
