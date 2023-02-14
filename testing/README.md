@@ -35,15 +35,15 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Pass a valid `HH:MM:SS` string.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test2()`|Pass an invalid `HH:MM:SS` string with missing `SS` field.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test3()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `HH` field.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test4()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `MM` field.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test5()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `SS` field.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test6()`|Pass an invalid `HH:MM:SS` string with `HH` field out of range.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test7()`|Pass an invalid `HH:MM:SS` string with `MM` field out of range.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test8()`|Pass an invalid `HH:MM:SS` string with `SS` field out of range.|`validate_hms(std::string)`|<span style="color:green">Passed|
-|`test9()`|Pass an invalid `HH:MM:SS` string with missing first colon.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test1()`|Pass a valid `HH:MM:SS` string. Expected return code of `ValidationCode::OK`.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test2()`|Pass an invalid `HH:MM:SS` string with missing `SS` field. Expected return code of `ValidationCode::BAD_HMS_LENGTH`.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `HH` field. Expected return code of `ValidationCode::BAD_NUMBER_CHARACTER`.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `MM` field. Expected return code of `ValidationCode::BAD_NUMBER_CHARACTER`.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test5()`|Pass an invalid `HH:MM:SS` string with alphabetic character in `SS` field. Expected return code of `ValidationCode::BAD_NUMBER_CHARACTER`.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test6()`|Pass an invalid `HH:MM:SS` string with `HH` field out of range. Expected return code of `ValidationCode::HOURS_OUT_OF_RANGE`.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test7()`|Pass an invalid `HH:MM:SS` string with `MM` field out of range. Expected return code of `ValidationCode::MINUTES_OUT_OF_RANGE`.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test8()`|Pass an invalid `HH:MM:SS` string with `SS` field out of range. Expected return code of `ValidationCode::SECONDS_OUT_OF_RANGE`.|`validate_hms(std::string)`|<span style="color:green">Passed|
+|`test9()`|Pass an invalid `HH:MM:SS` string with missing first colon. Expected return code of `ValidationCode::MISSING_DATETIME_COLON`.|`validate_hms(std::string)`|<span style="color:green">Passed|
 |`test10()`|Pass an invalid `HH:MM:SS` string with missing second colon.|`validate_hms(std::string)`|<span style="color:green">Passed|
 |`test11()`|Pass an invalid `HH:MM:SS` string with missing `:MM:SS` fields.|`validate_hms(std::string)`|<span style="color:green">Passed|
 |`test12()`|Pass an invalid `HH:MM:SS` string with bad length and all alphabetic characters.|`validate_hms(std::string)`|<span style="color:green">Passed|
