@@ -78,15 +78,15 @@ enum class ValidationCode {
 };
 
 enum class DatetimeFormat {
-    YYYYMMDD_HHMMSS = 32,
-    WDAY6_HHMMSS = 68,
-    WDAY7_HHMMSS = 76,
-    WDAY8_HHMMSS = 84,
-    WDAY9_HHMMSS = 92,
-    WDAY_HHMMSS = 44,
-    YYYYMMDD = 12,
-    HHMMSS = 14,
-    INVALID_DATE_FORMAT = -1
+    YYYYMMDD_HHMMSS,
+    WDAY6_HHMMSS,
+    WDAY7_HHMMSS,
+    WDAY8_HHMMSS,
+    WDAY9_HHMMSS,
+    WDAY_HHMMSS,
+    YYYYMMDD,
+    HHMMSS,
+    INVALID_DATE_FORMAT
 };
 
 enum class EventType{
