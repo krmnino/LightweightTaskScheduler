@@ -22,7 +22,7 @@ int test1(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    ts::TaskValidate ret;     
+    ts::ValidationCode ret;     
 
     time_now = std::time(&time_now);
 
@@ -101,7 +101,7 @@ int test1(){
 
         ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::OK);
+        assert(ret == ts::ValidationCode::OK);
 
         delete c;
     }
@@ -125,7 +125,7 @@ int test2(){
     std::string months;
     std::string days;
     std::string datetime_str;
-    ts::TaskValidate ret;     
+    ts::ValidationCode ret;     
 
     time_now = std::time(&time_now);
 
@@ -157,7 +157,7 @@ int test2(){
 
     ret = ts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::TaskValidate::OK);
+    assert(ret == ts::ValidationCode::OK);
 
     delete c;
 
@@ -170,27 +170,30 @@ int test3(){
     // TEST 3: testing validate_task_parms() function -> FAIL
     // Pass bad HH:MM:SS datetime value with Frequency = Once
 
-    std::vector<std::string> datetimes = {
-        "60:20:00",
-        "12:60:00",
-        "12:20:60",
-        "60:20a00",
-        "60a20:00",
-        "1a:20:00",
-        "12:a0:00",
-        "12:00:0A"
+    std::vector<std::pair<std::string, ts::ValidationCode>> datetimes_retcodes = {
+        {"60:20:00", ts::ValidationCode::HOURS_OUT_OF_RANGE},
+        {"12:60:00", ts::ValidationCode::MINUTES_OUT_OF_RANGE},
+        {"12:20:60", ts::ValidationCode::SECONDS_OUT_OF_RANGE},
+        {"1a:20:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"12:a0:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"12:00:0A", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"11111:111111:111111", ts::ValidationCode::BAD_HMS_LENGTH},
+        {"11111:00:00", ts::ValidationCode::BAD_HMS_LENGTH},
+        {"12:11111:00", ts::ValidationCode::BAD_HMS_LENGTH},
+        {"12:00:11111", ts::ValidationCode::BAD_HMS_LENGTH},
     };
-    for(int i = 0; i < datetimes.size(); i++){
+
+    for(int i = 0; i < datetimes_retcodes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
         c->add_entry("ScriptFilename", "ls_test.sh");
         c->add_entry("Frequency", "Once");
-        c->add_entry("Datetime", datetimes[i]);
+        c->add_entry("Datetime", datetimes_retcodes[i].first);
 
-        ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
+        ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+        assert(ret == datetimes_retcodes[i].second);
 
         delete c;
     }
@@ -204,36 +207,36 @@ int test4(){
     // TEST 4: testing validate_task_parms() function -> FAIL
     // Pass bad YYYY-MM-DD HH:MM:SS datetime value with Frequency = Once
 
-    std::vector<std::string> datetimes = {
-        "2022-02-15 60:20:00",
-        "2022-02-15 12:60:00",
-        "2022-02-15 12:20:60",
-        "2022-02-15 60:20a00",
-        "2022-02-15 60a20:00",
-        "2022-02-15 1a:20:00",
-        "2022-02-15 12:a0:00",
-        "2022-02-15 12:00:0A",
-        "20a2-02-15 12:00:00",
-        "2022-0a-15 12:00:00",
-        "2022-02-a5 12:00:00",
-        "2022a02-15 12:00:00",
-        "2022-02a15 12:00:00",
-        "2022-02-15a12:00:00",
-        "1980-02-15 12:00:00",
-        "2022-80-15 12:00:00",
-        "2022-02-70 12:00:00"
+    std::vector<std::pair<std::string, ts::ValidationCode>> datetimes_retcodes = {
+        {"2022-02-15 60:20:00", ts::ValidationCode::HOURS_OUT_OF_RANGE},
+        {"2022-02-15 12:60:00", ts::ValidationCode::MINUTES_OUT_OF_RANGE},
+        {"2022-02-15 12:20:60", ts::ValidationCode::SECONDS_OUT_OF_RANGE},
+        {"2022-02-15 1a:20:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-02-15 12:a0:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-02-15 12:00:0A", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"20a2-02-15 12:00:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-0a-15 12:00:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-02-a5 12:00:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"1980-02-15 12:00:00", ts::ValidationCode::PASSED_DATETIME},
+        {"2022-80-15 12:00:00", ts::ValidationCode::MONTH_OUT_OF_RANGE},
+        {"2022-02-70 12:00:00", ts::ValidationCode::DAY_OUT_OF_RANGE},
+        {"2022-02-15 111111:111111:111111", ts::ValidationCode::BAD_HMS_LENGTH},
+        {"2022-02-15 1:00:00", ts::ValidationCode::BAD_HMS_LENGTH},
+        {"1111111-1111111-1111111 12:00:00", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
+        {"2022-2-15 12:00:00", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
     };
-    for(int i = 0; i < datetimes.size(); i++){
+
+    for(int i = 0; i < datetimes_retcodes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
         c->add_entry("ScriptFilename", "ls_test.sh");
         c->add_entry("Frequency", "Once");
-        c->add_entry("Datetime", datetimes[i]);
+        c->add_entry("Datetime", datetimes_retcodes[i].first);
 
-        ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
+        ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+        assert(ret == datetimes_retcodes[i].second);
 
         delete c;
     }
@@ -247,44 +250,42 @@ int test5(){
     // TEST 5: testing validate_task_parms() function -> FAIL
     // Pass bad WDAY HH:MM:SS datetime value with Frequency = Once
 
-    std::vector<std::string> datetimes = {
-        "Monday 60:20:00",
-        "Monday 12:60:00",
-        "Monday 12:20:60",
-        "Monday 60:20a00",
-        "Monday 60a20:00",
-        "Mondaya12:00:00",
-        "Monday 1a:20:00",
-        "Monday 12:a0:00",
-        "Monday 12:00:0A",
-        "Mxnday 12:00:00",
-        "Tuexday 12:00:00",
-        "Wednxsday 12:00:00",
-        "Thurxday 12:00:00",
-        "Fridxy 12:00:00",
-        "Satuxday 12:00:00",
-        "Sundax 12:00:00",
-        "Mxn 12:00:00",
-        "Txe 12:00:00",
-        "Wxd 12:00:00",
-        "Txu 12:00:00",
-        "Fxi 12:00:00",
-        "Sxt 12:00:00",
-        "Sxn 12:00:00",
-        "XYZ 12:00:00",
-        "000 12:00:00",
+    std::vector<std::pair<std::string, ts::ValidationCode>> datetimes_retcodes {
+        {"Monday 60:20:00", ts::ValidationCode::HOURS_OUT_OF_RANGE},
+        {"Monday 12:60:00", ts::ValidationCode::MINUTES_OUT_OF_RANGE},
+        {"Monday 12:20:60", ts::ValidationCode::SECONDS_OUT_OF_RANGE},
+        {"Monday 1a:20:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"Monday 12:a0:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"Monday 12:00:0A", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"Mxnday 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"Tuexday 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"Wednxsday 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"Thurxday 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"Fridxy 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"Satuxday 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"Sundax 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"Mxn 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"Txe 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"Wxd 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"Txu 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"Fxi 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"Sxt 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"Sxn 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"XYZ 12:00:00", ts::ValidationCode::BAD_WDAY},
+        {"AAAAAAAAAAAAAAA 12:00:00", ts::ValidationCode::BAD_WDAY},
     };
-    for(int i = 0; i < datetimes.size(); i++){
+
+    for(int i = 0; i < datetimes_retcodes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
         c->add_entry("ScriptFilename", "ls_test.sh");
         c->add_entry("Frequency", "Once");
-        c->add_entry("Datetime", datetimes[i]);
+        c->add_entry("Datetime", datetimes_retcodes[i].first);
 
-        ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
+        ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+        assert(ret == datetimes_retcodes[i].second);
 
         delete c;
     }
@@ -298,28 +299,33 @@ int test6(){
     // TEST 6: testing validate_task_parms() function -> FAIL
     // Pass bad YYYY-MM-DD datetime value with Frequency = Once
 
-    std::vector<std::string> datetimes = {
-        "20a2-02-15",
-        "2022-0a-15",
-        "2022-02-a5",
-        "2022a02-15",
-        "2022-02a15",
-        "2022-02-15",
-        "1980-02-15",
-        "2022-80-15",
-        "2022-02-70"
+    std::vector<std::pair<std::string, ts::ValidationCode>> datetimes_retcodes = {
+        {"2a02-02-15", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"20a2-02-15", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-a2-15", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-0a-15", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-02-a5", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-02-1a", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"1980-02-15", ts::ValidationCode::PASSED_DATETIME},
+        {"2022-80-15", ts::ValidationCode::MONTH_OUT_OF_RANGE},
+        {"2022-02-70", ts::ValidationCode::DAY_OUT_OF_RANGE},
+        {"1111111-02-15", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
+        {"2022-1111111-15", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
+        {"2022-02-1111111", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
+        {"2022-2-15", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
     };
-    for(int i = 0; i < datetimes.size(); i++){
+
+    for(int i = 0; i < datetimes_retcodes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
         c->add_entry("ScriptFilename", "ls_test.sh");
         c->add_entry("Frequency", "Once");
-        c->add_entry("Datetime", datetimes[i]);
+        c->add_entry("Datetime", datetimes_retcodes[i].first);
 
-        ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
+        ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+        assert(ret == datetimes_retcodes[i].second);
 
         delete c;
     }
@@ -340,9 +346,9 @@ int test7(){
     c->add_entry("Frequency", "Once");
     c->add_entry("Datetime", "Something");
 
-    ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
+    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+    assert(ret == ts::ValidationCode::INCOMPATIBLE_ONCE_FREQ_DATETIME_FORMAT);
 
     delete c;
 
@@ -370,7 +376,7 @@ int test8(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    ts::TaskValidate ret;     
+    ts::ValidationCode ret;     
 
     time_now = std::time(&time_now);
 
@@ -414,7 +420,7 @@ int test8(){
 
         ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+        assert(ret == ts::ValidationCode::PASSED_DATETIME);
 
         delete c;
     }
@@ -438,7 +444,7 @@ int test9(){
     std::string months;
     std::string days;
     std::string datetime_str;
-    ts::TaskValidate ret;     
+    ts::ValidationCode ret;     
 
     time_now = std::time(&time_now);
 
@@ -470,7 +476,7 @@ int test9(){
 
     ret = ts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+    assert(ret == ts::ValidationCode::PASSED_DATETIME);
 
     delete c;
 
@@ -493,7 +499,7 @@ int test10(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    ts::TaskValidate ret;     
+    ts::ValidationCode ret;     
 
     time_now = std::time(&time_now);
 
@@ -542,7 +548,7 @@ int test10(){
 
         ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::OK);
+        assert(ret == ts::ValidationCode::OK);
 
         delete c;
     }
