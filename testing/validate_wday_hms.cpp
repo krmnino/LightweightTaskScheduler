@@ -6,7 +6,7 @@
 int test1(){
     // TEST 1: testing validate_wday_hms() function. Valid WDAY HH:MM:SS string.
 
-    ts::DatetimeValidate ret;
+    ts::ValidationCode ret;
     std::vector<std::string> wday_hms = {
         "Monday 01:00:00",
         "Tuesday 01:00:00",
@@ -19,7 +19,7 @@ int test1(){
 
     for(int i = 0; i < wday_hms.size(); i++){
         ret = ts::validate_wday_hms(wday_hms[i]);
-        assert(ret == ts::DatetimeValidate::OK);
+        assert(ret == ts::ValidationCode::OK);
     }
 
     std::cout << ">> validate_wday_hms: Test 1 done" << std::endl;
@@ -30,7 +30,7 @@ int test1(){
 int test2(){
     // TEST 2: testing validate_wday_hms() function. Valid WDAY HH:MM:SS string.
 
-    ts::DatetimeValidate ret;
+    ts::ValidationCode ret;
     std::vector<std::string> wday_hms = {
         "Mon 01:00:00",
         "Tue 01:00:00",
@@ -43,7 +43,7 @@ int test2(){
 
     for(int i = 0; i < wday_hms.size(); i++){
         ret = ts::validate_wday_hms(wday_hms[i]);
-        assert(ret == ts::DatetimeValidate::OK);
+        assert(ret == ts::ValidationCode::OK);
     }
 
     std::cout << ">> validate_wday_hms: Test 2 done" << std::endl;
@@ -55,11 +55,11 @@ int test3(){
     // TEST 3: testing validate_wday_hms() function. Invalid WDAY HH:MM:SS string.
 
     std::string wday_hms;
-    ts::DatetimeValidate ret;
+    ts::ValidationCode ret;
 
     wday_hms = "Monday01:00:00";
     ret = ts::validate_wday_hms(wday_hms);
-    assert(ret == ts::DatetimeValidate::MISSING_SPACE);
+    assert(ret == ts::ValidationCode::MISSING_DATETIME_SPACE);
 
     std::cout << ">> validate_wday_hms: Test 3 done" << std::endl;
     return 0;
@@ -70,11 +70,11 @@ int test4(){
     // TEST 4: testing validate_wday_hms() function. Invalid WDAY HH:MM:SS string.
 
     std::string wday_hms;
-    ts::DatetimeValidate ret;
+    ts::ValidationCode ret;
 
     wday_hms = "Anything 01:00:00";
     ret = ts::validate_wday_hms(wday_hms);
-    assert(ret == ts::DatetimeValidate::BAD_WDAY);  
+    assert(ret == ts::ValidationCode::BAD_WDAY);  
 
     std::cout << ">> validate_wday_hms: Test 4 done" << std::endl;
     return 0;
@@ -85,11 +85,11 @@ int test5(){
     // TEST 5: testing validate_wday_hms() function. Invalid HH:MM:SS string.
 
     std::string wday_hms;
-    ts::DatetimeValidate ret;
+    ts::ValidationCode ret;
 
     wday_hms = "Friday 35:00:00";
     ret = ts::validate_wday_hms(wday_hms);
-    assert(ret == ts::DatetimeValidate::HOURS_OUT_OF_RANGE);
+    assert(ret == ts::ValidationCode::HOURS_OUT_OF_RANGE);
 
     std::cout << ">> validate_wday_hms: Test 5 done" << std::endl;
     return 0;

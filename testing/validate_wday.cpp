@@ -7,7 +7,7 @@
 int test1(){
     // TEST 1: testing validate_wday() function. Full day names.
 
-    ts::DatetimeValidate ret;
+    ts::ValidationCode ret;
     std::vector<std::string> days = {
         "Monday",
         "Tuesday",
@@ -20,7 +20,7 @@ int test1(){
 
     for(int i = 0; i < days.size(); i++){
         ret = ts::validate_wday(days[i]);
-        assert(ret == ts::DatetimeValidate::OK);
+        assert(ret == ts::ValidationCode::OK);
     }
 
     std::cout << ">> validate_wday: Test 1 done" << std::endl;
@@ -31,7 +31,7 @@ int test1(){
 int test2(){
     // TEST 2: testing validate_wday() function. Abbreviated day names.
 
-    ts::DatetimeValidate ret;
+    ts::ValidationCode ret;
     std::vector<std::string> days = {
         "Mon",
         "Tue",
@@ -44,7 +44,7 @@ int test2(){
 
     for(int i = 0; i < days.size(); i++){
         ret = ts::validate_wday(days[i]);
-        assert(ret == ts::DatetimeValidate::OK);
+        assert(ret == ts::ValidationCode::OK);
     }
 
     std::cout << ">> validate_wday: Test 2 done" << std::endl;
@@ -55,11 +55,11 @@ int test2(){
 int test3(){
     // TEST 3: testing validate_wday() function. Invalid weekday string.
 
-    ts::DatetimeValidate ret;
+    ts::ValidationCode ret;
     std::string day = "anything";
 
     ret = ts::validate_wday(day);
-    assert(ret == ts::DatetimeValidate::BAD_WDAY);
+    assert(ret == ts::ValidationCode::BAD_WDAY);
 
     std::cout << ">> validate_wday: Test 3 done" << std::endl;
     return 0;
