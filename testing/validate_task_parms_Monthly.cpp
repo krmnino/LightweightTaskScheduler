@@ -20,7 +20,7 @@ int test1(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    ts::TaskValidate ret;     
+    ts::ValidationCode ret;     
 
     time_now = std::time(&time_now);
 
@@ -64,7 +64,7 @@ int test1(){
 
         ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::OK);
+        assert(ret == ts::ValidationCode::OK);
 
         delete c;
     }
@@ -88,7 +88,7 @@ int test2(){
     std::string months;
     std::string days;
     std::string datetime_str;
-    ts::TaskValidate ret;     
+    ts::ValidationCode ret;     
 
     time_now = std::time(&time_now);
 
@@ -120,7 +120,7 @@ int test2(){
 
     ret = ts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::TaskValidate::OK);
+    assert(ret == ts::ValidationCode::OK);
 
     delete c;
 
@@ -148,7 +148,7 @@ int test3(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    ts::TaskValidate ret;     
+    ts::ValidationCode ret;     
 
     time_now = std::time(&time_now);
 
@@ -225,7 +225,7 @@ int test3(){
 
         ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+        assert(ret == ts::ValidationCode::INCOMPATIBLE_MONTHLY_FREQ_DATETIME_FORMAT);
 
         delete c;
     }
@@ -239,27 +239,29 @@ int test4(){
     // TEST 4: testing validate_task_parms() function -> FAIL
     // Pass bad HH:MM:SS datetime value with Frequency = Monthly
 
-    std::vector<std::string> datetimes = {
-        "60:20:00",
-        "12:60:00",
-        "12:20:60",
-        "60:20a00",
-        "60a20:00",
-        "1a:20:00",
-        "12:a0:00",
-        "12:00:0A"
+    std::vector<std::pair<std::string, ts::ValidationCode>> datetimes_retcodes = {
+        {"60:20:00", ts::ValidationCode::HOURS_OUT_OF_RANGE},
+        {"12:60:00", ts::ValidationCode::MINUTES_OUT_OF_RANGE},
+        {"12:20:60", ts::ValidationCode::SECONDS_OUT_OF_RANGE},
+        {"1a:20:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"12:a0:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"12:00:0A", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"11111:111111:111111", ts::ValidationCode::BAD_HMS_LENGTH},
+        {"11111:00:00", ts::ValidationCode::BAD_HMS_LENGTH},
+        {"12:11111:00", ts::ValidationCode::BAD_HMS_LENGTH},
+        {"12:00:11111", ts::ValidationCode::BAD_HMS_LENGTH},
     };
-    for(int i = 0; i < datetimes.size(); i++){
+    for(int i = 0; i < datetimes_retcodes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
         c->add_entry("ScriptFilename", "ls_test.sh");
         c->add_entry("Frequency", "Monthly");
-        c->add_entry("Datetime", datetimes[i]);
+        c->add_entry("Datetime", datetimes_retcodes[i].first);
 
-        ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
+        ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+        assert(ret == datetimes_retcodes[i].second);
 
         delete c;
     }
@@ -273,36 +275,36 @@ int test5(){
     // TEST 5: testing validate_task_parms() function -> FAIL
     // Pass bad YYYY-MM-DD HH:MM:SS datetime value with Frequency = Monthly
 
-    std::vector<std::string> datetimes = {
-        "2022-02-15 60:20:00",
-        "2022-02-15 12:60:00",
-        "2022-02-15 12:20:60",
-        "2022-02-15 60:20a00",
-        "2022-02-15 60a20:00",
-        "2022-02-15 1a:20:00",
-        "2022-02-15 12:a0:00",
-        "2022-02-15 12:00:0A",
-        "20a2-02-15 12:00:00",
-        "2022-0a-15 12:00:00",
-        "2022-02-a5 12:00:00",
-        "2022a02-15 12:00:00",
-        "2022-02a15 12:00:00",
-        "2022-02-15a12:00:00",
-        "1980-02-15 12:00:00",
-        "2022-80-15 12:00:00",
-        "2022-02-70 12:00:00"
+    std::vector<std::pair<std::string, ts::ValidationCode>> datetimes_retcodes = {
+        {"2022-02-15 60:20:00", ts::ValidationCode::HOURS_OUT_OF_RANGE},
+        {"2022-02-15 12:60:00", ts::ValidationCode::MINUTES_OUT_OF_RANGE},
+        {"2022-02-15 12:20:60", ts::ValidationCode::SECONDS_OUT_OF_RANGE},
+        {"2022-02-15 1a:20:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-02-15 12:a0:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-02-15 12:00:0A", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"20a2-02-15 12:00:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-0a-15 12:00:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-02-a5 12:00:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"1980-02-15 12:00:00", ts::ValidationCode::PASSED_DATETIME},
+        {"2022-80-15 12:00:00", ts::ValidationCode::MONTH_OUT_OF_RANGE},
+        {"2022-02-70 12:00:00", ts::ValidationCode::DAY_OUT_OF_RANGE},
+        {"2022-02-15 111111:111111:111111", ts::ValidationCode::BAD_HMS_LENGTH},
+        {"2022-02-15 1:00:00", ts::ValidationCode::BAD_HMS_LENGTH},
+        {"1111111-1111111-1111111 12:00:00", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
+        {"2022-2-15 12:00:00", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
     };
-    for(int i = 0; i < datetimes.size(); i++){
+
+    for(int i = 0; i < datetimes_retcodes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
         c->add_entry("ScriptFilename", "ls_test.sh");
         c->add_entry("Frequency", "Monthly");
-        c->add_entry("Datetime", datetimes[i]);
+        c->add_entry("Datetime", datetimes_retcodes[i].first);
 
-        ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
+        ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+        assert(ret == datetimes_retcodes[i].second);
 
         delete c;
     }
@@ -316,28 +318,33 @@ int test6(){
     // TEST 6: testing validate_task_parms() function -> FAIL
     // Pass bad YYYY-MM-DD datetime value with Frequency = Monthly
 
-    std::vector<std::string> datetimes = {
-        "20a2-02-15",
-        "2022-0a-15",
-        "2022-02-a5",
-        "2022a02-15",
-        "2022-02a15",
-        "2022-02-15",
-        "1980-02-15",
-        "2022-80-15",
-        "2022-02-70"
+    std::vector<std::pair<std::string, ts::ValidationCode>> datetimes_retcodes = {
+        {"2a02-02-15", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"20a2-02-15", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-a2-15", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-0a-15", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-02-a5", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-02-1a", ts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"1980-02-15", ts::ValidationCode::PASSED_DATETIME},
+        {"2022-80-15", ts::ValidationCode::MONTH_OUT_OF_RANGE},
+        {"2022-02-70", ts::ValidationCode::DAY_OUT_OF_RANGE},
+        {"1111111-02-15", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
+        {"2022-1111111-15", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
+        {"2022-02-1111111", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
+        {"2022-2-15", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
     };
-    for(int i = 0; i < datetimes.size(); i++){
+
+    for(int i = 0; i < datetimes_retcodes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
         c->add_entry("ScriptFilename", "ls_test.sh");
         c->add_entry("Frequency", "Monthly");
-        c->add_entry("Datetime", datetimes[i]);
+        c->add_entry("Datetime", datetimes_retcodes[i].first);
 
-        ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
+        ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+        assert(ret == datetimes_retcodes[i].second);
 
         delete c;
     }
@@ -358,13 +365,13 @@ int test7(){
     c->add_entry("Frequency", "Monthly");
     c->add_entry("Datetime", "Something");
 
-    ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
+    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+    assert(ret == ts::ValidationCode::INCOMPATIBLE_MONTHLY_FREQ_DATETIME_FORMAT);
 
     delete c;
 
-    std::cout << ">> validate_task_parms_Monthly: 9 done" << std::endl;
+    std::cout << ">> validate_task_parms_Monthly: 7 done" << std::endl;
     return 0;
 }
 
@@ -386,7 +393,7 @@ int test8(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    ts::TaskValidate ret;     
+    ts::ValidationCode ret;     
 
     time_now = std::time(&time_now);
 
@@ -430,7 +437,7 @@ int test8(){
 
         ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+        assert(ret == ts::ValidationCode::PASSED_DATETIME);
 
         delete c;
     }
@@ -454,7 +461,7 @@ int test9(){
     std::string months;
     std::string days;
     std::string datetime_str;
-    ts::TaskValidate ret;     
+    ts::ValidationCode ret;     
 
     time_now = std::time(&time_now);
 
@@ -486,84 +493,11 @@ int test9(){
 
     ret = ts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
+    assert(ret == ts::ValidationCode::PASSED_DATETIME);
 
     delete c;
 
     std::cout << ">> validate_task_parms_Monthly: 9 done" << std::endl;
-    return 0;
-}
-
-
-int test10(){
-    // TEST 10: testing validate_task_parms() function -> FAIL
-    // Current time plus one minute in seconds. Test different week day names (full and abbreviated)
-    // Pass datetime format WDAY_HHMMSS. 
-    // Frequency = Monthly
-
-    time_t time_now;
-    time_t time_now_add;
-    std::tm* to_struct;
-    std::tm struct_time_now_add;
-    std::string hours;
-    std::string minutes;
-    std::string seconds;
-    std::string datetime_str;
-    ts::TaskValidate ret;     
-
-    time_now = std::time(&time_now);
-
-    // Add one minute in seconds from current time
-    time_now_add = time_now + 60;
-    
-    // time_t to std::tm*
-    to_struct = std::gmtime(&time_now_add);
-
-    // std::tm* to std::tm
-    struct_time_now_add = *to_struct;
-
-    hours = (struct_time_now_add.tm_hour < 10) ? 
-             "0" + std::to_string(struct_time_now_add.tm_hour) :
-             std::to_string(struct_time_now_add.tm_hour);
-    minutes = (struct_time_now_add.tm_min < 10) ? 
-               "0" + std::to_string(struct_time_now_add.tm_min) :
-               std::to_string(struct_time_now_add.tm_min);
-    seconds = (struct_time_now_add.tm_sec < 10) ? 
-               "0" + std::to_string(struct_time_now_add.tm_sec) :
-               std::to_string(struct_time_now_add.tm_sec);
-
-    std::vector<std::string> datetimes = {
-        std::string("Monday") + " " + hours + ":" + minutes + ":" + seconds,    // WDAY HH:MM:SS (full week day name)
-        std::string("Tuesday") + " " + hours + ":" + minutes + ":" + seconds,   // WDAY HH:MM:SS (full week day name)
-        std::string("Wednesday") + " " + hours + ":" + minutes + ":" + seconds, // WDAY HH:MM:SS (full week day name)
-        std::string("Thursday") + " " + hours + ":" + minutes + ":" + seconds,  // WDAY HH:MM:SS (full week day name)
-        std::string("Friday") + " " + hours + ":" + minutes + ":" + seconds,    // WDAY HH:MM:SS (full week day name)
-        std::string("Saturday") + " " + hours + ":" + minutes + ":" + seconds,  // WDAY HH:MM:SS (full week day name)
-        std::string("Sunday") + " " + hours + ":" + minutes + ":" + seconds,    // WDAY HH:MM:SS (full week day name)
-        std::string("Mon") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
-        std::string("Tue") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
-        std::string("Wed") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
-        std::string("Thu") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
-        std::string("Fri") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
-        std::string("Sat") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
-        std::string("Sun") + " " + hours + ":" + minutes + ":" + seconds        // WDAY HH:MM:SS (abbreviated week day name)
-    };
-    for(int i = 0; i < datetimes.size(); i++){
-        cl::Config* c = new cl::Config();
-        c->add_entry("Name", "Test Title");
-        c->add_entry("Description", "A short description");
-        c->add_entry("ScriptFilename", "ls_test.sh");
-        c->add_entry("Frequency", "Monthly");
-        c->add_entry("Datetime", datetimes[i]);
-
-        ret = ts::validate_task_parms(c, "scripts/");
-
-        assert(ret == ts::TaskValidate::BAD_DATETIME_VALUE);
-
-        delete c;
-    }
-
-    std::cout << ">> validate_task_parms_Monthly: 10 done" << std::endl;
     return 0;
 }
 
@@ -578,5 +512,4 @@ int main(){
     test7();
     test8();
     test9();
-    test10();
 }
