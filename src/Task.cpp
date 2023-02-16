@@ -26,10 +26,6 @@ Task::Task(std::string name,
             this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::WDAY_HHMMSS:
-        case (int)DatetimeFormat::WDAY6_HHMMSS:
-        case (int)DatetimeFormat::WDAY7_HHMMSS:
-        case (int)DatetimeFormat::WDAY8_HHMMSS:
-        case (int)DatetimeFormat::WDAY9_HHMMSS:
             this->execution_datetime = today_add_wday_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
@@ -56,10 +52,6 @@ Task::Task(std::string name,
             this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::WDAY_HHMMSS:
-        case (int)DatetimeFormat::WDAY6_HHMMSS:
-        case (int)DatetimeFormat::WDAY7_HHMMSS:
-        case (int)DatetimeFormat::WDAY8_HHMMSS:
-        case (int)DatetimeFormat::WDAY9_HHMMSS:
             this->execution_datetime = today_add_wday_hms(execution_datetime_str);
             break;
         default:
@@ -80,10 +72,6 @@ Task::Task(std::string name,
             this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::WDAY_HHMMSS:
-        case (int)DatetimeFormat::WDAY6_HHMMSS:
-        case (int)DatetimeFormat::WDAY7_HHMMSS:
-        case (int)DatetimeFormat::WDAY8_HHMMSS:
-        case (int)DatetimeFormat::WDAY9_HHMMSS:
             this->execution_datetime = today_add_wday_hms(execution_datetime_str);
             break;
         case (int)DatetimeFormat::YYYYMMDD:
@@ -1636,10 +1624,6 @@ ValidationCode validate_task_parms(cl::Config* task_config, std::string scripts_
             schedule_datetime = today_add_yyyymmdd_hms(datetime_value);
             break;
         case (int)DatetimeFormat::WDAY_HHMMSS:
-        case (int)DatetimeFormat::WDAY6_HHMMSS:
-        case (int)DatetimeFormat::WDAY7_HHMMSS:
-        case (int)DatetimeFormat::WDAY8_HHMMSS:
-        case (int)DatetimeFormat::WDAY9_HHMMSS:
             ret_datetime_validate = validate_wday_hms(datetime_value);
             if(ret_datetime_validate != ValidationCode::OK){
                 return ret_datetime_validate;
@@ -1682,10 +1666,6 @@ ValidationCode validate_task_parms(cl::Config* task_config, std::string scripts_
             schedule_datetime = today_add_yyyymmdd_hms(datetime_value);
             break;
         case (int)DatetimeFormat::WDAY_HHMMSS:
-        case (int)DatetimeFormat::WDAY6_HHMMSS:
-        case (int)DatetimeFormat::WDAY7_HHMMSS:
-        case (int)DatetimeFormat::WDAY8_HHMMSS:
-        case (int)DatetimeFormat::WDAY9_HHMMSS:
             ret_datetime_validate = validate_wday_hms(datetime_value);
             if(ret_datetime_validate  != ValidationCode::OK){
                 return ret_datetime_validate;
@@ -1718,10 +1698,6 @@ ValidationCode validate_task_parms(cl::Config* task_config, std::string scripts_
             schedule_datetime = today_add_yyyymmdd_hms(datetime_value);
             break;
         case (int)DatetimeFormat::WDAY_HHMMSS:
-        case (int)DatetimeFormat::WDAY6_HHMMSS:
-        case (int)DatetimeFormat::WDAY7_HHMMSS:
-        case (int)DatetimeFormat::WDAY8_HHMMSS:
-        case (int)DatetimeFormat::WDAY9_HHMMSS:
             ret_datetime_validate = validate_wday_hms(datetime_value);
             if(ret_datetime_validate != ValidationCode::OK){
                 return ret_datetime_validate;

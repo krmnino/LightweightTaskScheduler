@@ -79,10 +79,6 @@ enum class ValidationCode {
 
 enum class DatetimeFormat {
     YYYYMMDD_HHMMSS,
-    WDAY6_HHMMSS,
-    WDAY7_HHMMSS,
-    WDAY8_HHMMSS,
-    WDAY9_HHMMSS,
     WDAY_HHMMSS,
     YYYYMMDD,
     HHMMSS,
