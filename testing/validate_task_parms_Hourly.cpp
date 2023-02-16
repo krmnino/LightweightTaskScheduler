@@ -24,9 +24,9 @@ int test1(){
         c->add_entry("Frequency", "Hourly");
         c->add_entry("Datetime", datetimes[i]);
 
-        ts::TaskValidate ret = ts::validate_task_parms(c, "scripts/");
+        ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::TaskValidate::OK);
+        assert(ret == ts::ValidationCode::OK);
 
         delete c;
     }
