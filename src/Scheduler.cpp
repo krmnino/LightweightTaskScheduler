@@ -187,7 +187,7 @@ void Scheduler::load_task(std::string& task_filename){
     }
 
     if(!std::filesystem::exists(this->exec_path + "/tasks/" + task_filename)){
-        event_message = "The task file configuration file " + task_filename + "could not be found.";
+        event_message = "The task file configuration file " + task_filename + " could not be found.";
         this->event_reporter->log_event(EventType::ERROR, event_message);
         this->event_reporter->publish_last_event();
         return;
@@ -243,7 +243,7 @@ void Scheduler::load_task(std::string& task_filename){
 void Scheduler::remove_task(std::string& key){
     // Check if key exists in task registry
     if(!this->task_exists(key)){
-        std::string event_message = "The task " + key + " does not exist in the scheduler." ;
+        std::string event_message = "The task \"" + key + "\" does not exist in the scheduler." ;
         this->event_reporter->log_event(EventType::WARNING, event_message);
         this->event_reporter->publish_last_event();
         return;
@@ -277,7 +277,7 @@ unsigned int Scheduler::get_n_tasks(){
 Task* Scheduler::get_task(std::string& key){
     // Check if key exists in task registry
     if(!this->task_exists(key)){
-        std::string event_message = "The task " + key + " does not exist in the scheduler." ;
+        std::string event_message = "The task \"" + key + "\" does not exist in the scheduler." ;
         this->event_reporter->log_event(EventType::INFO, event_message);
         this->event_reporter->publish_last_event();
         return nullptr;
