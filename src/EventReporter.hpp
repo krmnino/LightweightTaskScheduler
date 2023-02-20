@@ -50,6 +50,7 @@ public:
     void log_event(EventType, std::string&);
     Event get_last_event(void);
     void publish_last_event(void);
+    std::string generate_load_task_msg(ts::ValidationCode, std::string&, cl::Config*);
 };
 
 }

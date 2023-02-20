@@ -59,37 +59,6 @@ unsigned int Scheduler::generate_task_id(Task* task){
     return id;
 }
 
-std::string Scheduler::generate_ValidationCode_msg(ts::ValidationCode code, cl::Config* task_config){
-    std::string report_message;
-    switch(code){
-        case ValidationCode::MISSING_NAME_KEYVAL:
-            report_message = "Name key-value pair does not exist in task configuration file.";
-            break;
-        case ValidationCode::MISSING_SCRIPTFN_KEYVAL:
-            report_message = "Script filename key-value pair does not exist in task configuration file.";
-            break;
-        case ValidationCode::MISSING_FREQUENCY_KEYVAL:
-            report_message = "Frequency key-value pair does not exist in task configuration file.";
-            break;
-        case ValidationCode::SCRIPT_NOT_FOUND:
-            report_message = "The task script file associated with the task could not be found in the scripts directory.";
-            break;
-        case ValidationCode::BAD_FREQUENCY_VALUE:
-            report_message = "An invalid Frequency value has been specified in the task configuration file.";
-            break;
-        case ValidationCode::MISSING_DATETIME_KEYVAL:
-            report_message = "Datetime key-value pair does not exist in task configuration file.";
-            report_message += "The task Frequency ";
-            report_message += task_config->get_value("Frequency")->get_data<std::string>();
-            report_message += "requrires it.";
-            break;
-        default:
-            report_message = "Undefined error.";
-            break;
-    }
-    return report_message;
-}
-
 void Scheduler::Scheduler_init(EventReporter* er_ptr){
     this->n_tasks = 0;
     this->exec_path = "";
@@ -120,12 +89,13 @@ void Scheduler::load_tasks_from_dir(void){
     std::string task_frequency;
     std::string task_execution_datetime;
     std::string event_message;
+    std::string task_filename;
     Task* t;
     int task_id;
 
     // Check if tasks directory exists 
     if(!std::filesystem::exists(this->exec_path + "/tasks")){
-        event_message = "Could not find tasks directory";
+        event_message = "Could not find tasks directory.";
         this->event_reporter->log_event(EventType::ERROR, event_message);
         this->event_reporter->publish_last_event();
         return;
@@ -133,7 +103,7 @@ void Scheduler::load_tasks_from_dir(void){
 
     // Check if scripts directory exists 
     if(!std::filesystem::exists(this->exec_path + "/scripts")){
-        event_message = "Could not find scripts directory";
+        event_message = "Could not find scripts directory.";
         this->event_reporter->log_event(EventType::ERROR, event_message);
         this->event_reporter->publish_last_event();
         return;
@@ -141,9 +111,10 @@ void Scheduler::load_tasks_from_dir(void){
 
     for(const auto & file : std::filesystem::directory_iterator(this->exec_path + "/tasks/")){
         task_config = new cl::Config(file.path());
+        task_filename = file.path().filename().string();
         ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
         if(ret_task_validate != ValidationCode::OK){
-            event_message = this->generate_ValidationCode_msg(ret_task_validate, task_config);
+            event_message = this->event_reporter->generate_load_task_msg(ret_task_validate, task_filename, task_config);
             this->event_reporter->log_event(EventType::ERROR, event_message);
             this->event_reporter->publish_last_event();
             continue;
@@ -182,7 +153,7 @@ void Scheduler::load_tasks_from_dir(void){
         this->task_registry.insert(std::make_pair(task_name, t));
         this->n_tasks++;
 
-        event_message = "Successfully loaded task \"" + task_name + "\".";
+        event_message = "Successfully loaded task \"" + task_name + "\" from \"" + task_filename + "\".";
         this->event_reporter->log_event(EventType::INFO, event_message);
         this->event_reporter->publish_last_event();
     }
@@ -197,18 +168,19 @@ void Scheduler::load_task(std::string& task_filename){
     std::string task_frequency;
     std::string task_execution_datetime;
     std::string event_message;
+    std::string config_fn;
     Task* t;
     int task_id;
 
     if(!std::filesystem::exists(this->exec_path + "/tasks")){
-        event_message = "Could not find tasks directory";
+        event_message = "Could not find tasks directory.";
         this->event_reporter->log_event(EventType::ERROR, event_message);
         this->event_reporter->publish_last_event();
         return;
     }
 
     if(!std::filesystem::exists(this->exec_path + "/scripts")){
-        event_message = "Could not find scripts directory";
+        event_message = "Could not find scripts directory.";
         this->event_reporter->log_event(EventType::ERROR, event_message);
         this->event_reporter->publish_last_event();
         return;
@@ -224,7 +196,7 @@ void Scheduler::load_task(std::string& task_filename){
     task_config = new cl::Config(this->exec_path + "/tasks/" + task_filename);
     ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
     if(ret_task_validate != ValidationCode::OK){
-        event_message = this->generate_ValidationCode_msg(ret_task_validate, task_config);
+        event_message = this->event_reporter->generate_load_task_msg(ret_task_validate, task_filename, task_config);
         this->event_reporter->log_event(EventType::ERROR, event_message);
         this->event_reporter->publish_last_event();
         return;
@@ -263,7 +235,7 @@ void Scheduler::load_task(std::string& task_filename){
     this->task_registry.insert(std::make_pair(task_name, t));
     this->n_tasks++;
 
-    event_message = "Successfully loaded task \"" + task_name + "\".";
+    event_message = "Successfully loaded task \"" + task_name + "\" from \"" + config_fn + "\".";
     this->event_reporter->log_event(EventType::INFO, event_message);
     this->event_reporter->publish_last_event();
 }
