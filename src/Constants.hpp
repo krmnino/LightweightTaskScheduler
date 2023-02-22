@@ -86,6 +86,7 @@ enum class DatetimeFormat {
 };
 
 enum class EventType{
+    UNDEFINED,
     INFO,
     WARNING,
     ERROR
