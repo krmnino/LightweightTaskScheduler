@@ -67,7 +67,7 @@ all: task_scheduler.o						\
 	Scheduler_load_tasks_from_dir
 
 task_scheduler.o: 
-	g++ -g -c -std=c++17 -pthread $(SRC_FILES)
+	g++ -g -c -std=c++17 -pthread -D SILENT $(SRC_FILES)
 
 Task_constructor: task_scheduler.o 
 	g++ -g -c -std=c++17 Task_constructor.cpp
