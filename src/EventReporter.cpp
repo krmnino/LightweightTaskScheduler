@@ -2,6 +2,12 @@
 
 namespace ts{
 
+Event::Event() :
+    event_time{0},
+    type{ts::EventType::UNDEFINED},
+    message{"Undefined event."}
+{}
+
 Event::Event(time_t in_event_time, EventType in_type, std::string in_message) :
     event_time{event_time},
     type{in_type},
@@ -16,6 +22,13 @@ Event::Event(const Event& src) :
 
 Event::~Event() {}
 
+Event& Event::operator=(const Event& src){
+    this->event_time = src.event_time;
+    this->type = src.type;
+    this->message = src.message;
+    return *this;
+}
+
 const time_t Event::get_event_time(){
     return this->event_time;
 }
@@ -28,19 +41,42 @@ std::string& Event::get_message(){
 }
 
 void EventReporter::EventReporter_init(){
-    this->events_recorded = 0;
+    this->n_events = 0;
+}
+
+void EventReporter::EventReporter_delete(){
+    this->event_registry.clear();
+    this->n_events = 0;
 }
 
 void EventReporter::log_event(EventType event_type, std::string& event_message){
     time_t time_now;
     std::time(&time_now);
     this->event_registry.push_back(Event(time_now, event_type, event_message));
-    this->events_recorded++;
+    this->n_events++;
+}
+
+Event EventReporter::get_event_at(unsigned int idx){
+    if(this->n_events < idx){
+        std::string event_message = "The index passed is greater than the number of recorded events.";
+        this->log_event(ts::EventType::WARNING, event_message);
+    }
+    // Most recent event located at the back
+    Event ret = this->event_registry[idx - 1];
+    return ret;
 }
 
 Event EventReporter::get_last_event(void){
+    if(this->n_events == 0){
+        std::string event_message = "The event reporter was empty before quering the last event.";
+        this->log_event(ts::EventType::WARNING, event_message);
+    }
     Event ret = this->event_registry.back();
     return ret;
+}
+
+unsigned int EventReporter::get_n_events(void){
+    return this->n_events;
 }
 
 void EventReporter::publish_last_event(void){
