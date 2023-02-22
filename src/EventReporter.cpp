@@ -35,6 +35,7 @@ void EventReporter::log_event(EventType event_type, std::string& event_message){
     time_t time_now;
     std::time(&time_now);
     this->event_registry.push_back(Event(time_now, event_type, event_message));
+    this->events_recorded++;
 }
 
 Event EventReporter::get_last_event(void){
