@@ -278,6 +278,12 @@ void Scheduler::remove_task(std::string& key){
     this->task_registry.erase(key);
     delete t;
     this->n_tasks--;
+
+    std::string event_message = "Successfully removed task \"" + key + "\" from the scheduler.";
+    this->event_reporter->log_event(EventType::INFO, event_message);
+    #ifndef SILENT
+    this->event_reporter->publish_last_event();
+    #endif
 }
 
 bool Scheduler::task_exists(std::string& key){
