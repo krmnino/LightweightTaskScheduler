@@ -14,6 +14,7 @@
 
 #include "Constants.hpp"
 #include "ConfigLoader.hpp"
+#include "EventReporter.hpp"
 
 namespace ts{
 
@@ -36,6 +37,7 @@ private:
     std::string output;
     std::mutex mtx;
     std::thread thr;
+    ts::EventReporter* event_reporter_ptr;
     time_t execution_datetime;
     time_t creation_datetime;
     TaskStatus status;
@@ -46,9 +48,18 @@ private:
     static void launch_thread(Task* t){
         std::unique_lock<std::mutex> lock(t->mtx);
         time_t execution_datetime = t->get_execution_datetime(false);
+        std::string event_message;
         while(!t->cv.wait_until(lock, std::chrono::system_clock::from_time_t(execution_datetime), [t] {return !t->running_thread_flag;})){
             // Before running task, update its status
             t->set_status(TaskStatus::RUNNING);
+
+            // Log event that task started running
+            event_message = "The task \"" + t->get_name() + "\" started running.";
+            t->event_reporter_ptr->log_event(EventType::INFO, event_message);
+            #ifndef SILENT
+            t->event_reporter_ptr->publish_last_event();
+            #endif
+
             // Run the task
             t->run_task();
             // Update next execution time based on frequency
@@ -56,12 +67,27 @@ private:
             // If task frequency is Once, then it is finished
             if(t->get_frequency() == "Once"){
                 t->set_status(TaskStatus::FINISHED);
+                
+                // Log event that task ended and transition to FINISHED state
+                event_message = "The task \"" + t->get_name() + "\" finished running.";
+                t->event_reporter_ptr->log_event(EventType::INFO, event_message);
+                #ifndef SILENT
+                t->event_reporter_ptr->publish_last_event();
+                #endif
+
                 break;
             }
             else{
                 // Otherwise, set it to queued status again
                 t->set_status(TaskStatus::QUEUED);
                 execution_datetime = t->get_execution_datetime(false);
+
+                // Log event that task ended and transition to QUEUED state
+                event_message = "The task \"" + t->get_name() + "\" finished running. It has been rescheduled for next run.";
+                t->event_reporter_ptr->log_event(EventType::INFO, event_message);
+                #ifndef SILENT
+                t->event_reporter_ptr->publish_last_event();
+                #endif
             }
         }
     }
@@ -74,20 +100,21 @@ public:
     void run_task(void);
     void stop_thread(void);
     void update_execution_datetime(void);
-    const std::string& get_name(void);
-    const std::string& get_description(void);
-    const std::string& get_script_filename(void);
-    const std::string& get_frequency(void);
-    const std::string& get_output(void);
+    std::string get_name(void) const;
+    std::string get_description(void) const;
+    std::string get_script_filename(void) const;
+    std::string get_frequency(void) const;
+    std::string get_output(void) const;
     time_t get_creation_datetime(bool);
     time_t get_execution_datetime(bool);
-    std::string get_creation_datetime_fmt(void);
-    std::string get_execution_datetime_fmt(void);
-    TaskStatus get_status(void);
+    std::string get_creation_datetime_fmt(void) const;
+    std::string get_execution_datetime_fmt(void) const;
+    TaskStatus get_status(void) const;
     int get_id(void);
     DatetimeFormat get_execution_datetime_format_attr(void);
     void set_status(TaskStatus);
     void set_id(int);
+    void set_event_reporter_ptr(ts::EventReporter*);
 };
 
 ValidationCode validate_hms(std::string);

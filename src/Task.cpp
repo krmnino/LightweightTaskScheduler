@@ -404,23 +404,23 @@ void Task::update_execution_datetime(void){
     return; // Else, Frequency is Once so no update occurs 
 }
 
-const std::string& Task::get_name(void){
+std::string Task::get_name(void) const{
     return this->name;
 }
 
-const std::string& Task::get_description(void){
+std::string Task::get_description(void) const{
     return this->description;
 }
 
-const std::string& Task::get_script_filename(void){
+std::string Task::get_script_filename(void) const{
     return this->script_filename;
 }
 
-const std::string& Task::get_frequency(void){
+std::string Task::get_frequency(void) const{
     return this->frequency;
 }
 
-const std::string& Task::get_output(void){
+std::string Task::get_output(void) const{
     return this->output;
 }
 
@@ -438,7 +438,7 @@ time_t Task::get_execution_datetime(bool add_timezone){
     return this->execution_datetime;
 }
 
-std::string Task::get_creation_datetime_fmt(void){
+std::string Task::get_creation_datetime_fmt(void) const{
     std::string years;
     std::string month;
     std::string days;
@@ -535,7 +535,7 @@ std::string Task::get_creation_datetime_fmt(void){
     return wday + " " + month + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
 }
 
-std::string Task::get_execution_datetime_fmt(void){
+std::string Task::get_execution_datetime_fmt(void) const{
     std::string years;
     std::string month;
     std::string days;
@@ -632,7 +632,7 @@ std::string Task::get_execution_datetime_fmt(void){
     return wday + " " + month + " " + days + " " + hours + ":" + minutes + ":" + seconds + " " + years;
 }
 
-TaskStatus Task::get_status(void){
+TaskStatus Task::get_status(void) const{
     return this->status;
 }
 
@@ -650,6 +650,10 @@ void Task::set_status(TaskStatus status){
 
 void Task::set_id(int id){
     this->id = id;
+}
+
+void Task::set_event_reporter_ptr(ts::EventReporter* er_ptr){
+    this->event_reporter_ptr = er_ptr;
 }
 
 ValidationCode validate_hms(std::string hms){
