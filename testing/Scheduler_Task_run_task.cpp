@@ -29,14 +29,15 @@ int test1(ts::Scheduler* s, ts::EventReporter* e){
     std::string seconds;
     std::string verify_datetime_str;
     std::string ret_datetime_str;
-    std::string task_path_fn;
+    std::string task_path_filename;
     std::string task_filename;
-    std::string t_name;
+    std::string task_name;
     cl::Config* c;
+    const ts::Task* ret_task;
 
     time_now = std::time(&time_now);
 
-    // Add one second from current time
+    // Add one second to current time
     time_now_add = time_now + 1;
     
     // time_t to std::tm*
@@ -138,34 +139,42 @@ int test1(ts::Scheduler* s, ts::EventReporter* e){
                std::to_string(struct_time_now_add.tm_sec);
 
     c = new cl::Config();
-    task_path_fn = "tasks/TestTask.cl";
+    task_path_filename = "tasks/TestTask.cl";
     task_filename = "TestTask.cl";
-    t_name = "TestTask";
+    task_name = "TestTask";
     c->add_entry("Name", "TestTask");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "cat_test.sh");
     c->add_entry("Frequency", "Once");
     c->add_entry("Datetime", hours + ":" + minutes + ":" + seconds);
-    c->save_config(task_path_fn);
+    c->save_config(task_path_filename);
     delete c;
 
+    e->EventReporter_init();
     s->Scheduler_init(e);
+
     s->obtain_exec_path();
     s->load_task(task_filename);
 
     assert(s->get_n_tasks() == 1);
+    assert(e->get_n_events() == 1);
 
     // Sleep for 2 seconds to let task run
     sleep(2); 
 
-    ts::Task* t = s->get_task(t_name);
+    ret_task = s->get_task(task_name);
+
     assert(s->get_n_tasks() == 1);
-    assert(s->task_exists(t_name));
-    //assert(t->get_output() == "ls -l");
-    assert(t->get_status() == ts::TaskStatus::FINISHED);
+    assert(s->task_exists(task_name));
+    assert(ret_task->get_output() == "ls -l");
+    assert(ret_task->get_status() == ts::TaskStatus::FINISHED);
+
+    assert(e->get_n_events() == 3);
 
     s->Scheduler_delete();
-    remove(task_path_fn.c_str());
+    e->EventReporter_delete();
+
+    remove(task_path_filename.c_str());
 
     std::cout << ">> Scheduler_Task_run_task: 1 done" << std::endl;
     return 0;
@@ -191,14 +200,15 @@ int test2(ts::Scheduler* s, ts::EventReporter* e){
     std::string seconds;
     std::string verify_datetime_str;
     std::string ret_datetime_str;
-    std::string task_path_fn;
+    std::string task_path_filename;
     std::string task_filename;
-    std::string t_name;
+    std::string task_name;
     cl::Config* c;
+    const ts::Task* ret_task;
 
     time_now = std::time(&time_now);
 
-    // Add one second from current time
+    // Add one second to current time
     time_now_add = time_now + 1;
     
     // time_t to std::tm*
@@ -300,34 +310,44 @@ int test2(ts::Scheduler* s, ts::EventReporter* e){
                std::to_string(struct_time_now_add.tm_sec);
 
     c = new cl::Config();
-    task_path_fn = "tasks/TestTask.cl";
+    task_path_filename = "tasks/TestTask.cl";
     task_filename = "TestTask.cl";
-    t_name = "TestTask";
+    task_name = "TestTask";
     c->add_entry("Name", "TestTask");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "cat_test.sh");
     c->add_entry("Frequency", "Daily");
     c->add_entry("Datetime", hours + ":" + minutes + ":" + seconds);
-    c->save_config(task_path_fn);
+    c->save_config(task_path_filename);
     delete c;
 
+    e->EventReporter_init();
     s->Scheduler_init(e);
+
     s->obtain_exec_path();
     s->load_task(task_filename);
 
     assert(s->get_n_tasks() == 1);
+    assert(e->get_n_events() == 1);
+
+    ret_task = s->get_task(task_name);
+    ret_datetime_str = ret_task->get_execution_datetime_fmt();
 
     // Sleep for 2 seconds to let task run
     sleep(2); 
 
-    ts::Task* t = s->get_task(t_name);
+    ret_task = s->get_task(task_name);
     assert(s->get_n_tasks() == 1);
-    assert(s->task_exists(t_name));
-    assert(t->get_output() == "ls -l");
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
+    assert(s->task_exists(task_name));
+    assert(ret_task->get_output() == "ls -l");
+    assert(ret_task->get_status() == ts::TaskStatus::QUEUED);
+
+    assert(e->get_n_events() == 3);
 
     s->Scheduler_delete();
-    remove(task_path_fn.c_str());
+    e->EventReporter_delete();
+
+    remove(task_path_filename.c_str());
 
     std::cout << ">> Scheduler_Task_run_task: 2 done" << std::endl;
     return 0;
@@ -353,14 +373,15 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
     std::string seconds;
     std::string verify_datetime_str;
     std::string ret_datetime_str;
-    std::string task_path_fn;
+    std::string task_path_filename;
     std::string task_filename;
-    std::string t_name;
+    std::string task_name;
     cl::Config* c;
+    const ts::Task* ret_task;
 
     time_now = std::time(&time_now);
 
-    // Add one second from current time
+    // Add one second to current time
     time_now_add = time_now + 1;
     
     // time_t to std::tm*
@@ -462,34 +483,41 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
                std::to_string(struct_time_now_add.tm_sec);
 
     c = new cl::Config();
-    task_path_fn = "tasks/TestTask.cl";
+    task_path_filename = "tasks/TestTask.cl";
     task_filename = "TestTask.cl";
-    t_name = "TestTask";
+    task_name = "TestTask";
     c->add_entry("Name", "TestTask");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "cat_test.sh");
     c->add_entry("Frequency", "Weekly");
     c->add_entry("Datetime", hours + ":" + minutes + ":" + seconds);
-    c->save_config(task_path_fn);
+    c->save_config(task_path_filename);
     delete c;
 
+    e->EventReporter_init();
     s->Scheduler_init(e);
+
     s->obtain_exec_path();
     s->load_task(task_filename);
 
     assert(s->get_n_tasks() == 1);
+    assert(e->get_n_events() == 1);
 
     // Sleep for 2 seconds to let task run
     sleep(2); 
 
-    ts::Task* t = s->get_task(t_name);
+    ret_task = s->get_task(task_name);
     assert(s->get_n_tasks() == 1);
-    assert(s->task_exists(t_name));
-    assert(t->get_output() == "ls -l");
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
+    assert(s->task_exists(task_name));
+    assert(ret_task->get_output() == "ls -l");
+    assert(ret_task->get_status() == ts::TaskStatus::QUEUED);
+
+    assert(e->get_n_events() == 3);
 
     s->Scheduler_delete();
-    remove(task_path_fn.c_str());
+    e->EventReporter_delete();
+
+    remove(task_path_filename.c_str());
 
     std::cout << ">> Scheduler_Task_run_task: 3 done" << std::endl;
     return 0;
@@ -517,12 +545,13 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     std::string ret_datetime_str;
     std::string task_path_fn;
     std::string task_filename;
-    std::string t_name;
+    std::string task_name;
     cl::Config* c;
+    const ts::Task* ret_task;
 
     time_now = std::time(&time_now);
 
-    // Add one second from current time
+    // Add one second to current time
     time_now_add = time_now + 1;
     
     // time_t to std::tm*
@@ -626,7 +655,7 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     c = new cl::Config();
     task_path_fn = "tasks/TestTask.cl";
     task_filename = "TestTask.cl";
-    t_name = "TestTask";
+    task_name = "TestTask";
     c->add_entry("Name", "TestTask");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "cat_test.sh");
@@ -635,22 +664,29 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     c->save_config(task_path_fn);
     delete c;
 
+    e->EventReporter_init();
     s->Scheduler_init(e);
+
     s->obtain_exec_path();
     s->load_task(task_filename);
 
     assert(s->get_n_tasks() == 1);
+    assert(e->get_n_events() == 1);
 
     // Sleep for 2 seconds to let task run
     sleep(2); 
 
-    ts::Task* t = s->get_task(t_name);
+    ret_task = s->get_task(task_name);
     assert(s->get_n_tasks() == 1);
-    assert(s->task_exists(t_name));
-    assert(t->get_output() == "ls -l");
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
+    assert(s->task_exists(task_name));
+    assert(ret_task->get_output() == "ls -l");
+    assert(ret_task->get_status() == ts::TaskStatus::QUEUED);
+
+    assert(e->get_n_events() == 3);
 
     s->Scheduler_delete();
+    e->EventReporter_delete();
+
     remove(task_path_fn.c_str());
 
     std::cout << ">> Scheduler_Task_run_task: 4 done" << std::endl;
@@ -679,12 +715,13 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     std::string ret_datetime_str;
     std::string task_path_fn;
     std::string task_filename;
-    std::string t_name;
+    std::string task_name;
     cl::Config* c;
+    const ts::Task* ret_task;
 
     time_now = std::time(&time_now);
 
-    // Add one second from current time
+    // Add one second to current time
     time_now_add = time_now + 1;
     
     // time_t to std::tm*
@@ -788,7 +825,7 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     c = new cl::Config();
     task_path_fn = "tasks/TestTask.cl";
     task_filename = "TestTask.cl";
-    t_name = "TestTask";
+    task_name = "TestTask";
     c->add_entry("Name", "TestTask");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "cat_test.sh");
@@ -797,22 +834,29 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     c->save_config(task_path_fn);
     delete c;
 
+    e->EventReporter_init();
     s->Scheduler_init(e);
+    
     s->obtain_exec_path();
     s->load_task(task_filename);
 
     assert(s->get_n_tasks() == 1);
+    assert(e->get_n_events() == 1);
 
     // Sleep for 2 seconds to let task run
     sleep(2); 
 
-    ts::Task* t = s->get_task(t_name);
+    ret_task = s->get_task(task_name);
     assert(s->get_n_tasks() == 1);
-    assert(s->task_exists(t_name));
-    assert(t->get_output() == "ls -l");
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
+    assert(s->task_exists(task_name));
+    assert(ret_task->get_output() == "ls -l");
+    assert(ret_task->get_status() == ts::TaskStatus::QUEUED);
+
+    assert(e->get_n_events() == 3);
 
     s->Scheduler_delete();
+    e->EventReporter_delete();
+
     remove(task_path_fn.c_str());
 
     std::cout << ">> Scheduler_Task_run_task: 5 done" << std::endl;
