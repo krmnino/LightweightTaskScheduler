@@ -23,11 +23,12 @@ private:
     std::map<std::string, Task*> task_registry;
     std::string exec_path;
     static Scheduler* scheduler_ptr;
-    EventReporter* event_reporter;
+    EventReporter* event_reporter_ptr;
     unsigned int n_tasks;
     
     Scheduler() {}
     unsigned int generate_task_id(Task*);
+    Task* get_task_from_registry(std::string&);
 
 public:
     static Scheduler* Scheduler_get_instance(void){
@@ -51,7 +52,7 @@ public:
     bool task_exists(std::string&);
     const std::string& get_current_path(void);
     unsigned int get_n_tasks(void);
-    Task* get_task(std::string&);
+    const Task* get_task(std::string&) const;
 };
 
 } // namespace ts

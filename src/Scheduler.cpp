@@ -59,11 +59,15 @@ unsigned int Scheduler::generate_task_id(Task* task){
     return id;
 }
 
+Task* Scheduler::get_task_from_registry(std::string& key){
+    return this->task_registry[key];
+}
+
 void Scheduler::Scheduler_init(EventReporter* er_ptr){
     this->n_tasks = 0;
     this->exec_path = "";
     // Link Event Reporter to Scheduler
-    this->event_reporter = er_ptr;
+    this->event_reporter_ptr = er_ptr;
 }
 
 void Scheduler::Scheduler_delete(void){
@@ -96,9 +100,9 @@ void Scheduler::load_tasks_from_dir(void){
     // Check if tasks directory exists 
     if(!std::filesystem::exists(this->exec_path + "/tasks")){
         event_message = "Could not find tasks directory.";
-        this->event_reporter->log_event(EventType::ERROR, event_message);
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
-        this->event_reporter->publish_last_event();
+        this->event_reporter_ptr->publish_last_event();
         #endif
         return;
     }
@@ -106,9 +110,9 @@ void Scheduler::load_tasks_from_dir(void){
     // Check if scripts directory exists 
     if(!std::filesystem::exists(this->exec_path + "/scripts")){
         event_message = "Could not find scripts directory.";
-        this->event_reporter->log_event(EventType::ERROR, event_message);
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
-        this->event_reporter->publish_last_event();
+        this->event_reporter_ptr->publish_last_event();
         #endif
         return;
     }
@@ -118,10 +122,10 @@ void Scheduler::load_tasks_from_dir(void){
         task_filename = file.path().filename().string();
         ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
         if(ret_task_validate != ValidationCode::OK){
-            event_message = this->event_reporter->generate_load_task_msg(ret_task_validate, task_filename, task_config);
-            this->event_reporter->log_event(EventType::ERROR, event_message);
+            event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_filename, task_config);
+            this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
             #ifndef SILENT
-            this->event_reporter->publish_last_event();
+            this->event_reporter_ptr->publish_last_event();
             #endif
             continue;
         }
@@ -130,9 +134,9 @@ void Scheduler::load_tasks_from_dir(void){
         task_name = task_config->get_value("Name")->get_data<std::string>();
         if (this->task_exists(task_name)) {
             event_message = "A task with the name \"" + task_name + "\" already exists in the scheduler." ;
-            this->event_reporter->log_event(EventType::ERROR, event_message);
+            this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
             #ifndef SILENT
-            this->event_reporter->publish_last_event();
+            this->event_reporter_ptr->publish_last_event();
             #endif
             return;
         }
@@ -162,9 +166,9 @@ void Scheduler::load_tasks_from_dir(void){
         this->n_tasks++;
 
         event_message = "Successfully loaded task \"" + task_name + "\" from \"" + task_filename + "\".";
-        this->event_reporter->log_event(EventType::INFO, event_message);
+        this->event_reporter_ptr->log_event(EventType::INFO, event_message);
         #ifndef SILENT
-        this->event_reporter->publish_last_event();
+        this->event_reporter_ptr->publish_last_event();
         #endif
     }
 }
@@ -178,33 +182,32 @@ void Scheduler::load_task(std::string& task_filename){
     std::string task_frequency;
     std::string task_execution_datetime;
     std::string event_message;
-    std::string config_fn;
     Task* t;
     int task_id;
 
     if(!std::filesystem::exists(this->exec_path + "/tasks")){
         event_message = "Could not find tasks directory.";
-        this->event_reporter->log_event(EventType::ERROR, event_message);
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
-        this->event_reporter->publish_last_event();
+        this->event_reporter_ptr->publish_last_event();
         #endif
         return;
     }
 
     if(!std::filesystem::exists(this->exec_path + "/scripts")){
         event_message = "Could not find scripts directory.";
-        this->event_reporter->log_event(EventType::ERROR, event_message);
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
-        this->event_reporter->publish_last_event();
+        this->event_reporter_ptr->publish_last_event();
         #endif
         return;
     }
 
     if(!std::filesystem::exists(this->exec_path + "/tasks/" + task_filename)){
         event_message = "The task file configuration file " + task_filename + " could not be found.";
-        this->event_reporter->log_event(EventType::ERROR, event_message);
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
-        this->event_reporter->publish_last_event();
+        this->event_reporter_ptr->publish_last_event();
         #endif
         return;
     }
@@ -212,10 +215,10 @@ void Scheduler::load_task(std::string& task_filename){
     task_config = new cl::Config(this->exec_path + "/tasks/" + task_filename);
     ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
     if(ret_task_validate != ValidationCode::OK){
-        event_message = this->event_reporter->generate_load_task_msg(ret_task_validate, task_filename, task_config);
-        this->event_reporter->log_event(EventType::ERROR, event_message);
+        event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_filename, task_config);
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
-        this->event_reporter->publish_last_event();
+        this->event_reporter_ptr->publish_last_event();
         #endif
         return;
     }
@@ -224,9 +227,9 @@ void Scheduler::load_task(std::string& task_filename){
     task_name = task_config->get_value("Name")->get_data<std::string>();
     if (this->task_exists(task_name)) {
         event_message = "A task with the name " + task_name + " already exists in the scheduler." ;
-        this->event_reporter->log_event(EventType::ERROR, event_message);
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
-        this->event_reporter->publish_last_event();
+        this->event_reporter_ptr->publish_last_event();
         #endif
         return;
     }
@@ -251,14 +254,15 @@ void Scheduler::load_task(std::string& task_filename){
     task_id = this->generate_task_id(t);
     t->set_id(task_id);
     t->set_status(ts::TaskStatus::QUEUED);
+    t->set_event_reporter_ptr(this->event_reporter_ptr);
 
     this->task_registry.insert(std::make_pair(task_name, t));
     this->n_tasks++;
 
-    event_message = "Successfully loaded task \"" + task_name + "\" from \"" + config_fn + "\".";
-    this->event_reporter->log_event(EventType::INFO, event_message);
+    event_message = "Successfully loaded task \"" + task_name + "\" from \"" + task_filename + "\".";
+    this->event_reporter_ptr->log_event(EventType::INFO, event_message);
     #ifndef SILENT
-    this->event_reporter->publish_last_event();
+    this->event_reporter_ptr->publish_last_event();
     #endif
 }
 
@@ -266,9 +270,9 @@ void Scheduler::remove_task(std::string& key){
     // Check if key exists in task registry
     if(!this->task_exists(key)){
         std::string event_message = "The task \"" + key + "\" does not exist in the scheduler." ;
-        this->event_reporter->log_event(EventType::WARNING, event_message);
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
         #ifndef SILENT
-        this->event_reporter->publish_last_event();
+        this->event_reporter_ptr->publish_last_event();
         #endif
         return;
     }
@@ -280,9 +284,9 @@ void Scheduler::remove_task(std::string& key){
     this->n_tasks--;
 
     std::string event_message = "Successfully removed task \"" + key + "\" from the scheduler.";
-    this->event_reporter->log_event(EventType::INFO, event_message);
+    this->event_reporter_ptr->log_event(EventType::INFO, event_message);
     #ifndef SILENT
-    this->event_reporter->publish_last_event();
+    this->event_reporter_ptr->publish_last_event();
     #endif
 }
 
@@ -304,17 +308,17 @@ unsigned int Scheduler::get_n_tasks(){
     return this->n_tasks;
 }
 
-Task* Scheduler::get_task(std::string& key){
+const Task* Scheduler::get_task(std::string& key) const{
     // Check if key exists in task registry
-    if(!this->task_exists(key)){
+    if(!const_cast<Scheduler*>(this)->task_exists(key)){
         std::string event_message = "The task \"" + key + "\" does not exist in the scheduler." ;
-        this->event_reporter->log_event(EventType::INFO, event_message);
+        this->event_reporter_ptr->log_event(EventType::INFO, event_message);
         #ifndef SILENT
-        this->event_reporter->publish_last_event();
+        this->event_reporter_ptr->publish_last_event();
         #endif
         return nullptr;
     }
-    return this->task_registry[key];
+    return const_cast<Scheduler*>(this)->get_task_from_registry(key);
 }
 
 } // namespace ts
