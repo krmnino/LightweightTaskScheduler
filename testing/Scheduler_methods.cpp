@@ -239,7 +239,7 @@ int test8(ts::Scheduler* s, ts::EventReporter* e){
     assert(e->get_n_events() == 1);
 
     // Add timezone offset in seconds to current time
-    time_now_add = time_now + 15 + + (TIMEZONE * 60 * 60);
+    time_now_add = time_now + 15 + (TIMEZONE * 60 * 60);
     
     // time_t to std::tm*
     to_struct = std::gmtime(&time_now_add);

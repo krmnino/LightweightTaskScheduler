@@ -415,4 +415,8 @@ The `/testing` directory contains exclusive test-related source files. That incl
 ### **Scheduler_load_tasks_from_dir.cpp**
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Load tasks `cat_test.cl` and `ls_test.cl` from tasks directory. Verify that tasks' attributes are loaded correctly by checking they match the expected values.|`Scheduler::load_tasks_from_dir(void)`|<span style="color:green">Passed|
+|`test1()`|Load tasks `cat_test.cl` and `ls_test.cl` from tasks directory. Verify that tasks' attributes are loaded correctly by checking they match the expected values. The `EventReporter` should record 2 events after loading the tasks.|`Scheduler::load_tasks_from_dir(void)`|<span style="color:green">Passed|
+|`test2()`|Rename `tasks` directory to simulate it does not exist. The `EventReporter` should record 1 event after attempting to find the `tasks` directory. No tasks should be loaded in the loaded in the `Scheduler`.|`Scheduler::load_tasks_from_dir(void)`|<span style="color:green">Passed|
+|`test3()`|Rename `scripts` directory to simulate it does not exist. The `EventReporter` should record 1 event after attempting to find the `scripts` directory. No tasks should be loaded in the `Scheduler`.|`Scheduler::load_tasks_from_dir(void)`|<span style="color:green">Passed|
+|`test4()`|Generate a task with a `Datetime` value in the past. The `EventReporter` should record 2 events after loading valid existing tasks, plus 1 event after attempting to load a task in the past. Only 2 tasks should be loaded in the `Scheduler`.|`Scheduler::load_tasks_from_dir(void)`|<span style="color:green">Passed|
+|`test5()`|Generate a task with a duplicate `Name`. The `EventReporter` should record 2 events after loading valid existing tasks, plus 1 event after attempting to load a task with a duplicate `Name`. Only 2 tasks should be loaded in the `Scheduler`.|`Scheduler::load_tasks_from_dir(void)`|<span style="color:green">Passed|
