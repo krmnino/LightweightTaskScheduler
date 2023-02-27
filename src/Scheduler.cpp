@@ -138,7 +138,7 @@ void Scheduler::load_tasks_from_dir(void){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
+            continue;
         }
 
         task_description = task_config->get_value("Description")->get_data<std::string>();
