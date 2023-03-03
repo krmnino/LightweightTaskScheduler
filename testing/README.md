@@ -420,3 +420,9 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test3()`|Rename `scripts` directory to simulate it does not exist. The `EventReporter` should record 1 event after attempting to find the `scripts` directory. No tasks should be loaded in the `Scheduler`.|`Scheduler::load_tasks_from_dir(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 |`test4()`|Generate a task with a `Datetime` value in the past. The `EventReporter` should record 2 events after loading valid existing tasks, plus 1 event after attempting to load a task in the past. Only 2 tasks should be loaded in the `Scheduler`.|`Scheduler::load_tasks_from_dir(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 |`test5()`|Generate a task with a duplicate `Name`. The `EventReporter` should record 2 events after loading valid existing tasks, plus 1 event after attempting to load a task with a duplicate `Name`. Only 2 tasks should be loaded in the `Scheduler`.|`Scheduler::load_tasks_from_dir(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
+
+### **Scheduler_load_task.cpp**
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Load task `cat_test.cl` from tasks directory. Verify that task's attributes are loaded correctly by checking they match the expected values. The `EventReporter` should record 1 event after loading the task.|`Scheduler::load_task(std::string&)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
+|`test1()`|Rename `tasks` directory to simulate it does not exist. The `EventReporter` should record 1 event after attempting to find the `tasks` directory. No task should be loaded in the loaded in the `Scheduler`.|`Scheduler::load_task(std::string&)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
