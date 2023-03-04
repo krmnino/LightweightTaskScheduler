@@ -78,12 +78,40 @@ int test2(ts::Scheduler* s, ts::EventReporter* e){
 }
 
 
+int test3(ts::Scheduler* s, ts::EventReporter* e){
+    // TEST 2: try to load task from directory when scripts directory does not exist
+    std::string original_scripts_dir_name = "scripts/";
+    std::string rename_scripts_dir_name = "original_scripts/";
+    std::string task_filename = "cat_test.cl";
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    // Temporarily change tasks directory name so the Scheduler can't find it
+    rename(original_scripts_dir_name.c_str(), rename_scripts_dir_name.c_str());
+
+    s->obtain_exec_path();
+    s->load_task(task_filename);
+
+    assert(s->get_n_tasks() == 0);
+    assert(e->get_n_events() == 1);
+    
+    // Rename it back to tasks
+    rename(rename_scripts_dir_name.c_str(), original_scripts_dir_name.c_str());
+    s->Scheduler_delete();
+    e->EventReporter_delete();
+
+    std::cout << ">> Scheduler_load_task: 3 done" << std::endl;
+    return 0;
+}
+
+
 int main(int argc, char* argv[]){
     ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
     ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
 
     test1(s, e);
     test2(s, e);
+    test3(s, e);
 
     s->Scheduler_end_instance();
     e->EventReporter_end_instance();
