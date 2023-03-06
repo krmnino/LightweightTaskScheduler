@@ -52,7 +52,7 @@ void EventReporter::EventReporter_delete(){
 void EventReporter::log_event(EventType event_type, std::string& event_message){
     time_t time_now;
     std::time(&time_now);
-    this->event_registry.push_back(Event(time_now, event_type, event_message));
+    this->event_registry.push_front(Event(time_now, event_type, event_message));
     this->n_events++;
 }
 
@@ -62,7 +62,7 @@ Event EventReporter::get_event_at(unsigned int idx){
         this->log_event(ts::EventType::WARNING, event_message);
     }
     // Most recent event located at the back
-    Event ret = this->event_registry[idx - 1];
+    Event ret = this->event_registry[idx];
     return ret;
 }
 
@@ -71,7 +71,7 @@ Event EventReporter::get_last_event(void){
         std::string event_message = "The event reporter was empty before quering the last event.";
         this->log_event(ts::EventType::WARNING, event_message);
     }
-    Event ret = this->event_registry.back();
+    Event ret = this->event_registry.front();
     return ret;
 }
 
