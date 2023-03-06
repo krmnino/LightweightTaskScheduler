@@ -200,8 +200,10 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     assert(s->get_n_tasks() == 2);
     assert(e->get_n_events() == 3);
     ret_event = e->get_event_at(1);
-    verify_event_message = "The configuration file \"ZZZTestTask.cl\" specifies a datetime value of";
     verify_event_type = ts::EventType::ERROR;
+    verify_event_message = "The configuration file \"ZZZTestTask.cl\" specifies a datetime value of";
+    assert(ret_event.get_message().find(verify_event_message) != std::string::npos);
+    verify_event_message = "that is in the past.";
     assert(ret_event.get_message().find(verify_event_message) != std::string::npos);
     assert(ret_event.get_type() == verify_event_type);
 
