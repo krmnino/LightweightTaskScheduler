@@ -226,7 +226,7 @@ void Scheduler::load_task(std::string& task_filename){
     // Get task attributes from config file and validate them, check if task name is repeated
     task_name = task_config->get_value("Name")->get_data<std::string>();
     if (this->task_exists(task_name)) {
-        event_message = "A task with the name " + task_name + " already exists in the scheduler." ;
+        event_message = "A task with the name \"" + task_name + "\" already exists in the scheduler." ;
         this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
