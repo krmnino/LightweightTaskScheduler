@@ -422,6 +422,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test5()`|Generate a task with a duplicate `Name`. The `EventReporter` should record 2 events after loading valid existing tasks, plus 1 event after attempting to load a task with a duplicate `Name`. Only 2 tasks should be loaded in the `Scheduler`.|`Scheduler::load_tasks_from_dir(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 
 ### **Scheduler_load_task.cpp**
+
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Load task `cat_test.cl` from tasks directory. Verify that task's attributes are loaded correctly by checking they match the expected values. The `EventReporter` should record 1 event after loading the task.|`Scheduler::load_task(std::string&)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
