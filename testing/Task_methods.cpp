@@ -20,9 +20,7 @@ int test1(){
     std::string datetime_str;
     time_t ret_creation_datetime;
     std::string ret_creation_datetime_fmt;
-    time_t ret_execution_datetime;
     std::string ret_execution_datetime_fmt;
-    ts::DatetimeFormat ret_execution_datetime_format_attr;
 
     // Add 5 seconds to current time
     time_now_add = time_now + 5;
@@ -81,11 +79,9 @@ int test2(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    time_t ret_creation_datetime;
     std::string ret_creation_datetime_fmt;
     time_t ret_execution_datetime;
     std::string ret_execution_datetime_fmt;
-    ts::DatetimeFormat ret_execution_datetime_format_attr;
 
     // Add 5 seconds to current time
     time_now_add = time_now + 5;
@@ -144,11 +140,8 @@ int test3(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    time_t ret_creation_datetime;
     std::string ret_creation_datetime_fmt;
-    time_t ret_execution_datetime;
     std::string ret_execution_datetime_fmt;
-    ts::DatetimeFormat ret_execution_datetime_format_attr;
 
     // Add 5 seconds to current time
     time_now_add = time_now + 5;
@@ -269,11 +262,8 @@ int test4(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    time_t ret_creation_datetime;
     std::string ret_creation_datetime_fmt;
-    time_t ret_execution_datetime;
     std::string ret_execution_datetime_fmt;
-    ts::DatetimeFormat ret_execution_datetime_format_attr;
 
     // Add 5 seconds to current time
     time_now_add = time_now + 5;
@@ -394,9 +384,7 @@ int test5(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    time_t ret_creation_datetime;
     std::string ret_creation_datetime_fmt;
-    time_t ret_execution_datetime;
     std::string ret_execution_datetime_fmt;
     ts::DatetimeFormat ret_execution_datetime_format_attr;
 
