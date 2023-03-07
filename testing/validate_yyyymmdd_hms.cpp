@@ -42,7 +42,7 @@ int test3(){
         "2022-01-01 12:0a:00"
     };
 
-    for(int i = 0; i < yyyymmdd_hms.size(); i++){
+    for(size_t i = 0; i < yyyymmdd_hms.size(); i++){
         ret = ts::validate_yyyymmdd_hms(yyyymmdd_hms[i]);
         assert(ret == ts::ValidationCode::BAD_NUMBER_CHARACTER);
     }
@@ -62,7 +62,7 @@ int test4(){
         "2022-01a01 12:00:00"
     };
 
-    for(int i = 0; i < yyyymmdd_hms.size(); i++){
+    for(size_t i = 0; i < yyyymmdd_hms.size(); i++){
         ret = ts::validate_yyyymmdd_hms(yyyymmdd_hms[i]);
         assert(ret == ts::ValidationCode::MISSING_DATETIME_DASH);
     }
@@ -82,7 +82,7 @@ int test5(){
         "2022-01-01 12:00a00"
     };
 
-    for(int i = 0; i < yyyymmdd_hms.size(); i++){
+    for(size_t i = 0; i < yyyymmdd_hms.size(); i++){
         ret = ts::validate_yyyymmdd_hms(yyyymmdd_hms[i]);
         assert(ret == ts::ValidationCode::MISSING_DATETIME_COLON);
     }

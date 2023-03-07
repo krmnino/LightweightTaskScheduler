@@ -17,7 +17,7 @@ int test1(){
         "Sunday 01:00:00"
     };
 
-    for(int i = 0; i < wday_hms.size(); i++){
+    for(size_t i = 0; i < wday_hms.size(); i++){
         ret = ts::validate_wday_hms(wday_hms[i]);
         assert(ret == ts::ValidationCode::OK);
     }
@@ -41,7 +41,7 @@ int test2(){
         "Sun 01:00:00"
     };
 
-    for(int i = 0; i < wday_hms.size(); i++){
+    for(size_t i = 0; i < wday_hms.size(); i++){
         ret = ts::validate_wday_hms(wday_hms[i]);
         assert(ret == ts::ValidationCode::OK);
     }

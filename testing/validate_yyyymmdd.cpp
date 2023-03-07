@@ -35,7 +35,7 @@ int test1(){
         "2022-12-31"
     };
 
-    for(int i = 0; i < yyyymmdd.size(); i++){
+    for(size_t i = 0; i < yyyymmdd.size(); i++){
         ret = ts::validate_yyyymmdd(yyyymmdd[i]);
         assert(ret == ts::ValidationCode::OK);
     }
@@ -70,7 +70,7 @@ int test3(){
         "2022-12-3a"
     };
 
-    for(int i = 0; i < yyyymmdd.size(); i++){
+    for(size_t i = 0; i < yyyymmdd.size(); i++){
         ret = ts::validate_yyyymmdd(yyyymmdd[i]);
         assert(ret == ts::ValidationCode::BAD_NUMBER_CHARACTER);
     }
@@ -90,7 +90,7 @@ int test4(){
         "2022a12-30"
     };
 
-    for(int i = 0; i < yyyymmdd.size(); i++){
+    for(size_t i = 0; i < yyyymmdd.size(); i++){
         ret = ts::validate_yyyymmdd(yyyymmdd[i]);
         assert(ret == ts::ValidationCode::MISSING_DATETIME_DASH);
     }

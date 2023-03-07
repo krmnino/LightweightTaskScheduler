@@ -18,7 +18,7 @@ int test1(){
         "Sunday"
     };
 
-    for(int i = 0; i < days.size(); i++){
+    for(size_t i = 0; i < days.size(); i++){
         ret = ts::validate_wday(days[i]);
         assert(ret == ts::ValidationCode::OK);
     }
@@ -42,7 +42,7 @@ int test2(){
         "Sun"
     };
 
-    for(int i = 0; i < days.size(); i++){
+    for(size_t i = 0; i < days.size(); i++){
         ret = ts::validate_wday(days[i]);
         assert(ret == ts::ValidationCode::OK);
     }
