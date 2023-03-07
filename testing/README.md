@@ -431,3 +431,9 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test3()`|Rename `scripts` directory to simulate it does not exist. The `EventReporter` should record 1 event after attempting to find the `scripts` directory. No task should be loaded in the `Scheduler`.|`Scheduler::load_task(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 |`test4()`|Generate a task with a `Datetime` value in the past. The `EventReporter` should record 1 event after attempting to load a task in the past. No task should be loaded in the `Scheduler`.|`Scheduler::load_task(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 |`test5()`|Generate a task with a duplicate `Name`. The `EventReporter` should record 1 events after loading first task with the shared name, plus 1 event after attempting to load a task with a duplicate `Name`. Only 1 task should be loaded in the `Scheduler`.|`Scheduler::load_task(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
+
+### **EventReporter_get_instance.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Instantiate and remove instance of `EventReporter` singleton object.|`EventReporter::EventReporter_get_instance(void)`<br/>`EventReporter::EventReporter_end_instance(void)`|<span style="color:green">Passed|

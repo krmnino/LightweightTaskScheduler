@@ -65,7 +65,8 @@ all: task_scheduler.o						\
 	Scheduler_methods						\
 	Scheduler_Task_run_task					\
 	Scheduler_load_tasks_from_dir			\
-	Scheduler_load_task
+	Scheduler_load_task						\
+	EventReporter_get_instance
 
 task_scheduler.o: 
 	g++ -g -c -std=c++17 -pthread -D SILENT $(SRC_FILES)
@@ -226,6 +227,10 @@ Scheduler_load_task: task_scheduler.o
 	g++ -g -Wall -c -std=c++17 Scheduler_load_task.cpp
 	g++ -g -Wall -o Scheduler_load_task Scheduler_load_task.o $(OBJ_FILES) -pthread -lstdc++fs
 
+EventReporter_get_instance: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 EventReporter_get_instance.cpp
+	g++ -g -Wall -o EventReporter_get_instance EventReporter_get_instance.o $(OBJ_FILES) -pthread -lstdc++fs
+
 ###################################################################################################
 
 clean:
@@ -271,4 +276,5 @@ clean:
 	Scheduler_methods						\
 	Scheduler_Task_run_task					\
 	Scheduler_load_tasks_from_dir			\
-	Scheduler_load_task
+	Scheduler_load_task						\
+	EventReporter_get_instance
