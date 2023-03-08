@@ -16,7 +16,7 @@ int test1(){
         "2022-01-20",
         "anything"
     };
-    for(int i = 0; i < datetimes.size(); i++){
+    for(size_t i = 0; i < datetimes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");

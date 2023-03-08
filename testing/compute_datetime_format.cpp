@@ -21,7 +21,7 @@ int test1(){
         "1111111:1111111:1111111",
     };
 
-    for(int i = 0; i < datetime.size(); i++){
+    for(size_t i = 0; i < datetime.size(); i++){
         ret = ts::compute_datetime_format(datetime[i]);
         assert(ret == ts::DatetimeFormat::HHMMSS);
     }
@@ -55,7 +55,7 @@ int test2(){
         "Mon 1111111:1111111:1111111",
     };
 
-    for(int i = 0; i < datetime.size(); i++){
+    for(size_t i = 0; i < datetime.size(); i++){
         ret = ts::compute_datetime_format(datetime[i]);
         assert(ret == ts::DatetimeFormat::WDAY_HHMMSS);
     }
@@ -90,7 +90,7 @@ int test3(){
         "Aaaaaaaaaaaaaaaa 20:00:00",
     };
 
-    for(int i = 0; i < datetime.size(); i++){
+    for(size_t i = 0; i < datetime.size(); i++){
         ret = ts::compute_datetime_format(datetime[i]);
         assert(ret == ts::DatetimeFormat::WDAY_HHMMSS);
     }
@@ -119,7 +119,7 @@ int test4(){
         "2022-02-111111111",
     };
 
-    for(int i = 0; i < datetime.size(); i++){
+    for(size_t i = 0; i < datetime.size(); i++){
         ret = ts::compute_datetime_format(datetime[i]);
         assert(ret == ts::DatetimeFormat::YYYYMMDD);
     }
@@ -158,7 +158,7 @@ int test5(){
         "2022-02-22 1111111:1111111:1111111",
     };
 
-    for(int i = 0; i < datetime.size(); i++){
+    for(size_t i = 0; i < datetime.size(); i++){
         ret = ts::compute_datetime_format(datetime[i]);
         assert(ret == ts::DatetimeFormat::YYYYMMDD_HHMMSS);
     }
@@ -181,7 +181,7 @@ int test6(){
         "AAAA-AA-AA",
     };
 
-    for(int i = 0; i < datetime.size(); i++){
+    for(size_t i = 0; i < datetime.size(); i++){
         ret = ts::compute_datetime_format(datetime[i]);
         assert(ret == ts::DatetimeFormat::INVALID_DATE_FORMAT);
     }

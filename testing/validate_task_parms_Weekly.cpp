@@ -91,7 +91,7 @@ int test1(){
         wday_abbr + " " + hours + ":" + minutes + ":" + seconds, // WDAY HH:MM:SS (abbreviated week day name)
         wday_full + " " + hours + ":" + minutes + ":" + seconds // WDAY HH:MM:SS (full week day name)
     };
-    for(int i = 0; i < datetimes.size(); i++){
+    for(size_t i = 0; i < datetimes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
@@ -183,7 +183,7 @@ int test3(){
         {"12:00:11111", ts::ValidationCode::BAD_HMS_LENGTH},
     };
 
-    for(int i = 0; i < datetimes_retcodes.size(); i++){
+    for(size_t i = 0; i < datetimes_retcodes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
@@ -226,7 +226,7 @@ int test4(){
         {"2022-2-15 12:00:00", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
     };
 
-    for(int i = 0; i < datetimes_retcodes.size(); i++){
+    for(size_t i = 0; i < datetimes_retcodes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
@@ -275,7 +275,7 @@ int test5(){
         {"AAAAAAAAAAAAAAA 12:00:00", ts::ValidationCode::BAD_WDAY},
     };
 
-    for(int i = 0; i < datetimes_retcodes.size(); i++){
+    for(size_t i = 0; i < datetimes_retcodes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
@@ -315,7 +315,7 @@ int test6(){
         {"2022-2-15", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
     };
 
-    for(int i = 0; i < datetimes_retcodes.size(); i++){
+    for(size_t i = 0; i < datetimes_retcodes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
@@ -408,7 +408,7 @@ int test8(){
         hours + ":" + minutes + ":" + seconds, // HH:MM:SS
         years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds, // YYYY-MM-DD HH:MM:SS
     };
-    for(int i = 0; i < datetimes.size(); i++){
+    for(size_t i = 0; i < datetimes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");
@@ -536,7 +536,7 @@ int test10(){
         std::string("Sat") + " " + hours + ":" + minutes + ":" + seconds,       // WDAY HH:MM:SS (abbreviated week day name)
         std::string("Sun") + " " + hours + ":" + minutes + ":" + seconds        // WDAY HH:MM:SS (abbreviated week day name)
     };
-    for(int i = 0; i < datetimes.size(); i++){
+    for(size_t i = 0; i < datetimes.size(); i++){
         cl::Config* c = new cl::Config();
         c->add_entry("Name", "Test Title");
         c->add_entry("Description", "A short description");

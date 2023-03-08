@@ -99,7 +99,7 @@ int test1(){
         wday_full + " " + hours + ":" + minutes + ":" + seconds // WDAY HH:MM:SS (full week day name)
     };
 
-    for(int i = 0; i < datetimes.size(); i++){
+    for(size_t i = 0; i < datetimes.size(); i++){
         ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, datetimes[i]);
         
         ret_datetime_str_before = t->get_execution_datetime_fmt();

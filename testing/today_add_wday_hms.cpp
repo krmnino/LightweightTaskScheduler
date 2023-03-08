@@ -423,9 +423,7 @@ int test4(){
     // Invalid hours-minutes-seconds substring
 
     time_t time_now;
-    time_t time_now_add;
     std::tm* to_struct;
-    std::tm struct_time_now_add;
     std::string wday;
     std::string hours;
     std::string minutes;
@@ -485,7 +483,6 @@ int test5(){
     time_t time_now_add;
     std::tm* to_struct;
     std::tm struct_time_now_add;
-    std::tm struct_ret;
     std::string wday;
     std::string hours;
     std::string minutes;
