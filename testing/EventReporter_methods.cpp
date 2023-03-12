@@ -172,7 +172,6 @@ int test4(ts::EventReporter* e){
     c->add_entry("ScriptFilename", "cat_test.sh");
     c->add_entry("Frequency", "Daily");
     c->add_entry("Datetime", "12:00:00");
-    c->save_config(task_path_filename);
 
     codes_ret_messages = {
         {ts::ValidationCode::MISSING_NAME_KEYVAL, "The configuration file \"TestTask.cl\" does not contain the required key-value pair Name."},
