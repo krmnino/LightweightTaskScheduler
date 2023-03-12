@@ -9,7 +9,7 @@ Event::Event() :
 {}
 
 Event::Event(time_t in_event_time, EventType in_type, std::string in_message) :
-    event_time{event_time},
+    event_time{in_event_time},
     type{in_type},
     message{in_message}
 {}
@@ -57,12 +57,15 @@ void EventReporter::log_event(EventType event_type, std::string& event_message){
 }
 
 Event EventReporter::get_event_at(unsigned int idx){
-    if(this->n_events < idx){
-        std::string event_message = "The index passed is greater than the number of recorded events.";
+    Event ret;
+    if(this->n_events - 1 < idx){
+        std::string event_message = "The index passed is equal or greater than the number of recorded events.";
         this->log_event(ts::EventType::WARNING, event_message);
+        ret = this->event_registry.front();
+        return ret;
     }
     // Most recent event located at the back
-    Event ret = this->event_registry[idx];
+    ret = this->event_registry[idx];
     return ret;
 }
 
@@ -124,7 +127,7 @@ std::string EventReporter::generate_load_task_msg(ts::ValidationCode vc_code, st
 	case ValidationCode::BAD_FREQUENCY_VALUE:
         event_message = "An invalid frequency value of \"" + 
                         task_config->get_value("Frequency")->get_data<std::string>() +
-                        "\" was specified in the configuration file: " + task_fn;
+                        "\" was specified in the configuration file \"" + task_fn + "\".";
         break;
     case ValidationCode::INCOMPATIBLE_ONCE_FREQ_DATETIME_FORMAT:
         event_message = "The configuration file \"" + task_fn + "\" specifies a datetime value of \"" + 
