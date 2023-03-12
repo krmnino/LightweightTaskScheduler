@@ -38,3 +38,4 @@
 ./Scheduler_load_tasks_from_dir
 ./Scheduler_load_task
 ./EventReporter_get_instance
+./EventReporter_methods
