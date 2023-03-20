@@ -83,7 +83,7 @@ unsigned int EventReporter::get_n_events(void){
 }
 
 void EventReporter::publish_last_event(void){
-    Event last_event = this->event_registry.back();
+    Event last_event = this->event_registry.front();
     switch(last_event.get_type()){
         case EventType::INFO:
             std::cout << "[INFO]: ";
