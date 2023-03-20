@@ -316,17 +316,24 @@ void Scheduler::display_registry(void){
     std::vector<std::string> task_names;
     std::vector<std::string> task_statuses;
     std::vector<std::string> task_exec_dates;
+
+    /* Loop through all tasks in the scheduler and collect all their attributes to be printed */
     for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
         t = it->second;
         
+        /* Collect task id attribute */
         task_ids.push_back(std::to_string(t->get_id()));
+        /* Update maximum field length for pretty print */
         field_curr_max_len[0] = std::max(field_curr_max_len[0], task_ids[counter].length());
         field_curr_max_len[0] = std::min(field_curr_max_len[0], TASK_ID_FIELD_MAX_LEN);
 
+        /* Collect task name attribute */
         task_names.push_back(t->get_name());
+        /* Update maximum field length for pretty print */
         field_curr_max_len[1] = std::max(field_curr_max_len[1], task_names[counter].length());
         field_curr_max_len[1] = std::min(field_curr_max_len[1], TASK_NAME_FIELD_MAX_LEN);
 
+        /* Collect task status attribute */
         switch(t->get_status()){
         case ts::TaskStatus::FINISHED:
             task_statuses.push_back("FINISHED");
@@ -347,16 +354,20 @@ void Scheduler::display_registry(void){
             task_statuses.push_back("UNDEFINED");
             break;
         }
+        /* Update maximum field length for pretty print */
         field_curr_max_len[2] = std::max(field_curr_max_len[2], task_statuses[counter].length());
         field_curr_max_len[2] = std::min(field_curr_max_len[2], TASK_EXEC_DATE_FIELD_MAX_LEN);
 
+        /* Collect task execution datetime attribute */
         task_exec_dates.push_back(t->get_execution_datetime_fmt());
+        /* Update maximum field length for pretty print */
         field_curr_max_len[3] = std::max(field_curr_max_len[3], task_exec_dates[counter].length());
         field_curr_max_len[3] = std::min(field_curr_max_len[3], TASK_EXEC_DATE_FIELD_MAX_LEN);
 
         counter++;
     }
 
+    /* Add padding for header */
     for(size_t i = 0; i < header.size(); i++){
         padding = field_curr_max_len[i] - header[i].length();
         if(padding <= 0){
@@ -374,6 +385,7 @@ void Scheduler::display_registry(void){
     }
     std::cout << std::endl;
 
+    /* Generate delimiter between header and table body */
     for(size_t i = 0; i < header.size(); i++){
         std::string delim = "";
         for(size_t j = 0; j < header[i].length(); j++){
@@ -388,6 +400,7 @@ void Scheduler::display_registry(void){
     }
     std::cout << std::endl;
 
+    /* Add padding task attributes */
     for(size_t i = 0; i < counter; i++){
         padding = field_curr_max_len[0] - task_ids[i].length();
         if(padding <= 0){
