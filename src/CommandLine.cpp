@@ -38,15 +38,22 @@ void CommandLine::parse_command(void){
 }
 
 void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
+    std::string event_message;
     if(split_cmd_input.size() <= 1){
-        std::cout << "incorrect args number" << std::endl;
+        event_message = "The \"check\" verb requires at least 1 argument. Issue the command \"check help\" for options." ;
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
         return;
     }
     std::string option = split_cmd_input[1];
     if(option == "registry"){
         if(split_cmd_input.size() != 2){
             std::cout << "incorrect args number" << std::endl;
-            return;
+        }
+        else{
+            this->scheduler_ptr->display_registry();
         }
     }
     else if(option == "task"){
@@ -96,13 +103,21 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
     }
 }
 
-void CommandLine::CommandLine_init(EventReporter* er_ptr){
+void CommandLine::CommandLine_init(EventReporter* er_ptr, Scheduler* s_ptr){
     this->cmds_issued = 0;
     this->max_cmd_history = 100;
     this->cmd_input = "";
     this->running_cmd = true;
     // Link Event Reporter to Command Line
-    this->event_reporter = er_ptr;
+    this->event_reporter_ptr = er_ptr;
+    // Link Scheduler to Command Line
+    this->scheduler_ptr = s_ptr;
+}
+
+void CommandLine::CommandLine_delete(void){
+    this->cmd_history.clear();
+    this->max_cmd_history = 0;
+    this->cmds_issued = 0;
 }
 
 void CommandLine::start(void){

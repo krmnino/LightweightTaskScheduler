@@ -300,6 +300,131 @@ bool Scheduler::task_exists(std::string& key){
     return false;
 }
 
+void Scheduler::display_registry(void){
+    std::map<std::string, Task*>::iterator it;
+    Task* t;
+    size_t counter = 0;
+    int padding;
+    std::vector<std::string> header = {"TASK_ID", "NAME", "STATUS", "EXECUTION_DATETIME"};
+    std::vector<size_t> field_curr_max_len = {
+        header[0].length(), /* TASK ID CURRENT MAX LENGTH */
+        header[1].length(), /* TASK NAME CURRENT MAX LENGTH */
+        header[2].length(), /* TASK STATUS CURRENT MAX LENGTH */
+        header[3].length(), /* Task EXECUTION DATETIME CURRENT MAX LENGTH */
+    };
+    std::vector<std::string> task_ids;
+    std::vector<std::string> task_names;
+    std::vector<std::string> task_statuses;
+    std::vector<std::string> task_exec_dates;
+    for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
+        t = it->second;
+        
+        task_ids.push_back(std::to_string(t->get_id()));
+        field_curr_max_len[0] = std::max(field_curr_max_len[0], task_ids[counter].length());
+        field_curr_max_len[0] = std::min(field_curr_max_len[0], TASK_ID_FIELD_MAX_LEN);
+
+        task_names.push_back(t->get_name());
+        field_curr_max_len[1] = std::max(field_curr_max_len[1], task_names[counter].length());
+        field_curr_max_len[1] = std::min(field_curr_max_len[1], TASK_NAME_FIELD_MAX_LEN);
+
+        switch(t->get_status()){
+        case ts::TaskStatus::FINISHED:
+            task_statuses.push_back("FINISHED");
+            break;
+        case ts::TaskStatus::INIT_ERROR:
+            task_statuses.push_back("INIT_ERROR");
+            break;
+        case ts::TaskStatus::EXEC_ERROR:
+            task_statuses.push_back("EXEC_ERROR");
+            break;
+        case ts::TaskStatus::QUEUED:
+            task_statuses.push_back("QUEUED");
+            break;
+        case ts::TaskStatus::RUNNING:
+            task_statuses.push_back("RUNNING");
+            break;
+        default:
+            task_statuses.push_back("UNDEFINED");
+            break;
+        }
+        field_curr_max_len[2] = std::max(field_curr_max_len[2], task_statuses[counter].length());
+        field_curr_max_len[2] = std::min(field_curr_max_len[2], TASK_EXEC_DATE_FIELD_MAX_LEN);
+
+        task_exec_dates.push_back(t->get_execution_datetime_fmt());
+        field_curr_max_len[3] = std::max(field_curr_max_len[3], task_exec_dates[counter].length());
+        field_curr_max_len[3] = std::min(field_curr_max_len[3], TASK_EXEC_DATE_FIELD_MAX_LEN);
+
+        counter++;
+    }
+
+    for(size_t i = 0; i < header.size(); i++){
+        padding = field_curr_max_len[i] - header[i].length();
+        if(padding <= 0){
+            padding = 0;
+        }
+        for(size_t j = 0; j < padding; j++){
+            header[i] += " ";
+        }
+        if(i == header.size() - 1){
+            std::cout << header[i];
+        }
+        else{
+            std::cout << header[i] << " | ";
+        }
+    }
+    std::cout << std::endl;
+
+    for(size_t i = 0; i < header.size(); i++){
+        std::string delim = "";
+        for(size_t j = 0; j < header[i].length(); j++){
+            delim += "-";
+        }
+        if(i == header.size() - 1){
+            std::cout << delim;
+        }
+        else{
+            std::cout << delim << "-+-";
+        }
+    }
+    std::cout << std::endl;
+
+    for(size_t i = 0; i < counter; i++){
+        padding = field_curr_max_len[0] - task_ids[i].length();
+        if(padding <= 0){
+            padding = 0;
+        }
+        for(size_t j = 0; j < padding; j++){
+            task_ids[i] += " ";
+        }
+
+        padding = field_curr_max_len[1] - task_names[i].length();
+        if(padding <= 0){
+            padding = 0;
+        }
+        for(size_t j = 0; j < padding; j++){
+            task_names[i] += " ";
+        }
+
+        padding = field_curr_max_len[2] - task_statuses[i].length();
+        if(padding <= 0){
+            padding = 0;
+        }
+        for(size_t j = 0; j < padding; j++){
+            task_statuses[i] += " ";
+        }
+
+        padding = field_curr_max_len[3] - task_exec_dates[i].length();
+        if(padding <= 0){
+            padding = 0;
+        }
+        for(size_t j = 0; j < padding; j++){
+            task_exec_dates[i] += " ";
+        }
+
+        std::cout << task_ids[i] << " | " << task_names[i] << " | " << task_statuses[i] << " | " << task_exec_dates[i] << std::endl;
+    }
+}
+
 const std::string& Scheduler::get_current_path(void){
     return this->exec_path;
 }

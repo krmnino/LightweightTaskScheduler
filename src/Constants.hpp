@@ -92,6 +92,11 @@ enum class EventType{
     ERROR
 };
 
+const long unsigned int TASK_ID_FIELD_MAX_LEN = 10;
+const long unsigned int TASK_NAME_FIELD_MAX_LEN = 32;
+const long unsigned int TASK_EXEC_DATE_FIELD_MAX_LEN = 32;
+const long unsigned int TASK_STATUS_FIELD_MAX_LEN = 10;
+
 }
 
 #endif

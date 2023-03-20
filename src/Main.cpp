@@ -15,8 +15,8 @@ int main(int argc, char* argv[]){
     
     // Initialize Scheduler and CommandLine data members
     e->EventReporter_init();
-    c->CommandLine_init(e);
     s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
     
     // Obtain directory where LTS executable , scripts and tasks directories live
     s->obtain_exec_path();

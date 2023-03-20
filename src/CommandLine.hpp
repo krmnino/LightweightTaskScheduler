@@ -16,7 +16,8 @@ private:
     std::vector<std::string> cmd_history;
     std::string cmd_input;
     static CommandLine* command_line_ptr;
-    EventReporter* event_reporter;
+    EventReporter* event_reporter_ptr;
+    Scheduler* scheduler_ptr;
     unsigned int max_cmd_history;
     unsigned int cmds_issued;
     bool running_cmd;
@@ -42,8 +43,8 @@ public:
     }
 
     CommandLine(const CommandLine& cmdline) = delete;
-    void CommandLine_init(EventReporter*);
-    void CommandLine_delete();
+    void CommandLine_init(EventReporter*, Scheduler*);
+    void CommandLine_delete(void);
     void start(void);
 };
 
