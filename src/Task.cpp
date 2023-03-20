@@ -636,7 +636,7 @@ TaskStatus Task::get_status(void) const{
     return this->status;
 }
 
-int Task::get_id(void){
+int Task::get_id(void) const{
     return this->id;
 }
 

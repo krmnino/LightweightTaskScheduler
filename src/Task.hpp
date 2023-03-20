@@ -110,7 +110,7 @@ public:
     std::string get_creation_datetime_fmt(void) const;
     std::string get_execution_datetime_fmt(void) const;
     TaskStatus get_status(void) const;
-    int get_id(void);
+    int get_id(void) const;
     DatetimeFormat get_execution_datetime_format_attr(void);
     void set_status(TaskStatus);
     void set_id(int);
