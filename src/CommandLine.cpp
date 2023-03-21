@@ -61,8 +61,15 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
     }
     else if(option == "task"){
         if(split_cmd_input.size() != 3){
-            std::cout << "incorrect args number" << std::endl;
+            event_message = "The command \"check task <task_name>\" does not take any additional arguments." ;
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
             return;
+        }
+        else{
+            this->scheduler_ptr->display_task(split_cmd_input[2]);
         }
     }
     else if(option == "status"){

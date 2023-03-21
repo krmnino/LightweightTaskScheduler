@@ -410,13 +410,20 @@ void Scheduler::display_registry(void){
             task_ids[i] += " ";
         }
 
-        padding = field_curr_max_len[1] - task_names[i].length();
-        if(padding <= 0){
-            padding = 0;
-        }
-        for(size_t j = 0; j < padding; j++){
-            task_names[i] += " ";
-        }
+        if(task_names[i].length() > TASK_NAME_FIELD_MAX_LEN){
+            // Cap task name to 29 characters and add ellipsis at the end of it
+            task_names[i] = task_names[i].substr(0, TASK_NAME_FIELD_MAX_LEN - 3) + "...";
+        }   
+        else{
+            // Otherwise, check if padding is needed
+            padding = field_curr_max_len[1] - task_names[i].length();
+            if(padding <= 0){
+                padding = 0;
+            }
+            for(size_t j = 0; j < padding; j++){
+                task_names[i] += " ";
+            }
+        } 
 
         padding = field_curr_max_len[2] - task_statuses[i].length();
         if(padding <= 0){
@@ -436,6 +443,59 @@ void Scheduler::display_registry(void){
 
         std::cout << task_ids[i] << " | " << task_names[i] << " | " << task_statuses[i] << " | " << task_exec_dates[i] << std::endl;
     }
+}
+
+void Scheduler::display_task(std::string& key){
+    const Task* t;
+    std::string task_id;
+    std::string task_name;
+    std::string task_description;
+    std::string task_creation_datetime;
+    std::string task_execution_datetime;
+    std::string task_frequency;
+    std::string task_status;
+    if(!this->task_exists(key)){
+        std::string event_message = "The task \"" + key + "\" does not exist in the scheduler." ;
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+    t = this->get_task(key);
+    task_id = std::to_string(t->get_id());
+    task_name = t->get_name();
+    task_description = t->get_description();
+    task_creation_datetime = t->get_creation_datetime_fmt();
+    task_execution_datetime = t->get_execution_datetime_fmt();
+    task_frequency = t->get_frequency();
+    switch(t->get_status()){
+    case ts::TaskStatus::FINISHED:
+        task_status = "FINISHED";
+        break;
+    case ts::TaskStatus::INIT_ERROR:
+        task_status = "INIT_ERROR";
+        break;
+    case ts::TaskStatus::EXEC_ERROR:
+        task_status = "EXEC_ERROR";
+        break;
+    case ts::TaskStatus::QUEUED:
+        task_status = "QUEUED";
+        break;
+    case ts::TaskStatus::RUNNING:
+        task_status = "RUNNING";
+        break;
+    default:
+        task_status = "UNDEFINED";
+        break;
+    }
+    std::cout << "-TASK ID: " << task_id << std::endl;
+    std::cout << "-TASK NAME: " << task_name << std::endl;
+    std::cout << "-TASK DESCRIPTION: " << task_description << std::endl;
+    std::cout << "-TASK CREATION DATETIME: " << task_creation_datetime << std::endl;
+    std::cout << "-TASK EXECUTION DATETIME: " << task_execution_datetime << std::endl;
+    std::cout << "-TASK FREQUENCY: " << task_frequency << std::endl;
+    std::cout << "-TASK STATUS: " << task_status << std::endl;
 }
 
 const std::string& Scheduler::get_current_path(void){

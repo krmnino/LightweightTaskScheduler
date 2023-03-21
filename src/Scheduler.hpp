@@ -51,6 +51,7 @@ public:
     void remove_task(std::string&);
     bool task_exists(std::string&);
     void display_registry(void);
+    void display_task(std::string&);
     const std::string& get_current_path(void);
     unsigned int get_n_tasks(void);
     const Task* get_task(std::string&) const;
