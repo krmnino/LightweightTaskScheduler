@@ -498,6 +498,30 @@ void Scheduler::display_task(std::string& key){
     std::cout << "-TASK STATUS: " << task_status << std::endl;
 }
 
+void Scheduler::display_scheduler_status(void){
+    unsigned int ret_counter;
+    std::string tasks_loaded = std::to_string(this->scheduler_ptr->get_n_tasks());
+    std::string events_recorded = std::to_string(this->n_tasks);
+    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::FINISHED);
+    std::string finished_tasks = std::to_string(ret_counter);
+    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::INIT_ERROR);
+    std::string init_error_tasks = std::to_string(ret_counter);
+    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::INIT_ERROR);
+    std::string exec_error_tasks = std::to_string(ret_counter);
+    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::QUEUED);
+    std::string queued_tasks = std::to_string(ret_counter);
+    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::RUNNING);
+    std::string running_tasks = std::to_string(ret_counter);
+    
+    std::cout << "-TASKS LOADED: " << tasks_loaded << std::endl;
+    std::cout << "-EVENTS RECORDED: " << events_recorded << std::endl;
+    std::cout << "-TASKS FINISHED: " << finished_tasks << std::endl;
+    std::cout << "-TASKS INIT_ERROR: " << init_error_tasks << std::endl;
+    std::cout << "-TASKS EXEC_ERROR: " << exec_error_tasks << std::endl;
+    std::cout << "-TASKS QUEUED: " << queued_tasks << std::endl;
+    std::cout << "-TASKS RUNNING: " << running_tasks << std::endl;
+}
+
 const std::string& Scheduler::get_current_path(void){
     return this->exec_path;
 }
@@ -517,6 +541,19 @@ const Task* Scheduler::get_task(std::string& key) const{
         return nullptr;
     }
     return const_cast<Scheduler*>(this)->get_task_from_registry(key);
+}
+
+unsigned int Scheduler::get_n_tasks_by_status(ts::TaskStatus status){
+    std::map<std::string, Task*>::iterator it;
+    Task* t;
+    unsigned int counter = 0;
+    for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
+        t = it->second;
+        if(t->get_status() == status){
+            counter++;
+        }
+    }
+    return counter;
 }
 
 } // namespace ts

@@ -52,9 +52,11 @@ public:
     bool task_exists(std::string&);
     void display_registry(void);
     void display_task(std::string&);
+    void display_scheduler_status(void);
     const std::string& get_current_path(void);
     unsigned int get_n_tasks(void);
     const Task* get_task(std::string&) const;
+    unsigned int get_n_tasks_by_status(ts::TaskStatus);
 };
 
 } // namespace ts

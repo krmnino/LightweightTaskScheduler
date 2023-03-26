@@ -40,16 +40,17 @@ void CommandLine::parse_command(void){
 void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
     std::string event_message;
     if(split_cmd_input.size() <= 1){
-        event_message = "The \"check\" verb requires at least 1 argument. Issue the command \"check help\" for options." ;
+        event_message = "The \"check\" verb requires at least 1 argument. Issue the command \"check help\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
         #endif
+        return;
     }
     std::string option = split_cmd_input[1];
     if(option == "registry"){
         if(split_cmd_input.size() != 2){
-            event_message = "The command \"check registry\" does not take any additional arguments." ;
+            event_message = "The command \"check registry\" does not take any additional arguments.";
             this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
@@ -61,7 +62,7 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
     }
     else if(option == "task"){
         if(split_cmd_input.size() != 3){
-            event_message = "The command \"check task <task_name>\" does not take any additional arguments." ;
+            event_message = "The command \"check task <task_name>\" does not take any additional arguments.";
             this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
@@ -74,12 +75,23 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
     }
     else if(option == "status"){
         if(split_cmd_input.size() != 2){
-            std::cout << "incorrect args number" << std::endl;
+            event_message = "The command \"check status\" does not take any additional arguments.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
             return;
+        }
+        else{
+            this->scheduler_ptr->display_scheduler_status();
         }
     }
     else{
-        std::cout << "incorrect args number" << std::endl;
+        event_message = "An invalid argument was passed for the the \"check\" verb. Issue the command \"check help\" for options.";
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
     }
 }
 
