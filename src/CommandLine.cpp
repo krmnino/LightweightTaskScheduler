@@ -96,9 +96,27 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
 }
 
 void CommandLine::verb_remove(std::vector<std::string>& split_cmd_input){
+    std::string event_message;
     if(split_cmd_input.size() <= 1){
-        std::cout << "incorrect args number" << std::endl;
+        event_message = "The \"remove\" verb requires at least 1 argument. Issue the command \"remove help\" for options.";
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
         return;
+    }
+    std::string option = split_cmd_input[1];
+        if(option == "task"){
+        if(split_cmd_input.size() != 3){
+            event_message = "The command \"remove task\" does not take any additional arguments.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+        }
+        else{
+            this->scheduler_ptr->remove_task(split_cmd_input[2]);
+        }
     }
 }
 
