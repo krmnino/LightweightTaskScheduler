@@ -20,6 +20,9 @@ void CommandLine::parse_command(void){
         this->running_cmd = false;
         std::cout << "[INFO]: ending Light-weight Task Scheduler process..." <<  std::endl;
     }
+    else if(split_cmd_input[0] == "help"){
+        this->verb_help(split_cmd_input);
+    }
     else if(split_cmd_input[0] == "check"){
         this->verb_check(split_cmd_input);
     }
@@ -40,7 +43,7 @@ void CommandLine::parse_command(void){
 void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
     std::string event_message;
     if(split_cmd_input.size() <= 1){
-        event_message = "The \"check\" verb requires at least 1 argument. Issue the command \"check help\" for options.";
+        event_message = "The \"check\" verb requires at least 1 argument. Issue the command \"help check\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -87,7 +90,7 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
         }
     }
     else{
-        event_message = "An invalid argument was passed for the the \"check\" verb. Issue the command \"check help\" for options.";
+        event_message = "An invalid argument was passed for the the \"check\" verb. Issue the command \"help check\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -98,7 +101,7 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
 void CommandLine::verb_remove(std::vector<std::string>& split_cmd_input){
     std::string event_message;
     if(split_cmd_input.size() <= 1){
-        event_message = "The \"remove\" verb requires at least 1 argument. Issue the command \"remove help\" for options.";
+        event_message = "The \"remove\" verb requires at least 1 argument. Issue the command \"help remove\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -119,7 +122,7 @@ void CommandLine::verb_remove(std::vector<std::string>& split_cmd_input){
         }
     }
     else{
-        event_message = "An invalid argument was passed for the the \"remove\" verb. Issue the command \"remove help help\" for options.";
+        event_message = "An invalid argument was passed for the the \"remove\" verb. Issue the command \"help remove\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -130,7 +133,7 @@ void CommandLine::verb_remove(std::vector<std::string>& split_cmd_input){
 void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
     std::string event_message;
     if(split_cmd_input.size() <= 1){
-        event_message = "The \"load\" verb requires at least 1 argument. Issue the command \"remove help\" for options.";
+        event_message = "The \"load\" verb requires at least 1 argument. Issue the command \"help load\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -151,7 +154,7 @@ void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
         }
     }
     else{
-        event_message = "An invalid argument was passed for the the \"load\" verb. Issue the command \"load help\" for options.";
+        event_message = "An invalid argument was passed for the the \"load\" verb. Issue the command \"help load\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -168,9 +171,23 @@ void CommandLine::verb_update(std::vector<std::string>& split_cmd_input){
 }
 
 void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
-    if(split_cmd_input.size() != 1){
-        std::cout << "incorrect args number" << std::endl;
-        return;
+    std::string event_message;
+    if(split_cmd_input.size() == 1){
+        std::cout << "- help: Displays usage information for the different commands available." << std::endl;
+        std::cout << "- check registry: " << std::endl;
+        std::cout << "- remove: " << std::endl;
+        std::cout << "- load: " << std::endl;
+        std::cout << "- update: " << std::endl;
+    }
+    else if(split_cmd_input.size() == 2){
+
+    }
+    else{
+        event_message = "An invalid argument was passed for the the \"help\" verb. Issue the command \"help\" for options.";
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
     }
 }
 
