@@ -33,9 +33,6 @@ void CommandLine::parse_command(void){
     else if(split_cmd_input[0] == "load"){
         this->verb_load(split_cmd_input);
     }
-    else if(split_cmd_input[0] == "update"){
-        this->verb_update(split_cmd_input);
-    }
     else{
         event_message = "Unrecognized command. Entered: " + this->cmd_input;
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
@@ -167,14 +164,6 @@ void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
     }
 }
 
-void CommandLine::verb_update(std::vector<std::string>& split_cmd_input){
-    if(split_cmd_input.size() <= 1){
-        std::cout << "incorrect args number" << std::endl;
-        return;
-    }
-    std::string option = split_cmd_input[1];
-}
-
 void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
     std::string event_message;
     if(split_cmd_input.size() == 1){
@@ -182,7 +171,6 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
         this->help_check_msg();
         this->help_remove_msg();
         this->help_load_msg();
-        this->help_update_msg();
     }
     else if(split_cmd_input.size() == 2){
         std::string option = split_cmd_input[1];
@@ -194,9 +182,6 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
         }
         else if(option == "load"){
             this->help_load_msg();
-        }
-        else if(option == "update"){
-            this->help_update_msg();
         }
         else{
             event_message = "An invalid argument was passed for the the \"help <verb>\" command. Issue the command \"help\" for options.";
@@ -220,7 +205,6 @@ void CommandLine::help_msg(void){
     std::cout << "- help check: Displays usage for the \"check\" verb only." << std::endl;
     std::cout << "- help remove: Displays usage for the \"remove\" verb only." << std::endl;
     std::cout << "- help load: Displays usage for the \"load\" verb only." << std::endl;
-    std::cout << "- help update: Displays usage for the \"update\" verb only." << std::endl;
 }
 
 void CommandLine::help_check_msg(void){
@@ -235,10 +219,6 @@ void CommandLine::help_remove_msg(void){
 
 void CommandLine::help_load_msg(void){
     std::cout << "- load task <config_name>: Load task in schdeuler from specified configuration filename." << std::endl;
-}
-
-void CommandLine::help_update_msg(void){
-    std::cout << "- update: " << std::endl;
 }
 
 void CommandLine::CommandLine_init(EventReporter* er_ptr, Scheduler* s_ptr){
