@@ -29,6 +29,11 @@ private:
     void verb_load(std::vector<std::string>&);
     void verb_update(std::vector<std::string>&);
     void verb_help(std::vector<std::string>&);
+    void help_msg(void);
+    void help_check_msg(void);
+    void help_remove_msg(void);
+    void help_load_msg(void);
+    void help_update_msg(void);
     
 public:
     static CommandLine* CommandLine_get_instance(){

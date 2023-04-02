@@ -5,6 +5,7 @@ namespace ts{
 void CommandLine::parse_command(void){
     size_t base_idx = 0;
     std::vector<std::string> split_cmd_input;
+    std::string event_message;
     for (size_t i = 0; i < this->cmd_input.length(); i++) {
         if (this->cmd_input.at(i) == ' ') {
             split_cmd_input.push_back(this->cmd_input.substr(base_idx, i - base_idx));
@@ -36,7 +37,11 @@ void CommandLine::parse_command(void){
         this->verb_update(split_cmd_input);
     }
     else{
-        std::cout << "[ERROR]: unrecognized command. Entered: " << this->cmd_input << std::endl;
+        event_message = "Unrecognized command. Entered: " + this->cmd_input;
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
     }
 }
 
@@ -111,7 +116,7 @@ void CommandLine::verb_remove(std::vector<std::string>& split_cmd_input){
     std::string option = split_cmd_input[1];
     if(option == "task"){
         if(split_cmd_input.size() != 3){
-            event_message = "The command \"remove task\" does not take any additional arguments.";
+            event_message = "The command \"remove task <task_name>\" does not take any additional arguments.";
             this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
@@ -143,7 +148,7 @@ void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
     std::string option = split_cmd_input[1];
     if(option == "task"){
         if(split_cmd_input.size() != 3){
-            event_message = "The command \"load task\" does not take any additional arguments.";
+            event_message = "The command \"load task <config_name>\" does not take any additional arguments.";
             this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
@@ -173,14 +178,33 @@ void CommandLine::verb_update(std::vector<std::string>& split_cmd_input){
 void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
     std::string event_message;
     if(split_cmd_input.size() == 1){
-        std::cout << "- help: Displays usage information for the different commands available." << std::endl;
-        std::cout << "- check registry: " << std::endl;
-        std::cout << "- remove: " << std::endl;
-        std::cout << "- load: " << std::endl;
-        std::cout << "- update: " << std::endl;
+        this->help_msg();
+        this->help_check_msg();
+        this->help_remove_msg();
+        this->help_load_msg();
+        this->help_update_msg();
     }
     else if(split_cmd_input.size() == 2){
-
+        std::string option = split_cmd_input[1];
+        if(option == "check"){
+            this->help_check_msg();
+        }
+        else if(option == "remove"){
+            this->help_remove_msg();
+        }
+        else if(option == "load"){
+            this->help_load_msg();
+        }
+        else if(option == "update"){
+            this->help_update_msg();
+        }
+        else{
+            event_message = "An invalid argument was passed for the the \"help <verb>\" command. Issue the command \"help\" for options.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+        }
     }
     else{
         event_message = "An invalid argument was passed for the the \"help\" verb. Issue the command \"help\" for options.";
@@ -189,6 +213,32 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
         this->event_reporter_ptr->publish_last_event();
         #endif
     }
+}
+
+void CommandLine::help_msg(void){
+    std::cout << "- help: Displays this dialog." << std::endl;
+    std::cout << "- help check: Displays usage for the \"check\" verb only." << std::endl;
+    std::cout << "- help remove: Displays usage for the \"remove\" verb only." << std::endl;
+    std::cout << "- help load: Displays usage for the \"load\" verb only." << std::endl;
+    std::cout << "- help update: Displays usage for the \"update\" verb only." << std::endl;
+}
+
+void CommandLine::help_check_msg(void){
+    std::cout << "- check registry: Displays relevant information about the tasks loaded in the scheduler." << std::endl;
+    std::cout << "- check task <task_name>: Displays the full information about the specified task." << std::endl;
+    std::cout << "- check status: Displays operational information about the scheduler." << std::endl;
+}
+
+void CommandLine::help_remove_msg(void){
+    std::cout << "- remove task <task_name>: Removes the specified task from the scheduler." << std::endl;
+}
+
+void CommandLine::help_load_msg(void){
+    std::cout << "- load task <config_name>: Load task in schdeuler from specified configuration filename." << std::endl;
+}
+
+void CommandLine::help_update_msg(void){
+    std::cout << "- update: " << std::endl;
 }
 
 void CommandLine::CommandLine_init(EventReporter* er_ptr, Scheduler* s_ptr){
