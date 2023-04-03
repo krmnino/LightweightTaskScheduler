@@ -1,8 +1,10 @@
 #include <assert.h>
 #include <iostream>
 
+#include "../src/Scheduler.hpp"
 #include "../src/EventReporter.hpp"
 
+ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
 ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
 
 int test1(){
