@@ -309,6 +309,19 @@ int test7(ts::EventReporter* e){
 }
 
 
+int test8(ts::EventReporter* e){
+    // TEST 8: initialize EventReporter and verify its data members were properly zero-out
+    e->EventReporter_init();
+
+    assert(e->get_n_events() == 0);
+
+    e->EventReporter_delete();
+
+    std::cout << ">> EventReporter_methods: 8 done" << std::endl;
+    return 0;
+}
+
+
 int main(int argc, char* argv[]){
      ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
 
@@ -319,6 +332,7 @@ int main(int argc, char* argv[]){
     test5(e);
     test6(e);
     test7(e);
+    test8(e);
 
     e->EventReporter_end_instance();
 }
