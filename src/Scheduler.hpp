@@ -50,9 +50,9 @@ public:
     void load_task(std::string&);
     void remove_task(std::string&);
     bool task_exists(std::string&);
-    void display_registry(void);
-    void display_task(std::string&);
-    void display_scheduler_status(void);
+    std::string display_registry(void);
+    std::string display_task(std::string&);
+    std::string display_scheduler_status(void);
     const std::string& get_current_path(void);
     unsigned int get_n_tasks(void);
     const Task* get_task(std::string&) const;

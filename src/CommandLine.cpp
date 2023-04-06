@@ -6,6 +6,7 @@ void CommandLine::parse_command(void){
     size_t base_idx = 0;
     std::vector<std::string> split_cmd_input;
     std::string event_message;
+
     for (size_t i = 0; i < this->cmd_input.length(); i++) {
         if (this->cmd_input.at(i) == ' ') {
             split_cmd_input.push_back(this->cmd_input.substr(base_idx, i - base_idx));
@@ -44,6 +45,8 @@ void CommandLine::parse_command(void){
 
 void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
     std::string event_message;
+    std::string out_msg;
+
     if(split_cmd_input.size() <= 1){
         event_message = "The \"check\" verb requires at least 1 argument. Issue the command \"help check\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
@@ -62,7 +65,8 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
             #endif
         }
         else{
-            this->scheduler_ptr->display_registry();
+            this->cmd_output = this->scheduler_ptr->display_registry();
+            std::cout << this->cmd_output;
         }
     }
     else if(option == "task"){
@@ -75,7 +79,8 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
             return;
         }
         else{
-            this->scheduler_ptr->display_task(split_cmd_input[2]);
+            this->cmd_output = this->scheduler_ptr->display_task(split_cmd_input[2]);
+            std::cout << this->cmd_output;
         }
     }
     else if(option == "status"){
@@ -88,7 +93,8 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
             return;
         }
         else{
-            this->scheduler_ptr->display_scheduler_status();
+            this->cmd_output = this->scheduler_ptr->display_scheduler_status();
+            std::cout << this->cmd_output;
         }
     }
     else{
@@ -102,6 +108,7 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
 
 void CommandLine::verb_remove(std::vector<std::string>& split_cmd_input){
     std::string event_message;
+
     if(split_cmd_input.size() <= 1){
         event_message = "The \"remove\" verb requires at least 1 argument. Issue the command \"help remove\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
@@ -134,6 +141,7 @@ void CommandLine::verb_remove(std::vector<std::string>& split_cmd_input){
 
 void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
     std::string event_message;
+
     if(split_cmd_input.size() <= 1){
         event_message = "The \"load\" verb requires at least 1 argument. Issue the command \"help load\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
@@ -166,6 +174,7 @@ void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
 
 void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
     std::string event_message;
+    
     if(split_cmd_input.size() == 1){
         this->help_msg();
         this->help_check_msg();

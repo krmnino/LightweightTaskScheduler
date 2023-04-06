@@ -300,7 +300,8 @@ bool Scheduler::task_exists(std::string& key){
     return false;
 }
 
-void Scheduler::display_registry(void){
+std::string Scheduler::display_registry(void){
+    std::string out_str = "";
     std::map<std::string, Task*>::iterator it;
     Task* t;
     size_t counter = 0;
@@ -377,13 +378,13 @@ void Scheduler::display_registry(void){
             header[i] += " ";
         }
         if(i == header.size() - 1){
-            std::cout << header[i];
+            out_str += header[i];
         }
         else{
-            std::cout << header[i] << " | ";
+            out_str += header[i] + " | ";
         }
     }
-    std::cout << std::endl;
+    out_str += "\n";
 
     /* Generate delimiter between header and table body */
     for(size_t i = 0; i < header.size(); i++){
@@ -392,13 +393,13 @@ void Scheduler::display_registry(void){
             delim += "-";
         }
         if(i == header.size() - 1){
-            std::cout << delim;
+            out_str += delim;
         }
         else{
-            std::cout << delim << "-+-";
+            out_str += delim + "-+-";
         }
     }
-    std::cout << std::endl;
+    out_str += "\n";
 
     /* Add padding task attributes */
     for(size_t i = 0; i < counter; i++){
@@ -441,11 +442,12 @@ void Scheduler::display_registry(void){
             task_exec_dates[i] += " ";
         }
 
-        std::cout << task_ids[i] << " | " << task_names[i] << " | " << task_statuses[i] << " | " << task_exec_dates[i] << std::endl;
+        out_str +=  task_ids[i] + " | " + task_names[i] + " | " + task_statuses[i] + " | " + task_exec_dates[i] + "\n";
     }
+    return out_str;
 }
 
-void Scheduler::display_task(std::string& key){
+std::string Scheduler::display_task(std::string& key){
     const Task* t;
     std::string task_id;
     std::string task_name;
@@ -454,14 +456,17 @@ void Scheduler::display_task(std::string& key){
     std::string task_execution_datetime;
     std::string task_frequency;
     std::string task_status;
+    std::string out_str = "";
+
     if(!this->task_exists(key)){
         std::string event_message = "The task \"" + key + "\" does not exist in the scheduler." ;
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
         #endif
-        return;
+        return out_str;
     }
+
     t = this->get_task(key);
     task_id = std::to_string(t->get_id());
     task_name = t->get_name();
@@ -469,6 +474,7 @@ void Scheduler::display_task(std::string& key){
     task_creation_datetime = t->get_creation_datetime_fmt();
     task_execution_datetime = t->get_execution_datetime_fmt();
     task_frequency = t->get_frequency();
+
     switch(t->get_status()){
     case ts::TaskStatus::FINISHED:
         task_status = "FINISHED";
@@ -489,17 +495,22 @@ void Scheduler::display_task(std::string& key){
         task_status = "UNDEFINED";
         break;
     }
-    std::cout << "-TASK ID: " << task_id << std::endl;
-    std::cout << "-TASK NAME: " << task_name << std::endl;
-    std::cout << "-TASK DESCRIPTION: " << task_description << std::endl;
-    std::cout << "-TASK CREATION DATETIME: " << task_creation_datetime << std::endl;
-    std::cout << "-TASK EXECUTION DATETIME: " << task_execution_datetime << std::endl;
-    std::cout << "-TASK FREQUENCY: " << task_frequency << std::endl;
-    std::cout << "-TASK STATUS: " << task_status << std::endl;
+
+    out_str += "-TASK ID: " + task_id + "\n";
+    out_str += "-TASK NAME: " + task_name + "\n";
+    out_str += "-TASK DESCRIPTION: " + task_description + "\n";
+    out_str += "-TASK CREATION DATETIME: " + task_creation_datetime + "\n";
+    out_str += "-TASK EXECUTION DATETIME: " + task_execution_datetime + "\n";
+    out_str += "-TASK FREQUENCY: " + task_frequency + "\n";
+    out_str += "-TASK STATUS: " + task_status + "\n";
+
+    return out_str;
 }
 
-void Scheduler::display_scheduler_status(void){
+std::string Scheduler::display_scheduler_status(void){
+    std::string out_str = "";
     unsigned int ret_counter;
+
     std::string tasks_loaded = std::to_string(this->scheduler_ptr->get_n_tasks());
     std::string events_recorded = std::to_string(this->n_tasks);
     ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::FINISHED);
@@ -513,13 +524,15 @@ void Scheduler::display_scheduler_status(void){
     ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::RUNNING);
     std::string running_tasks = std::to_string(ret_counter);
     
-    std::cout << "-TASKS LOADED: " << tasks_loaded << std::endl;
-    std::cout << "-EVENTS RECORDED: " << events_recorded << std::endl;
-    std::cout << "-TASKS FINISHED: " << finished_tasks << std::endl;
-    std::cout << "-TASKS INIT_ERROR: " << init_error_tasks << std::endl;
-    std::cout << "-TASKS EXEC_ERROR: " << exec_error_tasks << std::endl;
-    std::cout << "-TASKS QUEUED: " << queued_tasks << std::endl;
-    std::cout << "-TASKS RUNNING: " << running_tasks << std::endl;
+    out_str += "-TASKS LOADED: " + tasks_loaded + "\n";
+    out_str += "-EVENTS RECORDED: " + events_recorded + "\n";
+    out_str += "-TASKS FINISHED: " + finished_tasks + "\n";
+    out_str += "-TASKS INIT_ERROR: " + init_error_tasks + "\n";
+    out_str += "-TASKS EXEC_ERROR: " + exec_error_tasks + "\n";
+    out_str += "-TASKS QUEUED: " + queued_tasks + "\n";
+    out_str += "-TASKS RUNNING: " + running_tasks + "\n";
+
+    return out_str;
 }
 
 const std::string& Scheduler::get_current_path(void){

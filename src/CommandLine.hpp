@@ -15,6 +15,7 @@ class CommandLine{
 private:
     std::vector<std::string> cmd_history;
     std::string cmd_input;
+    std::string cmd_output;
     static CommandLine* command_line_ptr;
     EventReporter* event_reporter_ptr;
     Scheduler* scheduler_ptr;
