@@ -451,3 +451,9 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test7()`|Log an event and attempt to retrieve an event from `EventReporter` with an negative index. A warning-type event should be logged and returned with an appropiate message and update the event count.|`EventReporter::get_event_at(unsigned int)`|<span style="color:green">Passed|
 |`test8()`|Log an event and attempt to retrieve an event from `EventReporter` with an index equal to the number of events recorded. A warning-type event should be logged and returned with an appropiate message and update the event count.|`EventReporter::get_event_at(unsigned int)`|<span style="color:green">Passed|
 |`test9()`|Log an event and attempt to retrieve an event from `EventReporter` with an index greater than the number of events recorded. A warning-type event should be logged and returned with an appropiate message and update the event count.|`EventReporter::get_event_at(unsigned int)`|<span style="color:green">Passed|
+
+### **CommandLine_get_instance.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Instantiate and remove instance of `CommandLine` singleton object.|`CommandLine::CommandLine_get_instance(void)`<br/>`CommandLine::CommandLine_end_instance(void)`|<span style="color:green">Passed|
