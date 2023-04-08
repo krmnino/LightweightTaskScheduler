@@ -8,13 +8,13 @@ ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
 ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
 
 int test1(){
-    ts::EventReporter* s = ts::EventReporter::EventReporter_get_instance();
+    ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
     
-    assert(s != nullptr);
+    assert(e != nullptr);
 
-    s->EventReporter_delete();
+    e->EventReporter_delete();
 
-    s->EventReporter_end_instance();
+    e->EventReporter_end_instance();
 
     std::cout << ">> EventReporter_get_instance: 1 done" << std::endl;
     return 0;
