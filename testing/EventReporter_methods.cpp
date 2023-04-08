@@ -356,7 +356,7 @@ int test9(ts::EventReporter* e){
 
 
 int main(int argc, char* argv[]){
-     ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
+    ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
 
     test1(e);
     test2(e);
