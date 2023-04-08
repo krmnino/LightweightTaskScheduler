@@ -8,7 +8,20 @@ ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
 ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
 
 int test1(ts::EventReporter* e){
-    // TEST 1: log one event and verify its attributes
+    // TEST 1: initialize EventReporter and verify its data members were properly zero-out
+    e->EventReporter_init();
+
+    assert(e->get_n_events() == 0);
+
+    e->EventReporter_delete();
+
+    std::cout << ">> EventReporter_methods: 1 done" << std::endl;
+    return 0;
+}
+
+
+int test2(ts::EventReporter* e){
+    // TEST 2: log one event and verify its attributes
     time_t time_now;
     std::string message;
     ts::EventType event_type;
@@ -33,13 +46,13 @@ int test1(ts::EventReporter* e){
     
     e->EventReporter_delete();
 
-    std::cout << ">> EventReporter_methods: 1 done" << std::endl;
+    std::cout << ">> EventReporter_methods: 2 done" << std::endl;
     return 0;
 }
 
 
-int test2(ts::EventReporter* e){
-    // TEST 2: log 3 events and verify they exist by in the EventReporter with 
+int test3(ts::EventReporter* e){
+    // TEST 3: log 3 events and verify they exist by in the EventReporter with 
     // their respective attributes.
     time_t time_now_1;
     time_t time_now_2;
@@ -98,13 +111,13 @@ int test2(ts::EventReporter* e){
     
     e->EventReporter_delete();
 
-    std::cout << ">> EventReporter_methods: 2 done" << std::endl;
+    std::cout << ">> EventReporter_methods: 3 done" << std::endl;
     return 0;
 }
 
 
-int test3(ts::EventReporter* e){
-    // TEST 3: log 3 events and verify that get_event_at(unsigned int) at index 0 and
+int test4(ts::EventReporter* e){
+    // TEST 4: log 3 events and verify that get_event_at(unsigned int) at index 0 and
     // get_last_event(void) get the same task 
     time_t time_now_1;
     time_t time_now_2;
@@ -149,13 +162,13 @@ int test3(ts::EventReporter* e){
     
     e->EventReporter_delete();
 
-    std::cout << ">> EventReporter_methods: 3 done" << std::endl;
+    std::cout << ">> EventReporter_methods: 4 done" << std::endl;
     return 0;
 }
 
 
-int test4(ts::EventReporter* e){
-    // TEST 4: verify that messages are generated based on ts::ValidationCode and task configuration 
+int test5(ts::EventReporter* e){
+    // TEST 5: verify that messages are generated based on ts::ValidationCode and task configuration 
     std::string task_path_filename;
     std::string task_filename;
     std::string task_name;
@@ -213,13 +226,13 @@ int test4(ts::EventReporter* e){
     }
     delete c;
 
-    std::cout << ">> EventReporter_methods: 4 done" << std::endl;
+    std::cout << ">> EventReporter_methods: 5 done" << std::endl;
     return 0;
 }
 
 
-int test5(ts::EventReporter* e){
-    // TEST 5: attempt to retrieve last event when EventReporter is empty
+int test6(ts::EventReporter* e){
+    // TEST 6: attempt to retrieve last event when EventReporter is empty
     time_t time_now;
     ts::Event ret_event;
     time_t ret_event_time;
@@ -238,13 +251,13 @@ int test5(ts::EventReporter* e){
     
     e->EventReporter_delete();
 
-    std::cout << ">> EventReporter_methods: 5 done" << std::endl;
+    std::cout << ">> EventReporter_methods: 6 done" << std::endl;
     return 0;
 }
 
 
-int test6(ts::EventReporter* e){
-    // TEST 6: attempt to retrieve event at an index equal to the number of events recorded
+int test7(ts::EventReporter* e){
+    // TEST 7: attempt to retrieve event at an index equal to the number of events recorded
     time_t time_now;
     std::string message;
     ts::EventType event_type;
@@ -271,13 +284,13 @@ int test6(ts::EventReporter* e){
     
     e->EventReporter_delete();
 
-    std::cout << ">> EventReporter_methods: 6 done" << std::endl;
+    std::cout << ">> EventReporter_methods: 7 done" << std::endl;
     return 0;
 }
 
 
-int test7(ts::EventReporter* e){
-    // TEST 7: attempt to retrieve event at an index greater than the number of events recorded
+int test8(ts::EventReporter* e){
+    // TEST 8: attempt to retrieve event at an index greater than the number of events recorded
     time_t time_now;
     std::string message;
     ts::EventType event_type;
@@ -302,19 +315,6 @@ int test7(ts::EventReporter* e){
     assert(ret_event.get_type() == ts::EventType::WARNING);
     assert(ret_event.get_message() == "The index passed is equal or greater than the number of recorded events.");
     
-    e->EventReporter_delete();
-
-    std::cout << ">> EventReporter_methods: 7 done" << std::endl;
-    return 0;
-}
-
-
-int test8(ts::EventReporter* e){
-    // TEST 8: initialize EventReporter and verify its data members were properly zero-out
-    e->EventReporter_init();
-
-    assert(e->get_n_events() == 0);
-
     e->EventReporter_delete();
 
     std::cout << ">> EventReporter_methods: 8 done" << std::endl;
