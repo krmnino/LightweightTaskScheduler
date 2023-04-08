@@ -257,7 +257,40 @@ int test6(ts::EventReporter* e){
 
 
 int test7(ts::EventReporter* e){
-    // TEST 7: attempt to retrieve event at an index equal to the number of events recorded
+    // TEST 7: attempt to retrieve event at a negative index 
+    time_t time_now;
+    std::string message;
+    ts::EventType event_type;
+    ts::Event ret_event;
+    time_t ret_event_time;
+
+    e->EventReporter_init();
+    
+    event_type = ts::EventType::ERROR;
+    message = "Test error message";
+
+    e->log_event(event_type, message);
+    assert(e->get_n_events() == 1);
+
+    std::time(&time_now);
+    ret_event = e->get_event_at(-10);
+    assert(e->get_n_events() == 2);
+    ret_event_time = ret_event.get_event_time();
+
+    assert(ret_event.get_event_time() == time_now);
+    assert((std::string)ctime(&ret_event_time) == (std::string)ctime(&time_now));
+    assert(ret_event.get_type() == ts::EventType::WARNING);
+    assert(ret_event.get_message() == "The event index passed is either negative or greater than the number of recorded events.");
+    
+    e->EventReporter_delete();
+
+    std::cout << ">> EventReporter_methods: 7 done" << std::endl;
+    return 0;
+}
+
+
+int test8(ts::EventReporter* e){
+    // TEST 8: attempt to retrieve event at an index equal to the number of events recorded
     time_t time_now;
     std::string message;
     ts::EventType event_type;
@@ -280,17 +313,17 @@ int test7(ts::EventReporter* e){
     assert(ret_event.get_event_time() == time_now);
     assert((std::string)ctime(&ret_event_time) == (std::string)ctime(&time_now));
     assert(ret_event.get_type() == ts::EventType::WARNING);
-    assert(ret_event.get_message() == "The index passed is equal or greater than the number of recorded events.");
+    assert(ret_event.get_message() == "The event index passed is either negative or greater than the number of recorded events.");
     
     e->EventReporter_delete();
 
-    std::cout << ">> EventReporter_methods: 7 done" << std::endl;
+    std::cout << ">> EventReporter_methods: 8 done" << std::endl;
     return 0;
 }
 
 
-int test8(ts::EventReporter* e){
-    // TEST 8: attempt to retrieve event at an index greater than the number of events recorded
+int test9(ts::EventReporter* e){
+    // TEST 9: attempt to retrieve event at an index greater than the number of events recorded
     time_t time_now;
     std::string message;
     ts::EventType event_type;
@@ -313,11 +346,11 @@ int test8(ts::EventReporter* e){
     assert(ret_event.get_event_time() == time_now);
     assert((std::string)ctime(&ret_event_time) == (std::string)ctime(&time_now));
     assert(ret_event.get_type() == ts::EventType::WARNING);
-    assert(ret_event.get_message() == "The index passed is equal or greater than the number of recorded events.");
+    assert(ret_event.get_message() == "The event index passed is either negative or greater than the number of recorded events.");
     
     e->EventReporter_delete();
 
-    std::cout << ">> EventReporter_methods: 8 done" << std::endl;
+    std::cout << ">> EventReporter_methods: 9 done" << std::endl;
     return 0;
 }
 
@@ -333,6 +366,7 @@ int main(int argc, char* argv[]){
     test6(e);
     test7(e);
     test8(e);
+    test9(e);
 
     e->EventReporter_end_instance();
 }

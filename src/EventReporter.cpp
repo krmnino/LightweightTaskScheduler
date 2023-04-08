@@ -59,7 +59,7 @@ void EventReporter::log_event(EventType event_type, std::string& event_message){
 Event EventReporter::get_event_at(unsigned int idx){
     Event ret;
     if(this->n_events - 1 < idx){
-        std::string event_message = "The index passed is equal or greater than the number of recorded events.";
+        std::string event_message = "The event index passed is either negative or greater than the number of recorded events.";
         this->log_event(ts::EventType::WARNING, event_message);
         ret = this->event_registry.front();
         return ret;
