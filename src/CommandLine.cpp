@@ -174,9 +174,10 @@ void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
 
 void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
     std::string event_message;
+    std::string out_str = "";
     
     if(split_cmd_input.size() == 1){
-        this->help_msg();
+        out_str += this->help_msg();
         this->help_check_msg();
         this->help_remove_msg();
         this->help_load_msg();
@@ -209,11 +210,13 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
     }
 }
 
-void CommandLine::help_msg(void){
-    std::cout << "- help: Displays this dialog." << std::endl;
-    std::cout << "- help check: Displays usage for the \"check\" verb only." << std::endl;
-    std::cout << "- help remove: Displays usage for the \"remove\" verb only." << std::endl;
-    std::cout << "- help load: Displays usage for the \"load\" verb only." << std::endl;
+std::string CommandLine::help_msg(void){
+    std::string out_str = ""; 
+    out_str += "- help: Displays this dialog.\n";
+    out_str += "- help check: Displays usage for the \"check\" verb only.\n";
+    out_str += "- help remove: Displays usage for the \"remove\" verb only.\n";
+    out_str += "- help load: Displays usage for the \"load\" verb only.\n";
+    return out_str;
 }
 
 void CommandLine::help_check_msg(void){

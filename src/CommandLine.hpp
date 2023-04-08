@@ -29,7 +29,7 @@ private:
     void verb_remove(std::vector<std::string>&);
     void verb_load(std::vector<std::string>&);
     void verb_help(std::vector<std::string>&);
-    void help_msg(void);
+    std::string help_msg(void);
     void help_check_msg(void);
     void help_remove_msg(void);
     void help_load_msg(void);
