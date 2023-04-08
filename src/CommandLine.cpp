@@ -178,20 +178,28 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
     
     if(split_cmd_input.size() == 1){
         out_str += this->help_msg();
-        this->help_check_msg();
-        this->help_remove_msg();
-        this->help_load_msg();
+        out_str += this->help_check_msg();
+        out_str += this->help_remove_msg();
+        out_str += this->help_load_msg();
+        this->cmd_output = out_str;
+        std::cout << this->cmd_output;
     }
     else if(split_cmd_input.size() == 2){
         std::string option = split_cmd_input[1];
         if(option == "check"){
-            this->help_check_msg();
+            out_str += this->help_check_msg();
+            this->cmd_output = out_str;
+            std::cout << this->cmd_output;
         }
         else if(option == "remove"){
-            this->help_remove_msg();
+            out_str += this->help_remove_msg();
+            this->cmd_output = out_str;
+            std::cout << this->cmd_output;
         }
         else if(option == "load"){
-            this->help_load_msg();
+            out_str += this->help_load_msg();
+            this->cmd_output = out_str;
+            std::cout << this->cmd_output;
         }
         else{
             event_message = "An invalid argument was passed for the the \"help <verb>\" command. Issue the command \"help\" for options.";
@@ -219,18 +227,24 @@ std::string CommandLine::help_msg(void){
     return out_str;
 }
 
-void CommandLine::help_check_msg(void){
-    std::cout << "- check registry: Displays relevant information about the tasks loaded in the scheduler." << std::endl;
-    std::cout << "- check task <task_name>: Displays the full information about the specified task." << std::endl;
-    std::cout << "- check status: Displays operational information about the scheduler." << std::endl;
+std::string CommandLine::help_check_msg(void){
+    std::string out_str = ""; 
+    out_str += "- check registry: Displays relevant information about the tasks loaded in the scheduler.\n";
+    out_str += "- check task <task_name>: Displays the full information about the specified task.\n";
+    out_str += "- check status: Displays operational information about the scheduler.\n";
+    return out_str;
 }
 
-void CommandLine::help_remove_msg(void){
-    std::cout << "- remove task <task_name>: Removes the specified task from the scheduler." << std::endl;
+std::string CommandLine::help_remove_msg(void){
+    std::string out_str = ""; 
+    out_str += "- remove task <task_name>: Removes the specified task from the scheduler.\n";
+    return out_str;
 }
 
-void CommandLine::help_load_msg(void){
-    std::cout << "- load task <config_name>: Load task in schdeuler from specified configuration filename." << std::endl;
+std::string CommandLine::help_load_msg(void){
+    std::string out_str = "";
+    out_str += "- load task <config_name>: Load task in schdeuler from specified configuration filename.\n";
+    return out_str;
 }
 
 void CommandLine::CommandLine_init(EventReporter* er_ptr, Scheduler* s_ptr){
