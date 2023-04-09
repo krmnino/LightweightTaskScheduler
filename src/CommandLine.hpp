@@ -13,7 +13,6 @@ namespace ts{
 
 class CommandLine{
 private:
-    std::vector<std::string> cmd_history;
     std::string cmd_input;
     std::string cmd_output;
     static CommandLine* command_line_ptr;
@@ -24,7 +23,6 @@ private:
     bool running_cmd;
 
     CommandLine() {};
-    void parse_command(void);
     void verb_check(std::vector<std::string>&);
     void verb_remove(std::vector<std::string>&);
     void verb_load(std::vector<std::string>&);
@@ -50,6 +48,10 @@ public:
     void CommandLine_init(EventReporter*, Scheduler*);
     void CommandLine_delete(void);
     void start(void);
+    void parse_command(void);
+    std::string& get_cmd_input(void);
+    std::string& get_cmd_output(void);
+    unsigned int get_cmds_issued(void);
 };
 
 } // namespace ts

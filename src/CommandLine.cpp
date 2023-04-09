@@ -2,47 +2,6 @@
 
 namespace ts{
 
-void CommandLine::parse_command(void){
-    size_t base_idx = 0;
-    std::vector<std::string> split_cmd_input;
-    std::string event_message;
-
-    for (size_t i = 0; i < this->cmd_input.length(); i++) {
-        if (this->cmd_input.at(i) == ' ') {
-            split_cmd_input.push_back(this->cmd_input.substr(base_idx, i - base_idx));
-            base_idx = i + 1;
-        }
-        else if (i == this->cmd_input.length() - 1) {
-            split_cmd_input.push_back(this->cmd_input.substr(base_idx, i + 1 - base_idx));
-            base_idx = i + 1;
-        }
-    }
-
-    if(split_cmd_input[0] == "close" && split_cmd_input.size() == 1){
-        this->running_cmd = false;
-        std::cout << "[INFO]: ending Light-weight Task Scheduler process..." <<  std::endl;
-    }
-    else if(split_cmd_input[0] == "help"){
-        this->verb_help(split_cmd_input);
-    }
-    else if(split_cmd_input[0] == "check"){
-        this->verb_check(split_cmd_input);
-    }
-    else if(split_cmd_input[0] == "remove"){
-        this->verb_remove(split_cmd_input);
-    }
-    else if(split_cmd_input[0] == "load"){
-        this->verb_load(split_cmd_input);
-    }
-    else{
-        event_message = "Unrecognized command. Entered: " + this->cmd_input;
-        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
-        #ifndef SILENT
-        this->event_reporter_ptr->publish_last_event();
-        #endif
-    }
-}
-
 void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
     std::string event_message;
     std::string out_msg;
@@ -66,6 +25,7 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
         }
         else{
             this->cmd_output = this->scheduler_ptr->display_registry();
+            this->cmds_issued++;
             std::cout << this->cmd_output;
         }
     }
@@ -80,6 +40,7 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
         }
         else{
             this->cmd_output = this->scheduler_ptr->display_task(split_cmd_input[2]);
+            this->cmds_issued++;
             std::cout << this->cmd_output;
         }
     }
@@ -94,6 +55,7 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
         }
         else{
             this->cmd_output = this->scheduler_ptr->display_scheduler_status();
+            this->cmds_issued++;
             std::cout << this->cmd_output;
         }
     }
@@ -128,6 +90,7 @@ void CommandLine::verb_remove(std::vector<std::string>& split_cmd_input){
         }
         else{
             this->scheduler_ptr->remove_task(split_cmd_input[2]);
+            this->cmds_issued++;
         }
     }
     else{
@@ -161,6 +124,7 @@ void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
         }
         else{
             this->scheduler_ptr->load_task(split_cmd_input[2]);
+            this->cmds_issued++;
         }
     }
     else{
@@ -182,6 +146,7 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
         out_str += this->help_remove_msg();
         out_str += this->help_load_msg();
         this->cmd_output = out_str;
+        this->cmds_issued++;
         std::cout << this->cmd_output;
     }
     else if(split_cmd_input.size() == 2){
@@ -189,16 +154,19 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
         if(option == "check"){
             out_str += this->help_check_msg();
             this->cmd_output = out_str;
+            this->cmds_issued++;
             std::cout << this->cmd_output;
         }
         else if(option == "remove"){
             out_str += this->help_remove_msg();
             this->cmd_output = out_str;
+            this->cmds_issued++;
             std::cout << this->cmd_output;
         }
         else if(option == "load"){
             out_str += this->help_load_msg();
             this->cmd_output = out_str;
+            this->cmds_issued++;
             std::cout << this->cmd_output;
         }
         else{
@@ -249,8 +217,8 @@ std::string CommandLine::help_load_msg(void){
 
 void CommandLine::CommandLine_init(EventReporter* er_ptr, Scheduler* s_ptr){
     this->cmds_issued = 0;
-    this->max_cmd_history = 100;
     this->cmd_input = "";
+    this->cmd_output = "";
     this->running_cmd = true;
     // Link Event Reporter to Command Line
     this->event_reporter_ptr = er_ptr;
@@ -259,9 +227,9 @@ void CommandLine::CommandLine_init(EventReporter* er_ptr, Scheduler* s_ptr){
 }
 
 void CommandLine::CommandLine_delete(void){
-    this->cmd_history.clear();
-    this->max_cmd_history = 0;
     this->cmds_issued = 0;
+    this->cmd_input = "";
+    this->cmd_output = "";
 }
 
 void CommandLine::start(void){
@@ -273,6 +241,59 @@ void CommandLine::start(void){
         }
         this->parse_command();
     }
+}
+
+void CommandLine::parse_command(void){
+    size_t base_idx = 0;
+    std::vector<std::string> split_cmd_input;
+    std::string event_message;
+
+    for (size_t i = 0; i < this->cmd_input.length(); i++) {
+        if (this->cmd_input.at(i) == ' ') {
+            split_cmd_input.push_back(this->cmd_input.substr(base_idx, i - base_idx));
+            base_idx = i + 1;
+        }
+        else if (i == this->cmd_input.length() - 1) {
+            split_cmd_input.push_back(this->cmd_input.substr(base_idx, i + 1 - base_idx));
+            base_idx = i + 1;
+        }
+    }
+
+    if(split_cmd_input[0] == "close" && split_cmd_input.size() == 1){
+        this->running_cmd = false;
+        std::cout << "[INFO]: ending Light-weight Task Scheduler process..." <<  std::endl;
+    }
+    else if(split_cmd_input[0] == "help"){
+        this->verb_help(split_cmd_input);
+    }
+    else if(split_cmd_input[0] == "check"){
+        this->verb_check(split_cmd_input);
+    }
+    else if(split_cmd_input[0] == "remove"){
+        this->verb_remove(split_cmd_input);
+    }
+    else if(split_cmd_input[0] == "load"){
+        this->verb_load(split_cmd_input);
+    }
+    else{
+        event_message = "Unrecognized command. Entered: " + this->cmd_input;
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+    }
+}
+
+std::string& CommandLine::get_cmd_input(void){
+    return this->cmd_input;
+}
+
+std::string& CommandLine::get_cmd_output(void){
+    return this->cmd_output;
+}
+
+unsigned int CommandLine::get_cmds_issued(void){
+    return this->cmds_issued;
 }
 
 } // namespace ts
