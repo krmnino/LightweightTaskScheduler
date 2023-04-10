@@ -52,6 +52,7 @@ public:
     std::string& get_cmd_input(void);
     std::string& get_cmd_output(void);
     unsigned int get_cmds_issued(void);
+    void set_cmd_input(std::string);
 };
 
 } // namespace ts

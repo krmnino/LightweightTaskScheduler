@@ -26,7 +26,9 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
         else{
             this->cmd_output = this->scheduler_ptr->display_registry();
             this->cmds_issued++;
+            #ifndef SILENT
             std::cout << this->cmd_output;
+            #endif
         }
     }
     else if(option == "task"){
@@ -147,7 +149,9 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
         out_str += this->help_load_msg();
         this->cmd_output = out_str;
         this->cmds_issued++;
+        #ifndef SILENT
         std::cout << this->cmd_output;
+        #endif
     }
     else if(split_cmd_input.size() == 2){
         std::string option = split_cmd_input[1];
@@ -155,19 +159,25 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
             out_str += this->help_check_msg();
             this->cmd_output = out_str;
             this->cmds_issued++;
+            #ifndef SILENT
             std::cout << this->cmd_output;
+            #endif
         }
         else if(option == "remove"){
             out_str += this->help_remove_msg();
             this->cmd_output = out_str;
             this->cmds_issued++;
+            #ifndef SILENT
             std::cout << this->cmd_output;
+            #endif
         }
         else if(option == "load"){
             out_str += this->help_load_msg();
             this->cmd_output = out_str;
             this->cmds_issued++;
+            #ifndef SILENT
             std::cout << this->cmd_output;
+            #endif
         }
         else{
             event_message = "An invalid argument was passed for the the \"help <verb>\" command. Issue the command \"help\" for options.";
@@ -294,6 +304,10 @@ std::string& CommandLine::get_cmd_output(void){
 
 unsigned int CommandLine::get_cmds_issued(void){
     return this->cmds_issued;
+}
+
+void CommandLine::set_cmd_input(std::string in_cmd_input){
+    this->cmd_input = in_cmd_input;
 }
 
 } // namespace ts
