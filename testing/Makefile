@@ -68,7 +68,8 @@ all: task_scheduler.o						\
 	Scheduler_load_task						\
 	EventReporter_get_instance				\
 	EventReporter_methods					\
-	CommandLine_get_instance
+	CommandLine_get_instance				\
+	CommandLine_methods
 
 task_scheduler.o: 
 	g++ -g -c -std=c++17 -pthread -D SILENT $(SRC_FILES)
@@ -241,6 +242,10 @@ CommandLine_get_instance: task_scheduler.o
 	g++ -g -Wall -c -std=c++17 CommandLine_get_instance.cpp
 	g++ -g -Wall -o CommandLine_get_instance CommandLine_get_instance.o $(OBJ_FILES) -pthread -lstdc++fs
 
+CommandLine_methods: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 CommandLine_methods.cpp
+	g++ -g -Wall -o CommandLine_methods CommandLine_methods.o $(OBJ_FILES) -pthread -lstdc++fs
+
 ###################################################################################################
 
 clean:
@@ -289,4 +294,5 @@ clean:
 	Scheduler_load_task						\
 	EventReporter_get_instance				\
 	EventReporter_methods					\
-	CommandLine_get_instance
+	CommandLine_get_instance				\
+	CommandLine_methods

@@ -457,3 +457,12 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Instantiate and remove instance of `CommandLine` singleton object.|`CommandLine::CommandLine_get_instance(void)`<br/>`CommandLine::CommandLine_end_instance(void)`|<span style="color:green">Passed|
+
+### **CommandLine_methods.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`|Initialize `CommandLine` object and verify its data members were properly zeroed out.|`CommandLine::CommandLine_init(void)`<br/>`CommandLine::CommandLine_delete(void)`|<span style="color:green">Passed|
+|`test2()`|Set the `cmd_input` data member to an arbitrary value and verify it remains unchanged.|`CommandLine::set_cmd_input(void)`<br/>`CommandLine::get_cmd_input(void)`|<span style="color:green">Passed|
+|`test3()`|Issue the command `help check` and verify the `cmds_issued` data member has been updated to 1.|`CommandLine::get_cmds_issued(void)`<br/>`CommandLine::parse_command(void)`|<span style="color:green">Passed|
+|`test4()`|Issue the command `help check` and verify the `cmd_output` data member has been updated after a successful execution.|`CommandLine::parse_command(void)`<br/>`CommandLine::get_cmd_input(void)`|<span style="color:green">Passed|

@@ -52,3 +52,4 @@ testing/Scheduler_load_task
 testing/EventReporter_get_instance
 testing/EventReporter_methods
 testing/CommandLine_get_instance
+testing/CommandLine_methods

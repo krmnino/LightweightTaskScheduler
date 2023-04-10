@@ -40,3 +40,4 @@
 ./EventReporter_get_instance
 ./EventReporter_methods
 ./CommandLine_get_instance
+./CommandLine_methods
