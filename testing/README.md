@@ -466,3 +466,12 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test2()`|Set the `cmd_input` data member to an arbitrary value and verify it remains unchanged.|`CommandLine::set_cmd_input(void)`<br/>`CommandLine::get_cmd_input(void)`|<span style="color:green">Passed|
 |`test3()`|Issue the command `help check` and verify the `cmds_issued` data member has been updated to 1.|`CommandLine::get_cmds_issued(void)`<br/>`CommandLine::parse_command(void)`|<span style="color:green">Passed|
 |`test4()`|Issue the command `help check` and verify the `cmd_output` data member has been updated after a successful execution.|`CommandLine::parse_command(void)`<br/>`CommandLine::get_cmd_input(void)`|<span style="color:green">Passed|
+
+### **CommandLine_verb_check.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+|`test1()`| Issue the command `check`. It should cause the scheduler to report a warning event. Verify the event message, event time, and event type. |`CommandLine::parse_command(void)`<br/>`CommandLine::verb_check(void)`|<span style="color:green">Passed|
+|`test2()`| Issue the command `check registry invalid`. It should cause the scheduler to report a warning event. Verify the event message, event time, and event type. |`CommandLine::parse_command(void)`<br/>`CommandLine::verb_check(void)`|<span style="color:green">Passed|
+|`test3()`|Issue the command `check registry`. It should print an empty task registry table since the schduler has not loaded any tasks. Verify the table header and count of commands issued.|`CommandLine::parse_command(void)`<br/>`CommandLine::verb_check(void)`<br/>`Scheduler::display_registry(void)`|<span style="color:green">Passed|
+|`test4()`|Issue the command `check registry`. It should print a task registry table with 2 loaded tasks. Verify the table header, loaded task attributes, and count of commands issued.|`CommandLine::parse_command(void)`<br/>`CommandLine::verb_check(void)`<br/>`Scheduler::display_registry(void)`|<span style="color:green">Passed|
