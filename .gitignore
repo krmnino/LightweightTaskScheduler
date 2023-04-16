@@ -53,3 +53,4 @@ testing/EventReporter_get_instance
 testing/EventReporter_methods
 testing/CommandLine_get_instance
 testing/CommandLine_methods
+testing/CommandLine_verb_check
