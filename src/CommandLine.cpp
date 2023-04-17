@@ -32,7 +32,15 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
         }
     }
     else if(option == "task"){
-        if(split_cmd_input.size() != 3){
+        if(split_cmd_input.size() < 3){
+            event_message = "The command \"check task <task_name>\" requires a task name for the third parameter.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+            return;
+        }
+        else if(split_cmd_input.size() != 3){
             event_message = "The command \"check task <task_name>\" does not take any additional arguments.";
             this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
             #ifndef SILENT
@@ -43,7 +51,9 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
         else{
             this->cmd_output = this->scheduler_ptr->display_task(split_cmd_input[2]);
             this->cmds_issued++;
+            #ifndef SILENT
             std::cout << this->cmd_output;
+            #endif
         }
     }
     else if(option == "status"){
@@ -58,7 +68,9 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
         else{
             this->cmd_output = this->scheduler_ptr->display_scheduler_status();
             this->cmds_issued++;
+            #ifndef SILENT
             std::cout << this->cmd_output;
+            #endif
         }
     }
     else{

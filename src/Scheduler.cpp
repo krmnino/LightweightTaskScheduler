@@ -459,7 +459,7 @@ std::string Scheduler::display_task(std::string& key){
     std::string out_str = "";
 
     if(!this->task_exists(key)){
-        std::string event_message = "The task \"" + key + "\" does not exist in the scheduler." ;
+        std::string event_message = "The task \"" + key + "\" does not exist in the scheduler.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
