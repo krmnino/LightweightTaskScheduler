@@ -27,6 +27,8 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == ts::EventType::WARNING);
     assert(ret_event.get_message() == "The \"check\" verb requires at least 1 argument. Issue the command \"help check\" for options.");
+    assert(e->get_n_events() == 1);
+    assert(c->get_cmds_issued() == 0);
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -55,6 +57,8 @@ int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == ts::EventType::WARNING);
     assert(ret_event.get_message() == "The command \"check registry\" does not take any additional arguments.");
+    assert(e->get_n_events() == 1);
+    assert(c->get_cmds_issued() == 0);
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -81,6 +85,7 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
     assert(c->get_cmds_issued() == 1);
     assert(c->get_cmd_output() == verify_cmd_output);
+    assert(e->get_n_events() == 0);
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -118,6 +123,7 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     assert(ret_cmd_output.find(verify_cmd_output_l1) != std::string::npos);
     assert(ret_cmd_output.find(verify_cmd_output_l2) != std::string::npos);
     assert(ret_cmd_output.find(verify_cmd_output_l3) != std::string::npos);
+    assert(e->get_n_events() == 2);
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -146,6 +152,8 @@ int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == ts::EventType::WARNING);
     assert(ret_event.get_message() == "The command \"check task <task_name>\" requires a task name for the third parameter.");
+    assert(c->get_cmds_issued() == 0);
+    assert(e->get_n_events() == 1);
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -174,6 +182,8 @@ int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == ts::EventType::WARNING);
     assert(ret_event.get_message() == "The command \"check task <task_name>\" does not take any additional arguments.");
+    assert(c->get_cmds_issued() == 0);
+    assert(e->get_n_events() == 1);
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -221,6 +231,8 @@ int test7(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     assert(ret_cmd_output.find(verify_cmd_output_l5) != std::string::npos);
     assert(ret_cmd_output.find(verify_cmd_output_l6) != std::string::npos);
     assert(ret_cmd_output.find(verify_cmd_output_l7) != std::string::npos);
+    assert(c->get_cmds_issued() == 1);
+    assert(e->get_n_events() == 2);
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -251,6 +263,7 @@ int test8(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == ts::EventType::WARNING);
     assert(ret_event.get_message() == "The task \"invalid_name\" does not exist in the scheduler.");
+    assert(e->get_n_events() == 1);
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -298,6 +311,7 @@ int test9(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     assert(ret_cmd_output.find(verify_cmd_output_l5) != std::string::npos);
     assert(ret_cmd_output.find(verify_cmd_output_l6) != std::string::npos);
     assert(ret_cmd_output.find(verify_cmd_output_l7) != std::string::npos);
+    assert(e->get_n_events() == 2);
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -326,6 +340,8 @@ int test10(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == ts::EventType::WARNING);
     assert(ret_event.get_message() == "An invalid argument was passed for the the \"check\" verb. Issue the command \"help check\" for options.");
+    assert(c->get_cmds_issued() == 0);
+    assert(e->get_n_events() == 1);
 
     c->CommandLine_delete();
     s->Scheduler_delete();
