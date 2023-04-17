@@ -10,7 +10,7 @@ ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
 ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
 
 int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 1: issue the command "check" and verify event warning
+    // TEST 1: Issue the command "check" and verify event warning
     e->EventReporter_init();
     s->Scheduler_init(e);
     c->CommandLine_init(e, s);
@@ -38,7 +38,7 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 2: issue the command "check registry invalid" and verify event warning
+    // TEST 2: Issue the command "check registry invalid" and verify event warning
     e->EventReporter_init();
     s->Scheduler_init(e);
     c->CommandLine_init(e, s);
