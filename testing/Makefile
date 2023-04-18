@@ -67,7 +67,8 @@ SRC_TESTCASES =	Task_constructor						\
 				EventReporter_methods					\
 				CommandLine_get_instance				\
 				CommandLine_methods						\
-				CommandLine_verb_check
+				CommandLine_verb_check					\
+				CommandLine_verb_remove
 
 ###################################################################################################
 
@@ -251,6 +252,10 @@ CommandLine_methods: task_scheduler.o
 CommandLine_verb_check: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 CommandLine_verb_check.cpp
 	g++ -g -Wall -o CommandLine_verb_check CommandLine_verb_check.o $(OBJ_FILES) -pthread -lstdc++fs
+
+CommandLine_verb_remove: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 CommandLine_verb_remove.cpp
+	g++ -g -Wall -o CommandLine_verb_remove CommandLine_verb_remove.o $(OBJ_FILES) -pthread -lstdc++fs
 
 ###################################################################################################
 

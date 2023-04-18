@@ -42,3 +42,4 @@
 ./CommandLine_get_instance
 ./CommandLine_methods
 ./CommandLine_verb_check
+./CommandLine_verb_remove
