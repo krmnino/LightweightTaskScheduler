@@ -133,7 +133,7 @@ void Scheduler::load_tasks_from_dir(void){
         // Get task attributes from config file and validate them, check if task name is repeated
         task_name = task_config->get_value("Name")->get_data<std::string>();
         if (this->task_exists(task_name)) {
-            event_message = "A task with the name \"" + task_name + "\" already exists in the scheduler." ;
+            event_message = "A task with the name \"" + task_name + "\" already exists in the scheduler.";
             this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
@@ -226,7 +226,7 @@ void Scheduler::load_task(std::string& task_filename){
     // Get task attributes from config file and validate them, check if task name is repeated
     task_name = task_config->get_value("Name")->get_data<std::string>();
     if (this->task_exists(task_name)) {
-        event_message = "A task with the name \"" + task_name + "\" already exists in the scheduler." ;
+        event_message = "A task with the name \"" + task_name + "\" already exists in the scheduler.";
         this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -269,7 +269,7 @@ void Scheduler::load_task(std::string& task_filename){
 void Scheduler::remove_task(std::string& key){
     // Check if key exists in task registry
     if(!this->task_exists(key)){
-        std::string event_message = "The task \"" + key + "\" does not exist in the scheduler." ;
+        std::string event_message = "The task \"" + key + "\" does not exist in the scheduler.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -546,7 +546,7 @@ unsigned int Scheduler::get_n_tasks(){
 const Task* Scheduler::get_task(std::string& key) const{
     // Check if key exists in task registry
     if(!const_cast<Scheduler*>(this)->task_exists(key)){
-        std::string event_message = "The task \"" + key + "\" does not exist in the scheduler." ;
+        std::string event_message = "The task \"" + key + "\" does not exist in the scheduler.";
         this->event_reporter_ptr->log_event(EventType::INFO, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
