@@ -122,7 +122,7 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     std::time(&time_now);
 
     assert(ret_event.get_event_time() == time_now);
-    assert(ret_event.get_type() == ts::EventType::WARNING);
+    assert(ret_event.get_type() == ts::EventType::ERROR);
     assert(ret_event.get_message() == "The task \"invalid\" does not exist in the scheduler.");
     assert(s->get_n_tasks() == 2);
     assert(e->get_n_events() == 3);
