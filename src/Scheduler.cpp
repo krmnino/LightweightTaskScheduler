@@ -204,7 +204,7 @@ void Scheduler::load_task(std::string& task_filename){
     }
 
     if(!std::filesystem::exists(this->exec_path + "/tasks/" + task_filename)){
-        event_message = "The task file configuration file " + task_filename + " could not be found.";
+        event_message = "The task file configuration file \"" + task_filename + "\" could not be found.";
         this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
