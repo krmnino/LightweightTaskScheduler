@@ -43,3 +43,4 @@
 ./CommandLine_methods
 ./CommandLine_verb_check
 ./CommandLine_verb_remove
+./CommandLine_verb_load
