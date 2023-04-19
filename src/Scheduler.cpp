@@ -270,7 +270,7 @@ void Scheduler::remove_task(std::string& key){
     // Check if key exists in task registry
     if(!this->task_exists(key)){
         std::string event_message = "The task \"" + key + "\" does not exist in the scheduler.";
-        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
         #endif
