@@ -147,7 +147,7 @@ int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     ts::Event ret_event;
     time_t time_now;
 
-    c->set_cmd_input("remove invalid");
+    c->set_cmd_input("load invalid");
     c->parse_command();
     ret_event = e->get_last_event();
     std::time(&time_now);
@@ -161,7 +161,6 @@ int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     c->CommandLine_delete();
     s->Scheduler_delete();
     e->EventReporter_delete();
-
 
     std::cout << ">> CommandLine_verb_remove: 5 done" << std::endl;
     return 0;
