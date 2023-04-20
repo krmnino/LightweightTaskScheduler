@@ -192,7 +192,7 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
             #endif
         }
         else{
-            event_message = "An invalid argument was passed for the the \"help <verb>\" command. Issue the command \"help\" for options.";
+            event_message = "An invalid argument was passed for the the \"help\" verb. Issue the command \"help\" for options.";
             this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
