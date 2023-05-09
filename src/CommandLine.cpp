@@ -214,6 +214,7 @@ std::string CommandLine::help_msg(void){
     out_str += "- help check: Displays usage for the \"check\" verb only.\n";
     out_str += "- help remove: Displays usage for the \"remove\" verb only.\n";
     out_str += "- help load: Displays usage for the \"load\" verb only.\n";
+    out_str += "- close: Terminates the scheduler program.\n";
     return out_str;
 }
 
