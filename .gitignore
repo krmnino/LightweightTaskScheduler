@@ -9,6 +9,7 @@ src/*.gch
 # TESTING 
 testing/*.o
 testing/*.dat
+testing/scheduler
 testing/tasks/TestTask.cl
 testing/Task_constructor
 testing/Task_methods

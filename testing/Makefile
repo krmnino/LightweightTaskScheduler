@@ -76,6 +76,23 @@ SRC_TESTCASES =	Task_constructor						\
 
 all: task_scheduler.o $(SRC_TESTCASES)
 
+debug:
+	g++ -g -std=c++17 					\
+		-pthread						\
+		-D DEBUG						\
+		$(SRC_FILES)					\
+		../src/Main.cpp -o scheduler 	\
+		-lstdc++fs
+
+debug_silent:
+	g++ -g -std=c++17 					\
+		-pthread						\
+		-D DEBUG						\
+		-D SILENT						\
+		$(SRC_FILES)					\
+		../src/Main.cpp -o scheduler 	\
+		-lstdc++fs
+
 task_scheduler.o: 
 	g++ -g -c -std=c++17 -pthread -D SILENT $(SRC_FILES)
 
@@ -273,5 +290,6 @@ clean:
 	rm *.o 									\
 	*.gch									\
 	../src/*.gch							\
+	scheduler								\
 	tasks/TestTask.cl						\
 	$(SRC_TESTCASES)
