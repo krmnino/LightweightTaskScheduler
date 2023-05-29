@@ -22,6 +22,7 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     verify_cmd_output += "- help check: Displays usage for the \"check\" verb only.\n";
     verify_cmd_output += "- help remove: Displays usage for the \"remove\" verb only.\n";
     verify_cmd_output += "- help load: Displays usage for the \"load\" verb only.\n";
+    verify_cmd_output += "- close: Terminates the scheduler program.\n";
     verify_cmd_output += "- check registry: Displays relevant information about the tasks loaded in the scheduler.\n";
     verify_cmd_output += "- check task <task_name>: Displays the full information about the specified task.\n";
     verify_cmd_output += "- check status: Displays operational information about the scheduler.\n";

@@ -444,8 +444,9 @@ int test6(){
     std::string t_description = "A short description for this task";
     std::string t_script_name = "scripts/cat_test.sh";
     std::string t_frequency = "Hourly";
+    std::string t_input_execution_datetime = "12:00:00";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency);
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime);
     
     t->set_id(12345);
     assert(t->get_id() == 12345);
@@ -467,8 +468,9 @@ int test7(){
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Hourly";
+    std::string t_input_execution_datetime = "12:00:00";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency);
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime);
     
     t->run_task();
 

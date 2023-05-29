@@ -524,30 +524,7 @@ int test3(){
 
 
 int test4(){
-    // TEST 4: verify that execution datetime is set properly when initializing Task object
-    // Use Task constructor Task::Task(std::string, std::string, std::string, std::string)
-    // Frequency: Yearly
-    // Datetime format: n/a
-
-    std::string t_name = "Task Name";
-    std::string t_description = "A short description for this task";
-    std::string t_script_name = "cat_test.sh";
-    std::string t_frequency = "Yearly";
-
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency);
-
-    assert(t->get_execution_datetime(false) == 0);
-    assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
-
-    delete t;
-
-    std::cout << ">> Task_setting_exec_datetime_Yearly: 4 done" << std::endl;
-    return 0;
-}
-
-
-int test5(){
-    // TEST 5: Initializing Task object with incompatible datetime format 
+    // TEST 4: Initializing Task object with incompatible datetime format 
     // Frequency: Yearly
     // Datetime format: HH:MM:SS
 
@@ -683,13 +660,13 @@ int test5(){
 
     delete t;
 
-    std::cout << ">> Task_setting_exec_datetime_Yearly: 5 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Yearly: 4 done" << std::endl;
     return 0;
 }
 
 
-int test6(){
-    // TEST 6: Initializing Task object with incompatible datetime format 
+int test5(){
+    // TEST 5: Initializing Task object with incompatible datetime format 
     // Frequency: Yearly
     // Datetime format: WDAY HH:MM:SS (full week day names)
 
@@ -825,13 +802,13 @@ int test6(){
 
     delete t;
 
-    std::cout << ">> Task_setting_exec_datetime_Yearly: 6 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Yearly: 5 done" << std::endl;
     return 0;
 }
 
 
-int test7(){
-    // TEST 7: Initializing Task object with incompatible datetime format 
+int test6(){
+    // TEST 6: Initializing Task object with incompatible datetime format 
     // Frequency: Yearly
     // Datetime format: WDAY HH:MM:SS (abbreviated week day names)
 
@@ -967,13 +944,13 @@ int test7(){
 
     delete t;
 
-    std::cout << ">> Task_setting_exec_datetime_Yearly: 7 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Yearly: 6 done" << std::endl;
     return 0;
 }
 
 
-int test8(){
-    // TEST 8: attempt to initialize Task with invalid datetime values
+int test7(){
+    // TEST 7: attempt to initialize Task with invalid datetime values
     // Frequency: Yearly
     // Datetime format: YYYY-MM-DD HH:MM:SS, YYYY-MM-DD
 
@@ -1019,7 +996,7 @@ int test8(){
         delete t;
     }
 
-    std::cout << ">> Task_setting_exec_datetime_Yearly: 8 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Yearly: 7 done" << std::endl;
     return 0;
 }
 
@@ -1032,5 +1009,4 @@ int main(){
     test5();
     test6();
     test7();
-    test8();
 }

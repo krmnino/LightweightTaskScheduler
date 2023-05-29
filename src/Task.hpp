@@ -95,7 +95,6 @@ private:
 public:
     Task();
     Task(std::string, std::string, std::string, std::string, std::string);
-    Task(std::string, std::string, std::string, std::string);
     ~Task();
     void run_task(void);
     void stop_thread(void);
