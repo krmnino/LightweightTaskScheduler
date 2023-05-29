@@ -26,12 +26,12 @@ A task is defined by a configuration file that can be found in the `tasks` direc
 `Description`|Optional|A brief description of what the task does.|None.|
 `ScriptFilename`|Required|The name of script file to be invoked by the task. For exmaple, it can be Bash shell script or a Python script.|Must match a file in the `scripts` directory.|
 `Frequency`|Required|Indicates if the task is to run one or more times.|Either `Once`, `Hourly` , `Daily`, `Weekly`, `Monthly`, or `Yearly`.|
-`Datetime`|Optional|Indicates the datetime of when the task should start executing.|Either `HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, `WDAY HH:MM:SS`, or `YYYY-MM-DD`. See Setting Datetimes with Frequencies section for details.|
+`Datetime`|Required|Indicates the datetime of when the task should start executing.|Either `HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, `WDAY HH:MM:SS`, or `YYYY-MM-DD`. See Setting Datetimes with Frequencies section for details.|
 
 ## Setting Datetimes with Frequencies
 Not all datetime formats are compatible with every frequency value. Here are the compatible frequencies and datetimes:
 - Once: `HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, `WDAY HH:MM:SS`, or `YYYY-MM-DD`.
-- Hourly: Datetime attribute is ignored.
+- Hourly: `HH:MM:SS` or `YYYY-MM-DD HH:MM:SS`.
 - Daily: `HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, or `WDAY HH:MM:SS`.
 - Weekly: `HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, `WDAY HH:MM:SS`, or `YYYY-MM-DD`.
 - Monthly: `HH:MM:SS`, `YYYY-MM-DD HH:MM:SS`, or `YYYY-MM-DD`.
