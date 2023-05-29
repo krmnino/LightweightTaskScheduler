@@ -38,7 +38,21 @@ Task::Task(std::string name,
         }
     }
     else if(this->frequency == "Hourly"){
-        this->execution_datetime = today_add_hrs(1);
+        // Get datetime format, no validation performed at this step
+        format = compute_datetime_format(execution_datetime_str);
+        // Datetime string validation occurs at Scheduler constructor
+        switch ((int)format){
+        case (int)DatetimeFormat::HHMMSS:
+            this->execution_datetime = today_add_hms(execution_datetime_str);
+            break;
+        case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
+            this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
+            break;
+        default:
+            this->execution_datetime = 0;
+            this->status = TaskStatus::INIT_ERROR;
+            break;
+        }
     }
     else if(this->frequency == "Daily"){
         // Get datetime format, no validation performed at this step
@@ -126,46 +140,6 @@ Task::Task(std::string name,
 
     // Save datetime format
     this->execution_datetime_fmt = format;
-
-    // Set initial execution datetime struct
-    std::tm* exec_time_struct = std::gmtime(&this->execution_datetime);
-    this->initial_execution_datetime.year = 1900 + exec_time_struct->tm_year;
-    this->initial_execution_datetime.month = exec_time_struct->tm_mon;
-    this->initial_execution_datetime.wday = exec_time_struct->tm_wday;
-    this->initial_execution_datetime.day =  exec_time_struct->tm_mday;
-    this->initial_execution_datetime.hour =  exec_time_struct->tm_hour;
-    this->initial_execution_datetime.minute = exec_time_struct->tm_min;
-    this->initial_execution_datetime.second = exec_time_struct->tm_sec;
-
-    // Store task creation datetime
-    std::time(&this->creation_datetime);
-    this->creation_datetime = this->creation_datetime;
-
-    this->output = "";
-    if(this->status != TaskStatus::INIT_ERROR){
-        this->thr = std::thread(&Task::launch_thread, this);
-        this->running_thread_flag = true;
-        this->status = TaskStatus::QUEUED;
-    }
-}
-
-Task::Task(std::string name, 
-           std::string description,
-           std::string script_filename,
-           std::string frequency){
-    this->name = name;
-    this->description = description;
-    this->script_filename = script_filename;
-    this->frequency = frequency;
-    this->running_thread_flag = false;
-
-    if(this->frequency == "Hourly"){
-        this->execution_datetime = today_add_hrs(1);
-    }
-    else{
-        this->execution_datetime = 0;
-        this->status = TaskStatus::INIT_ERROR;
-    }
 
     // Set initial execution datetime struct
     std::tm* exec_time_struct = std::gmtime(&this->execution_datetime);

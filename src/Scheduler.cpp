@@ -149,13 +149,8 @@ void Scheduler::load_tasks_from_dir(void){
         }
         delete task_config;
 
-        // An hourly task does not require execution time parameter
-        if(task_frequency == "Hourly"){
-            t = new Task(task_name, task_description, task_script_name, task_frequency);
-        }
-        else{
-            t = new Task(task_name, task_description, task_script_name, task_frequency, task_execution_datetime);
-        }
+        // Initialize Task object
+        t = new Task(task_name, task_description, task_script_name, task_frequency, task_execution_datetime);
 
         // Assign task id to task object
         task_id = this->generate_task_id(t);
@@ -242,13 +237,8 @@ void Scheduler::load_task(std::string& task_filename){
     }
     delete task_config;
 
-    // An hourly task does not require execution time parameter
-    if(task_frequency == "Hourly"){
-        t = new Task(task_name, task_description, task_script_name, task_frequency);
-    }
-    else{
-        t = new Task(task_name, task_description, task_script_name, task_frequency, task_execution_datetime);
-    }
+    // Initialize Task object
+    t = new Task(task_name, task_description, task_script_name, task_frequency, task_execution_datetime);
 
     // Assign task id to task object
     task_id = this->generate_task_id(t);

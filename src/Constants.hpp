@@ -2,7 +2,7 @@
 #define LTS_CONSTANTS
 
 #define DAYS_IN_WEEK 7
-#define TIMEZONE -5
+#define TIMEZONE -4 
 
 #define SUNDAY 0
 #define MONDAY 1
