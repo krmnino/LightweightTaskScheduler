@@ -6,11 +6,13 @@ Task::Task(std::string name,
            std::string description,
            std::string script_filename,
            std::string frequency,
-           std::string execution_datetime_str){
+           std::string execution_datetime_str,
+           std::string config_filename){
     this->name = name;
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
+    this->config_filename = config_filename;
     this->running_thread_flag = false;
     
     ts::DatetimeFormat format;
@@ -616,6 +618,10 @@ int Task::get_id(void) const{
 
 DatetimeFormat Task::get_execution_datetime_format_attr(void){
     return this->execution_datetime_fmt;
+}
+
+std::string Task::get_config_filename(void){
+    return this->config_filename;
 }
 
 void Task::set_status(TaskStatus status){
