@@ -94,6 +94,7 @@ int test1(){
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Once";
+    std::string t_config_filename = "config.cl";
 
     std::vector<std::string> datetimes = {
         hours + ":" + minutes + ":" + seconds, // HH:MM:SS
@@ -103,7 +104,7 @@ int test1(){
     };
 
     for(size_t i = 0; i < datetimes.size(); i++){
-        ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, datetimes[i]);
+        ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, datetimes[i], t_config_filename);
         
         ret_datetime_str_before = t->get_execution_datetime_fmt();
         ret_datetime_before = t->get_execution_datetime(false);
@@ -210,10 +211,11 @@ int test2(){
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Once";
+    std::string t_config_filename = "config.cl";
 
     datetime_str = years + "-" + months + "-" + days; // YYYY-MM-DD
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, datetime_str);
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, datetime_str, t_config_filename);
     
     ret_datetime_str_before = t->get_execution_datetime_fmt();
     ret_datetime_before = t->get_execution_datetime(false);

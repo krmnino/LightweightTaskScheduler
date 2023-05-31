@@ -13,20 +13,23 @@ int test1(){
     // get_description()
     // get_script_name()
     // get_frequency()
+    // get_config_filename()
 
     std::string t_name = "Task Name";
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Hourly";
     std::string t_input_execution_datetime = "12:00:00";
+    std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime);
+    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
     
     assert(t->get_name() == "Task Name");
     assert(t->get_description() == "A short description for this task");
     assert(t->get_script_filename() == "cat_test.sh");
     assert(t->get_frequency() == "Hourly");
     assert(t->get_status() == ts::TaskStatus::QUEUED);
+    assert(t->get_config_filename() == "config.cl");
 
     delete t;
 

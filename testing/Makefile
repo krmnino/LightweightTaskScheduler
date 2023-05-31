@@ -276,6 +276,10 @@ CommandLine_verb_remove: task_scheduler.o
 	g++ -g -Wall -c -std=c++17 CommandLine_verb_remove.cpp
 	g++ -g -Wall -o CommandLine_verb_remove CommandLine_verb_remove.o $(OBJ_FILES) -pthread -lstdc++fs
 
+CommandLine_verb_reload: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 CommandLine_verb_reload.cpp
+	g++ -g -Wall -o CommandLine_verb_reload CommandLine_verb_reload.o $(OBJ_FILES) -pthread -lstdc++fs
+	
 CommandLine_verb_load: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 CommandLine_verb_load.cpp
 	g++ -g -Wall -o CommandLine_verb_load CommandLine_verb_load.o $(OBJ_FILES) -pthread -lstdc++fs

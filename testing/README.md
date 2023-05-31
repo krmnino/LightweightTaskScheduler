@@ -29,6 +29,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test5()`|Obtain system's current time + 5 seconds for `Task`'s execution time attribute in `HH:MM:SS` format. Then, verify the returned `DatetimeFormat` value.|`Task::get_execution_datetime_format_attr(void)`|<span style="color:green">Passed|
 |`test6()`|Set and get task id and status values.|`Task::set_id(int)`<br/>`Task::get_id(void)`<br/>`Task::set_status(TaskStatus)`<br/>`Task::get_status(void)`<br/>|<span style="color:green">Passed|
 |`test7()`|Create `Task` object and run it. Then, verify that the command-line output has been successfully routed to output data member.|`Task::run_task(void)`<br/>`Task::get_output(void)`<br/>|<span style="color:green">Passed|
+|`test8()`|Verify method for retriving configuration filename.|`Task::get_config_filename(void)`|<span style="color:green">Passed|
 
 ### **validate_hms.cpp**
 
