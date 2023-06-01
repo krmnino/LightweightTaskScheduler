@@ -212,8 +212,6 @@ int test1(){
     verify_datetime_str = wday_abbr + " " + months + " " + days + " " +
                           hours + ":" + minutes + ":" + seconds + " " + years;
 
-    std::cout << ret_datetime_str << std::endl;
-    std::cout << verify_datetime_str << std::endl;
     assert(ret_datetime_str.find(verify_datetime_str) != std::string::npos);
     delete t;
 
