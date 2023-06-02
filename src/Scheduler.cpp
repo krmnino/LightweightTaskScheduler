@@ -83,7 +83,7 @@ void Scheduler::obtain_exec_path(void){
     this->exec_path = std::filesystem::current_path();
 }
 
-void Scheduler::load_tasks_from_dir(void){
+void Scheduler::load_all_tasks(void){
     Task* t;
     cl::Config* task_config;
     ts::ValidationCode ret_task_validate;

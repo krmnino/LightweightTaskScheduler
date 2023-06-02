@@ -27,7 +27,7 @@ private:
     Scheduler() {}
     unsigned int generate_task_id(Task*);
     Task* get_task_from_registry(std::string&);
-    
+
 public:
     static Scheduler* Scheduler_get_instance(void){
         if(scheduler_ptr == nullptr){
@@ -44,7 +44,7 @@ public:
     void Scheduler_init(EventReporter*);
     void Scheduler_delete(void);
     void obtain_exec_path(void);
-    void load_tasks_from_dir(void);
+    void load_all_tasks(void);
     void load_task(std::string&);
     void reload_task(std::string&);
     void remove_task(std::string&);
