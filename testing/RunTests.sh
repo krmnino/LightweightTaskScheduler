@@ -35,7 +35,7 @@
 ./Scheduler_get_instance
 ./Scheduler_methods
 ./Scheduler_Task_run_task
-./Scheduler_load_tasks_from_dir
+./Scheduler_load_all_tasks
 ./Scheduler_load_task
 ./EventReporter_get_instance
 ./EventReporter_methods
