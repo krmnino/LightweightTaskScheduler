@@ -1547,19 +1547,24 @@ DatetimeFormat compute_datetime_format(std::string dt){
 
 ValidationCode validate_task_parms(cl::Config* task_config, std::string scripts_dir){
     ValidationCode ret_datetime_validate;
-    // Check if required fields exist
-    if(!task_config->key_exists("Name")){
-           return ValidationCode::MISSING_NAME_KEYVAL;
-    }
-    if(!task_config->key_exists("ScriptFilename")){
-           return ValidationCode::MISSING_SCRIPTFN_KEYVAL;
-    }
-    if(!task_config->key_exists("Frequency")){
-           return ValidationCode::MISSING_FREQUENCY_KEYVAL;
-    }
-    
+    DatetimeFormat format;
+    time_t schedule_datetime;
     std::string value;
     std::string datetime_value;
+
+    // Check if required fields exist
+    if(!task_config->key_exists("Name")){
+        return ValidationCode::MISSING_NAME_KEYVAL;
+    }
+    if(!task_config->key_exists("ScriptFilename")){
+        return ValidationCode::MISSING_SCRIPTFN_KEYVAL;
+    }
+    if(!task_config->key_exists("Frequency")){
+        return ValidationCode::MISSING_FREQUENCY_KEYVAL;
+    }
+    if(!task_config->key_exists("Datetime")){
+        return ValidationCode::MISSING_DATETIME_KEYVAL;
+    }
     // Check if script file exists
     value = task_config->get_value("ScriptFilename")->get_data<std::string>();
     if(!std::filesystem::exists(scripts_dir + value)){
@@ -1574,16 +1579,8 @@ ValidationCode validate_task_parms(cl::Config* task_config, std::string scripts_
     }
 
     // Validate datetime depending on frequency value
-    DatetimeFormat format;
-    time_t schedule_datetime;
-    bool datetime_defined = task_config->key_exists("Datetime");
-    if(datetime_defined){
-        datetime_value = task_config->get_value("Datetime")->get_data<std::string>();
-    }
+    datetime_value = task_config->get_value("Datetime")->get_data<std::string>();
     if(value == "Once"){
-        if(!task_config->key_exists("Datetime")){
-           return ValidationCode::MISSING_DATETIME_KEYVAL;
-        }
         // Get datetime format, no validation performed at this step
         format = compute_datetime_format(datetime_value);
         switch ((int)format){
@@ -1620,7 +1617,26 @@ ValidationCode validate_task_parms(cl::Config* task_config, std::string scripts_
         }
     }
     else if(value == "Hourly"){
-        // Datetime value ignored
+        // Get datetime format, no validation performed at this step
+        format = compute_datetime_format(datetime_value);
+        switch ((int)format){
+        case (int)DatetimeFormat::HHMMSS:
+            ret_datetime_validate = validate_hms(datetime_value);
+            if(ret_datetime_validate != ValidationCode::OK){
+                return ret_datetime_validate;
+            }
+            schedule_datetime = today_add_hms(datetime_value);
+            break;
+        case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
+            ret_datetime_validate = validate_yyyymmdd_hms(datetime_value);
+            if(ret_datetime_validate != ValidationCode::OK){
+                return ret_datetime_validate;
+            }
+            schedule_datetime = today_add_yyyymmdd_hms(datetime_value);
+            break;
+        default:
+            return ValidationCode::INCOMPATIBLE_ONCE_FREQ_DATETIME_FORMAT;
+        }
     }
     else if(value == "Daily"){
         if(!task_config->key_exists("Datetime")){
@@ -1752,7 +1768,7 @@ ValidationCode validate_task_parms(cl::Config* task_config, std::string scripts_
     }
 
     // Check if datetime is in the past
-    if(value != "Hourly" && schedule_datetime <= 0){
+    if(schedule_datetime <= 0){
         return ValidationCode::PASSED_DATETIME;
     }
     return ValidationCode::OK;
