@@ -103,7 +103,7 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     c->CommandLine_init(e, s);
     
     s->obtain_exec_path();
-    s->load_tasks_from_dir();
+    s->load_all_tasks();
 
     std::string ret_cmd_output;
     std::string verify_cmd_output_l1;
@@ -201,7 +201,7 @@ int test7(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     c->CommandLine_init(e, s);
     
     s->obtain_exec_path();
-    s->load_tasks_from_dir();
+    s->load_all_tasks();
 
     std::string ret_cmd_output;
     std::string verify_cmd_output_l1;
@@ -281,7 +281,7 @@ int test9(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     c->CommandLine_init(e, s);
     
     s->obtain_exec_path();
-    s->load_tasks_from_dir();
+    s->load_all_tasks();
 
     std::string ret_cmd_output;
     std::string verify_cmd_output_l1;

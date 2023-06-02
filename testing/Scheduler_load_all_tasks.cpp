@@ -26,7 +26,7 @@ int test1(ts::Scheduler* s, ts::EventReporter* e){
     s->Scheduler_init(e);
 
     s->obtain_exec_path();
-    s->load_tasks_from_dir();
+    s->load_all_tasks();
     
     assert(s->get_n_tasks() == 2);
     assert(e->get_n_events() == 2);
@@ -68,7 +68,7 @@ int test1(ts::Scheduler* s, ts::EventReporter* e){
     s->Scheduler_delete();
     e->EventReporter_delete();
 
-    std::cout << ">> Scheduler_load_tasks_from_dir: 1 done" << std::endl;
+    std::cout << ">> Scheduler_load_all_tasks: 1 done" << std::endl;
     return 0;
 }
 
@@ -87,7 +87,7 @@ int test2(ts::Scheduler* s, ts::EventReporter* e){
     rename(original_task_dir_name.c_str(), rename_task_dir_name.c_str());
 
     s->obtain_exec_path();
-    s->load_tasks_from_dir();
+    s->load_all_tasks();
 
     assert(s->get_n_tasks() == 0);
     assert(e->get_n_events() == 1);
@@ -102,7 +102,7 @@ int test2(ts::Scheduler* s, ts::EventReporter* e){
     s->Scheduler_delete();
     e->EventReporter_delete();
     
-    std::cout << ">> Scheduler_load_tasks_from_dir: 2 done" << std::endl;
+    std::cout << ">> Scheduler_load_all_tasks: 2 done" << std::endl;
     return 0;
 }
 
@@ -121,7 +121,7 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
     rename(original_scripts_dir_name.c_str(), rename_scripts_dir_name.c_str());
 
     s->obtain_exec_path();
-    s->load_tasks_from_dir();
+    s->load_all_tasks();
 
     assert(s->get_n_tasks() == 0);
     assert(e->get_n_events() == 1);
@@ -136,7 +136,7 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
     s->Scheduler_delete();
     e->EventReporter_delete();
     
-    std::cout << ">> Scheduler_load_tasks_from_dir: 3 done" << std::endl;
+    std::cout << ">> Scheduler_load_all_tasks: 3 done" << std::endl;
     return 0;
 }
 
@@ -195,7 +195,7 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     s->Scheduler_init(e);
 
     s->obtain_exec_path();
-    s->load_tasks_from_dir();
+    s->load_all_tasks();
 
     assert(s->get_n_tasks() == 2);
     assert(e->get_n_events() == 3);
@@ -212,7 +212,7 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
 
     remove(task_path_filename.c_str());
     
-    std::cout << ">> Scheduler_load_tasks_from_dir: 4 done" << std::endl;
+    std::cout << ">> Scheduler_load_all_tasks: 4 done" << std::endl;
     return 0;
 }
 
@@ -243,7 +243,7 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     s->Scheduler_init(e);
 
     s->obtain_exec_path();
-    s->load_tasks_from_dir();
+    s->load_all_tasks();
 
     assert(s->get_n_tasks() == 2);
     assert(e->get_n_events() == 3);
@@ -258,7 +258,7 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
 
     remove(task_path_filename.c_str());
     
-    std::cout << ">> Scheduler_load_tasks_from_dir: 5 done" << std::endl;
+    std::cout << ">> Scheduler_load_all_tasks: 5 done" << std::endl;
     return 0;
 }
 

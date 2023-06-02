@@ -76,7 +76,7 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     c->CommandLine_init(e, s);
 
     s->obtain_exec_path();
-    s->load_tasks_from_dir();
+    s->load_all_tasks();
 
     std::string ret_cmd_output;
     ts::Event ret_event;
@@ -110,7 +110,7 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     c->CommandLine_init(e, s);
 
     s->obtain_exec_path();
-    s->load_tasks_from_dir();
+    s->load_all_tasks();
 
     std::string ret_cmd_output;
     ts::Event ret_event;
