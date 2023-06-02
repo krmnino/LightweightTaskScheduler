@@ -177,14 +177,13 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test4()`|Fail to pass `ScriptFilename` attribute. Call should fail with return value of `ValidationCode::MISSING_SCRIPTFN_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test5()`|Fail to pass `Frequency` attribute. Call should fail with return value of `ValidationCode::MISSING_FREQUENCY_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test6()`|Fail to pass `Datetime` attribute with `Frequency` of `Once`. Call should fail with return value of  `ValidationCode::MISSING_DATETIME_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test7()`|Fail to pass `Datetime` attribute with `Frequency` of `Hourly`. Call should succeed with return value of  `ValidationCode::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test8()`|`Datetime` attribute is ignored when `Frequency` is `Hourly`. Call should succeed with return value of  `ValidationCode::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test7()`|Fail to pass `Datetime` attribute with `Frequency` of `Hourly`. Call should fail with return value of  `ValidationCode::MISSING_DATETIME_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test8()`|Fail to pass `Datetime` attribute with `Frequency` of `Weekly`. Call should fail with return value of  `ValidationCode::MISSING_DATETIME_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test9()`|Fail to pass `Datetime` attribute with `Frequency` of `Weekly`. Call should fail with return value of  `ValidationCode::MISSING_DATETIME_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test10()`|Fail to pass `Datetime` attribute with `Frequency` of `Weekly`. Call should fail with return value of  `ValidationCode::MISSING_DATETIME_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test11()`|Fail to pass `Datetime` attribute with `Frequency` of `Monthly`. Call should fail with return value of  `ValidationCode::MISSING_DATETIME_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test12()`|Fail to pass `Datetime` attribute with `Frequency` of `Yearly`. Call should fail with return value of  `ValidationCode::MISSING_DATETIME_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test13()`|Provide all possible valid attributes to instantiate `Task` object. `ScriptFilename` value should point to an invalid file location. Call should fail with return value of  `ValidationCode::SCRIPT_NOT_FOUND`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
-|`test14()`|Provide all possible valid attributes to instantiate `Task` object. `Frequency` value should be invalid. Call should fail with return value of `ValidationCode::BAD_FREQUENCY_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test10()`|Fail to pass `Datetime` attribute with `Frequency` of `Monthly`. Call should fail with return value of  `ValidationCode::MISSING_DATETIME_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test11()`|Fail to pass `Datetime` attribute with `Frequency` of `Yearly`. Call should fail with return value of  `ValidationCode::MISSING_DATETIME_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test12()`|Provide all possible valid attributes to instantiate `Task` object. `ScriptFilename` value should point to an invalid file location. Call should fail with return value of  `ValidationCode::SCRIPT_NOT_FOUND`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test13()`|Provide all possible valid attributes to instantiate `Task` object. `Frequency` value should be invalid. Call should fail with return value of `ValidationCode::BAD_FREQUENCY_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 
 ### **validate_task_parms_Once.cpp**
 
@@ -205,7 +204,11 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Provide all possible valid attributes to instantiate `Task` object. With an `Hourly` frequency, the `Datetime` value is ignored regardless. Call should succeed with return value of `ValidationCode::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test1()`|Test the datetime format of the following `Datetime` attribute values: `HH:MM:SS` and `YYYY-MM-DD HH:MM:SS`. Call should succeed with return value of `ValidationCode::OK`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test2()`|Pass a `Datetime` attribute with `HH:MM:SS` format. The `Datetime` attribute is invalid. Calls should fail with their expected return values.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test3()`|Pass a `Datetime` attribute with `YYYY-MM-DD HH:MM:SS` format. The `Datetime` attribute is invalid. Calls should fail with their expected return values.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test4()`|Pass a `Datetime` attribute with invalid value that does not follow any datetime format. Call should fail with return value of `ValidationCode::INCOMPATIBLE_ONCE_FREQ_DATETIME_FORMAT`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test5()`|Test the datetime format of the following `Datetime` attribute values: `HH:MM:SS` and `YYYY-MM-DD HH:MM:SS`. The datetime value is one minute in the past. Call should fail with return value of `ValidationCode::PASSED_DATETIME`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 
 ### **validate_task_parms_Daily.cpp**
 

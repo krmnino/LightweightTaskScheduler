@@ -219,7 +219,7 @@ int test7(){
 
     ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::OK);
+    assert(ret == ts::ValidationCode::MISSING_DATETIME_KEYVAL);
 
     delete c;
 
@@ -230,28 +230,6 @@ int test7(){
 
 int test8(){
     // TEST 8: testing validate_task_parms() function -> FAIL
-    // Datetime attribute is ignored with Frequency Hourly
-
-    cl::Config* c = new cl::Config();
-    c->add_entry("Name", "Test Title");
-    c->add_entry("Description", "A short description");
-    c->add_entry("ScriptFilename", "ls_test.sh");
-    c->add_entry("Frequency", "Hourly");
-    c->add_entry("Datetime", "12:00:00");
-
-    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
-
-    assert(ret == ts::ValidationCode::OK);
-
-    delete c;
-
-    std::cout << ">> validate_task_parms: 8 done" << std::endl;
-    return 0;
-}
-
-
-int test9(){
-    // TEST 9: testing validate_task_parms() function -> FAIL
     // Missing Datetime attribute with Frequency Daily
 
     cl::Config* c = new cl::Config();
@@ -266,13 +244,13 @@ int test9(){
 
     delete c;
 
-    std::cout << ">> validate_task_parms: 9 done" << std::endl;
+    std::cout << ">> validate_task_parms: 8 done" << std::endl;
     return 0;
 }
 
 
-int test10(){
-    // TEST 10: testing validate_task_parms() function -> FAIL
+int test9(){
+    // TEST 9: testing validate_task_parms() function -> FAIL
     // Missing Datetime attribute with Frequency Weekly
 
     cl::Config* c = new cl::Config();
@@ -287,13 +265,13 @@ int test10(){
 
     delete c;
 
-    std::cout << ">> validate_task_parms: 10 done" << std::endl;
+    std::cout << ">> validate_task_parms: 9 done" << std::endl;
     return 0;
 }
 
 
-int test11(){
-    // TEST 11: testing validate_task_parms() function -> FAIL
+int test10(){
+    // TEST 10: testing validate_task_parms() function -> FAIL
     // Missing Datetime attribute with Frequency Monthly
 
     cl::Config* c = new cl::Config();
@@ -308,13 +286,13 @@ int test11(){
 
     delete c;
 
-    std::cout << ">> validate_task_parms: 11 done" << std::endl;
+    std::cout << ">> validate_task_parms: 10 done" << std::endl;
     return 0;
 }
 
 
-int test12(){
-    // TEST 12: testing validate_task_parms() function -> FAIL
+int test11(){
+    // TEST 11: testing validate_task_parms() function -> FAIL
     // Missing Datetime attribute with Frequency Yearly
 
     cl::Config* c = new cl::Config();
@@ -329,13 +307,13 @@ int test12(){
 
     delete c;
 
-    std::cout << ">> validate_task_parms: 12 done" << std::endl;
+    std::cout << ">> validate_task_parms: 11 done" << std::endl;
     return 0;
 }
 
 
-int test13(){
-    // TEST 13: testing validate_task_parms() function -> FAIL
+int test12(){
+    // TEST 12: testing validate_task_parms() function -> FAIL
     // Script file not found
 
     cl::Config* c = new cl::Config();
@@ -351,13 +329,13 @@ int test13(){
 
     delete c;
 
-    std::cout << ">> validate_task_parms: 13 done" << std::endl;
+    std::cout << ">> validate_task_parms: 12 done" << std::endl;
     return 0;
 }
 
 
-int test14(){
-    // TEST 14: testing validate_task_parms() function -> FAIL
+int test13(){
+    // TEST 13: testing validate_task_parms() function -> FAIL
     // Bad frequency value
 
     cl::Config* c = new cl::Config();
@@ -373,7 +351,7 @@ int test14(){
 
     delete c;
 
-    std::cout << ">> validate_task_parms: 14 done" << std::endl;
+    std::cout << ">> validate_task_parms: 13 done" << std::endl;
     return 0;
 }
 
@@ -392,5 +370,4 @@ int main(){
     test11();
     test12();
     test13();
-    test14();
 }
