@@ -121,7 +121,7 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
     
-    // Rename it back to tasks
+    // Rename it back to scripts
     rename(rename_scripts_dir_name.c_str(), original_scripts_dir_name.c_str());
     s->Scheduler_delete();
     e->EventReporter_delete();
