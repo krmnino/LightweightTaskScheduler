@@ -39,6 +39,8 @@ int test1(ts::Scheduler* s, ts::EventReporter* e){
     t_frequency = "Once";
     ret_task = s->get_task(t_name);
 
+    assert(s->get_n_tasks() == 1);
+    assert(e->get_n_events() == 1);
     assert(ret_task->get_name() == t_name);
     assert(ret_task->get_description() == t_description);
     assert(ret_task->get_script_filename() == t_script_filename);
