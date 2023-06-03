@@ -221,7 +221,8 @@ void Task::update_execution_datetime(void){
         unsigned long updated_month;
         unsigned long updated_day;
 
-        std::tm* exec_date_struct = std::gmtime(&this->execution_datetime);
+        time_t execution_datetime_timezone = this->execution_datetime + (TIMEZONE * 60 * 60);
+        std::tm* exec_date_struct = std::gmtime(&execution_datetime_timezone);
 
         // If current execution month is december, we need to roll back to January and set next year
         if(exec_date_struct->tm_mon == DECEMBER){
@@ -298,6 +299,7 @@ void Task::update_execution_datetime(void){
                    std::to_string(this->initial_execution_datetime.day);
             break;
         case JUNE:
+            // June has max day count of 30
             if(this->initial_execution_datetime.day > JUNE_DAYS){
                 day = std::to_string(JUNE_DAYS);
             }
@@ -359,7 +361,8 @@ void Task::update_execution_datetime(void){
     }
     else if(this->frequency == "Yearly"){
         // Add necessary days until nth day of next year
-        std::tm* exec_date_struct = std::gmtime(&this->execution_datetime);
+        time_t execution_datetime_timezone = this->execution_datetime + (TIMEZONE * 60 * 60);
+        std::tm* exec_date_struct = std::gmtime(&execution_datetime_timezone);
         // Edge case if case is scheduled to run on February 29th
         // If next year is not a leap year, then run on the 28th (see else statement)
         if(this->initial_execution_datetime.month == FEBRUARY && 
