@@ -165,16 +165,16 @@ int test2(ts::Scheduler* s, ts::EventReporter* e){
 
 int test3(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 3: try to reload task from directory when tasks directory does not exist
-    std::string original_task_dir_name;
-    std::string rename_task_dir_name;
+    std::string original_dir_name;
+    std::string rename_dir_name;
     std::string task_filename;
     std::string task_name;
     ts::Event ret_event;
     std::string verify_event_message;
     ts::EventType verify_event_type;
 
-    original_task_dir_name = "tasks/";
-    rename_task_dir_name = "original_tasks/";
+    original_dir_name = "tasks/";
+    rename_dir_name = "original_tasks/";
     task_filename = "cat_test.cl";
     task_name = "cat";
 
@@ -185,7 +185,7 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
     s->load_all_tasks();
     
     // Temporarily change tasks directory name so the Scheduler can't find it
-    rename(original_task_dir_name.c_str(), rename_task_dir_name.c_str());
+    rename(original_dir_name.c_str(), rename_dir_name.c_str());
 
     s->reload_task(task_name);
 
@@ -198,7 +198,8 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
     assert(ret_event.get_type() == verify_event_type);
     
     // Rename it back to tasks
-    rename(rename_task_dir_name.c_str(), original_task_dir_name.c_str());
+    rename(rename_dir_name.c_str(), original_dir_name.c_str());
+
     s->Scheduler_delete();
     e->EventReporter_delete();
 
@@ -209,16 +210,16 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
 
 int test4(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 4: try to reload task from directory when tasks directory does not exist
-    std::string original_task_dir_name;
-    std::string rename_task_dir_name;
+    std::string original_dir_name;
+    std::string rename_dir_name;
     std::string task_filename;
     std::string task_name;
     ts::Event ret_event;
     std::string verify_event_message;
     ts::EventType verify_event_type;
 
-    original_task_dir_name = "scripts/";
-    rename_task_dir_name = "original_scripts/";
+    original_dir_name = "scripts/";
+    rename_dir_name = "original_scripts/";
     task_filename = "cat_test.cl";
     task_name = "cat";
 
@@ -229,7 +230,7 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     s->load_all_tasks();
     
     // Temporarily change scripts directory name so the Scheduler can't find it
-    rename(original_task_dir_name.c_str(), rename_task_dir_name.c_str());
+    rename(original_dir_name.c_str(), rename_dir_name.c_str());
 
     s->reload_task(task_name);
 
@@ -242,7 +243,8 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     assert(ret_event.get_type() == verify_event_type);
     
     // Rename it back to scripts
-    rename(rename_task_dir_name.c_str(), original_task_dir_name.c_str());
+    rename(rename_dir_name.c_str(), original_dir_name.c_str());
+
     s->Scheduler_delete();
     e->EventReporter_delete();
 
@@ -280,13 +282,15 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     assert(s->get_n_tasks() == 2);
     assert(e->get_n_events() == 3);
     ret_event = e->get_event_at(0);
-    verify_event_message = "The task file configuration file \"" + task_filename + "\" could not be found.";
+    verify_event_message = "The task file configuration file \"" + task_filename + 
+                            "\" corresponding to task \"" + task_name +"\" could not be found.";
     verify_event_type = ts::EventType::ERROR;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
     
     // Rename it back to scripts
     rename(rename_task_filename.c_str(), original_task_filename.c_str());
+
     s->Scheduler_delete();
     e->EventReporter_delete();
 

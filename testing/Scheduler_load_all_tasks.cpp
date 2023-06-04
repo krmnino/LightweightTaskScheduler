@@ -75,16 +75,17 @@ int test1(ts::Scheduler* s, ts::EventReporter* e){
 
 int test2(ts::Scheduler* s, ts::EventReporter* e){
     // TEST 2: try to load task from directory when tasks directory does not exist
-    std::string original_task_dir_name = "tasks/";
-    std::string rename_task_dir_name = "original_tasks/";
+    std::string original_dir_name = "tasks/";
+    std::string rename_dir_name = "original_tasks/";
     ts::Event ret_event;
     std::string verify_event_message;
     ts::EventType verify_event_type;
 
     e->EventReporter_init();
     s->Scheduler_init(e);
+
     // Temporarily change tasks directory name so the Scheduler can't find it
-    rename(original_task_dir_name.c_str(), rename_task_dir_name.c_str());
+    rename(original_dir_name.c_str(), rename_dir_name.c_str());
 
     s->obtain_exec_path();
     s->load_all_tasks();
@@ -98,7 +99,8 @@ int test2(ts::Scheduler* s, ts::EventReporter* e){
     assert(ret_event.get_type() == verify_event_type);
 
     // Rename it back to tasks
-    rename(rename_task_dir_name.c_str(), original_task_dir_name.c_str());
+    rename(rename_dir_name.c_str(), original_dir_name.c_str());
+    
     s->Scheduler_delete();
     e->EventReporter_delete();
     
@@ -117,6 +119,7 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
 
     e->EventReporter_init();
     s->Scheduler_init(e);
+    
     // Temporarily change tasks directory name so the Scheduler can't find it
     rename(original_scripts_dir_name.c_str(), rename_scripts_dir_name.c_str());
 
@@ -133,6 +136,7 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
 
     // Rename it back to tasks
     rename(rename_scripts_dir_name.c_str(), original_scripts_dir_name.c_str());
+
     s->Scheduler_delete();
     e->EventReporter_delete();
     
