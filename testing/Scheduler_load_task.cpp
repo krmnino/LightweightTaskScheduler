@@ -97,7 +97,7 @@ int test2(ts::Scheduler* s, ts::EventReporter* e){
 
 
 int test3(ts::Scheduler* s, ts::EventReporter* e){
-    // TEST 2: try to load task from directory when scripts directory does not exist
+    // TEST 3: try to load task from directory when scripts directory does not exist
     std::string original_scripts_dir_name = "scripts/";
     std::string rename_scripts_dir_name = "original_scripts/";
     std::string task_filename = "cat_test.cl";

@@ -26,6 +26,7 @@ private:
     
     Scheduler() {}
     unsigned int generate_task_id(Task*);
+    unsigned int get_n_tasks_by_status(ts::TaskStatus);
     Task* get_task_from_registry(std::string&);
 
 public:
@@ -46,6 +47,7 @@ public:
     void obtain_exec_path(void);
     void load_all_tasks(void);
     void load_task(std::string&);
+    void reload_all_tasks(void);
     void reload_task(std::string&);
     void remove_task(std::string&);
     bool task_exists(std::string&);
@@ -55,7 +57,6 @@ public:
     const std::string& get_current_path(void);
     unsigned int get_n_tasks(void);
     const Task* get_task(std::string&) const;
-    unsigned int get_n_tasks_by_status(ts::TaskStatus);
 };
 
 } // namespace ts

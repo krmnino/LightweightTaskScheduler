@@ -59,6 +59,20 @@ unsigned int Scheduler::generate_task_id(Task* task){
     return id;
 }
 
+unsigned int Scheduler::get_n_tasks_by_status(ts::TaskStatus status){
+    std::map<std::string, Task*>::iterator it;
+    Task* t;
+    unsigned int counter = 0;
+
+    for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
+        t = it->second;
+        if(t->get_status() == status){
+            counter++;
+        }
+    }
+    return counter;
+}
+
 Task* Scheduler::get_task_from_registry(std::string& key){
     return this->task_registry[key];
 }
@@ -258,6 +272,108 @@ void Scheduler::load_task(std::string& task_config_filename){
     #endif
 }
 
+void Scheduler::reload_all_tasks(void){
+    std::map<std::string, Task*>::iterator it;
+    std::vector<std::string> registry_task_names;
+    Task* t;
+    cl::Config* task_config;
+    ts::ValidationCode ret_task_validate;
+    std::string task_config_filename;
+    std::string task_name;
+    std::string task_description;
+    std::string task_script_name;
+    std::string task_frequency;
+    std::string task_execution_datetime;
+    int task_id;
+    std::string event_message;
+
+    // Check if tasks directory exists
+    if(!std::filesystem::exists(this->exec_path + "/tasks")){
+        event_message = "Could not find tasks directory.";
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+
+    // Check if scripts directory exists
+    if(!std::filesystem::exists(this->exec_path + "/scripts")){
+        event_message = "Could not find scripts directory.";
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+
+    // Get all task names from registry
+    for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
+        registry_task_names.push_back(it->first);
+    }
+
+    for(size_t i = 0; i < registry_task_names.size(); i++){
+        // Get task form task registry and its configuration filename 
+        t = this->task_registry[registry_task_names[i]];
+        task_config_filename = t->get_config_filename();
+
+        // Check if task configuration exists in tasks directory
+        if(!std::filesystem::exists(this->exec_path + "/tasks/" + task_config_filename)){
+            event_message = "The task file configuration file \"" + task_config_filename + "\" could not be found.";
+            this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+            continue;
+        }
+
+        // Load the task's configuration file and validate its contents
+        task_config = new cl::Config(this->exec_path + "/tasks/" + task_config_filename);
+        ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
+        if(ret_task_validate != ValidationCode::OK){
+            event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
+            this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+            continue;
+        }
+
+        // Get task attributes from config file and validate them, check if task name is repeated
+        task_name = task_config->get_value("Name")->get_data<std::string>();
+        task_description = task_config->get_value("Description")->get_data<std::string>();
+        task_script_name = task_config->get_value("ScriptFilename")->get_data<std::string>();
+        task_frequency = task_config->get_value("Frequency")->get_data<std::string>();
+        task_execution_datetime = task_config->get_value("Datetime")->get_data<std::string>();
+        delete task_config;
+
+        // Stop thread if running
+        t->stop_thread();
+        this->task_registry.erase(registry_task_names[i]);
+        delete t;
+        this->n_tasks--;
+        
+        // Initialize Task object
+        t = new Task(task_name, task_description, task_script_name, task_frequency, task_execution_datetime, task_config_filename);
+
+        // Assign task id to task object
+        task_id = this->generate_task_id(t);
+        t->set_id(task_id);
+        t->set_status(ts::TaskStatus::QUEUED);
+        t->set_event_reporter_ptr(this->event_reporter_ptr);
+
+        // Add task object to task registry
+        this->task_registry.insert(std::make_pair(task_name, t));
+        this->n_tasks++;
+
+        event_message = "Successfully reloaded task \"" + task_name + "\".";
+        this->event_reporter_ptr->log_event(EventType::INFO, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+    }
+}
+
 void Scheduler::reload_task(std::string& key){
     Task* t;
     cl::Config* task_config;
@@ -315,12 +431,6 @@ void Scheduler::reload_task(std::string& key){
         return;
     }
 
-    // Stop thread if running
-    t->stop_thread();
-    this->task_registry.erase(key);
-    delete t;
-    this->n_tasks--;
-
     // Load the task's configuration file and validate its contents
     task_config = new cl::Config(this->exec_path + "/tasks/" + task_config_filename);
     ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
@@ -333,10 +443,10 @@ void Scheduler::reload_task(std::string& key){
         return;
     }
 
-    // Get task attributes from config file and validate them, check if task name is repeated
+    // Get task attributes from config file and validate them, check if current task and config file name match
     task_name = task_config->get_value("Name")->get_data<std::string>();
-    if (this->task_exists(task_name)) {
-        event_message = "A task with the name \"" + task_name + "\" already exists in the scheduler.";
+    if (task_name != key) {
+        event_message = "The configuration file contains a Name attribute that does not match the current \"" + task_name + "\" task name.";
         this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -348,6 +458,12 @@ void Scheduler::reload_task(std::string& key){
     task_frequency = task_config->get_value("Frequency")->get_data<std::string>();
     task_execution_datetime = task_config->get_value("Datetime")->get_data<std::string>();
     delete task_config;
+
+    // Stop thread if running
+    t->stop_thread();
+    this->task_registry.erase(key);
+    delete t;
+    this->n_tasks--;
 
     // Initialize Task object
     t = new Task(task_name, task_description, task_script_name, task_frequency, task_execution_datetime, task_config_filename);
@@ -668,20 +784,6 @@ const Task* Scheduler::get_task(std::string& key) const{
         return nullptr;
     }
     return const_cast<Scheduler*>(this)->get_task_from_registry(key);
-}
-
-unsigned int Scheduler::get_n_tasks_by_status(ts::TaskStatus status){
-    std::map<std::string, Task*>::iterator it;
-    Task* t;
-    unsigned int counter = 0;
-
-    for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
-        t = it->second;
-        if(t->get_status() == status){
-            counter++;
-        }
-    }
-    return counter;
 }
 
 } // namespace ts

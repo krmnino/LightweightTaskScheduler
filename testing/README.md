@@ -4,9 +4,9 @@ This directory contains unit tests for all specific functions, classes and its m
 ---
 ## **Organization**
 The `/testing` directory contains exclusive test-related source files. That includes:
-- **\*.cpp:** testcase implementation source files
-- **Makefile:** contains rules to compile testcase builds
-- **RunTests.sh:** a bash scripts that runs testcase builds
+- **`\*.cpp` files:** testcase implementation source files
+- **`Makefile` file:** contains rules to compile testcase builds
+- **`RunTests.sh` script:** a bash scripts that runs testcase builds
 - **`scripts` directory:** contains Bash shell files required by certain testcases
 - **`tasks` directory:** contains configuration files required by certain testcases
 
@@ -394,8 +394,8 @@ The `/testing` directory contains exclusive test-related source files. That incl
 
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
-|`test1()`|Initialize Scheduler object and verify its data members were properly zeroed out.  The `Event Reporter` should not register any events.|`Scheduler::Scheduler_init(void)`<br/>`Scheduler::Scheduler_delete(void)`<br/>`Scheduler::get_n_tasks(void)`<br/>`Scheduler::Scheduler_get_current_path(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
-|`test2()`|Verify that the `exec_path` data member is updated to the directory path where the test build is located. The `Event Reporter` should not register any events.|`Scheduler::obtain_exec_path(void)`<br/>`Scheduler::Scheduler_get_current_path(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
+|`test1()`|Initialize Scheduler object and verify its data members were properly zeroed out.  The `Event Reporter` should not register any events.|`Scheduler::Scheduler_init(void)`<br/>`Scheduler::Scheduler_delete(void)`<br/>`Scheduler::get_n_tasks(void)`<br/>`Scheduler::get_current_path(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
+|`test2()`|Verify that the `exec_path` data member is updated to the directory path where the test build is located. The `Event Reporter` should not register any events.|`Scheduler::obtain_exec_path(void)`<br/>`Scheduler::get_current_path(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 |`test3()`|Load tasks from `tasks` directory. After a successful call, all tasks defined in the `tasks` directory (total of 2) should be loaded to the `Scheduler`. The `Event Reporter` should register exactly 2 events after loading both tasks.|`Scheduler::load_all_tasks(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 |`test4()`|Load one task from `tasks` directory. After a successful call, just one task should be loaded to the `Scheduler`. The `Event Reporter` should register exactly 1 event after loading the task.|`Scheduler::load_task(std::string&)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 |`test5()`|Load tasks from `tasks` directory. Then, remove one task from `Scheduler`. After a successful call, there should only be 1 task left in  the `Scheduler`. The `Event Reporter` should register exactly 3 events after loading both tasks and removing one.|`Scheduler::remove_task(std::string&)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
@@ -413,11 +413,23 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test4()`|Generate a temporary `Task` called `TestTask` and load it in the `Scheduler`. This task has a `Monthly` frequency value and set to run 1 second after its creation. Check its output value and that the `Task` remains in `Scheduler`.|`Scheduler::load_task(std::string&)`<br/>`Task::run_task(void)`<br/>`Task::launch_thread(Task*)`<br/>`Task::stop_thread(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 |`test5()`|Generate a temporary `Task` called `TestTask` and load it in the `Scheduler`. This task has a `Yearly` frequency value and set to run 1 second after its creation. Check its output value and that the `Task` remains in `Scheduler`.|`Scheduler::load_task(std::string&)`<br/>`Task::run_task(void)`<br/>`Task::launch_thread(Task*)`<br/>`Task::stop_thread(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 
+### **Scheduler_reload_task.cpp**
+
+|Testcase|Description|Part Tested|Status|
+|-|-|-|-|
+`test1()`|Load a task in the scheduler; then, create a modified version of task's configuration file. Then, reload the task with the modified configuration file. Verify that the task attributes are loaded correctly by checking they match the expected values. The `EventReporter` should record 2 events after reloading the task.|`Scheduler::load_reload_task(void)`<br/>`EventReporter::get_n_events(void)`<br/>`Scheduler::get_n_tasks(void)`|<span style="color:green">Passed|
+`test2()`|Load tasks in the scheduler; then attempt to reload a task that does not exist in the scheduler. The `EventReporter` should record 3 events after loading 2 tasks and attempting to reload 1 task.|`Scheduler::load_reload_task(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
+|`test3()`|Load all tasks and rename `tasks` directory to simulate it does not exist. The `EventReporter` should record 3 events after attempting to find the `tasks` directory. Two tasks should still be loaded in the `Scheduler`.|`Scheduler::load_reload_task(void)`<br/>`EventReporter::get_n_events(void)`<br/>`Scheduler::get_n_tasks(void)`|<span style="color:green">Passed|
+|`test4()`|Load all tasks and rename `scripts` directory to simulate it does not exist. The `EventReporter` should record 3 events after attempting to find the `scripts` directory. Two tasks should still be loaded in the `Scheduler`.|`Scheduler::load_reload_task(void)`<br/>`EventReporter::get_n_events(void)`<br/>`Scheduler::get_n_tasks(void)`|<span style="color:green">Passed|
+|`test5()`|Load all tasks and rename `cat_test.cl` configuration file to simulate it does not exist. Then, attempt to reload the task `cat` which corresponds to the renamed `cat_test.cl` configuration file. The `EventReporter` should record 3 events after attempting to reload task from missmatch configuration file. Two tasks should still be loaded in the `Scheduler`.|`Scheduler::load_reload_task(void)`<br/>`EventReporter::get_n_events(void)`<br/>`Scheduler::get_n_tasks(void)`|<span style="color:green">Passed|
+|`test6()`|Load temporary task from `ZZZTestTask.cl` and modify its configuration file with an invalid frequency value. Then, attempt to reload the task `ZZZTestTask` and detect the invalid frequency attribute. The `EventReporter` should record 3 events after attempting to reload task. The original `ZZZTestTask` task should still be loaded in the `Scheduler`.|`Scheduler::load_reload_task(void)`<br/>`EventReporter::get_n_events(void)`<br/>`Scheduler::get_n_tasks(void)`|<span style="color:green">Passed|
+
 ### **Scheduler_load_all_tasks.cpp**
+
 |Testcase|Description|Part Tested|Status|
 |-|-|-|-|
 |`test1()`|Load tasks `cat_test.cl` and `ls_test.cl` from tasks directory. Verify that tasks' attributes are loaded correctly by checking they match the expected values. The `EventReporter` should record 2 events after loading the tasks.|`Scheduler::load_all_tasks(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
-|`test2()`|Rename `tasks` directory to simulate it does not exist. The `EventReporter` should record 1 event after attempting to find the `tasks` directory. No tasks should be loaded in the loaded in the `Scheduler`.|`Scheduler::load_all_tasks(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
+|`test2()`|Rename `tasks` directory to simulate it does not exist. The `EventReporter` should record 1 event after attempting to find the `tasks` directory. No tasks should be loaded in the `Scheduler`.|`Scheduler::load_all_tasks(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 |`test3()`|Rename `scripts` directory to simulate it does not exist. The `EventReporter` should record 1 event after attempting to find the `scripts` directory. No tasks should be loaded in the `Scheduler`.|`Scheduler::load_all_tasks(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 |`test4()`|Generate a task with a `Datetime` value in the past. The `EventReporter` should record 2 events after loading valid existing tasks, plus 1 event after attempting to load a task in the past. Only 2 tasks should be loaded in the `Scheduler`.|`Scheduler::load_all_tasks(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 |`test5()`|Generate a task with a duplicate `Name`. The `EventReporter` should record 2 events after loading valid existing tasks, plus 1 event after attempting to load a task with a duplicate `Name`. Only 2 tasks should be loaded in the `Scheduler`.|`Scheduler::load_all_tasks(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
