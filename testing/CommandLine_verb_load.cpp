@@ -11,24 +11,25 @@ ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
 
 int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 1: Issue the command "load" and verify event warning
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
 
     c->set_cmd_input("load");
     c->parse_command();
     ret_event = e->get_last_event();
     std::time(&time_now);
 
+    assert(s->get_n_tasks() == 0);
+    assert(e->get_n_events() == 1);
+    assert(c->get_cmds_issued() == 0);
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == ts::EventType::WARNING);
     assert(ret_event.get_message() == "The \"load\" verb requires at least 1 argument. Issue the command \"help load\" for options.");
-    assert(e->get_n_events() == 1);
-    assert(c->get_cmds_issued() == 0);
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -41,24 +42,25 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 2: Issue the command "load task ls_test.cl invalid" and verify event warning
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
 
     c->set_cmd_input("load task ls_test.cl invalid");
     c->parse_command();
     ret_event = e->get_last_event();
     std::time(&time_now);
 
+    assert(s->get_n_tasks() == 0);
+    assert(e->get_n_events() == 1);
+    assert(c->get_cmds_issued() == 0);
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == ts::EventType::WARNING);
     assert(ret_event.get_message() == "The command \"load task <config_name>\" does not take any additional arguments.");
-    assert(e->get_n_events() == 1);
-    assert(c->get_cmds_issued() == 0);
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -70,28 +72,28 @@ int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 3: Load one task in the scheduler by issuing the command "load task ls_test.cl", then verify task removal
+    // TEST 3: Load one task in the scheduler by issuing the command "load task ls_test.cl", then verify task loaded
+    std::string ret_cmd_output;
+    ts::Event ret_event;
+    time_t time_now;
+
     e->EventReporter_init();
     s->Scheduler_init(e);
     c->CommandLine_init(e, s);
 
     s->obtain_exec_path();
 
-    std::string ret_cmd_output;
-    ts::Event ret_event;
-    time_t time_now;
-
     c->set_cmd_input("load task ls_test.cl");
     c->parse_command();
     ret_event = e->get_last_event();
     std::time(&time_now);
 
-    assert(ret_event.get_event_time() == time_now);
-    assert(ret_event.get_type() == ts::EventType::INFO);
-    assert(ret_event.get_message() == "Successfully loaded task \"ls\" from \"ls_test.cl\".");
     assert(s->get_n_tasks() == 1);
     assert(e->get_n_events() == 1);
     assert(c->get_cmds_issued() == 1);
+    assert(ret_event.get_event_time() == time_now);
+    assert(ret_event.get_type() == ts::EventType::INFO);
+    assert(ret_event.get_message() == "Successfully loaded task \"ls\" from \"ls_test.cl\".");
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -105,6 +107,10 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 4: Attempt to load one task in the scheduler from a missing confioguration file 
     // by issuing the command "load task invalid", then verify event warning
+    std::string ret_cmd_output;
+    ts::Event ret_event;
+    time_t time_now;
+
     e->EventReporter_init();
     s->Scheduler_init(e);
     c->CommandLine_init(e, s);
@@ -112,21 +118,17 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     s->obtain_exec_path();
     s->load_all_tasks();
 
-    std::string ret_cmd_output;
-    ts::Event ret_event;
-    time_t time_now;
-
     c->set_cmd_input("load task invalid");
     c->parse_command();
     ret_event = e->get_last_event();
     std::time(&time_now);
 
-    assert(ret_event.get_event_time() == time_now);
-    assert(ret_event.get_type() == ts::EventType::ERROR);
-    assert(ret_event.get_message() == "The task file configuration file \"invalid\" could not be found.");
     assert(s->get_n_tasks() == 2);
     assert(e->get_n_events() == 3);
     assert(c->get_cmds_issued() == 1);
+    assert(ret_event.get_event_time() == time_now);
+    assert(ret_event.get_type() == ts::EventType::ERROR);
+    assert(ret_event.get_message() == "The task file configuration file \"invalid\" could not be found.");
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -152,11 +154,12 @@ int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     ret_event = e->get_last_event();
     std::time(&time_now);
 
+    assert(s->get_n_tasks() == 0);
+    assert(e->get_n_events() == 1);
+    assert(c->get_cmds_issued() == 0);
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == ts::EventType::WARNING);
     assert(ret_event.get_message() == "An invalid argument was passed for the the \"load\" verb. Issue the command \"help load\" for options.");
-    assert(e->get_n_events() == 1);
-    assert(c->get_cmds_issued() == 0);
 
     c->CommandLine_delete();
     s->Scheduler_delete();

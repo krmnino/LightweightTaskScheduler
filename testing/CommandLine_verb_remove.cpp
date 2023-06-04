@@ -11,24 +11,25 @@ ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
 
 int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 1: Issue the command "remove" and verify event warning
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
 
     c->set_cmd_input("remove");
     c->parse_command();
     ret_event = e->get_last_event();
     std::time(&time_now);
 
+    assert(s->get_n_tasks() == 0);
+    assert(e->get_n_events() == 1);
+    assert(c->get_cmds_issued() == 0);
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == ts::EventType::WARNING);
     assert(ret_event.get_message() == "The \"remove\" verb requires at least 1 argument. Issue the command \"help remove\" for options.");
-    assert(e->get_n_events() == 1);
-    assert(c->get_cmds_issued() == 0);
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -41,24 +42,25 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 2: Issue the command "remove task ls invalid" and verify event warning
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
 
     c->set_cmd_input("remove task ls invalid");
     c->parse_command();
     ret_event = e->get_last_event();
     std::time(&time_now);
 
+    assert(s->get_n_tasks() == 0);
+    assert(e->get_n_events() == 1);
+    assert(c->get_cmds_issued() == 0);
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == ts::EventType::WARNING);
     assert(ret_event.get_message() == "The command \"remove task <task_name>\" does not take any additional arguments.");
-    assert(e->get_n_events() == 1);
-    assert(c->get_cmds_issued() == 0);
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -71,6 +73,10 @@ int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 3: Load scheduler tasks and issue command "remove task ls", then verify task removal
+    std::string ret_cmd_output;
+    ts::Event ret_event;
+    time_t time_now;
+
     e->EventReporter_init();
     s->Scheduler_init(e);
     c->CommandLine_init(e, s);
@@ -78,21 +84,17 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     s->obtain_exec_path();
     s->load_all_tasks();
 
-    std::string ret_cmd_output;
-    ts::Event ret_event;
-    time_t time_now;
-
     c->set_cmd_input("remove task ls");
     c->parse_command();
     ret_event = e->get_last_event();
     std::time(&time_now);
 
-    assert(ret_event.get_event_time() == time_now);
-    assert(ret_event.get_type() == ts::EventType::INFO);
-    assert(ret_event.get_message() == "Successfully removed task \"ls\" from the scheduler.");
     assert(s->get_n_tasks() == 1);
     assert(e->get_n_events() == 3);
     assert(c->get_cmds_issued() == 1);
+    assert(ret_event.get_event_time() == time_now);
+    assert(ret_event.get_type() == ts::EventType::INFO);
+    assert(ret_event.get_message() == "Successfully removed task \"ls\" from the scheduler.");
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -105,6 +107,10 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 4: Load scheduler tasks and issue command "remove task invalid", then verify event
+    std::string ret_cmd_output;
+    ts::Event ret_event;
+    time_t time_now;
+
     e->EventReporter_init();
     s->Scheduler_init(e);
     c->CommandLine_init(e, s);
@@ -112,21 +118,17 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     s->obtain_exec_path();
     s->load_all_tasks();
 
-    std::string ret_cmd_output;
-    ts::Event ret_event;
-    time_t time_now;
-
     c->set_cmd_input("remove task invalid");
     c->parse_command();
     ret_event = e->get_last_event();
     std::time(&time_now);
 
-    assert(ret_event.get_event_time() == time_now);
-    assert(ret_event.get_type() == ts::EventType::ERROR);
-    assert(ret_event.get_message() == "The task \"invalid\" does not exist in the scheduler.");
     assert(s->get_n_tasks() == 2);
     assert(e->get_n_events() == 3);
     assert(c->get_cmds_issued() == 1);
+    assert(ret_event.get_event_time() == time_now);
+    assert(ret_event.get_type() == ts::EventType::ERROR);
+    assert(ret_event.get_message() == "The task \"invalid\" does not exist in the scheduler.");
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -139,24 +141,25 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 5: Issue the command "remove invalid" and verify event warning
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
 
     c->set_cmd_input("remove invalid");
     c->parse_command();
     ret_event = e->get_last_event();
     std::time(&time_now);
 
+    assert(s->get_n_tasks() == 0);
+    assert(e->get_n_events() == 1);
+    assert(c->get_cmds_issued() == 0);
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == ts::EventType::WARNING);
     assert(ret_event.get_message() == "An invalid argument was passed for the the \"remove\" verb. Issue the command \"help remove\" for options.");
-    assert(e->get_n_events() == 1);
-    assert(c->get_cmds_issued() == 0);
 
     c->CommandLine_delete();
     s->Scheduler_delete();

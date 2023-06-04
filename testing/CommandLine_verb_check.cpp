@@ -11,13 +11,13 @@ ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
 
 int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 1: Issue the command "check" and verify event warning
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-    
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
 
     c->set_cmd_input("check");
     c->parse_command();
@@ -41,13 +41,13 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 2: Issue the command "check registry invalid" and verify event warning
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-    
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
 
     c->set_cmd_input("check registry invalid");
     c->parse_command();
@@ -71,13 +71,13 @@ int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 3: Issue the command "check registry" and verify an empty task table is printed
+    std::string ret_cmd_output;
+    std::string verify_cmd_output;
+
     e->EventReporter_init();
     s->Scheduler_init(e);
     c->CommandLine_init(e, s);
     
-    std::string ret_cmd_output;
-    std::string verify_cmd_output;
-
     verify_cmd_output += "TASK_ID | NAME | STATUS | EXECUTION_DATETIME\n";
     verify_cmd_output += "--------+------+--------+-------------------\n";
     c->set_cmd_input("check registry");
@@ -98,18 +98,18 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 4: Load scheduler tasks and issue command "check registry", then verify table contents
+    std::string ret_cmd_output;
+    std::string verify_cmd_output_l1;
+    std::string verify_cmd_output_l2;
+    std::string verify_cmd_output_l3;
+    std::string verify_cmd_output_l4;
+
     e->EventReporter_init();
     s->Scheduler_init(e);
     c->CommandLine_init(e, s);
     
     s->obtain_exec_path();
     s->load_all_tasks();
-
-    std::string ret_cmd_output;
-    std::string verify_cmd_output_l1;
-    std::string verify_cmd_output_l2;
-    std::string verify_cmd_output_l3;
-    std::string verify_cmd_output_l4;
 
     verify_cmd_output_l1 = "| NAME | STATUS |";
     verify_cmd_output_l2 = "| cat  | QUEUED |";
@@ -136,13 +136,13 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 5: Issue command "check task" and verify event warning
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-    
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
 
     c->set_cmd_input("check task");
     c->parse_command();
@@ -166,13 +166,13 @@ int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 6: Issue command "check task ls invalid" and verify event warning
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-    
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
 
     c->set_cmd_input("check task ls invalid");
     c->parse_command();
@@ -196,13 +196,6 @@ int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test7(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 7: Load scheduler tasks and issue command "check task ls", then verify the task attributes
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-    
-    s->obtain_exec_path();
-    s->load_all_tasks();
-
     std::string ret_cmd_output;
     std::string verify_cmd_output_l1;
     std::string verify_cmd_output_l2;
@@ -211,6 +204,14 @@ int test7(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     std::string verify_cmd_output_l5;
     std::string verify_cmd_output_l6;
     std::string verify_cmd_output_l7;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
+    
+    s->obtain_exec_path();
+    s->load_all_tasks();
+
     verify_cmd_output_l1 = "-TASK ID:";
     verify_cmd_output_l2 = "-TASK NAME: ls";
     verify_cmd_output_l3 = "-TASK DESCRIPTION: Test task: call command ls";
@@ -245,13 +246,13 @@ int test7(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test8(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 8: Issue command "check task invalid_name" and verify event warning
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-    
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
 
     c->set_cmd_input("check task invalid_name");
     c->parse_command();
@@ -276,13 +277,6 @@ int test8(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test9(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 9: Load scheduler tasks and issue command "check status", then schdeuler status print
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-    
-    s->obtain_exec_path();
-    s->load_all_tasks();
-
     std::string ret_cmd_output;
     std::string verify_cmd_output_l1;
     std::string verify_cmd_output_l2;
@@ -291,6 +285,14 @@ int test9(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     std::string verify_cmd_output_l5;
     std::string verify_cmd_output_l6;
     std::string verify_cmd_output_l7;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
+    
+    s->obtain_exec_path();
+    s->load_all_tasks();
+
     verify_cmd_output_l1 = "-TASKS LOADED: 2";
     verify_cmd_output_l2 = "-EVENTS RECORDED: 2";
     verify_cmd_output_l3 = "-TASKS FINISHED: 0";
@@ -324,13 +326,13 @@ int test9(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test10(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 10: Issue command "check invalid args" and verify event warning
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-    
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
 
     c->set_cmd_input("check invalid args");
     c->parse_command();

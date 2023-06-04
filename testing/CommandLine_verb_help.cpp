@@ -11,13 +11,14 @@ ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
 
 int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 1: Issue the command "help" and verify command output
+    std::string ret_cmd_output;
+    std::string verify_cmd_output;
+
     e->EventReporter_init();
     s->Scheduler_init(e);
     c->CommandLine_init(e, s);
 
-    std::string ret_cmd_output;
-    std::string verify_cmd_output = "";
-
+    verify_cmd_output = "";
     verify_cmd_output += "- help: Displays this dialog.\n";
     verify_cmd_output += "- help check: Displays usage for the \"check\" verb only.\n";
     verify_cmd_output += "- help remove: Displays usage for the \"remove\" verb only.\n";
@@ -47,13 +48,14 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 2: Issue the command "help check" and verify command output
+    std::string ret_cmd_output;
+    std::string verify_cmd_output;
+
     e->EventReporter_init();
     s->Scheduler_init(e);
     c->CommandLine_init(e, s);
 
-    std::string ret_cmd_output;
-    std::string verify_cmd_output = "";
-
+    verify_cmd_output = "";
     verify_cmd_output += "- check registry: Displays relevant information about the tasks loaded in the scheduler.\n";
     verify_cmd_output += "- check task <task_name>: Displays the full information about the specified task.\n";
     verify_cmd_output += "- check status: Displays operational information about the scheduler.\n";
@@ -76,13 +78,14 @@ int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 3: Issue the command "help remove" and verify command output
+    std::string ret_cmd_output;
+    std::string verify_cmd_output;
+
     e->EventReporter_init();
     s->Scheduler_init(e);
     c->CommandLine_init(e, s);
 
-    std::string ret_cmd_output;
-    std::string verify_cmd_output = "";
-
+    verify_cmd_output = "";
     verify_cmd_output += "- remove task <task_name>: Removes the specified task from the scheduler.\n";
 
     c->set_cmd_input("help remove");
@@ -103,13 +106,14 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 4: Issue the command "help load" and verify command output
+    std::string ret_cmd_output;
+    std::string verify_cmd_output;
+
     e->EventReporter_init();
     s->Scheduler_init(e);
     c->CommandLine_init(e, s);
 
-    std::string ret_cmd_output;
-    std::string verify_cmd_output = "";
-
+    verify_cmd_output = "";
     verify_cmd_output += "- load task <config_name>: Load task in schdeuler from specified configuration filename.\n";
 
     c->set_cmd_input("help load");
@@ -130,13 +134,13 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 5: Issue the command "help invalid" and verify event warning
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
 
     c->set_cmd_input("help invalid");
     c->parse_command();
@@ -160,13 +164,13 @@ int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 6: Issue the command "help invalid invalid" and verify event warning
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
 
     c->set_cmd_input("help invalid invalid");
     c->parse_command();
