@@ -61,6 +61,7 @@ SRC_TESTCASES =	Task_constructor						\
 				Scheduler_get_instance					\
 				Scheduler_methods						\
 				Scheduler_Task_run_task					\
+				Scheduler_reload_all_tasks				\
 				Scheduler_reload_task					\
 				Scheduler_load_all_tasks				\
 				Scheduler_load_task						\
@@ -244,6 +245,10 @@ Scheduler_methods: task_scheduler.o
 Scheduler_Task_run_task: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 Scheduler_Task_run_task.cpp
 	g++ -g -Wall -o Scheduler_Task_run_task Scheduler_Task_run_task.o $(OBJ_FILES) -pthread -lstdc++fs
+
+Scheduler_reload_all_tasks: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 Scheduler_reload_all_tasks.cpp
+	g++ -g -Wall -o Scheduler_reload_all_tasks Scheduler_reload_all_tasks.o $(OBJ_FILES) -pthread -lstdc++fs
 
 Scheduler_reload_task: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 Scheduler_reload_task.cpp

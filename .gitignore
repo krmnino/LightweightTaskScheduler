@@ -48,6 +48,7 @@ testing/Task_setting_exec_datetime_Yearly
 testing/Scheduler_get_instance
 testing/Scheduler_methods
 testing/Scheduler_Task_run_task
+testing/Scheduler_reload_all_tasks
 testing/Scheduler_reload_task
 testing/Scheduler_load_all_tasks
 testing/Scheduler_load_task
