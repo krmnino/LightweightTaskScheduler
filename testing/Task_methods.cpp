@@ -469,13 +469,48 @@ int test6(){
 
 int test7(){
     // TEST 7: testing run_task() and get_output() methods -> PASS
+    
+    time_t time_now;
+    time_t time_now_add;
+    std::tm* to_struct;
+    std::tm struct_time_now_add;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string t_name;
+    std::string t_description;
+    std::string t_script_name;
+    std::string t_frequency;
+    std::string t_input_execution_datetime;
+    std::string t_config_filename;
 
-    std::string t_name = "Task Name";
-    std::string t_description = "A short description for this task";
-    std::string t_script_name = "cat_test.sh";
-    std::string t_frequency = "Hourly";
-    std::string t_input_execution_datetime = "12:00:00";
-    std::string t_config_filename = "config.cl";
+    time_now = std::time(&time_now);
+
+    // Add 15 seconds to current time
+    time_now_add = time_now + 15;
+    
+    // time_t to std::tm*
+    to_struct = std::gmtime(&time_now_add);
+
+    // std::tm* to std::tm
+    struct_time_now_add = *to_struct;
+
+    hours = (struct_time_now_add.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now_add.tm_hour) :
+             std::to_string(struct_time_now_add.tm_hour);
+    minutes = (struct_time_now_add.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_min) :
+               std::to_string(struct_time_now_add.tm_min);
+    seconds = (struct_time_now_add.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now_add.tm_sec) :
+               std::to_string(struct_time_now_add.tm_sec);
+
+    t_name = "Task Name";
+    t_description = "A short description for this task";
+    t_script_name = "cat_test.sh";
+    t_frequency = "Hourly";
+    t_input_execution_datetime = hours + ":" + minutes + ":" + seconds;
+    t_config_filename = "config.cl";
 
     ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
     
