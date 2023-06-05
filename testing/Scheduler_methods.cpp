@@ -50,13 +50,13 @@ int test2(ts::Scheduler* s, ts::EventReporter* e){
 
 
 int test3(ts::Scheduler* s, ts::EventReporter* e){
-    // TEST 3: load tasks from tasks directory with Scheduler::load_tasks_from_dir()
+    // TEST 3: load tasks from tasks directory with Scheduler::load_all_tasks()
     // Tasks to be loaded: cat_test.cl and ls_test.cl
     e->EventReporter_init();
     s->Scheduler_init(e);
 
     s->obtain_exec_path();
-    s->load_tasks_from_dir();
+    s->load_all_tasks();
     assert(s->get_n_tasks() == 2);
 
     assert(e->get_n_events() == 2);
@@ -100,7 +100,7 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     s->Scheduler_init(e);
 
     s->obtain_exec_path();
-    s->load_tasks_from_dir();
+    s->load_all_tasks();
     assert(s->get_n_tasks() == 2);
     
     assert(e->get_n_events() == 2);
@@ -130,7 +130,7 @@ int test6(ts::Scheduler* s, ts::EventReporter* e){
     s->Scheduler_init(e);
 
     s->obtain_exec_path();
-    s->load_tasks_from_dir();
+    s->load_all_tasks();
     assert(s->get_n_tasks() == 2);
 
     assert(e->get_n_events() == 2);

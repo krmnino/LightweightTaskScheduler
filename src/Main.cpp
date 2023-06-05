@@ -22,7 +22,7 @@ int main(int argc, char* argv[]){
     s->obtain_exec_path();
 
     // Load all Task configuration files from the task directory
-    s->load_tasks_from_dir();
+    s->load_all_tasks();
     
     // Initialize and launch command line 
     c->start();
