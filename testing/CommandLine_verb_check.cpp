@@ -10,7 +10,7 @@ ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
 ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
 
 int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 1: Issue the command "check" and verify event warning
+    // TEST 1: Issue the command "check" and verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
@@ -40,7 +40,7 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 2: Issue the command "check registry invalid" and verify event warning
+    // TEST 2: Issue the command "check registry invalid" and verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
@@ -70,7 +70,7 @@ int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 3: Issue the command "check registry" and verify an empty task table is printed
+    // TEST 3: Issue the command "check registry" and verify an empty task table is printed.
     std::string ret_cmd_output;
     std::string verify_cmd_output;
 
@@ -97,7 +97,7 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 4: Load scheduler tasks and issue command "check registry", then verify table contents
+    // TEST 4: Load scheduler tasks and issue command "check registry", then verify table contents.
     std::string ret_cmd_output;
     std::string verify_cmd_output_l1;
     std::string verify_cmd_output_l2;
@@ -135,7 +135,7 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 5: Issue command "check task" and verify event warning
+    // TEST 5: Issue command "check task" and verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
@@ -165,7 +165,7 @@ int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 6: Issue command "check task ls invalid" and verify event warning
+    // TEST 6: Issue command "check task ls invalid" and verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
@@ -195,7 +195,7 @@ int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test7(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 7: Load scheduler tasks and issue command "check task ls", then verify the task attributes
+    // TEST 7: Load scheduler tasks and issue command "check task ls", then verify the task attributes.
     std::string ret_cmd_output;
     std::string verify_cmd_output_l1;
     std::string verify_cmd_output_l2;
@@ -245,7 +245,7 @@ int test7(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test8(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 8: Issue command "check task invalid_name" and verify event warning
+    // TEST 8: Issue command "check task invalid_name" and verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
@@ -276,7 +276,7 @@ int test8(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test9(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 9: Load scheduler tasks and issue command "check status", then schdeuler status print
+    // TEST 9: Load scheduler tasks and issue command "check status", then schdeuler status print.
     std::string ret_cmd_output;
     std::string verify_cmd_output_l1;
     std::string verify_cmd_output_l2;
@@ -325,7 +325,7 @@ int test9(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test10(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 10: Issue command "check invalid args" and verify event warning
+    // TEST 10: Issue command "check invalid args" and verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;

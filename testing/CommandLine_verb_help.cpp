@@ -10,7 +10,7 @@ ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
 ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
 
 int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 1: Issue the command "help" and verify command output
+    // TEST 1: Issue the command "help" and verify command output.
     std::string ret_cmd_output;
     std::string verify_cmd_output;
 
@@ -47,7 +47,7 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 2: Issue the command "help check" and verify command output
+    // TEST 2: Issue the command "help check" and verify command output.
     std::string ret_cmd_output;
     std::string verify_cmd_output;
 
@@ -77,7 +77,7 @@ int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 3: Issue the command "help remove" and verify command output
+    // TEST 3: Issue the command "help remove" and verify command output.
     std::string ret_cmd_output;
     std::string verify_cmd_output;
 
@@ -105,7 +105,7 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 4: Issue the command "help load" and verify command output
+    // TEST 4: Issue the command "help load" and verify command output.
     std::string ret_cmd_output;
     std::string verify_cmd_output;
 
@@ -133,7 +133,7 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 5: Issue the command "help invalid" and verify event warning
+    // TEST 5: Issue the command "help invalid" and verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
@@ -163,7 +163,7 @@ int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 6: Issue the command "help invalid invalid" and verify event warning
+    // TEST 6: Issue the command "help invalid invalid" and verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;

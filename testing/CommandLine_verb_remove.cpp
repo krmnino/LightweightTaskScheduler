@@ -10,7 +10,7 @@ ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
 ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
 
 int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 1: Issue the command "remove" and verify event warning
+    // TEST 1: Issue the command "remove" and verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
@@ -41,7 +41,7 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 2: Issue the command "remove task ls invalid" and verify event warning
+    // TEST 2: Issue the command "remove task ls invalid" and verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
@@ -72,7 +72,7 @@ int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 3: Load scheduler tasks and issue command "remove task ls", then verify task removal
+    // TEST 3: Load scheduler tasks and issue command "remove task ls", then verify task removal.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
@@ -106,7 +106,7 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 4: Load scheduler tasks and issue command "remove task invalid", then verify event
+    // TEST 4: Load scheduler tasks and issue command "remove task invalid", then verify event.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
@@ -140,7 +140,7 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 5: Issue the command "remove invalid" and verify event warning
+    // TEST 5: Issue the command "remove invalid" and verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;

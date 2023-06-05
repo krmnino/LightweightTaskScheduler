@@ -10,7 +10,7 @@ ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
 ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
 
 int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 1: Issue the command "load" and verify event warning
+    // TEST 1: Issue the command "load" and verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
@@ -41,7 +41,7 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 2: Issue the command "load task ls_test.cl invalid" and verify event warning
+    // TEST 2: Issue the command "load task ls_test.cl invalid" and verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
@@ -72,7 +72,7 @@ int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 3: Load one task in the scheduler by issuing the command "load task ls_test.cl", then verify task loaded
+    // TEST 3: Load one task in the scheduler by issuing the command "load task ls_test.cl".
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
@@ -106,7 +106,7 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 4: Attempt to load one task in the scheduler from a missing confioguration file 
-    // by issuing the command "load task invalid", then verify event warning
+    // by issuing the command "load task invalid", then verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
@@ -140,7 +140,7 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 5: Issue the command "load invalid" and verify event warning
+    // TEST 5: Issue the command "load invalid" and verify event warning.
     e->EventReporter_init();
     s->Scheduler_init(e);
     c->CommandLine_init(e, s);
