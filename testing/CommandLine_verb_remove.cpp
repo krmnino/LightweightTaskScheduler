@@ -106,7 +106,7 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 4: Load scheduler tasks and issue command "remove task invalid", then verify event.
+    // TEST 4: Load scheduler tasks and issue command "remove task invalid", then verify event warning.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;

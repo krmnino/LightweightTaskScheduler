@@ -106,7 +106,7 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     // TEST 4: Attempt to load one task in the scheduler from a missing confioguration file 
-    // by issuing the command "load task invalid", then verify event warning.
+    // by issuing the command "load task invalid", then verify event error.
     std::string ret_cmd_output;
     ts::Event ret_event;
     time_t time_now;
