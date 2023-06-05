@@ -4,7 +4,7 @@ namespace ts{
 
 void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
     std::string event_message;
-    std::string out_msg;
+    std::string option;
 
     if(split_cmd_input.size() <= 1){
         event_message = "The \"check\" verb requires at least 1 argument. Issue the command \"help check\" for options.";
@@ -14,7 +14,7 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
         #endif
         return;
     }
-    std::string option = split_cmd_input[1];
+    option = split_cmd_input[1];
     if(option == "registry"){
         if(split_cmd_input.size() != 2){
             event_message = "The command \"check registry\" does not take any additional arguments.";
@@ -84,6 +84,7 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
 
 void CommandLine::verb_remove(std::vector<std::string>& split_cmd_input){
     std::string event_message;
+    std::string option;
 
     if(split_cmd_input.size() <= 1){
         event_message = "The \"remove\" verb requires at least 1 argument. Issue the command \"help remove\" for options.";
@@ -93,7 +94,7 @@ void CommandLine::verb_remove(std::vector<std::string>& split_cmd_input){
         #endif
         return;
     }
-    std::string option = split_cmd_input[1];
+    option = split_cmd_input[1];
     if(option == "task"){
         if(split_cmd_input.size() != 3){
             event_message = "The command \"remove task <task_name>\" does not take any additional arguments.";
@@ -118,6 +119,7 @@ void CommandLine::verb_remove(std::vector<std::string>& split_cmd_input){
 
 void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
     std::string event_message;
+    std::string option;
 
     if(split_cmd_input.size() <= 1){
         event_message = "The \"load\" verb requires at least 1 argument. Issue the command \"help load\" for options.";
@@ -127,7 +129,7 @@ void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
         #endif
         return;
     }
-    std::string option = split_cmd_input[1];
+    option = split_cmd_input[1];
     if(option == "task"){
         if(split_cmd_input.size() != 3){
             event_message = "The command \"load task <config_name>\" does not take any additional arguments.";
@@ -150,8 +152,73 @@ void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
     }
 }
 
+void CommandLine::verb_reload(std::vector<std::string>& split_cmd_input){
+    std::string event_message;
+    std::string option;
+
+    if(split_cmd_input.size() <= 1){
+        event_message = "The \"reload\" verb requires at least 1 argument. Issue the command \"help reload\" for options.";
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+    option = split_cmd_input[1];
+    if(option == "task"){
+        if(split_cmd_input.size() != 3){
+            event_message = "The command \"reload task <config_name>\" does not take any additional arguments.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+        }
+        else{
+            this->scheduler_ptr->reload_task(split_cmd_input[2]);
+            this->cmds_issued++;
+        }
+    }
+    else if(option == "tasks"){
+        if(split_cmd_input.size() < 3){
+            event_message = "The command \"reload tasks <config_name1, config_name2, ...>\" requires at least one task name.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+        }
+        else{
+            for(size_t i = 2; i < split_cmd_input.size(); i++){
+                this->scheduler_ptr->reload_task(split_cmd_input[i]);
+            }
+            this->cmds_issued++;
+        }
+    }
+    else if(option == "all"){
+        if(split_cmd_input.size() != 2){
+            event_message = "The command \"reload all\" does not take any additional arguments.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+            return;
+        }
+        else{
+            this->scheduler_ptr->reload_all_tasks();
+            this->cmds_issued++;
+        }
+    }
+    else{
+        event_message = "An invalid argument was passed for the the \"reload\" verb. Issue the command \"help reload\" for options.";
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+    }
+}
+
 void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
     std::string event_message;
+    std::string option;
     std::string out_str = "";
     
     if(split_cmd_input.size() == 1){
@@ -166,7 +233,7 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
         #endif
     }
     else if(split_cmd_input.size() == 2){
-        std::string option = split_cmd_input[1];
+        option = split_cmd_input[1];
         if(option == "check"){
             out_str += this->help_check_msg();
             this->cmd_output = out_str;
@@ -297,6 +364,9 @@ void CommandLine::parse_command(void){
     }
     else if(split_cmd_input[0] == "load"){
         this->verb_load(split_cmd_input);
+    }
+    else if(split_cmd_input[0] == "reload"){
+        this->verb_reload(split_cmd_input);
     }
     else{
         event_message = "Unrecognized command. Entered: " + this->cmd_input;
