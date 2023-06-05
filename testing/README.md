@@ -528,6 +528,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test7()`|Attempt to reload two tasks in the `Scheduler` by issuing the command `reload tasks cat invalid`. It should cause the `Scheduler` only reload the `cat` task but report an event error. Verify the events message, events time, and events type. |`CommandLine::parse_command(void)`<br/>`CommandLine::verb_reload(std::vector<std::string>&)`|<span style="color:green">Passed|
 |`test8()`|Attempt to reload all tasks in the `Scheduler` by issuing the command `reload all invalid`. It should cause the `Scheduler` to report a warning event. Verify the event message, event time, and event type. |`CommandLine::parse_command(void)`<br/>`CommandLine::verb_reload(std::vector<std::string>&)`<br/>`Scheduler::reload_task(std::vector<std::string>&)`|<span style="color:green">Passed|
 |`test9()`|Reload all tasks in the `Scheduler` by issuing the command `reload all`. The operation should succeed. Verify the event's attributes and status of the `Scheduler` after the tasks has been reloaded. |`CommandLine::parse_command(void)`<br/>`CommandLine::verb_reload(std::vector<std::string>&)`<br/>`Scheduler::reload_all_tasks(void)`|<span style="color:green">Passed|
+|`test10()`|Issue the command `reload invalid`. It should cause the `Scheduler` to report a warning event. Verify the event message, event time, and event type. |`CommandLine::parse_command(void)`<br/>`CommandLine::verb_load(std::vector<std::string>&)`|<span style="color:green">Passed|
 
 ### **CommandLine_verb_load.cpp**
 
