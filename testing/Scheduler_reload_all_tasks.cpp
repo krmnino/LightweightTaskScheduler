@@ -69,7 +69,6 @@ int test1(ts::Scheduler* s, ts::EventReporter* e){
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
 
-
     s->Scheduler_delete();
     e->EventReporter_delete();
 
@@ -242,6 +241,7 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     }
     assert(matching_event_msg);
     assert(ret_event.get_type() == verify_event_type);
+    assert(ret_event.get_event_time() == time_now);
 
     // Verify that ls reloaded successfully
     t_name = "ls";
@@ -259,6 +259,7 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     }
     assert(matching_event_msg);
     assert(ret_event.get_type() == verify_event_type);
+    assert(ret_event.get_event_time() == time_now);
 
     // Verify that ZZZTestTask failed to reload
     t_name = "ZZZTestTask";
@@ -277,6 +278,7 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     }
     assert(matching_event_msg);
     assert(ret_event.get_type() == verify_event_type);
+    assert(ret_event.get_event_time() == time_now);
 
     s->Scheduler_delete();
     e->EventReporter_delete();
@@ -389,6 +391,7 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     }
     assert(matching_event_msg);
     assert(ret_event.get_type() == verify_event_type);
+    assert(ret_event.get_event_time() == time_now);
 
     // Verify that ls reloaded successfully
     t_name = "ls";
@@ -406,6 +409,7 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     }
     assert(matching_event_msg);
     assert(ret_event.get_type() == verify_event_type);
+    assert(ret_event.get_event_time() == time_now);
 
     // Verify that ZZZTestTask failed to reload
     t_name = "ZZZTestTask";
@@ -426,6 +430,7 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     }
     assert(matching_event_msg);
     assert(ret_event.get_type() == verify_event_type);
+    assert(ret_event.get_event_time() == time_now);
 
     remove(("tasks/" + task_config_filename).c_str());
 
