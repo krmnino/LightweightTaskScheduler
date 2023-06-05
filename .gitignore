@@ -58,5 +58,6 @@ testing/CommandLine_get_instance
 testing/CommandLine_methods
 testing/CommandLine_verb_check
 testing/CommandLine_verb_remove
+testing/CommandLine_verb_reload
 testing/CommandLine_verb_load
 testing/CommandLine_verb_help

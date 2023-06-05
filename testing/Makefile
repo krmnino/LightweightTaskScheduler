@@ -71,6 +71,7 @@ SRC_TESTCASES =	Task_constructor						\
 				CommandLine_methods						\
 				CommandLine_verb_check					\
 				CommandLine_verb_remove					\
+				CommandLine_verb_reload					\
 				CommandLine_verb_load					\
 				CommandLine_verb_help
 
@@ -96,7 +97,7 @@ debug_silent:
 		-lstdc++fs
 
 task_scheduler.o: 
-	g++ -g -c -std=c++17 -pthread -D SILENT $(SRC_FILES)
+	g++ -g -c -std=c++17 -pthread -D DEBUG -D SILENT $(SRC_FILES)
 
 Task_constructor: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 Task_constructor.cpp
