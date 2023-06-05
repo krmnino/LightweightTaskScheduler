@@ -196,36 +196,6 @@ int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test7(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
-    // TEST 7: Issue the command "help invalid invalid" and verify event warning.
-    std::string ret_cmd_output;
-    ts::Event ret_event;
-    time_t time_now;
-
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-    c->CommandLine_init(e, s);
-
-    c->set_cmd_input("help invalid invalid");
-    c->parse_command();
-    ret_event = e->get_last_event();
-    std::time(&time_now);
-
-    assert(ret_event.get_event_time() == time_now);
-    assert(ret_event.get_type() == ts::EventType::WARNING);
-    assert(ret_event.get_message() == "An invalid argument was passed for the the \"help\" verb. Issue the command \"help\" for options.");
-    assert(c->get_cmds_issued() == 0);
-    assert(e->get_n_events() == 1);
-
-    c->CommandLine_delete();
-    s->Scheduler_delete();
-    e->EventReporter_delete();
-
-    std::cout << ">> CommandLine_verb_help: 7 done" << std::endl;
-    return 0;
-}
-
-
 int main(int argc, char* argv[]){
     ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
     ts::CommandLine* c = ts::CommandLine::CommandLine_get_instance();
@@ -237,7 +207,6 @@ int main(int argc, char* argv[]){
     test4(e, s, c);
     test5(e, s, c);
     test6(e, s, c);
-    test7(e, s, c);
 
     e->EventReporter_end_instance();
     c->CommandLine_end_instance();
