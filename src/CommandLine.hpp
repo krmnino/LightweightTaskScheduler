@@ -32,6 +32,7 @@ private:
     std::string help_check_msg(void);
     std::string help_remove_msg(void);
     std::string help_load_msg(void);
+    std::string help_reload_msg(void);
     
 public:
     static CommandLine* CommandLine_get_instance(){

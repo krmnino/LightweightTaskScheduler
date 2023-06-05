@@ -167,7 +167,7 @@ void CommandLine::verb_reload(std::vector<std::string>& split_cmd_input){
     option = split_cmd_input[1];
     if(option == "task"){
         if(split_cmd_input.size() != 3){
-            event_message = "The command \"reload task <config_name>\" does not take any additional arguments.";
+            event_message = "The command \"reload task <name>\" does not take any additional arguments.";
             this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
@@ -180,7 +180,7 @@ void CommandLine::verb_reload(std::vector<std::string>& split_cmd_input){
     }
     else if(option == "tasks"){
         if(split_cmd_input.size() < 3){
-            event_message = "The command \"reload tasks <config_name1, config_name2, ...>\" requires at least one task name.";
+            event_message = "The command \"reload tasks <name1, name2, ...>\" requires at least one task name.";
             this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
@@ -226,6 +226,7 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
         out_str += this->help_check_msg();
         out_str += this->help_remove_msg();
         out_str += this->help_load_msg();
+        out_str += this->help_reload_msg();
         this->cmd_output = out_str;
         this->cmds_issued++;
         #ifndef SILENT
@@ -258,6 +259,14 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
             std::cout << this->cmd_output;
             #endif
         }
+        else if(option == "reload"){
+            out_str += this->help_reload_msg();
+            this->cmd_output = out_str;
+            this->cmds_issued++;
+            #ifndef SILENT
+            std::cout << this->cmd_output;
+            #endif
+        }
         else{
             event_message = "An invalid argument was passed for the the \"help\" verb. Issue the command \"help\" for options.";
             this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
@@ -281,6 +290,7 @@ std::string CommandLine::help_msg(void){
     out_str += "- help check: Displays usage for the \"check\" verb only.\n";
     out_str += "- help remove: Displays usage for the \"remove\" verb only.\n";
     out_str += "- help load: Displays usage for the \"load\" verb only.\n";
+    out_str += "- help reload: Displays usage for the \"reload\" verb only.\n";
     out_str += "- close: Terminates the scheduler program.\n";
     return out_str;
 }
@@ -301,7 +311,15 @@ std::string CommandLine::help_remove_msg(void){
 
 std::string CommandLine::help_load_msg(void){
     std::string out_str = "";
-    out_str += "- load task <config_name>: Load task in schdeuler from specified configuration filename.\n";
+    out_str += "- load task <config_name>: Load task in scheduler from specified configuration filename.\n";
+    return out_str;
+}
+
+std::string CommandLine::help_reload_msg(void){
+    std::string out_str = "";
+    out_str += "- reload task <name>: Reload task in scheduler from specified task name attribute.\n";
+    out_str += "- reload tasks <name1, name2...>: Reload multiple tasks in scheduler from specified list of task name attributes.\n";
+    out_str += "- reload all: Reload all tasks loaded in the Scheduler.\n";
     return out_str;
 }
 

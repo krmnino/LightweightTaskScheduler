@@ -66,7 +66,7 @@ int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     assert(c->get_cmds_issued() == 0);
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == ts::EventType::WARNING);
-    assert(ret_event.get_message() == "The command \"reload task <config_name>\" does not take any additional arguments.");
+    assert(ret_event.get_message() == "The command \"reload task <name>\" does not take any additional arguments.");
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -168,7 +168,7 @@ int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     assert(c->get_cmds_issued() == 0);
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == ts::EventType::WARNING);
-    assert(ret_event.get_message() == "The command \"reload tasks <config_name1, config_name2, ...>\" requires at least one task name.");
+    assert(ret_event.get_message() == "The command \"reload tasks <name1, name2, ...>\" requires at least one task name.");
 
     c->CommandLine_delete();
     s->Scheduler_delete();
