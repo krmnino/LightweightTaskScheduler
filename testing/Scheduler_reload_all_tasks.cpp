@@ -228,9 +228,9 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     // Verify that cat reloaded successfully
     t_name = "cat";
     task_config_filename = "cat_test.cl";
-    matching_event_msg = false;
-    verify_event_type = ts::EventType::INFO;
     verify_event_message = "Successfully reloaded task \"" + t_name + "\".";
+    verify_event_type = ts::EventType::INFO;
+    matching_event_msg = false;
     // Look through all events and see if one matches the verification event message
     for(size_t i = 0; i < e->get_n_events(); i++){
         ret_event = e->get_event_at(i);
@@ -246,9 +246,9 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     // Verify that ls reloaded successfully
     t_name = "ls";
     task_config_filename = "ls_test.cl";
-    matching_event_msg = false;
-    verify_event_type = ts::EventType::INFO;
     verify_event_message = "Successfully reloaded task \"" + t_name + "\".";
+    verify_event_type = ts::EventType::INFO;
+    matching_event_msg = false;
     // Look through all events and see if one matches the verification event message
     for(size_t i = 0; i < e->get_n_events(); i++){
         ret_event = e->get_event_at(i);
@@ -264,10 +264,10 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     // Verify that ZZZTestTask failed to reload
     t_name = "ZZZTestTask";
     task_config_filename = "ZZZTestTask.cl";
-    matching_event_msg = false;
-    verify_event_type = ts::EventType::ERROR;
     verify_event_message = "The task file configuration file \"" + task_config_filename + 
                             "\" corresponding to task \"" + t_name +"\" could not be found.";
+    verify_event_type = ts::EventType::ERROR;
+    matching_event_msg = false;
     // Look through all events and see if one matches the verification event message
     for(size_t i = 0; i < e->get_n_events(); i++){
         ret_event = e->get_event_at(i);
@@ -378,9 +378,9 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     // Verify that cat reloaded successfully
     t_name = "cat";
     task_config_filename = "cat_test.cl";
-    matching_event_msg = false;
-    verify_event_type = ts::EventType::INFO;
     verify_event_message = "Successfully reloaded task \"" + t_name + "\".";
+    verify_event_type = ts::EventType::INFO;
+    matching_event_msg = false;
     // Look through all events and see if one matches the verification event message
     for(size_t i = 0; i < e->get_n_events(); i++){
         ret_event = e->get_event_at(i);
@@ -396,9 +396,9 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     // Verify that ls reloaded successfully
     t_name = "ls";
     task_config_filename = "ls_test.cl";
-    matching_event_msg = false;
-    verify_event_type = ts::EventType::INFO;
     verify_event_message = "Successfully reloaded task \"" + t_name + "\".";
+    verify_event_type = ts::EventType::INFO;
+    matching_event_msg = false;
     // Look through all events and see if one matches the verification event message
     for(size_t i = 0; i < e->get_n_events(); i++){
         ret_event = e->get_event_at(i);
@@ -415,11 +415,11 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     t_name = "ZZZTestTask";
     task_config_filename = "ZZZTestTask.cl";
     t_frequency = "Anything";
-    matching_event_msg = false;
-    verify_event_type = ts::EventType::ERROR;
     verify_event_message = "An invalid frequency value of \"" + t_frequency + 
                            "\" was specified in the configuration file \"" +
                            task_config_filename + "\".";
+    verify_event_type = ts::EventType::ERROR;
+    matching_event_msg = false;
     // Look through all events and see if one matches the verification event message
     for(size_t i = 0; i < e->get_n_events(); i++){
         ret_event = e->get_event_at(i);
