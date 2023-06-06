@@ -48,6 +48,7 @@ The scheduler is a command line based program; therefore, there is a set of comm
 - `help load`: Displays usage for the `load` verb only.
 - `help reload`: Displays usage for the `reload` verb only.
 - `load task <config_name>`: Load task in schdeuler from specified configuration filename.
+- `load tasks <config_name1, config_name2, ...>`: Load multiple tasks in scheduler from specified list of configuration filenames.
 - `remove task <task_name>`: Removes the specified task from the scheduler.
 - `reload task <name>`: Reload task in scheduler from specified task name attribute.
 - `reload tasks <name1, name2...>`: Reload multiple tasks in scheduler from specified list of task name attributes.

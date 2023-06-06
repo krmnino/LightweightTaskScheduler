@@ -143,6 +143,21 @@ void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
             this->cmds_issued++;
         }
     }
+    else if(option == "tasks"){
+        if(split_cmd_input.size() < 3){
+            event_message = "The command \"load tasks <config_name1, config_name2, ...>\" requires at least one task configuration filename.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+        }
+        else{
+            for(size_t i = 2; i < split_cmd_input.size(); i++){
+                this->scheduler_ptr->load_task(split_cmd_input[i]);
+            }
+            this->cmds_issued++;
+        }
+    }
     else{
         event_message = "An invalid argument was passed for the the \"load\" verb. Issue the command \"help load\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
@@ -312,6 +327,7 @@ std::string CommandLine::help_remove_msg(void){
 std::string CommandLine::help_load_msg(void){
     std::string out_str = "";
     out_str += "- load task <config_name>: Load task in scheduler from specified configuration filename.\n";
+    out_str += "- load tasks <config_name1, config_name2...>: Load multiple tasks in scheduler from specified list of configuration filenames.\n";
     return out_str;
 }
 
