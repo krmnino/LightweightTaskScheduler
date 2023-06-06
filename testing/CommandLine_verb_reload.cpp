@@ -205,6 +205,7 @@ int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
     verify_event_message = "Successfully reloaded task \"ls\".";
     verify_event_type = ts::EventType::INFO;
+    matching_event_msg = false;
     // Look through all events and see if one matches the verification event message
     for(size_t i = 0; i < e->get_n_events(); i++){
         ret_event = e->get_event_at(i);
@@ -219,6 +220,7 @@ int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
     verify_event_message = "Successfully reloaded task \"cat\".";
     verify_event_type = ts::EventType::INFO;
+    matching_event_msg = false;
     // Look through all events and see if one matches the verification event message
     for(size_t i = 0; i < e->get_n_events(); i++){
         ret_event = e->get_event_at(i);
@@ -266,6 +268,7 @@ int test7(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
     verify_event_message = "Successfully reloaded task \"cat\".";
     verify_event_type = ts::EventType::INFO;
+    matching_event_msg = false;
     // Look through all events and see if one matches the verification event message
     for(size_t i = 0; i < e->get_n_events(); i++){
         ret_event = e->get_event_at(i);
@@ -280,6 +283,7 @@ int test7(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
     verify_event_message = "The task \"invalid\" does not exist in the scheduler.";
     verify_event_type = ts::EventType::ERROR;
+    matching_event_msg = false;
     // Look through all events and see if one matches the verification event message
     for(size_t i = 0; i < e->get_n_events(); i++){
         ret_event = e->get_event_at(i);
@@ -361,6 +365,7 @@ int test9(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
     verify_event_message = "Successfully reloaded task \"ls\".";
     verify_event_type = ts::EventType::INFO;
+    matching_event_msg = false;
     // Look through all events and see if one matches the verification event message
     for(size_t i = 0; i < e->get_n_events(); i++){
         ret_event = e->get_event_at(i);
@@ -375,6 +380,7 @@ int test9(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
     verify_event_message = "Successfully reloaded task \"cat\".";
     verify_event_type = ts::EventType::INFO;
+    matching_event_msg = false;
     // Look through all events and see if one matches the verification event message
     for(size_t i = 0; i < e->get_n_events(); i++){
         ret_event = e->get_event_at(i);
