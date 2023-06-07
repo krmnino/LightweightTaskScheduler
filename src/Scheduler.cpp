@@ -539,7 +539,7 @@ std::string Scheduler::display_registry(void){
         header[0].length(), /* TASK ID CURRENT MAX LENGTH */
         header[1].length(), /* TASK NAME CURRENT MAX LENGTH */
         header[2].length(), /* TASK STATUS CURRENT MAX LENGTH */
-        header[3].length(), /* Task EXECUTION DATETIME CURRENT MAX LENGTH */
+        header[3].length(), /* TASK EXECUTION DATETIME CURRENT MAX LENGTH */
     };
     std::vector<std::string> task_ids;
     std::vector<std::string> task_names;
@@ -586,7 +586,7 @@ std::string Scheduler::display_registry(void){
         }
         /* Update maximum field length for pretty print */
         field_curr_max_len[2] = std::max(field_curr_max_len[2], task_statuses[counter].length());
-        field_curr_max_len[2] = std::min(field_curr_max_len[2], TASK_EXEC_DATE_FIELD_MAX_LEN);
+        field_curr_max_len[2] = std::min(field_curr_max_len[2], TASK_STATUS_FIELD_MAX_LEN);
 
         /* Collect task execution datetime attribute */
         task_exec_dates.push_back(t->get_execution_datetime_fmt());

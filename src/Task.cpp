@@ -1574,6 +1574,13 @@ ValidationCode validate_task_parms(cl::Config* task_config, std::string scripts_
     if(!task_config->key_exists("Datetime")){
         return ValidationCode::MISSING_DATETIME_KEYVAL;
     }
+
+    // Check if name exceeds 16 characters in length
+    value = task_config->get_value("Name")->get_data<std::string>();
+    if(value.length() > TASK_NAME_FIELD_MAX_LEN){
+        return ValidationCode::INVALID_NAME_LENGTH;
+    }
+
     // Check if script file exists
     value = task_config->get_value("ScriptFilename")->get_data<std::string>();
     if(!std::filesystem::exists(scripts_dir + value)){
