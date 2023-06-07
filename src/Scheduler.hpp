@@ -14,7 +14,7 @@
 #include "Task.hpp"
 #include "EventReporter.hpp"
 
-namespace ts{
+namespace lts{
 
 class Scheduler{
 private:
@@ -26,7 +26,7 @@ private:
     
     Scheduler() {}
     unsigned int generate_task_id(Task*);
-    unsigned int get_n_tasks_by_status(ts::TaskStatus);
+    unsigned int get_n_tasks_by_status(TaskStatus);
     Task* get_task_from_registry(std::string&);
 
 public:

@@ -1,6 +1,6 @@
 #include "Scheduler.hpp"
 
-namespace ts{
+namespace lts{
 
 unsigned int Scheduler::generate_task_id(Task* task){
     // Get task attributes
@@ -59,7 +59,7 @@ unsigned int Scheduler::generate_task_id(Task* task){
     return id;
 }
 
-unsigned int Scheduler::get_n_tasks_by_status(ts::TaskStatus status){
+unsigned int Scheduler::get_n_tasks_by_status(TaskStatus status){
     std::map<std::string, Task*>::iterator it;
     Task* t;
     unsigned int counter = 0;
@@ -100,7 +100,7 @@ void Scheduler::obtain_exec_path(void){
 void Scheduler::load_all_tasks(void){
     Task* t;
     cl::Config* task_config;
-    ts::ValidationCode ret_task_validate;
+    ValidationCode ret_task_validate;
     std::string task_config_filename;
     std::string task_name;
     std::string task_description;
@@ -135,7 +135,7 @@ void Scheduler::load_all_tasks(void){
         // Load the task's configuration file and validate its contents
         task_config = new cl::Config(file.path());
         task_config_filename = file.path().filename().string();
-        ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
+        ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
         if(ret_task_validate != ValidationCode::OK){
             event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
             this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
@@ -167,7 +167,7 @@ void Scheduler::load_all_tasks(void){
         // Assign task id to task object
         task_id = this->generate_task_id(t);
         t->set_id(task_id);
-        t->set_status(ts::TaskStatus::QUEUED);
+        t->set_status(TaskStatus::QUEUED);
         t->set_event_reporter_ptr(this->event_reporter_ptr);
 
         // Add task object to task registry
@@ -185,7 +185,7 @@ void Scheduler::load_all_tasks(void){
 void Scheduler::load_task(std::string& task_config_filename){
     Task* t;
     cl::Config* task_config;
-    ts::ValidationCode ret_task_validate;
+    ValidationCode ret_task_validate;
     std::string task_name;
     std::string task_description;
     std::string task_script_name;
@@ -226,7 +226,7 @@ void Scheduler::load_task(std::string& task_config_filename){
 
     // Load the task's configuration file and validate its contents
     task_config = new cl::Config(this->exec_path + "/tasks/" + task_config_filename);
-    ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
+    ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
     if(ret_task_validate != ValidationCode::OK){
         event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
         this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
@@ -258,7 +258,7 @@ void Scheduler::load_task(std::string& task_config_filename){
     // Assign task id to task object
     task_id = this->generate_task_id(t);
     t->set_id(task_id);
-    t->set_status(ts::TaskStatus::QUEUED);
+    t->set_status(TaskStatus::QUEUED);
     t->set_event_reporter_ptr(this->event_reporter_ptr);
 
     // Add task object to task registry
@@ -277,7 +277,7 @@ void Scheduler::reload_all_tasks(void){
     std::vector<std::string> registry_task_names;
     Task* t;
     cl::Config* task_config;
-    ts::ValidationCode ret_task_validate;
+    ValidationCode ret_task_validate;
     std::string task_config_filename;
     std::string task_name;
     std::string task_description;
@@ -330,7 +330,7 @@ void Scheduler::reload_all_tasks(void){
 
         // Load the task's configuration file and validate its contents
         task_config = new cl::Config(this->exec_path + "/tasks/" + task_config_filename);
-        ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
+        ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
         if(ret_task_validate != ValidationCode::OK){
             event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
             this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
@@ -360,7 +360,7 @@ void Scheduler::reload_all_tasks(void){
         // Assign task id to task object
         task_id = this->generate_task_id(t);
         t->set_id(task_id);
-        t->set_status(ts::TaskStatus::QUEUED);
+        t->set_status(TaskStatus::QUEUED);
         t->set_event_reporter_ptr(this->event_reporter_ptr);
 
         // Add task object to task registry
@@ -378,7 +378,7 @@ void Scheduler::reload_all_tasks(void){
 void Scheduler::reload_task(std::string& key){
     Task* t;
     cl::Config* task_config;
-    ts::ValidationCode ret_task_validate;
+    ValidationCode ret_task_validate;
     std::string task_config_filename;
     std::string task_name;
     std::string task_description;
@@ -435,7 +435,7 @@ void Scheduler::reload_task(std::string& key){
 
     // Load the task's configuration file and validate its contents
     task_config = new cl::Config(this->exec_path + "/tasks/" + task_config_filename);
-    ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
+    ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
     if(ret_task_validate != ValidationCode::OK){
         event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
         this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
@@ -473,7 +473,7 @@ void Scheduler::reload_task(std::string& key){
     // Assign task id to task object
     task_id = this->generate_task_id(t);
     t->set_id(task_id);
-    t->set_status(ts::TaskStatus::QUEUED);
+    t->set_status(TaskStatus::QUEUED);
     t->set_event_reporter_ptr(this->event_reporter_ptr);
 
     // Add task object to task registry
@@ -565,19 +565,19 @@ std::string Scheduler::display_registry(void){
 
         /* Collect task status attribute */
         switch(t->get_status()){
-        case ts::TaskStatus::FINISHED:
+        case TaskStatus::FINISHED:
             task_statuses.push_back("FINISHED");
             break;
-        case ts::TaskStatus::INIT_ERROR:
+        case TaskStatus::INIT_ERROR:
             task_statuses.push_back("INIT_ERROR");
             break;
-        case ts::TaskStatus::EXEC_ERROR:
+        case TaskStatus::EXEC_ERROR:
             task_statuses.push_back("EXEC_ERROR");
             break;
-        case ts::TaskStatus::QUEUED:
+        case TaskStatus::QUEUED:
             task_statuses.push_back("QUEUED");
             break;
-        case ts::TaskStatus::RUNNING:
+        case TaskStatus::RUNNING:
             task_statuses.push_back("RUNNING");
             break;
         default:
@@ -706,19 +706,19 @@ std::string Scheduler::display_task(std::string& key){
     task_frequency = t->get_frequency();
 
     switch(t->get_status()){
-    case ts::TaskStatus::FINISHED:
+    case TaskStatus::FINISHED:
         task_status = "FINISHED";
         break;
-    case ts::TaskStatus::INIT_ERROR:
+    case TaskStatus::INIT_ERROR:
         task_status = "INIT_ERROR";
         break;
-    case ts::TaskStatus::EXEC_ERROR:
+    case TaskStatus::EXEC_ERROR:
         task_status = "EXEC_ERROR";
         break;
-    case ts::TaskStatus::QUEUED:
+    case TaskStatus::QUEUED:
         task_status = "QUEUED";
         break;
-    case ts::TaskStatus::RUNNING:
+    case TaskStatus::RUNNING:
         task_status = "RUNNING";
         break;
     default:
@@ -743,15 +743,15 @@ std::string Scheduler::display_scheduler_status(void){
 
     std::string tasks_loaded = std::to_string(this->scheduler_ptr->get_n_tasks());
     std::string events_recorded = std::to_string(this->n_tasks);
-    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::FINISHED);
+    ret_counter = this->get_n_tasks_by_status(TaskStatus::FINISHED);
     std::string finished_tasks = std::to_string(ret_counter);
-    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::INIT_ERROR);
+    ret_counter = this->get_n_tasks_by_status(TaskStatus::INIT_ERROR);
     std::string init_error_tasks = std::to_string(ret_counter);
-    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::INIT_ERROR);
+    ret_counter = this->get_n_tasks_by_status(TaskStatus::INIT_ERROR);
     std::string exec_error_tasks = std::to_string(ret_counter);
-    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::QUEUED);
+    ret_counter = this->get_n_tasks_by_status(TaskStatus::QUEUED);
     std::string queued_tasks = std::to_string(ret_counter);
-    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::RUNNING);
+    ret_counter = this->get_n_tasks_by_status(TaskStatus::RUNNING);
     std::string running_tasks = std::to_string(ret_counter);
     
     out_str += "-TASKS LOADED: " + tasks_loaded + "\n";

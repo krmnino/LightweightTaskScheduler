@@ -1,6 +1,6 @@
 #include "CommandLine.hpp"
 
-namespace ts{
+namespace lts{
 
 void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
     std::string event_message;

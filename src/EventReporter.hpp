@@ -8,7 +8,7 @@
 #include "Constants.hpp"
 #include "ConfigLoader.hpp"
 
-namespace ts{
+namespace lts{
 
 class Event{
 private:
@@ -55,7 +55,7 @@ public:
     Event get_last_event(void);
     unsigned int get_n_events(void);
     void publish_last_event(void);
-    std::string generate_load_task_msg(ts::ValidationCode, std::string&, cl::Config*);
+    std::string generate_load_task_msg(ValidationCode, std::string&, cl::Config*);
 };
 
 }

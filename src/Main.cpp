@@ -4,14 +4,14 @@
 #include "CommandLine.hpp"
 #include "EventReporter.hpp"
 
-ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
-ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::CommandLine* lts::CommandLine::command_line_ptr = nullptr;
+lts::EventReporter* lts::EventReporter::event_reporter_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int main(int argc, char* argv[]){
-    ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
-    ts::CommandLine* c = ts::CommandLine::CommandLine_get_instance();
-    ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
+    lts::EventReporter* e = lts::EventReporter::EventReporter_get_instance();
+    lts::CommandLine* c = lts::CommandLine::CommandLine_get_instance();
+    lts::Scheduler* s = lts::Scheduler::Scheduler_get_instance();
     
     // Initialize Scheduler and CommandLine data members
     e->EventReporter_init();

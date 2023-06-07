@@ -9,7 +9,7 @@
 #include "Scheduler.hpp"
 #include "EventReporter.hpp"
 
-namespace ts{
+namespace lts{
 
 class CommandLine{
 private:

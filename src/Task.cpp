@@ -1,6 +1,6 @@
 #include "Task.hpp"
 
-namespace ts{
+namespace lts{
 
 Task::Task(std::string name, 
            std::string description,
@@ -15,7 +15,7 @@ Task::Task(std::string name,
     this->config_filename = config_filename;
     this->running_thread_flag = false;
     
-    ts::DatetimeFormat format;
+    DatetimeFormat format;
     if(this->frequency == "Once"){
         // Get datetime format, no validation performed at this step
         format = compute_datetime_format(execution_datetime_str);
@@ -635,7 +635,7 @@ void Task::set_id(int id){
     this->id = id;
 }
 
-void Task::set_event_reporter_ptr(ts::EventReporter* er_ptr){
+void Task::set_event_reporter_ptr(EventReporter* er_ptr){
     this->event_reporter_ptr = er_ptr;
 }
 
