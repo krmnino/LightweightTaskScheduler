@@ -22,7 +22,7 @@ The Light-weight Task Scheduler is a flexible standalone program that allows lau
 A task is defined by a configuration file that can be found in the `tasks` directory. The configuration file must contain the following attributes:
 |Attribute|Type|Description|Constraints and Formats|
 |-|-|-|-|
-`Name`|Required|A unique string identifier.|None.|
+`Name`|Required|A unique string identifier.|Maximum of 32 characters long.|
 `Description`|Optional|A brief description of what the task does.|None.|
 `ScriptFilename`|Required|The name of script file to be invoked by the task. For exmaple, it can be Bash shell script or a Python script.|Must match a file in the `scripts` directory.|
 `Frequency`|Required|Indicates if the task is to run one or more times.|Either `Once`, `Hourly` , `Daily`, `Weekly`, `Monthly`, or `Yearly`.|
