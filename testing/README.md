@@ -185,6 +185,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test11()`|Fail to pass `Datetime` attribute with `Frequency` of `Yearly`. Call should fail with return value of  `ValidationCode::MISSING_DATETIME_KEYVAL`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test12()`|Provide all possible valid attributes to instantiate `Task` object. `ScriptFilename` value should point to an invalid file location. Call should fail with return value of  `ValidationCode::SCRIPT_NOT_FOUND`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 |`test13()`|Provide all possible valid attributes to instantiate `Task` object. `Frequency` value should be invalid. Call should fail with return value of `ValidationCode::BAD_FREQUENCY_VALUE`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
+|`test14()`|Provide all possible valid attributes to instantiate `Task` object. `Name` value should be over 32 characters long. Call should fail with return value of `ValidationCode::INVALID_NAME_LENGTH`.|`validate_task_parms(cl::Config*, std::string)`|<span style="color:green">Passed|
 
 ### **validate_task_parms_Once.cpp**
 

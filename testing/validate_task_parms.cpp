@@ -356,6 +356,28 @@ int test13(){
 }
 
 
+int test14(){
+    // TEST 14: testing validate_task_parms() function -> FAIL
+    // Bad name length
+
+    cl::Config* c = new cl::Config();
+    c->add_entry("Name", "ThisTaskNameIsOver32CharactersLong");
+    c->add_entry("Description", "A short description");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Hourly");
+    c->add_entry("Datetime", "12:00:00");
+
+    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+
+    assert(ret == ts::ValidationCode::INVALID_NAME_LENGTH);
+
+    delete c;
+
+    std::cout << ">> validate_task_parms: 14 done" << std::endl;
+    return 0;
+}
+
+
 int main(){
     test1();
     test2();
@@ -370,4 +392,5 @@ int main(){
     test11();
     test12();
     test13();
+    test14();
 }

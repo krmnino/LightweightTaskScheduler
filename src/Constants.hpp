@@ -54,6 +54,7 @@ enum class ValidationCode {
 	MISSING_SCRIPTFN_KEYVAL,
 	MISSING_FREQUENCY_KEYVAL,
 	MISSING_DATETIME_KEYVAL,
+	INVALID_NAME_LENGTH,
 	SCRIPT_NOT_FOUND,
 	BAD_FREQUENCY_VALUE,
     INCOMPATIBLE_ONCE_FREQ_DATETIME_FORMAT,
@@ -94,8 +95,8 @@ enum class EventType{
 
 const long unsigned int TASK_ID_FIELD_MAX_LEN = 10;
 const long unsigned int TASK_NAME_FIELD_MAX_LEN = 32;
-const long unsigned int TASK_EXEC_DATE_FIELD_MAX_LEN = 32;
 const long unsigned int TASK_STATUS_FIELD_MAX_LEN = 10;
+const long unsigned int TASK_EXEC_DATE_FIELD_MAX_LEN = 32;
 
 }
 
