@@ -5,12 +5,12 @@
 #include "../src/EventReporter.hpp"
 #include "../src/CommandLine.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
-ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
-ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
+lts::EventReporter* lts::EventReporter::event_reporter_ptr = nullptr;
+lts::CommandLine* lts::CommandLine::command_line_ptr = nullptr;
 
 int test1(){
-    ts::CommandLine* c = ts::CommandLine::CommandLine_get_instance();
+    lts::CommandLine* c = lts::CommandLine::CommandLine_get_instance();
     
     assert(c != nullptr);
 

@@ -4,7 +4,7 @@
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing today_add_wday_hms() function -> PASS
@@ -72,7 +72,7 @@ int test1(){
 
     datetime_str = wday + " " + hours + ":" + minutes + ":" + seconds;
 
-    ret = ts::today_add_wday_hms(datetime_str);
+    ret = lts::today_add_wday_hms(datetime_str);
 
     to_struct = std::gmtime(&ret);
     struct_ret = *to_struct;
@@ -189,7 +189,7 @@ int test2(){
 
     datetime_str = wday + " " + hours + ":" + minutes + ":" + seconds;
     
-    ret = ts::today_add_wday_hms(datetime_str);
+    ret = lts::today_add_wday_hms(datetime_str);
 
     to_struct = std::gmtime(&ret);
     struct_ret = *to_struct;
@@ -309,7 +309,7 @@ int test3(){
 
     datetime_str = wday + " " + hours + ":" + minutes + ":" + seconds;              
        
-    ret = ts::today_add_wday_hms(datetime_str);
+    ret = lts::today_add_wday_hms(datetime_str);
 
     to_struct = std::gmtime(&ret);
     struct_ret = *to_struct;
@@ -469,7 +469,7 @@ int test4(){
         break;
     }
 
-    ret = ts::today_add_wday_hms(wday + "120000");
+    ret = lts::today_add_wday_hms(wday + "120000");
 
     assert(ret == 0);
        
@@ -517,7 +517,7 @@ int test5(){
 
     datetime_str = "anything " + hours + ":" + minutes + ":" + seconds;
 
-    ret = ts::today_add_wday_hms(datetime_str);
+    ret = lts::today_add_wday_hms(datetime_str);
 
     assert(ret == 0);
        

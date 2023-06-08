@@ -6,13 +6,13 @@
 #include "../src/Scheduler.hpp"
 #include "../src/EventReporter.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
-ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
+lts::EventReporter* lts::EventReporter::event_reporter_ptr = nullptr;
 
-int test1(ts::Scheduler* s, ts::EventReporter* e){
+int test1(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 1: create and load task "ZZZTestTask.cl" from task directory and then reload it
     // Validate tasks' name, description, script name, frequency, and output before and after reloading
-    const ts::Task* ret_task;
+    const lts::Task* ret_task;
     time_t time_now;
     time_t time_now_add;
     std::tm* to_struct;
@@ -26,9 +26,9 @@ int test1(ts::Scheduler* s, ts::EventReporter* e){
     std::string t_script_filename;
     std::string t_frequency;
     std::string task_config_filename;
-    ts::Event ret_event;
+    lts::Event ret_event;
     std::string verify_event_message;
-    ts::EventType verify_event_type;
+    lts::EventType verify_event_type;
 
     time_now = std::time(&time_now);
 
@@ -80,10 +80,10 @@ int test1(ts::Scheduler* s, ts::EventReporter* e){
     assert(ret_task->get_script_filename() == t_script_filename);
     assert(ret_task->get_frequency() == t_frequency);
     assert(ret_task->get_output() == "");
-    assert(ret_task->get_status() == ts::TaskStatus::QUEUED);
+    assert(ret_task->get_status() == lts::TaskStatus::QUEUED);
     ret_event = e->get_event_at(0);
     verify_event_message = "Successfully loaded task \"ZZZTestTask\" from \"ZZZTestTask.cl\".";
-    verify_event_type = ts::EventType::INFO;
+    verify_event_type = lts::EventType::INFO;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
 
@@ -114,10 +114,10 @@ int test1(ts::Scheduler* s, ts::EventReporter* e){
     assert(ret_task->get_script_filename() == t_script_filename);
     assert(ret_task->get_frequency() == t_frequency);
     assert(ret_task->get_output() == "");
-    assert(ret_task->get_status() == ts::TaskStatus::QUEUED);
+    assert(ret_task->get_status() == lts::TaskStatus::QUEUED);
     ret_event = e->get_event_at(0);
     verify_event_message = "Successfully reloaded task \"ZZZTestTask\".";
-    verify_event_type = ts::EventType::INFO;
+    verify_event_type = lts::EventType::INFO;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
 
@@ -131,12 +131,12 @@ int test1(ts::Scheduler* s, ts::EventReporter* e){
 }
 
 
-int test2(ts::Scheduler* s, ts::EventReporter* e){
+int test2(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 2: attempt to reload a task that is not in the scheduler
     std::string t_name;
-    ts::Event ret_event;
+    lts::Event ret_event;
     std::string verify_event_message;
-    ts::EventType verify_event_type;
+    lts::EventType verify_event_type;
 
     e->EventReporter_init();
     s->Scheduler_init(e);
@@ -151,7 +151,7 @@ int test2(ts::Scheduler* s, ts::EventReporter* e){
     assert(e->get_n_events() == 3);
     ret_event = e->get_event_at(0);
     verify_event_message = "The task \"" + t_name + "\" does not exist in the scheduler.";
-    verify_event_type = ts::EventType::ERROR;
+    verify_event_type = lts::EventType::ERROR;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
 
@@ -163,15 +163,15 @@ int test2(ts::Scheduler* s, ts::EventReporter* e){
 }
 
 
-int test3(ts::Scheduler* s, ts::EventReporter* e){
+int test3(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 3: try to reload task from directory when tasks directory does not exist
     std::string original_dir_name;
     std::string rename_dir_name;
     std::string task_filename;
     std::string task_name;
-    ts::Event ret_event;
+    lts::Event ret_event;
     std::string verify_event_message;
-    ts::EventType verify_event_type;
+    lts::EventType verify_event_type;
 
     original_dir_name = "tasks/";
     rename_dir_name = "original_tasks/";
@@ -193,7 +193,7 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
     assert(e->get_n_events() == 3);
     ret_event = e->get_event_at(0);
     verify_event_message = "Could not find tasks directory.";
-    verify_event_type = ts::EventType::ERROR;
+    verify_event_type = lts::EventType::ERROR;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
     
@@ -208,15 +208,15 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
 }
 
 
-int test4(ts::Scheduler* s, ts::EventReporter* e){
+int test4(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 4: try to reload task from directory when tasks directory does not exist
     std::string original_dir_name;
     std::string rename_dir_name;
     std::string task_filename;
     std::string task_name;
-    ts::Event ret_event;
+    lts::Event ret_event;
     std::string verify_event_message;
-    ts::EventType verify_event_type;
+    lts::EventType verify_event_type;
 
     original_dir_name = "scripts/";
     rename_dir_name = "original_scripts/";
@@ -238,7 +238,7 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     assert(e->get_n_events() == 3);
     ret_event = e->get_event_at(0);
     verify_event_message = "Could not find scripts directory.";
-    verify_event_type = ts::EventType::ERROR;
+    verify_event_type = lts::EventType::ERROR;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
     
@@ -253,7 +253,7 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
 }
 
 
-int test5(ts::Scheduler* s, ts::EventReporter* e){
+int test5(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 5: rename a loaded task's configuration file and attempt to reload it
     // TEST 3: try to reload task from directory when tasks directory does not exist
     time_t time_now;
@@ -269,9 +269,9 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     std::string t_script_filename;
     std::string t_frequency;
     std::string task_config_filename;
-    ts::Event ret_event;
+    lts::Event ret_event;
     std::string verify_event_message;
-    ts::EventType verify_event_type;
+    lts::EventType verify_event_type;
 
     time_now = std::time(&time_now);
 
@@ -324,7 +324,7 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     ret_event = e->get_event_at(0);
     verify_event_message = "The task file configuration file \"" + task_config_filename + 
                             "\" corresponding to task \"" + t_name +"\" could not be found.";
-    verify_event_type = ts::EventType::ERROR;
+    verify_event_type = lts::EventType::ERROR;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
 
@@ -336,9 +336,9 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
 }
 
 
-int test6(ts::Scheduler* s, ts::EventReporter* e){
+int test6(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 6: Load task, update configuration task file with an invalid attribute and attempt to reload
-    const ts::Task* ret_task;
+    const lts::Task* ret_task;
     time_t time_now;
     time_t time_now_add;
     std::tm* to_struct;
@@ -352,9 +352,9 @@ int test6(ts::Scheduler* s, ts::EventReporter* e){
     std::string t_script_filename;
     std::string t_frequency;
     std::string task_config_filename;
-    ts::Event ret_event;
+    lts::Event ret_event;
     std::string verify_event_message;
-    ts::EventType verify_event_type;
+    lts::EventType verify_event_type;
 
     time_now = std::time(&time_now);
 
@@ -406,10 +406,10 @@ int test6(ts::Scheduler* s, ts::EventReporter* e){
     assert(ret_task->get_script_filename() == t_script_filename);
     assert(ret_task->get_frequency() == t_frequency);
     assert(ret_task->get_output() == "");
-    assert(ret_task->get_status() == ts::TaskStatus::QUEUED);
+    assert(ret_task->get_status() == lts::TaskStatus::QUEUED);
     ret_event = e->get_event_at(0);
     verify_event_message = "Successfully loaded task \"ZZZTestTask\" from \"ZZZTestTask.cl\".";
-    verify_event_type = ts::EventType::INFO;
+    verify_event_type = lts::EventType::INFO;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
 
@@ -439,7 +439,7 @@ int test6(ts::Scheduler* s, ts::EventReporter* e){
     verify_event_message = "An invalid frequency value of \"" + t_frequency + 
                            "\" was specified in the configuration file \"" +
                            task_config_filename + "\".";
-    verify_event_type = ts::EventType::ERROR;
+    verify_event_type = lts::EventType::ERROR;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
 
@@ -454,8 +454,8 @@ int test6(ts::Scheduler* s, ts::EventReporter* e){
 
 
 int main(int argc, char* argv[]){
-    ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
-    ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
+    lts::EventReporter* e = lts::EventReporter::EventReporter_get_instance();
+    lts::Scheduler* s = lts::Scheduler::Scheduler_get_instance();
 
     test1(s, e);
     test2(s, e);

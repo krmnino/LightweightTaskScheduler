@@ -38,7 +38,7 @@
 #define NOVEMBER_DAYS 30
 #define DECEMBER_DAYS 31
 
-namespace ts{
+namespace lts{
 
 enum class TaskStatus {
 	FINISHED,

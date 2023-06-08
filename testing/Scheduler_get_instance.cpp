@@ -3,10 +3,10 @@
 
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
-    ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
+    lts::Scheduler* s = lts::Scheduler::Scheduler_get_instance();
     
     assert(s != nullptr);
 

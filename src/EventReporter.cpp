@@ -1,10 +1,10 @@
 #include "EventReporter.hpp"
 
-namespace ts{
+namespace lts{
 
 Event::Event() :
     event_time{0},
-    type{ts::EventType::UNDEFINED},
+    type{EventType::UNDEFINED},
     message{"Undefined event."}
 {}
 
@@ -60,7 +60,7 @@ Event EventReporter::get_event_at(unsigned int idx){
     Event ret;
     if(this->n_events - 1 < idx){
         std::string event_message = "The event index passed is either negative or greater than the number of recorded events.";
-        this->log_event(ts::EventType::WARNING, event_message);
+        this->log_event(EventType::WARNING, event_message);
         ret = this->event_registry.front();
         return ret;
     }
@@ -72,7 +72,7 @@ Event EventReporter::get_event_at(unsigned int idx){
 Event EventReporter::get_last_event(void){
     if(this->n_events == 0){
         std::string event_message = "The event reporter was empty before quering the last event.";
-        this->log_event(ts::EventType::WARNING, event_message);
+        this->log_event(EventType::WARNING, event_message);
     }
     Event ret = this->event_registry.front();
     return ret;
@@ -100,7 +100,7 @@ void EventReporter::publish_last_event(void){
     std::cout << last_event.get_message() << std::endl;
 }
 
-std::string EventReporter::generate_load_task_msg(ts::ValidationCode vc_code, std::string& task_fn, cl::Config* task_config){
+std::string EventReporter::generate_load_task_msg(ValidationCode vc_code, std::string& task_fn, cl::Config* task_config){
     std::string event_message = "";
     switch(vc_code){
 	case ValidationCode::MISSING_NAME_KEYVAL:

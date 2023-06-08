@@ -4,7 +4,7 @@
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: verify that execution datetime is set properly when initializing Task object
@@ -137,7 +137,7 @@ int test1(){
     std::string t_datetime = hours + ":" + minutes + ":" + seconds;
     std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
     
     ret_datetime_str = t->get_execution_datetime_fmt();
 
@@ -244,7 +244,7 @@ int test1(){
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
     assert(time_now_add == t->get_execution_datetime(true));
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
+    assert(t->get_status() == lts::TaskStatus::QUEUED);
 
     delete t;
 
@@ -384,7 +384,7 @@ int test2(){
     std::string t_datetime = years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds;
     std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
     
     ret_datetime_str = t->get_execution_datetime_fmt();
 
@@ -491,7 +491,7 @@ int test2(){
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
     assert(time_now_add == t->get_execution_datetime(true));
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
+    assert(t->get_status() == lts::TaskStatus::QUEUED);
 
     delete t;
 
@@ -512,10 +512,10 @@ int test3(){
     std::string t_datetime = "anything";
     std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
 
     assert(t->get_execution_datetime(false) == 0);
-    assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
+    assert(t->get_status() == lts::TaskStatus::INIT_ERROR);
 
     delete t;
 
@@ -655,10 +655,10 @@ int test4(){
     std::string t_datetime = wday_full + " " + hours + ":" + minutes + ":" + seconds;
     std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
     
     assert(t->get_execution_datetime(false) == 0);
-    assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
+    assert(t->get_status() == lts::TaskStatus::INIT_ERROR);
 
     delete t;
 
@@ -798,10 +798,10 @@ int test5(){
     std::string t_datetime = years + "-" + months + "-" + days;
     std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
     
     assert(t->get_execution_datetime(false) == 0);
-    assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
+    assert(t->get_status() == lts::TaskStatus::INIT_ERROR);
 
     delete t;
 
@@ -849,10 +849,10 @@ int test6(){
     };
 
     for(size_t i = 0; i < datetimes.size(); i++){
-        ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, datetimes[i], t_config_filename);
+        lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, datetimes[i], t_config_filename);
 
         assert(t->get_execution_datetime(false) == 0);
-        assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
+        assert(t->get_status() == lts::TaskStatus::INIT_ERROR);
 
         delete t;
     }

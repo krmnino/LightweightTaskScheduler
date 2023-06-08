@@ -4,7 +4,7 @@
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing validate_task_parms() function -> PASS
@@ -25,7 +25,7 @@ int test1(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    ts::ValidationCode ret;     
+    lts::ValidationCode ret;     
 
     time_now = std::time(&time_now);
 
@@ -100,9 +100,9 @@ int test1(){
         c->add_entry("Frequency", "Hourly");
         c->add_entry("Datetime", datetimes[i]);
 
-        ret = ts::validate_task_parms(c, "scripts/");
+        ret = lts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::ValidationCode::OK);
+        assert(ret == lts::ValidationCode::OK);
 
         delete c;
     }
@@ -116,17 +116,17 @@ int test2(){
     // TEST 2: testing validate_task_parms() function -> FAIL
     // Pass bad HH:MM:SS datetime value with Frequency = Once
 
-    std::vector<std::pair<std::string, ts::ValidationCode>> datetimes_retcodes = {
-        {"60:20:00", ts::ValidationCode::HOURS_OUT_OF_RANGE},
-        {"12:60:00", ts::ValidationCode::MINUTES_OUT_OF_RANGE},
-        {"12:20:60", ts::ValidationCode::SECONDS_OUT_OF_RANGE},
-        {"1a:20:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
-        {"12:a0:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
-        {"12:00:0A", ts::ValidationCode::BAD_NUMBER_CHARACTER},
-        {"11111:111111:111111", ts::ValidationCode::BAD_HMS_LENGTH},
-        {"11111:00:00", ts::ValidationCode::BAD_HMS_LENGTH},
-        {"12:11111:00", ts::ValidationCode::BAD_HMS_LENGTH},
-        {"12:00:11111", ts::ValidationCode::BAD_HMS_LENGTH},
+    std::vector<std::pair<std::string, lts::ValidationCode>> datetimes_retcodes = {
+        {"60:20:00", lts::ValidationCode::HOURS_OUT_OF_RANGE},
+        {"12:60:00", lts::ValidationCode::MINUTES_OUT_OF_RANGE},
+        {"12:20:60", lts::ValidationCode::SECONDS_OUT_OF_RANGE},
+        {"1a:20:00", lts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"12:a0:00", lts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"12:00:0A", lts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"11111:111111:111111", lts::ValidationCode::BAD_HMS_LENGTH},
+        {"11111:00:00", lts::ValidationCode::BAD_HMS_LENGTH},
+        {"12:11111:00", lts::ValidationCode::BAD_HMS_LENGTH},
+        {"12:00:11111", lts::ValidationCode::BAD_HMS_LENGTH},
     };
 
     for(size_t i = 0; i < datetimes_retcodes.size(); i++){
@@ -137,7 +137,7 @@ int test2(){
         c->add_entry("Frequency", "Once");
         c->add_entry("Datetime", datetimes_retcodes[i].first);
 
-        ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+        lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
         assert(ret == datetimes_retcodes[i].second);
 
@@ -153,23 +153,23 @@ int test3(){
     // TEST 3: testing validate_task_parms() function -> FAIL
     // Pass bad YYYY-MM-DD HH:MM:SS datetime value with Frequency = Hourly
 
-    std::vector<std::pair<std::string, ts::ValidationCode>> datetimes_retcodes = {
-        {"2022-02-15 60:20:00", ts::ValidationCode::HOURS_OUT_OF_RANGE},
-        {"2022-02-15 12:60:00", ts::ValidationCode::MINUTES_OUT_OF_RANGE},
-        {"2022-02-15 12:20:60", ts::ValidationCode::SECONDS_OUT_OF_RANGE},
-        {"2022-02-15 1a:20:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
-        {"2022-02-15 12:a0:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
-        {"2022-02-15 12:00:0A", ts::ValidationCode::BAD_NUMBER_CHARACTER},
-        {"20a2-02-15 12:00:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
-        {"2022-0a-15 12:00:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
-        {"2022-02-a5 12:00:00", ts::ValidationCode::BAD_NUMBER_CHARACTER},
-        {"1980-02-15 12:00:00", ts::ValidationCode::PASSED_DATETIME},
-        {"2022-80-15 12:00:00", ts::ValidationCode::MONTH_OUT_OF_RANGE},
-        {"2022-02-70 12:00:00", ts::ValidationCode::DAY_OUT_OF_RANGE},
-        {"2022-02-15 111111:111111:111111", ts::ValidationCode::BAD_HMS_LENGTH},
-        {"2022-02-15 1:00:00", ts::ValidationCode::BAD_HMS_LENGTH},
-        {"1111111-1111111-1111111 12:00:00", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
-        {"2022-2-15 12:00:00", ts::ValidationCode::BAD_YYYYMMDD_LENGTH},
+    std::vector<std::pair<std::string, lts::ValidationCode>> datetimes_retcodes = {
+        {"2022-02-15 60:20:00", lts::ValidationCode::HOURS_OUT_OF_RANGE},
+        {"2022-02-15 12:60:00", lts::ValidationCode::MINUTES_OUT_OF_RANGE},
+        {"2022-02-15 12:20:60", lts::ValidationCode::SECONDS_OUT_OF_RANGE},
+        {"2022-02-15 1a:20:00", lts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-02-15 12:a0:00", lts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-02-15 12:00:0A", lts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"20a2-02-15 12:00:00", lts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-0a-15 12:00:00", lts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"2022-02-a5 12:00:00", lts::ValidationCode::BAD_NUMBER_CHARACTER},
+        {"1980-02-15 12:00:00", lts::ValidationCode::PASSED_DATETIME},
+        {"2022-80-15 12:00:00", lts::ValidationCode::MONTH_OUT_OF_RANGE},
+        {"2022-02-70 12:00:00", lts::ValidationCode::DAY_OUT_OF_RANGE},
+        {"2022-02-15 111111:111111:111111", lts::ValidationCode::BAD_HMS_LENGTH},
+        {"2022-02-15 1:00:00", lts::ValidationCode::BAD_HMS_LENGTH},
+        {"1111111-1111111-1111111 12:00:00", lts::ValidationCode::BAD_YYYYMMDD_LENGTH},
+        {"2022-2-15 12:00:00", lts::ValidationCode::BAD_YYYYMMDD_LENGTH},
     };
 
     for(size_t i = 0; i < datetimes_retcodes.size(); i++){
@@ -180,7 +180,7 @@ int test3(){
         c->add_entry("Frequency", "Hourly");
         c->add_entry("Datetime", datetimes_retcodes[i].first);
 
-        ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+        lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
         assert(ret == datetimes_retcodes[i].second);
 
@@ -203,9 +203,9 @@ int test4(){
     c->add_entry("Frequency", "Hourly");
     c->add_entry("Datetime", "Something");
 
-    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+    lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::INCOMPATIBLE_ONCE_FREQ_DATETIME_FORMAT);
+    assert(ret == lts::ValidationCode::INCOMPATIBLE_ONCE_FREQ_DATETIME_FORMAT);
 
     delete c;
 
@@ -233,7 +233,7 @@ int test5(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    ts::ValidationCode ret;     
+    lts::ValidationCode ret;     
 
     time_now = std::time(&time_now);
 
@@ -275,9 +275,9 @@ int test5(){
         c->add_entry("Frequency", "Hourly");
         c->add_entry("Datetime", datetimes[i]);
 
-        ret = ts::validate_task_parms(c, "scripts/");
+        ret = lts::validate_task_parms(c, "scripts/");
 
-        assert(ret == ts::ValidationCode::PASSED_DATETIME);
+        assert(ret == lts::ValidationCode::PASSED_DATETIME);
 
         delete c;
     }

@@ -5,11 +5,11 @@
 #include "../src/EventReporter.hpp"
 #include "../src/CommandLine.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
-ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
-ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
+lts::EventReporter* lts::EventReporter::event_reporter_ptr = nullptr;
+lts::CommandLine* lts::CommandLine::command_line_ptr = nullptr;
 
-int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test1(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 1: Issue the command "help" and verify command output.
     std::string ret_cmd_output;
     std::string verify_cmd_output;
@@ -51,7 +51,7 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test2(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 2: Issue the command "help check" and verify command output.
     std::string ret_cmd_output;
     std::string verify_cmd_output;
@@ -81,7 +81,7 @@ int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test3(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 3: Issue the command "help remove" and verify command output.
     std::string ret_cmd_output;
     std::string verify_cmd_output;
@@ -109,7 +109,7 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test4(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 4: Issue the command "help load" and verify command output.
     std::string ret_cmd_output;
     std::string verify_cmd_output;
@@ -138,7 +138,7 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test5(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 5: Issue the command "help reload" and verify command output.
     std::string ret_cmd_output;
     std::string verify_cmd_output;
@@ -168,10 +168,10 @@ int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test6(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 6: Issue the command "help invalid" and verify event warning.
     std::string ret_cmd_output;
-    ts::Event ret_event;
+    lts::Event ret_event;
     time_t time_now;
 
     e->EventReporter_init();
@@ -184,7 +184,7 @@ int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     std::time(&time_now);
 
     assert(ret_event.get_event_time() == time_now);
-    assert(ret_event.get_type() == ts::EventType::WARNING);
+    assert(ret_event.get_type() == lts::EventType::WARNING);
     assert(ret_event.get_message() == "An invalid argument was passed for the the \"help\" verb. Issue the command \"help\" for options.");
     assert(c->get_cmds_issued() == 0);
     assert(e->get_n_events() == 1);
@@ -199,9 +199,9 @@ int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int main(int argc, char* argv[]){
-    ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
-    ts::CommandLine* c = ts::CommandLine::CommandLine_get_instance();
-    ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
+    lts::EventReporter* e = lts::EventReporter::EventReporter_get_instance();
+    lts::CommandLine* c = lts::CommandLine::CommandLine_get_instance();
+    lts::Scheduler* s = lts::Scheduler::Scheduler_get_instance();
 
     test1(e, s, c);
     test2(e, s, c);

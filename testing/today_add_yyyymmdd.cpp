@@ -4,7 +4,7 @@
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing today_add_yyyymmdd() function -> PASS
@@ -43,7 +43,7 @@ int test1(){
         
     datetime_str = years + "-" + months + "-" + days;
     
-    ret = ts::today_add_yyyymmdd(datetime_str);
+    ret = lts::today_add_yyyymmdd(datetime_str);
 
     to_struct = std::gmtime(&ret);
     struct_ret = *to_struct;
@@ -103,7 +103,7 @@ int test2(){
         
     datetime_str = years + "-" + months + "-" + days;
 
-    ret = ts::today_add_yyyymmdd(datetime_str);
+    ret = lts::today_add_yyyymmdd(datetime_str);
 
     to_struct = std::gmtime(&ret);
     struct_ret = *to_struct;
@@ -163,7 +163,7 @@ int test3(){
         
     datetime_str = years + "-" + months + "-" + days;
 
-    ret = ts::today_add_yyyymmdd(datetime_str);
+    ret = lts::today_add_yyyymmdd(datetime_str);
 
     to_struct = std::gmtime(&ret);
     struct_ret = *to_struct;
@@ -219,7 +219,7 @@ int test4(){
             "0" + std::to_string(struct_time_now_add.tm_mday) :
             std::to_string(struct_time_now_add.tm_mday);
         
-    ret = ts::today_add_yyyymmdd(years + "-" + months + "-" + days);
+    ret = lts::today_add_yyyymmdd(years + "-" + months + "-" + days);
 
     assert(ret == 0);
        
@@ -233,7 +233,7 @@ int test5(){
     // Invalid years-months-days subtring
 
     time_t ret;
-    ret = ts::today_add_yyyymmdd("20220212");
+    ret = lts::today_add_yyyymmdd("20220212");
 
     assert(ret == 0);
        
@@ -247,7 +247,7 @@ int test6(){
     // Invalid years-months-days subtring
 
     time_t ret;
-    ret = ts::today_add_yyyymmdd("2022-60-20");
+    ret = lts::today_add_yyyymmdd("2022-60-20");
 
     assert(ret == 0);
        
@@ -261,7 +261,7 @@ int test7(){
     // Invalid years-months-days subtring
 
     time_t ret;
-    ret = ts::today_add_yyyymmdd("2022-02-60");
+    ret = lts::today_add_yyyymmdd("2022-02-60");
 
     assert(ret == 0);
        

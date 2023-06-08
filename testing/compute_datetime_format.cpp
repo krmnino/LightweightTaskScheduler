@@ -4,13 +4,13 @@
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing compute_datetime_format() function -> PASS
     // Datetime format HH:MM:SS
     
-    ts::DatetimeFormat ret;
+    lts::DatetimeFormat ret;
     std::vector<std::string> datetime = {
         "12:00:00",
         "1A:00:00",
@@ -25,8 +25,8 @@ int test1(){
     };
 
     for(size_t i = 0; i < datetime.size(); i++){
-        ret = ts::compute_datetime_format(datetime[i]);
-        assert(ret == ts::DatetimeFormat::HHMMSS);
+        ret = lts::compute_datetime_format(datetime[i]);
+        assert(ret == lts::DatetimeFormat::HHMMSS);
     }
 
     std::cout << ">> compute_datetime_format: 1 done" << std::endl;
@@ -38,7 +38,7 @@ int test2(){
     // TEST 2: testing compute_datetime_format() function -> PASS
     // Datetime format abbreviated weekday + HH:MM:SS
     
-    ts::DatetimeFormat ret;
+    lts::DatetimeFormat ret;
     std::vector<std::string> datetime = {
         "Sun 20:00:00",
         "Mon 20:00:00",
@@ -59,8 +59,8 @@ int test2(){
     };
 
     for(size_t i = 0; i < datetime.size(); i++){
-        ret = ts::compute_datetime_format(datetime[i]);
-        assert(ret == ts::DatetimeFormat::WDAY_HHMMSS);
+        ret = lts::compute_datetime_format(datetime[i]);
+        assert(ret == lts::DatetimeFormat::WDAY_HHMMSS);
     }
 
     std::cout << ">> compute_datetime_format: 2 done" << std::endl;
@@ -72,7 +72,7 @@ int test3(){
     // TEST 3: testing compute_datetime_format() function -> PASS
     // Datetime format full weekday + HH:MM:SS
     
-    ts::DatetimeFormat ret;
+    lts::DatetimeFormat ret;
     std::vector<std::string> datetime = {
         "Sunday 20:00:00",
         "Monday 20:00:00",
@@ -94,8 +94,8 @@ int test3(){
     };
 
     for(size_t i = 0; i < datetime.size(); i++){
-        ret = ts::compute_datetime_format(datetime[i]);
-        assert(ret == ts::DatetimeFormat::WDAY_HHMMSS);
+        ret = lts::compute_datetime_format(datetime[i]);
+        assert(ret == lts::DatetimeFormat::WDAY_HHMMSS);
     }
 
     std::cout << ">> compute_datetime_format: 3 done" << std::endl;
@@ -107,7 +107,7 @@ int test4(){
     // TEST 4: testing compute_datetime_format() function -> PASS
     // Datetime format YYYY-MM-DD
     
-    ts::DatetimeFormat ret;
+    lts::DatetimeFormat ret;
     std::vector<std::string> datetime = {
         "2022-02-22",
         "2A22-02-22",
@@ -123,8 +123,8 @@ int test4(){
     };
 
     for(size_t i = 0; i < datetime.size(); i++){
-        ret = ts::compute_datetime_format(datetime[i]);
-        assert(ret == ts::DatetimeFormat::YYYYMMDD);
+        ret = lts::compute_datetime_format(datetime[i]);
+        assert(ret == lts::DatetimeFormat::YYYYMMDD);
     }
 
     std::cout << ">> compute_datetime_format: 4 done" << std::endl;
@@ -136,7 +136,7 @@ int test5(){
     // TEST 5: testing compute_datetime_format() function -> PASS
     // Datetime format YYYY-MM-DD HH:MM:SS
     
-    ts::DatetimeFormat ret;
+    lts::DatetimeFormat ret;
     std::vector<std::string> datetime = {
         "2022-02-22 13:00:00",
         "2A22-02-22 13:00:00",
@@ -162,8 +162,8 @@ int test5(){
     };
 
     for(size_t i = 0; i < datetime.size(); i++){
-        ret = ts::compute_datetime_format(datetime[i]);
-        assert(ret == ts::DatetimeFormat::YYYYMMDD_HHMMSS);
+        ret = lts::compute_datetime_format(datetime[i]);
+        assert(ret == lts::DatetimeFormat::YYYYMMDD_HHMMSS);
     }
     
     std::cout << ">> compute_datetime_format: 5 done" << std::endl;
@@ -175,7 +175,7 @@ int test6(){
     // TEST 6: testing compute_datetime_format() function -> FAIL
     // Datetime format YYYY-MM-DD HH:MM:SS
     
-    ts::DatetimeFormat ret;
+    lts::DatetimeFormat ret;
     std::vector<std::string> datetime = {
         "anything",
         "A2:00:00",
@@ -185,8 +185,8 @@ int test6(){
     };
 
     for(size_t i = 0; i < datetime.size(); i++){
-        ret = ts::compute_datetime_format(datetime[i]);
-        assert(ret == ts::DatetimeFormat::INVALID_DATE_FORMAT);
+        ret = lts::compute_datetime_format(datetime[i]);
+        assert(ret == lts::DatetimeFormat::INVALID_DATE_FORMAT);
     }
 
     std::cout << ">> compute_datetime_format: 6 done" << std::endl;

@@ -5,14 +5,14 @@
 #include "../src/EventReporter.hpp"
 #include "../src/CommandLine.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
-ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
-ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
+lts::EventReporter* lts::EventReporter::event_reporter_ptr = nullptr;
+lts::CommandLine* lts::CommandLine::command_line_ptr = nullptr;
 
-int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test1(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 1: Issue the command "check" and verify event warning.
     std::string ret_cmd_output;
-    ts::Event ret_event;
+    lts::Event ret_event;
     time_t time_now;
 
     e->EventReporter_init();
@@ -25,7 +25,7 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     std::time(&time_now);
     
     assert(ret_event.get_event_time() == time_now);
-    assert(ret_event.get_type() == ts::EventType::WARNING);
+    assert(ret_event.get_type() == lts::EventType::WARNING);
     assert(ret_event.get_message() == "The \"check\" verb requires at least 1 argument. Issue the command \"help check\" for options.");
     assert(e->get_n_events() == 1);
     assert(c->get_cmds_issued() == 0);
@@ -39,10 +39,10 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test2(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 2: Issue the command "check registry invalid" and verify event warning.
     std::string ret_cmd_output;
-    ts::Event ret_event;
+    lts::Event ret_event;
     time_t time_now;
 
     e->EventReporter_init();
@@ -55,7 +55,7 @@ int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     std::time(&time_now);
     
     assert(ret_event.get_event_time() == time_now);
-    assert(ret_event.get_type() == ts::EventType::WARNING);
+    assert(ret_event.get_type() == lts::EventType::WARNING);
     assert(ret_event.get_message() == "The command \"check registry\" does not take any additional arguments.");
     assert(e->get_n_events() == 1);
     assert(c->get_cmds_issued() == 0);
@@ -69,7 +69,7 @@ int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test3(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 3: Issue the command "check registry" and verify an empty task table is printed.
     std::string ret_cmd_output;
     std::string verify_cmd_output;
@@ -96,7 +96,7 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test4(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 4: Load scheduler tasks and issue command "check registry", then verify table contents.
     std::string ret_cmd_output;
     std::string verify_cmd_output_l1;
@@ -134,10 +134,10 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test5(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 5: Issue command "check task" and verify event warning.
     std::string ret_cmd_output;
-    ts::Event ret_event;
+    lts::Event ret_event;
     time_t time_now;
 
     e->EventReporter_init();
@@ -150,7 +150,7 @@ int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     std::time(&time_now);
     
     assert(ret_event.get_event_time() == time_now);
-    assert(ret_event.get_type() == ts::EventType::WARNING);
+    assert(ret_event.get_type() == lts::EventType::WARNING);
     assert(ret_event.get_message() == "The command \"check task <task_name>\" requires a task name for the third parameter.");
     assert(c->get_cmds_issued() == 0);
     assert(e->get_n_events() == 1);
@@ -164,10 +164,10 @@ int test5(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test6(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 6: Issue command "check task ls invalid" and verify event warning.
     std::string ret_cmd_output;
-    ts::Event ret_event;
+    lts::Event ret_event;
     time_t time_now;
 
     e->EventReporter_init();
@@ -180,7 +180,7 @@ int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     std::time(&time_now);
     
     assert(ret_event.get_event_time() == time_now);
-    assert(ret_event.get_type() == ts::EventType::WARNING);
+    assert(ret_event.get_type() == lts::EventType::WARNING);
     assert(ret_event.get_message() == "The command \"check task <task_name>\" does not take any additional arguments.");
     assert(c->get_cmds_issued() == 0);
     assert(e->get_n_events() == 1);
@@ -194,7 +194,7 @@ int test6(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test7(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test7(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 7: Load scheduler tasks and issue command "check task ls", then verify the task attributes.
     std::string ret_cmd_output;
     std::string verify_cmd_output_l1;
@@ -244,10 +244,10 @@ int test7(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test8(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test8(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 8: Issue command "check task invalid_name" and verify event warning.
     std::string ret_cmd_output;
-    ts::Event ret_event;
+    lts::Event ret_event;
     time_t time_now;
 
     e->EventReporter_init();
@@ -262,7 +262,7 @@ int test8(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     
     assert(c->get_cmds_issued() == 1);
     assert(ret_event.get_event_time() == time_now);
-    assert(ret_event.get_type() == ts::EventType::WARNING);
+    assert(ret_event.get_type() == lts::EventType::WARNING);
     assert(ret_event.get_message() == "The task \"invalid_name\" does not exist in the scheduler.");
     assert(e->get_n_events() == 1);
 
@@ -275,7 +275,7 @@ int test8(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test9(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test9(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 9: Load scheduler tasks and issue command "check status", then schdeuler status print.
     std::string ret_cmd_output;
     std::string verify_cmd_output_l1;
@@ -324,10 +324,10 @@ int test9(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test10(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test10(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 10: Issue command "check invalid args" and verify event warning.
     std::string ret_cmd_output;
-    ts::Event ret_event;
+    lts::Event ret_event;
     time_t time_now;
 
     e->EventReporter_init();
@@ -340,7 +340,7 @@ int test10(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     std::time(&time_now);
     
     assert(ret_event.get_event_time() == time_now);
-    assert(ret_event.get_type() == ts::EventType::WARNING);
+    assert(ret_event.get_type() == lts::EventType::WARNING);
     assert(ret_event.get_message() == "An invalid argument was passed for the the \"check\" verb. Issue the command \"help check\" for options.");
     assert(c->get_cmds_issued() == 0);
     assert(e->get_n_events() == 1);
@@ -355,9 +355,9 @@ int test10(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int main(int argc, char* argv[]){
-    ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
-    ts::CommandLine* c = ts::CommandLine::CommandLine_get_instance();
-    ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
+    lts::EventReporter* e = lts::EventReporter::EventReporter_get_instance();
+    lts::CommandLine* c = lts::CommandLine::CommandLine_get_instance();
+    lts::Scheduler* s = lts::Scheduler::Scheduler_get_instance();
 
     test1(e, s, c);
     test2(e, s, c);

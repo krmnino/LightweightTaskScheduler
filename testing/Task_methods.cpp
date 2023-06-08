@@ -4,7 +4,7 @@
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing method get_creation_datetime()
@@ -56,7 +56,7 @@ int test1(){
     std::string t_input_execution_datetime = datetime_str; // HH:MM:SS format
     std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
 
     ret_creation_datetime = t->get_creation_datetime(false);
     assert(time_now == ret_creation_datetime);
@@ -118,7 +118,7 @@ int test2(){
     std::string t_input_execution_datetime = datetime_str; // HH:MM:SS format
     std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
 
     ret_execution_datetime = t->get_execution_datetime(false);
     assert(time_now_add == ret_execution_datetime);
@@ -179,7 +179,7 @@ int test3(){
     std::string t_input_execution_datetime = datetime_str; // HH:MM:SS format
     std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
 
     ret_creation_datetime_fmt = t->get_creation_datetime_fmt();
     // Add timezone offset to current time
@@ -302,7 +302,7 @@ int test4(){
     std::string t_input_execution_datetime = datetime_str; // HH:MM:SS format
     std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
 
     ret_execution_datetime_fmt = t->get_execution_datetime_fmt();
     // Add 5 seconds and timezone offset to current time
@@ -393,7 +393,7 @@ int test5(){
     std::string datetime_str;
     std::string ret_creation_datetime_fmt;
     std::string ret_execution_datetime_fmt;
-    ts::DatetimeFormat ret_execution_datetime_format_attr;
+    lts::DatetimeFormat ret_execution_datetime_format_attr;
 
     // Add 5 seconds to current time
     time_now_add = time_now + 5;
@@ -426,10 +426,10 @@ int test5(){
     std::string t_input_execution_datetime = datetime_str; // HH:MM:SS format
     std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
 
     ret_execution_datetime_format_attr = t->get_execution_datetime_format_attr();
-    assert(ret_execution_datetime_format_attr == ts::DatetimeFormat::HHMMSS);
+    assert(ret_execution_datetime_format_attr == lts::DatetimeFormat::HHMMSS);
 
     delete t;
 
@@ -452,13 +452,13 @@ int test6(){
     std::string t_input_execution_datetime = "12:00:00";
     std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
     
     t->set_id(12345);
     assert(t->get_id() == 12345);
 
-    t->set_status(ts::TaskStatus::QUEUED);
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
+    t->set_status(lts::TaskStatus::QUEUED);
+    assert(t->get_status() == lts::TaskStatus::QUEUED);
 
     delete t;
 
@@ -512,7 +512,7 @@ int test7(){
     t_input_execution_datetime = hours + ":" + minutes + ":" + seconds;
     t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
     
     t->run_task();
 
@@ -535,7 +535,7 @@ int test8(){
     std::string t_input_execution_datetime = "12:00:00";
     std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_input_execution_datetime, t_config_filename);
     
     assert(t->get_config_filename() == t_config_filename);
 
