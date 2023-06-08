@@ -7,10 +7,10 @@
 #include "../src/Scheduler.hpp"
 #include "../src/EventReporter.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
-ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
+lts::EventReporter* lts::EventReporter::event_reporter_ptr = nullptr;
 
-int test1(ts::Scheduler* s, ts::EventReporter* e){
+int test1(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 1: generate new task to be executed in the next second. Check for the output after it runs.
     // Task Frequency: Once
 
@@ -33,7 +33,7 @@ int test1(ts::Scheduler* s, ts::EventReporter* e){
     std::string task_filename;
     std::string task_name;
     cl::Config* c;
-    const ts::Task* ret_task;
+    const lts::Task* ret_task;
 
     time_now = std::time(&time_now);
 
@@ -167,7 +167,7 @@ int test1(ts::Scheduler* s, ts::EventReporter* e){
     assert(s->get_n_tasks() == 1);
     assert(s->task_exists(task_name));
     assert(ret_task->get_output() == "ls -l");
-    assert(ret_task->get_status() == ts::TaskStatus::FINISHED);
+    assert(ret_task->get_status() == lts::TaskStatus::FINISHED);
 
     assert(e->get_n_events() == 3);
 
@@ -181,7 +181,7 @@ int test1(ts::Scheduler* s, ts::EventReporter* e){
 }
 
 
-int test2(ts::Scheduler* s, ts::EventReporter* e){
+int test2(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 2: generate new task to be executed in the next second. Check for the output after it runs.
     // Task Frequency: Daily
 
@@ -204,7 +204,7 @@ int test2(ts::Scheduler* s, ts::EventReporter* e){
     std::string task_filename;
     std::string task_name;
     cl::Config* c;
-    const ts::Task* ret_task;
+    const lts::Task* ret_task;
 
     time_now = std::time(&time_now);
 
@@ -340,7 +340,7 @@ int test2(ts::Scheduler* s, ts::EventReporter* e){
     assert(s->get_n_tasks() == 1);
     assert(s->task_exists(task_name));
     assert(ret_task->get_output() == "ls -l");
-    assert(ret_task->get_status() == ts::TaskStatus::QUEUED);
+    assert(ret_task->get_status() == lts::TaskStatus::QUEUED);
 
     assert(e->get_n_events() == 3);
 
@@ -354,7 +354,7 @@ int test2(ts::Scheduler* s, ts::EventReporter* e){
 }
 
 
-int test3(ts::Scheduler* s, ts::EventReporter* e){
+int test3(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 3: generate new task to be executed in the next second. Check for the output after it runs.
     // Task Frequency: Weekly
 
@@ -377,7 +377,7 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
     std::string task_filename;
     std::string task_name;
     cl::Config* c;
-    const ts::Task* ret_task;
+    const lts::Task* ret_task;
 
     time_now = std::time(&time_now);
 
@@ -510,7 +510,7 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
     assert(s->get_n_tasks() == 1);
     assert(s->task_exists(task_name));
     assert(ret_task->get_output() == "ls -l");
-    assert(ret_task->get_status() == ts::TaskStatus::QUEUED);
+    assert(ret_task->get_status() == lts::TaskStatus::QUEUED);
 
     assert(e->get_n_events() == 3);
 
@@ -524,7 +524,7 @@ int test3(ts::Scheduler* s, ts::EventReporter* e){
 }
 
 
-int test4(ts::Scheduler* s, ts::EventReporter* e){
+int test4(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 4: generate new task to be executed in the next second. Check for the output after it runs.
     // Task Frequency: Monthly
 
@@ -547,7 +547,7 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     std::string task_filename;
     std::string task_name;
     cl::Config* c;
-    const ts::Task* ret_task;
+    const lts::Task* ret_task;
 
     time_now = std::time(&time_now);
 
@@ -680,7 +680,7 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
     assert(s->get_n_tasks() == 1);
     assert(s->task_exists(task_name));
     assert(ret_task->get_output() == "ls -l");
-    assert(ret_task->get_status() == ts::TaskStatus::QUEUED);
+    assert(ret_task->get_status() == lts::TaskStatus::QUEUED);
 
     assert(e->get_n_events() == 3);
 
@@ -694,7 +694,7 @@ int test4(ts::Scheduler* s, ts::EventReporter* e){
 }
 
 
-int test5(ts::Scheduler* s, ts::EventReporter* e){
+int test5(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 5: generate new task to be executed in the next second. Check for the output after it runs.
     // Task Frequency: Yearly
 
@@ -717,7 +717,7 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     std::string task_filename;
     std::string task_name;
     cl::Config* c;
-    const ts::Task* ret_task;
+    const lts::Task* ret_task;
 
     time_now = std::time(&time_now);
 
@@ -850,7 +850,7 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
     assert(s->get_n_tasks() == 1);
     assert(s->task_exists(task_name));
     assert(ret_task->get_output() == "ls -l");
-    assert(ret_task->get_status() == ts::TaskStatus::QUEUED);
+    assert(ret_task->get_status() == lts::TaskStatus::QUEUED);
 
     assert(e->get_n_events() == 3);
 
@@ -865,8 +865,8 @@ int test5(ts::Scheduler* s, ts::EventReporter* e){
 
 
 int main(int argc, char* argv[]){
-    ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
-    ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
+    lts::EventReporter* e = lts::EventReporter::EventReporter_get_instance();
+    lts::Scheduler* s = lts::Scheduler::Scheduler_get_instance();
 
     test1(s, e);
     test2(s, e);

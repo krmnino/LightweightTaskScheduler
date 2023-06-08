@@ -4,7 +4,7 @@
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing init_year() function
@@ -12,7 +12,7 @@ int test1(){
     time_t ret;
     time_t time_now;
 
-    ret = ts::init_year();
+    ret = lts::init_year();
     time_now = std::time(&time_now);
   
     std::tm* to_struct;
