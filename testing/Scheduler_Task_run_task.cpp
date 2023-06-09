@@ -2,6 +2,7 @@
 #include <iostream>
 #include <filesystem>
 #include <cstdio>
+#include <unistd.h>
 
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"

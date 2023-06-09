@@ -216,7 +216,7 @@ void Scheduler::load_task(std::string& task_config_filename){
 
     // Check if task configuration exists in tasks directory
     if(!std::filesystem::exists(this->exec_path + "/tasks/" + task_config_filename)){
-        event_message = "The task file configuration file \"" + task_config_filename + "\" could not be found.";
+        event_message = "The task configuration file \"" + task_config_filename + "\" could not be found.";
         this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -319,7 +319,7 @@ void Scheduler::reload_all_tasks(void){
 
         // Check if task configuration exists in tasks directory
         if(!std::filesystem::exists(this->exec_path + "/tasks/" + task_config_filename)){
-            event_message = "The task file configuration file \"" + task_config_filename + 
+            event_message = "The task configuration file \"" + task_config_filename + 
                             "\" corresponding to task \"" + registry_task_names[i] +"\" could not be found.";
             this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
             #ifndef SILENT
@@ -424,7 +424,7 @@ void Scheduler::reload_task(std::string& key){
 
     // Check if task configuration exists in tasks directory
     if(!std::filesystem::exists(this->exec_path + "/tasks/" + task_config_filename)){
-        event_message = "The task file configuration file \"" + task_config_filename + 
+        event_message = "The task configuration file \"" + task_config_filename + 
                             "\" corresponding to task \"" + key +"\" could not be found.";
         this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT

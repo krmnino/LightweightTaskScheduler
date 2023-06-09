@@ -128,7 +128,7 @@ int test4(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     assert(c->get_cmds_issued() == 1);
     assert(ret_event.get_event_time() == time_now);
     assert(ret_event.get_type() == lts::EventType::ERROR);
-    assert(ret_event.get_message() == "The task file configuration file \"invalid\" could not be found.");
+    assert(ret_event.get_message() == "The task configuration file \"invalid\" could not be found.");
 
     c->CommandLine_delete();
     s->Scheduler_delete();
@@ -272,7 +272,7 @@ int test7(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     assert(ret_event.get_type() == verify_event_type);
     assert(ret_event.get_event_time() == time_now);
 
-    verify_event_message = "The task file configuration file \"invalid\" could not be found.";
+    verify_event_message = "The task configuration file \"invalid\" could not be found.";
     verify_event_type = lts::EventType::ERROR;
     matching_event_msg = false;
     // Look through all events and see if one matches the verification event message
