@@ -340,6 +340,7 @@ std::string CommandLine::help_check_msg(void){
     out_str += "- check registry: Displays relevant information about the tasks loaded in the scheduler.\n";
     out_str += "- check task <task_name>: Displays the full information about the specified task.\n";
     out_str += "- check status: Displays operational information about the scheduler.\n";
+    out_str += "- check output <task_name>: Displays output of a specific task.\n";
     return out_str;
 }
 
