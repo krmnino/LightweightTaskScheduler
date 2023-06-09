@@ -276,7 +276,38 @@ int test8(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
 
 
 int test9(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
-    // TEST 9: Load scheduler tasks and issue command "check status", then schdeuler status print.
+    // TEST 9: Issue command "check status invalid" and verify event warning.
+    std::string ret_cmd_output;
+    lts::Event ret_event;
+    time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
+
+    c->set_cmd_input("check status invalid");
+    c->parse_command();
+    ret_event = e->get_last_event();
+    ret_cmd_output = c->get_cmd_output();
+    std::time(&time_now);
+    
+    assert(c->get_cmds_issued() == 0);
+    assert(ret_event.get_event_time() == time_now);
+    assert(ret_event.get_type() == lts::EventType::WARNING);
+    assert(ret_event.get_message() == "The command \"check status\" does not take any additional arguments.");
+    assert(e->get_n_events() == 1);
+
+    c->CommandLine_delete();
+    s->Scheduler_delete();
+    e->EventReporter_delete();
+
+    std::cout << ">> CommandLine_verb_check: 9 done" << std::endl;
+    return 0;
+}
+
+
+int test10(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
+    // TEST 10: Load scheduler tasks and issue command "check status", then schdeuler status print.
     std::string ret_cmd_output;
     std::string verify_cmd_output_l1;
     std::string verify_cmd_output_l2;
@@ -319,13 +350,13 @@ int test9(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     s->Scheduler_delete();
     e->EventReporter_delete();
 
-    std::cout << ">> CommandLine_verb_check: 9 done" << std::endl;
+    std::cout << ">> CommandLine_verb_check: 10 done" << std::endl;
     return 0;
 }
 
 
-int test10(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
-    // TEST 10: Issue command "check invalid args" and verify event warning.
+int test11(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
+    // TEST 11: Issue command "check invalid args" and verify event warning.
     std::string ret_cmd_output;
     lts::Event ret_event;
     time_t time_now;
@@ -349,7 +380,7 @@ int test10(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     s->Scheduler_delete();
     e->EventReporter_delete();
 
-    std::cout << ">> CommandLine_verb_check: 10 done" << std::endl;
+    std::cout << ">> CommandLine_verb_check: 11 done" << std::endl;
     return 0;
 }
 
@@ -369,6 +400,7 @@ int main(int argc, char* argv[]){
     test8(e, s, c);
     test9(e, s, c);
     test10(e, s, c);
+    test11(e, s, c);
 
     e->EventReporter_end_instance();
     c->CommandLine_end_instance();
