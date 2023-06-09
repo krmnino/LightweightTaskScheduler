@@ -737,6 +737,26 @@ std::string Scheduler::display_task(std::string& key){
     return out_str;
 }
 
+std::string Scheduler::display_task_output(std::string& key){
+    Task* t;
+    std::string event_message;
+    std::string out_str = "";
+
+    if(!this->task_exists(key)){
+        event_message = "The task \"" + key + "\" does not exist in the scheduler.";
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return out_str;
+    }
+
+    t = this->task_registry[key];
+    out_str += t->get_output();
+
+    return out_str;
+}
+
 std::string Scheduler::display_scheduler_status(void){
     std::string out_str = "";
     unsigned int ret_counter;

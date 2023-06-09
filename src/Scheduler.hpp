@@ -45,6 +45,7 @@ public:
     bool task_exists(std::string&);
     std::string display_registry(void);
     std::string display_task(std::string&);
+    std::string display_task_output(std::string&);
     std::string display_scheduler_status(void);
     const std::string& get_current_path(void);
     unsigned int get_n_tasks(void);
