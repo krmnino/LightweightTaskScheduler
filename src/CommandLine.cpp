@@ -73,6 +73,31 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
             #endif
         }
     }
+    else if(option == "output"){
+        if(split_cmd_input.size() < 3){
+            event_message = "The command \"check output <task_name>\" requires a task name for the third parameter.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+            return;
+        }
+        else if(split_cmd_input.size() != 3){
+            event_message = "The command \"check output <task_name>\" does not take any additional arguments.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+            return;
+        }
+        else{
+            this->cmd_output = this->scheduler_ptr->display_task_output(split_cmd_input[2]);
+            this->cmds_issued++;
+            #ifndef SILENT
+            std::cout << this->cmd_output;
+            #endif
+        }
+    }
     else{
         event_message = "An invalid argument was passed for the the \"check\" verb. Issue the command \"help check\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
@@ -315,6 +340,7 @@ std::string CommandLine::help_check_msg(void){
     out_str += "- check registry: Displays relevant information about the tasks loaded in the scheduler.\n";
     out_str += "- check task <task_name>: Displays the full information about the specified task.\n";
     out_str += "- check status: Displays operational information about the scheduler.\n";
+    out_str += "- check output <task_name>: Displays output of a specific task.\n";
     return out_str;
 }
 

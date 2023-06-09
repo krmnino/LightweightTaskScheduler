@@ -155,7 +155,7 @@ int test4(lts::Scheduler* s, lts::EventReporter* e){
     assert(e->get_n_events() == 1);
 
     ret_event = e->get_event_at(0);
-    verify_event_message = "The task file configuration file \"anything.cl\" could not be found.";
+    verify_event_message = "The task configuration file \"anything.cl\" could not be found.";
     verify_event_type = lts::EventType::ERROR;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);

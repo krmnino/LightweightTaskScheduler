@@ -1,7 +1,6 @@
 #ifndef LTS_EVENT_REPORTER
 #define LTS_EVENT_REPORTER
 
-#include <string>
 #include <deque>
 #include <iomanip>
 

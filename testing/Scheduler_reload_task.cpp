@@ -322,8 +322,8 @@ int test5(lts::Scheduler* s, lts::EventReporter* e){
     assert(s->get_n_tasks() == 1);
     assert(e->get_n_events() == 2);
     ret_event = e->get_event_at(0);
-    verify_event_message = "The task file configuration file \"" + task_config_filename + 
-                            "\" corresponding to task \"" + t_name +"\" could not be found.";
+    verify_event_message = "The task configuration file \"" + task_config_filename + 
+                            "\" corresponding to task \"" + t_name + "\" could not be found.";
     verify_event_type = lts::EventType::ERROR;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);

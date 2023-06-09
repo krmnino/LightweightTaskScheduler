@@ -76,6 +76,7 @@ int test4(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     verify_output += "- check registry: Displays relevant information about the tasks loaded in the scheduler.\n";
     verify_output += "- check task <task_name>: Displays the full information about the specified task.\n";
     verify_output += "- check status: Displays operational information about the scheduler.\n";
+    verify_output += "- check output <task_name>: Displays output of a specific task.\n";
 
     c->set_cmd_input("help check");
     c->parse_command();

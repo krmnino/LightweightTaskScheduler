@@ -28,6 +28,7 @@ int test1(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     verify_cmd_output += "- check registry: Displays relevant information about the tasks loaded in the scheduler.\n";
     verify_cmd_output += "- check task <task_name>: Displays the full information about the specified task.\n";
     verify_cmd_output += "- check status: Displays operational information about the scheduler.\n";
+    verify_cmd_output += "- check output <task_name>: Displays output of a specific task.\n";
     verify_cmd_output += "- remove task <task_name>: Removes the specified task from the scheduler.\n";
     verify_cmd_output += "- load task <config_name>: Load task in scheduler from specified configuration filename.\n";
     verify_cmd_output += "- load tasks <config_name1, config_name2...>: Load multiple tasks in scheduler from specified list of configuration filenames.\n";
@@ -64,6 +65,7 @@ int test2(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     verify_cmd_output += "- check registry: Displays relevant information about the tasks loaded in the scheduler.\n";
     verify_cmd_output += "- check task <task_name>: Displays the full information about the specified task.\n";
     verify_cmd_output += "- check status: Displays operational information about the scheduler.\n";
+    verify_cmd_output += "- check output <task_name>: Displays output of a specific task.\n";
 
     c->set_cmd_input("help check");
     c->parse_command();

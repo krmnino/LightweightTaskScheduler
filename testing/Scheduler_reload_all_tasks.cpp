@@ -264,7 +264,7 @@ int test4(lts::Scheduler* s, lts::EventReporter* e){
     // Verify that ZZZTestTask failed to reload
     t_name = "ZZZTestTask";
     task_config_filename = "ZZZTestTask.cl";
-    verify_event_message = "The task file configuration file \"" + task_config_filename + 
+    verify_event_message = "The task configuration file \"" + task_config_filename + 
                             "\" corresponding to task \"" + t_name +"\" could not be found.";
     verify_event_type = lts::EventType::ERROR;
     matching_event_msg = false;

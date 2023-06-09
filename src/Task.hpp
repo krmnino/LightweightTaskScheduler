@@ -1,13 +1,6 @@
 #ifndef LTS_TASK
 #define LTS_TASK
 
-#include <string>
-#include <iomanip>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <array>
-#include <memory>
-#include <exception>
 #include <filesystem>
 #include <condition_variable>
 #include <thread>

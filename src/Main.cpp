@@ -1,5 +1,3 @@
-#include <iomanip>
-
 #include "Scheduler.hpp"
 #include "CommandLine.hpp"
 #include "EventReporter.hpp"
