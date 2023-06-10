@@ -368,6 +368,7 @@ std::string CommandLine::help_load_msg(void){
     std::string out_str = "";
     out_str += "- load task <config_name>: Load task in scheduler from specified configuration filename.\n";
     out_str += "- load tasks <config_name1, config_name2...>: Load multiple tasks in scheduler from specified list of configuration filenames.\n";
+    out_str += "- load all: Load all tasks defined in \"tasks\" directory.\n";
     return out_str;
 }
 

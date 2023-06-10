@@ -32,6 +32,7 @@ int test1(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     verify_cmd_output += "- remove task <task_name>: Removes the specified task from the scheduler.\n";
     verify_cmd_output += "- load task <config_name>: Load task in scheduler from specified configuration filename.\n";
     verify_cmd_output += "- load tasks <config_name1, config_name2...>: Load multiple tasks in scheduler from specified list of configuration filenames.\n";
+    verify_cmd_output += "- load all: Load all tasks defined in \"tasks\" directory.\n";
     verify_cmd_output += "- reload task <name>: Reload task in scheduler from specified task name attribute.\n";
     verify_cmd_output += "- reload tasks <name1, name2...>: Reload multiple tasks in scheduler from specified list of task name attributes.\n";
     verify_cmd_output += "- reload all: Reload all tasks loaded in the Scheduler.\n";
@@ -123,6 +124,7 @@ int test4(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     verify_cmd_output = "";
     verify_cmd_output += "- load task <config_name>: Load task in scheduler from specified configuration filename.\n";
     verify_cmd_output += "- load tasks <config_name1, config_name2...>: Load multiple tasks in scheduler from specified list of configuration filenames.\n";
+    verify_cmd_output += "- load all: Load all tasks defined in \"tasks\" directory.\n";
 
     c->set_cmd_input("help load");
     c->parse_command();
