@@ -183,6 +183,20 @@ void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
             this->cmds_issued++;
         }
     }
+    else if(option == "all"){
+        if(split_cmd_input.size() != 2){
+            event_message = "The command \"load all\" does not take any additional arguments.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+            return;
+        }
+        else{
+            this->scheduler_ptr->load_all_tasks();
+            this->cmds_issued++;
+        }
+    }
     else{
         event_message = "An invalid argument was passed for the the \"load\" verb. Issue the command \"help load\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
