@@ -376,6 +376,7 @@ std::string CommandLine::help_check_msg(void){
 std::string CommandLine::help_remove_msg(void){
     std::string out_str = ""; 
     out_str += "- remove task <task_name>: Removes the specified task from the scheduler.\n";
+    out_str += "- remove tasks <name1, name2, ...>: Remove multiple tasks in scheduler from specified list of task name attributes.\n";
     return out_str;
 }
 
