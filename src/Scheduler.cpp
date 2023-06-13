@@ -133,7 +133,17 @@ void Scheduler::load_all_tasks(void){
     // Attempt loading all configuration files in tasks directory
     for(const auto & file : std::filesystem::directory_iterator(this->exec_path + "/tasks/")){
         // Load the task's configuration file and validate its contents
-        task_config = new cl::Config(file.path());
+        try{
+            task_config = new cl::Config(file.path());
+        }
+        catch(cl::CL_Error ex){
+            event_message = "Failed to parse \"" + task_config_filename + "\": " + ex.what();
+            this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+            return;
+        }
         task_config_filename = file.path().filename().string();
         ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
         if(ret_task_validate != ValidationCode::OK){
@@ -225,7 +235,17 @@ void Scheduler::load_task(std::string& task_config_filename){
     }
 
     // Load the task's configuration file and validate its contents
-    task_config = new cl::Config(this->exec_path + "/tasks/" + task_config_filename);
+    try{
+        task_config = new cl::Config(this->exec_path + "/tasks/" + task_config_filename);
+    }
+    catch(cl::CL_Error ex){
+        event_message = "Failed to parse \"" + task_config_filename + "\": " + ex.what();
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
     ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
     if(ret_task_validate != ValidationCode::OK){
         event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
@@ -329,7 +349,17 @@ void Scheduler::reload_all_tasks(void){
         }
 
         // Load the task's configuration file and validate its contents
-        task_config = new cl::Config(this->exec_path + "/tasks/" + task_config_filename);
+        try{
+            task_config = new cl::Config(this->exec_path + "/tasks/" + task_config_filename);
+        }
+        catch(cl::CL_Error ex){
+            event_message = "Failed to parse \"" + task_config_filename + "\": " + ex.what();
+            this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+            return;
+        }
         ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
         if(ret_task_validate != ValidationCode::OK){
             event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
@@ -434,7 +464,17 @@ void Scheduler::reload_task(std::string& key){
     }
 
     // Load the task's configuration file and validate its contents
-    task_config = new cl::Config(this->exec_path + "/tasks/" + task_config_filename);
+    try{
+        task_config = new cl::Config(this->exec_path + "/tasks/" + task_config_filename);
+    }
+    catch(cl::CL_Error ex){
+        event_message = "Failed to parse \"" + task_config_filename + "\": " + ex.what();
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
     ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
     if(ret_task_validate != ValidationCode::OK){
         event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
