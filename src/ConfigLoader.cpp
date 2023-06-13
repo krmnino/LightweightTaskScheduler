@@ -9,7 +9,6 @@ Config::Config(std::string filename) {
 	file.open(filename);
 	if (!file.is_open()) {
 		CL_Error ex(CLErrorCode::FAILED_2_OPEN);
-		std::cerr << ex.what() << std::endl;
 		throw ex;
 	}
 	while (std::getline(file, line)) {
@@ -26,7 +25,6 @@ Config::Config(std::string filename) {
 			}
 			else {
 				CL_Error ex(CLErrorCode::SEMICOLON);
-				std::cerr << ex.what() << std::endl;
 				throw ex;
 			}
 
@@ -46,7 +44,6 @@ Config::Config(std::string filename) {
 		split_string(raw_keyvals, raw_entries[i], '=');
 		if (raw_keyvals.size() != 2) {
 			CL_Error ex(CLErrorCode::EQUALS_SIGN);
-			std::cerr << ex.what() << std::endl;
 			throw ex;
 		}
 		remove_side_spaces(raw_keyvals[0]);
@@ -137,7 +134,6 @@ Value* Config::get_value(std::string key) {
 	std::map<std::string, int>::const_iterator it = this->keys_index.find(key);
 	if (it == this->keys_index.end()) {
 		CL_Error ex(CLErrorCode::KEY_NOT_FOUND);
-		std::cerr << ex.what() << std::endl;
 		throw ex;
 	}
 	return this->values[it->second];
@@ -164,7 +160,6 @@ void Config::add_entry(std::string key, int value) {
 	std::map<std::string, int>::const_iterator it = this->keys_index.find(key);
 	if (it != this->keys_index.end()) {
 		CL_Error ex(CLErrorCode::ADD_KEY_REPEAT);
-		std::cerr << ex.what() << std::endl;
 		throw ex;
 	}
 	Value* new_val = new Value(value);
@@ -177,7 +172,6 @@ void Config::add_entry(std::string key, double value) {
 	std::map<std::string, int>::const_iterator it = this->keys_index.find(key);
 	if (it != this->keys_index.end()) {
 		CL_Error ex(CLErrorCode::ADD_KEY_REPEAT);
-		std::cerr << ex.what() << std::endl;
 		throw ex;
 	}
 	Value* new_val = new Value(value);
@@ -190,7 +184,6 @@ void Config::add_entry(std::string key, std::string value) {
 	std::map<std::string, int>::const_iterator it = this->keys_index.find(key);
 	if (it != this->keys_index.end()) {
 		CL_Error ex(CLErrorCode::ADD_KEY_REPEAT);
-		std::cerr << ex.what() << std::endl;
 		throw ex;
 	}
 	Value* new_val = new Value(value);
@@ -203,7 +196,6 @@ void Config::add_entry(std::string key, const char* value) {
 	std::map<std::string, int>::const_iterator it = this->keys_index.find(key);
 	if (it != this->keys_index.end()) {
 		CL_Error ex(CLErrorCode::ADD_KEY_REPEAT);
-		std::cerr << ex.what() << std::endl;
 		throw ex;
 	}
 	Value* new_val = new Value(value);
@@ -216,7 +208,6 @@ void Config::add_entry(std::string key, List value) {
 	std::map<std::string, int>::const_iterator it = this->keys_index.find(key);
 	if (it != this->keys_index.end()) {
 		CL_Error ex(CLErrorCode::ADD_KEY_REPEAT);
-		std::cerr << ex.what() << std::endl;
 		throw ex;
 	}
 	Value* new_val = new Value(value);
@@ -229,7 +220,6 @@ void Config::edit_value(std::string key, int value) {
 	std::map<std::string, int>::const_iterator it = this->keys_index.find(key);
 	if (it == this->keys_index.end()) {
 		CL_Error ex(CLErrorCode::KEY_NOT_FOUND);
-		std::cerr << ex.what() << std::endl;
 		throw ex;
 	}
 	Value* new_val = new Value(value);
@@ -242,7 +232,6 @@ void Config::edit_value(std::string key, double value) {
 	std::map<std::string, int>::const_iterator it = this->keys_index.find(key);
 	if (it == this->keys_index.end()) {
 		CL_Error ex(CLErrorCode::KEY_NOT_FOUND);
-		std::cerr << ex.what() << std::endl;
 		throw ex;
 	}
 	Value* new_val = new Value(value);
@@ -255,7 +244,6 @@ void Config::edit_value(std::string key, std::string value) {
 	std::map<std::string, int>::const_iterator it = this->keys_index.find(key);
 	if (it == this->keys_index.end()) {
 		CL_Error ex(CLErrorCode::KEY_NOT_FOUND);
-		std::cerr << ex.what() << std::endl;
 		throw ex;
 	}
 	Value* new_val = new Value(value);
@@ -268,7 +256,6 @@ void Config::edit_value(std::string key, const char* value) {
 	std::map<std::string, int>::const_iterator it = this->keys_index.find(key);
 	if (it == this->keys_index.end()) {
 		CL_Error ex(CLErrorCode::KEY_NOT_FOUND);
-		std::cerr << ex.what() << std::endl;
 		throw ex;
 	}
 	Value* new_val = new Value(value);
@@ -281,7 +268,6 @@ void Config::edit_value(std::string key, List value) {
 	std::map<std::string, int>::const_iterator it = this->keys_index.find(key);
 	if (it == this->keys_index.end()) {
 		CL_Error ex(CLErrorCode::KEY_NOT_FOUND);
-		std::cerr << ex.what() << std::endl;
 		throw ex;
 	}
 	Value* new_val = new Value(value);
