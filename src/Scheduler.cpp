@@ -133,6 +133,7 @@ void Scheduler::load_all_tasks(void){
     // Attempt loading all configuration files in tasks directory
     for(const auto & file : std::filesystem::directory_iterator(this->exec_path + "/tasks/")){
         // Load the task's configuration file and validate its contents
+        task_config_filename = file.path().filename().string();
         try{
             task_config = new cl::Config(file.path());
         }
@@ -142,9 +143,9 @@ void Scheduler::load_all_tasks(void){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
+            continue;
         }
-        task_config_filename = file.path().filename().string();
+
         ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
         if(ret_task_validate != ValidationCode::OK){
             event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
@@ -246,6 +247,7 @@ void Scheduler::load_task(std::string& task_config_filename){
         #endif
         return;
     }
+
     ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
     if(ret_task_validate != ValidationCode::OK){
         event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
@@ -358,8 +360,9 @@ void Scheduler::reload_all_tasks(void){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
+            continue;
         }
+
         ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
         if(ret_task_validate != ValidationCode::OK){
             event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
@@ -475,6 +478,7 @@ void Scheduler::reload_task(std::string& key){
         #endif
         return;
     }
+
     ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
     if(ret_task_validate != ValidationCode::OK){
         event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
