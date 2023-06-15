@@ -299,7 +299,7 @@ int test6(lts::Scheduler* s, lts::EventReporter* e){
     // Create temporary task
     task_path_filename = "tasks/ZZZTestTask.cl";
     temp_task.open(task_path_filename);
-    temp_task_contents += "Name = cat\n";
+    temp_task_contents += "Name = ZZZTestTask\n";
     temp_task_contents += "Description = A short description\n";
     temp_task_contents += "ScriptFilename = cat_test.sh\n";
     temp_task_contents += "Frequency = Daily\n";
