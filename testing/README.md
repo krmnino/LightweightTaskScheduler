@@ -456,7 +456,7 @@ The `/testing` directory contains exclusive test-related source files. That incl
 |`test4()`|Attempt loading task that does not exists in the tasks directory. The `EventReporter` should record 1 event after attempting to find the `tasks` directory. No task should be loaded in the loaded in the `Scheduler`.|`Scheduler::load_task(std::string&)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 |`test5()`|Generate a task with a `Datetime` value in the past. The `EventReporter` should record 1 event after attempting to load a task in the past. No task should be loaded in the `Scheduler`.|`Scheduler::load_task(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
 |`test6()`|Generate a task with a duplicate `Name`. The `EventReporter` should record 1 events after loading first task with the shared name, plus 1 event after attempting to load a task with a duplicate `Name`. Only 1 task should be loaded in the `Scheduler`.|`Scheduler::load_task(void)`<br/>`EventReporter::get_n_events(void)`|<span style="color:green">Passed|
-
+|`test7()`|Generate a temporary invalid task configuration file with missing semicolons on every entry. The `EventReporter` should record 1 events attempting to load the invalid task. No tasks should be loaded in the `Scheduler`.|`Scheduler::load_task(void)`<br/>`EventReporter::get_n_events(void)`<br/>`Scheduler::get_n_tasks(void)`|<span style="color:green">Passed|
 ### **EventReporter_get_instance.cpp**
 
 |Testcase|Description|Part Tested|Status|
