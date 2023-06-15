@@ -14,6 +14,7 @@ int test1(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 1: load tasks from tasks directory
     // Tasks to be loaded: cat_test.cl and ls_test.cl
     // Validate tasks' name, description, script name, frequency, and output
+    time_t time_now;
     const lts::Task* ret_task;
     std::string t_name;
     std::string t_description;
@@ -28,6 +29,7 @@ int test1(lts::Scheduler* s, lts::EventReporter* e){
 
     s->obtain_exec_path();
     s->load_all_tasks();
+    std::time(&time_now);
     
     assert(s->get_n_tasks() == 2);
     assert(e->get_n_events() == 2);
@@ -48,6 +50,7 @@ int test1(lts::Scheduler* s, lts::EventReporter* e){
     verify_event_type = lts::EventType::INFO;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
+    assert(ret_event.get_event_time() == time_now);
     
     t_name = "ls";
     t_description = "Test task: call command ls";
@@ -65,6 +68,7 @@ int test1(lts::Scheduler* s, lts::EventReporter* e){
     verify_event_type = lts::EventType::INFO;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
+    assert(ret_event.get_event_time() == time_now);
 
     s->Scheduler_delete();
     e->EventReporter_delete();
@@ -76,6 +80,7 @@ int test1(lts::Scheduler* s, lts::EventReporter* e){
 
 int test2(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 2: try to load task from directory when tasks directory does not exist
+    time_t time_now;
     std::string original_dir_name = "tasks/";
     std::string rename_dir_name = "original_tasks/";
     lts::Event ret_event;
@@ -90,6 +95,7 @@ int test2(lts::Scheduler* s, lts::EventReporter* e){
 
     s->obtain_exec_path();
     s->load_all_tasks();
+    std::time(&time_now);
 
     assert(s->get_n_tasks() == 0);
     assert(e->get_n_events() == 1);
@@ -98,6 +104,7 @@ int test2(lts::Scheduler* s, lts::EventReporter* e){
     verify_event_type = lts::EventType::ERROR;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
+    assert(ret_event.get_event_time() == time_now);
 
     // Rename it back to tasks
     rename(rename_dir_name.c_str(), original_dir_name.c_str());
@@ -112,6 +119,7 @@ int test2(lts::Scheduler* s, lts::EventReporter* e){
 
 int test3(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 3: try to load task from directory when scripts directory does not exist
+    time_t time_now;
     std::string original_scripts_dir_name = "scripts/";
     std::string rename_scripts_dir_name = "original_scripts/";
     lts::Event ret_event;
@@ -126,6 +134,7 @@ int test3(lts::Scheduler* s, lts::EventReporter* e){
 
     s->obtain_exec_path();
     s->load_all_tasks();
+    std::time(&time_now);
 
     assert(s->get_n_tasks() == 0);
     assert(e->get_n_events() == 1);
@@ -134,6 +143,7 @@ int test3(lts::Scheduler* s, lts::EventReporter* e){
     verify_event_type = lts::EventType::ERROR;
     assert(ret_event.get_message() == verify_event_message);
     assert(ret_event.get_type() == verify_event_type);
+    assert(ret_event.get_event_time() == time_now);
 
     // Rename it back to tasks
     rename(rename_scripts_dir_name.c_str(), original_scripts_dir_name.c_str());
@@ -201,6 +211,7 @@ int test4(lts::Scheduler* s, lts::EventReporter* e){
 
     s->obtain_exec_path();
     s->load_all_tasks();
+    std::time(&time_now);
 
     assert(s->get_n_tasks() == 2);
     assert(e->get_n_events() == 3);
@@ -211,6 +222,7 @@ int test4(lts::Scheduler* s, lts::EventReporter* e){
     verify_event_message = "that is in the past.";
     assert(ret_event.get_message().find(verify_event_message) != std::string::npos);
     assert(ret_event.get_type() == verify_event_type);
+    assert(ret_event.get_event_time() == time_now);
 
     s->Scheduler_delete();
     e->EventReporter_delete();
@@ -224,6 +236,7 @@ int test4(lts::Scheduler* s, lts::EventReporter* e){
 
 int test5(lts::Scheduler* s, lts::EventReporter* e){
     // TEST 5: generate task with duplicate Name and attempt to load it
+    time_t time_now;
     std::string task_path_filename;
     std::string task_filename;
     std::string task_name;
@@ -249,6 +262,7 @@ int test5(lts::Scheduler* s, lts::EventReporter* e){
 
     s->obtain_exec_path();
     s->load_all_tasks();
+    std::time(&time_now);
 
     assert(s->get_n_tasks() == 2);
     assert(e->get_n_events() == 3);
@@ -257,6 +271,7 @@ int test5(lts::Scheduler* s, lts::EventReporter* e){
     verify_event_type = lts::EventType::ERROR;
     assert(ret_event.get_message().find(verify_event_message) != std::string::npos);
     assert(ret_event.get_type() == verify_event_type);
+    assert(ret_event.get_event_time() == time_now);
 
     s->Scheduler_delete();
     e->EventReporter_delete();
