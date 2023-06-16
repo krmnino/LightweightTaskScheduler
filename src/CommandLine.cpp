@@ -38,7 +38,6 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
         }
         else if(split_cmd_input.size() != 3){
             event_message = "The command \"check task <task_name>\" does not take any additional arguments.";
@@ -46,7 +45,6 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
         }
         else{
             this->cmd_output = this->scheduler_ptr->display_task(split_cmd_input[2]);
@@ -63,7 +61,6 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
         }
         else{
             this->cmd_output = this->scheduler_ptr->display_scheduler_status();
@@ -80,7 +77,6 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
         }
         else if(split_cmd_input.size() != 3){
             event_message = "The command \"check output <task_name>\" does not take any additional arguments.";
@@ -88,7 +84,6 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
         }
         else{
             this->cmd_output = this->scheduler_ptr->display_task_output(split_cmd_input[2]);
@@ -205,7 +200,6 @@ void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
         }
         else{
             this->scheduler_ptr->load_all_tasks();
@@ -269,7 +263,6 @@ void CommandLine::verb_reload(std::vector<std::string>& split_cmd_input){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
         }
         else{
             this->scheduler_ptr->reload_all_tasks();
