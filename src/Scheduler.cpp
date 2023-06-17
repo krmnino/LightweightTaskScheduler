@@ -829,6 +829,75 @@ std::string Scheduler::display_scheduler_status(void){
     return out_str;
 }
 
+void Scheduler::dump_task_output(std::string& key){
+    Task* t;
+    time_t time_now;
+    time_t time_now_add;
+    std::string years;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::tm struct_time_now;
+    std::string event_message;
+    std::ofstream task_output;
+    std::string task_output_filename;
+
+    if(!this->task_exists(key)){
+        event_message = "The task \"" + key + "\" does not exist in the scheduler.";
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+
+    t = this->task_registry[key];
+
+    time_now = std::time(&time_now);
+    time_now += (TIMEZONE * 60 * 60);
+    struct_time_now = *std::gmtime(&time_now);
+    years = std::to_string(1900 + struct_time_now.tm_year);
+    months = (struct_time_now.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now.tm_mon + 1) :
+              std::to_string(struct_time_now.tm_mon + 1);  
+    days = (struct_time_now.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now.tm_mday) :
+            std::to_string(struct_time_now.tm_mday);
+    hours = (struct_time_now.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now.tm_hour) :
+             std::to_string(struct_time_now.tm_hour);
+    minutes = (struct_time_now.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now.tm_min) :
+               std::to_string(struct_time_now.tm_min);
+    seconds = (struct_time_now.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now.tm_sec) :
+               std::to_string(struct_time_now.tm_sec);
+
+    task_output_filename += t->get_name() + "_";
+    task_output_filename += years + "-" + months + "-" + days + "_" + hours + "-" + minutes + "-" + seconds;
+    task_output_filename += ".dat";
+
+    // Check if scripts directory exists
+    if(!std::filesystem::exists(this->exec_path + "/dumps")){
+        std::filesystem::create_directory(this->exec_path + "/dumps");
+        std::filesystem::permissions(this->exec_path + "/dumps", 
+                                     std::filesystem::perms::owner_read | std::filesystem::perms::owner_write,
+                                     std::filesystem::perm_options::add);
+    }
+
+    task_output.open(this->exec_path + "/dumps/" + task_output_filename);
+    task_output << t->get_output();
+    task_output.close();
+
+    event_message = "Saved task \"" + key + "\" output in \"dumps/" + task_output_filename + "\".";
+    this->event_reporter_ptr->log_event(EventType::INFO, event_message);
+    #ifndef SILENT
+    this->event_reporter_ptr->publish_last_event();
+    #endif
+}
+
 const std::string& Scheduler::get_current_path(void){
     return this->exec_path;
 }
@@ -843,7 +912,7 @@ const Task* Scheduler::get_task(std::string& key) const{
     // Check if key exists in task registry
     if(!const_cast<Scheduler*>(this)->task_exists(key)){
         event_message = "The task \"" + key + "\" does not exist in the scheduler.";
-        this->event_reporter_ptr->log_event(EventType::INFO, event_message);
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
         #endif
