@@ -4,6 +4,7 @@ src/test
 src/Scratch.cpp
 src/Scratch
 src/*.gch
+src/dumps
 .vscode
 
 # TESTING 

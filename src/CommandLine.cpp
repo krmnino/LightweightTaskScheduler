@@ -278,6 +278,41 @@ void CommandLine::verb_reload(std::vector<std::string>& split_cmd_input){
     }
 }
 
+void CommandLine::verb_dump(std::vector<std::string>& split_cmd_input){
+    std::string event_message;
+    std::string option;
+
+    if(split_cmd_input.size() <= 1){
+        event_message = "The \"dump\" verb requires at least 1 argument. Issue the command \"help dump\" for options.";
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+    option = split_cmd_input[1];
+    if(option == "output"){
+        if(split_cmd_input.size() != 3){
+            event_message = "The command \"dump output <name>\" does not take any additional arguments.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+        }
+        else{
+            this->scheduler_ptr->dump_task_output(split_cmd_input[2]);
+            this->cmds_issued++;
+        }
+    }
+    else{
+        event_message = "An invalid argument was passed for the the \"dump\" verb. Issue the command \"help dump\" for options.";
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+    }
+}
+
 void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
     std::string event_message;
     std::string option;
@@ -451,6 +486,9 @@ void CommandLine::parse_command(void){
     }
     else if(split_cmd_input[0] == "reload"){
         this->verb_reload(split_cmd_input);
+    }
+    else if(split_cmd_input[0] == "dump"){
+        this->verb_dump(split_cmd_input);
     }
     else{
         event_message = "Unrecognized command. Entered: " + this->cmd_input;

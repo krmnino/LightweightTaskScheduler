@@ -846,7 +846,7 @@ void Scheduler::dump_task_output(std::string& key){
 
     if(!this->task_exists(key)){
         event_message = "The task \"" + key + "\" does not exist in the scheduler.";
-        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
         #endif
