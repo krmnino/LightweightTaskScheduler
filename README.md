@@ -12,7 +12,7 @@ The Light-weight Task Scheduler is a flexible standalone program that allows lau
 
 ## Build and Run
 1. To build the binary, navigate to the `src` directory and issue the command `make release`. This will generate the `scheduler` binary.
-2. Place the `scheduler` binary anywhere you want, as long as the directory has execution permissions.
+2. Place the `scheduler` binary anywhere you want, as long as the directory has the necessary (r/w/x) permissions.
 3. Create two directories named `tasks` and `scripts` in the same directory where the `scheduler` executable is located. 
 4. The `tasks` directory should contain the configuration files that define a single task. The `scripts` directory should contain the scripts to be invoked by the task.
 4. To run the binary, issue the command `./scheduler`. 
