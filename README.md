@@ -43,8 +43,8 @@ The scheduler is a command line based program; therefore, there is a set of comm
 - `check task <task_name>`: Displays the full information about the specified task.
 - `check status`: Displays operational information about the scheduler.
 - `check output <task_name>`: Displays output of a specific task.
-- `dump ouput <task_name>`: Generates dump file containing output of the specified task name attribute.
-- `dump ouputs <name1, name2, ...>`: Generates dump files containing output of the specified task name attributes.
+- `dump output <task_name>`: Generates output dump file from specified task name.
+- `dump outputs <name1, name2, ...>`: Generates output dump files from specified list of task names.
 - `help`: Displays usage for all verbs.
 - `help check`: Displays usage for the `check` verb only.
 - `help remove`: Displays usage for the `remove` verb only.
@@ -54,6 +54,7 @@ The scheduler is a command line based program; therefore, there is a set of comm
 - `load tasks <config_name1, config_name2, ...>`: Load multiple tasks in scheduler from specified list of configuration filenames.
 - `load all`: Load all tasks defined in `tasks` directory.
 - `remove task <task_name>`: Removes the specified task from the scheduler.
-- `reload task <name>`: Reload task in scheduler from specified task name attribute.
-- `reload tasks <name1, name2...>`: Reload multiple tasks in scheduler from specified list of task name attributes.
+- `remove tasks <name1, name2...>`: Removes multiple tasks in scheduler from specified list of task names.
+- `reload task <name>`: Reload task in scheduler from specified task.
+- `reload tasks <name1, name2, ...>`: Reload multiple tasks in scheduler from specified list of task names.
 - `reload all`: Reload all tasks loaded in the Scheduler.
