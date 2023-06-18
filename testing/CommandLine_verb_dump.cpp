@@ -470,6 +470,166 @@ int test6(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
 }
 
 
+int test7(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
+    // TEST 7: Dump output of one task by issuing the command "dump outputs ZZZTestTask invalid".
+    std::string ret_cmd_output;
+    lts::Event ret_event;
+    std::string task_name;
+    std::string task_filename;
+    std::string task_path_filename;
+    time_t time_now;
+    std::tm struct_time_now;
+    std::string years;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    cl::Config* config;
+    std::ifstream verify_output_file;
+    std::string verify_output;
+    std::string line;
+    std::string output_file_contents;
+    bool matching_event_msg;
+    std::string task_output_filename;
+    std::string verify_event_message;
+    lts::EventType verify_event_type;
+
+    time_now = std::time(&time_now);
+
+    // Add 2 seconds to current time
+    time_now = time_now + 1;
+    
+    // std::tm to time_t
+    struct_time_now = *std::gmtime(&time_now);
+
+    hours = (struct_time_now.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now.tm_hour) :
+             std::to_string(struct_time_now.tm_hour);
+    minutes = (struct_time_now.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now.tm_min) :
+               std::to_string(struct_time_now.tm_min);
+    seconds = (struct_time_now.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now.tm_sec) :
+               std::to_string(struct_time_now.tm_sec);
+
+    // Create temporary task
+    config = new cl::Config();
+    task_name = "ZZZTestTask";
+    task_filename = "ZZZTestTask.cl";
+    task_path_filename = "tasks/ZZZTestTask.cl";
+    config->add_entry("Name", task_name);
+    config->add_entry("Description", "A short description");
+    config->add_entry("ScriptFilename", "cat_test.sh");
+    config->add_entry("Frequency", "Daily");
+    config->add_entry("Datetime", hours + ":" + minutes + ":" + seconds);
+    config->save_config(task_path_filename);
+    delete config;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
+
+    s->obtain_exec_path();
+    s->load_task(task_filename);
+
+    // Sleep for 2 seconds to let task run
+    sleep(2); 
+
+    c->set_cmd_input("dump outputs ZZZTestTask invalid");
+    c->parse_command();
+
+    time_now = std::time(&time_now);
+
+    // Add timezone offset to current time
+    time_now += (TIMEZONE * 60 * 60);
+    
+    // time_t to std::tm
+    struct_time_now = *std::gmtime(&time_now);
+
+    years = std::to_string(1900 + struct_time_now.tm_year);
+    months = (struct_time_now.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now.tm_mon + 1) :
+              std::to_string(struct_time_now.tm_mon + 1);  
+    days = (struct_time_now.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now.tm_mday) :
+            std::to_string(struct_time_now.tm_mday);
+    hours = (struct_time_now.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now.tm_hour) :
+             std::to_string(struct_time_now.tm_hour);
+    minutes = (struct_time_now.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now.tm_min) :
+               std::to_string(struct_time_now.tm_min);
+    seconds = (struct_time_now.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now.tm_sec) :
+               std::to_string(struct_time_now.tm_sec);
+
+    // Get current time to verify event
+    time_now = std::time(&time_now);
+
+    task_output_filename += task_name + "_";
+    task_output_filename += years + "-" + months + "-" + days + "_" + hours + "-" + minutes + "-" + seconds;
+    task_output_filename += ".dat";
+    verify_event_message = "Saved task \"" + task_name + "\" output in \"dumps/" + task_output_filename + "\".";
+    ret_event = e->get_last_event();
+
+    assert(s->get_n_tasks() == 1);
+    assert(e->get_n_events() == 5);
+    assert(c->get_cmds_issued() == 1);
+
+    // Verify task event for first event
+    verify_event_message = "Saved task \"" + task_name + "\" output in \"dumps/" + task_output_filename + "\".";
+    verify_event_type = lts::EventType::INFO;
+    matching_event_msg = false;
+    // Look through all events and see if one matches the verification event message
+    for(size_t i = 0; i < e->get_n_events(); i++){
+        ret_event = e->get_event_at(i);
+        if(ret_event.get_message().find(verify_event_message) != std::string::npos){
+            matching_event_msg = true;
+            break;
+        }
+    }
+    assert(matching_event_msg);
+    assert(ret_event.get_type() == verify_event_type);
+    assert(ret_event.get_event_time() == time_now);
+    
+    // Verify task event for second event
+    verify_event_message = "The task \"invalid\" does not exist in the scheduler.";
+    verify_event_type = lts::EventType::ERROR;
+    matching_event_msg = false;
+    // Look through all events and see if one matches the verification event message
+    for(size_t i = 0; i < e->get_n_events(); i++){
+        ret_event = e->get_event_at(i);
+        if(ret_event.get_message().find(verify_event_message) != std::string::npos){
+            matching_event_msg = true;
+            break;
+        }
+    }
+    assert(matching_event_msg);
+    assert(ret_event.get_type() == verify_event_type);
+    assert(ret_event.get_event_time() == time_now);
+
+    // Read output file and verify its contents
+    verify_output_file.open("dumps/" + task_output_filename);
+    verify_output = "ls -l";
+    while (std::getline(verify_output_file, line)){
+        output_file_contents += line;
+    }
+    verify_output_file.close();
+    assert(output_file_contents == verify_output);
+
+    c->CommandLine_delete();
+    s->Scheduler_delete();
+    e->EventReporter_delete();
+
+    remove(("dumps/" + task_output_filename).c_str());
+    remove(task_path_filename.c_str());
+
+    std::cout << ">> CommandLine_verb_dump: 7 done" << std::endl;
+    return 0;
+}
+
+
 int main(int argc, char* argv[]){
     lts::EventReporter* e = lts::EventReporter::EventReporter_get_instance();
     lts::CommandLine* c = lts::CommandLine::CommandLine_get_instance();
@@ -481,6 +641,7 @@ int main(int argc, char* argv[]){
     test4(e, s, c);
     test5(e, s, c);
     test6(e, s, c);
+    test7(e, s, c);
 
     e->EventReporter_end_instance();
     c->CommandLine_end_instance();
