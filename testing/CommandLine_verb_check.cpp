@@ -438,7 +438,7 @@ int test13(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
 
     time_now = std::time(&time_now);
 
-    // Add 2 seconds to current time
+    // Add 1 second to current time
     time_now_add = time_now + 1;
     
     // time_t to std::tm*
