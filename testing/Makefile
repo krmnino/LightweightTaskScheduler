@@ -295,6 +295,10 @@ CommandLine_verb_load: task_scheduler.o
 	g++ -g -Wall -c -std=c++17 CommandLine_verb_load.cpp
 	g++ -g -Wall -o CommandLine_verb_load CommandLine_verb_load.o $(OBJ_FILES) -pthread -lstdc++fs
 
+CommandLine_verb_dump: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 CommandLine_verb_dump.cpp
+	g++ -g -Wall -o CommandLine_verb_dump CommandLine_verb_dump.o $(OBJ_FILES) -pthread -lstdc++fs
+
 CommandLine_verb_help: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 CommandLine_verb_help.cpp
 	g++ -g -Wall -o CommandLine_verb_help CommandLine_verb_help.o $(OBJ_FILES) -pthread -lstdc++fs
