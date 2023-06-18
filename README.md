@@ -61,7 +61,7 @@ The scheduler is a command line based program; therefore, there is a set of comm
 - `reload all`: Reload all tasks loaded in the Scheduler.
 
 ## Changelog v1.1
-- Task name attributes limited to 32 characters in length.
+- Task `Name` attribute is now limited to 32 characters in length.
 - Updated Makefile release compile rule.
 - Implemented new command `check output <task_name>`.
 - Implemented new command `load all`.
