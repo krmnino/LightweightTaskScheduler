@@ -73,6 +73,6 @@ The scheduler is a command line based program; therefore, there is a set of comm
 - Implemented new command `dump output <task_name>`.
 - Implemented new command `dump outputs <name1, name2, ...>`.
 - Implemented new command `dump events`.
-- Tasks with `Frequency` of `Hourly` now require the `Datetime` attribute with the following formats `HH:MM:SS` or `YYYY-MM-DD HH:MM:SS`..
+- Tasks with `Frequency` of `Hourly` now require the `Datetime` attribute of the following formats `HH:MM:SS` or `YYYY-MM-DD HH:MM:SS`.
 - Handle invalid configuration files when attempting to load/reload.
 - Optimizated and refactored code. 
