@@ -339,6 +339,7 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
         out_str += this->help_remove_msg();
         out_str += this->help_load_msg();
         out_str += this->help_reload_msg();
+        out_str += this->help_dump_msg();
         this->cmd_output = out_str;
         this->cmds_issued++;
         #ifndef SILENT
@@ -373,6 +374,14 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
         }
         else if(option == "reload"){
             out_str += this->help_reload_msg();
+            this->cmd_output = out_str;
+            this->cmds_issued++;
+            #ifndef SILENT
+            std::cout << this->cmd_output;
+            #endif
+        }
+        else if(option == "dump"){
+            out_str += this->help_dump_msg();
             this->cmd_output = out_str;
             this->cmds_issued++;
             #ifndef SILENT
@@ -419,7 +428,7 @@ std::string CommandLine::help_check_msg(void){
 std::string CommandLine::help_remove_msg(void){
     std::string out_str = ""; 
     out_str += "- remove task <task_name>: Removes the specified task from the scheduler.\n";
-    out_str += "- remove tasks <name1, name2, ...>: Remove multiple tasks in scheduler from specified list of task name attributes.\n";
+    out_str += "- remove tasks <name1, name2, ...>: Remove multiple tasks in scheduler from specified list of task names.\n";
     return out_str;
 }
 
@@ -433,9 +442,16 @@ std::string CommandLine::help_load_msg(void){
 
 std::string CommandLine::help_reload_msg(void){
     std::string out_str = "";
-    out_str += "- reload task <name>: Reload task in scheduler from specified task name attribute.\n";
-    out_str += "- reload tasks <name1, name2...>: Reload multiple tasks in scheduler from specified list of task name attributes.\n";
+    out_str += "- reload task <name>: Reload task in scheduler from specified task.\n";
+    out_str += "- reload tasks <name1, name2...>: Reload multiple tasks in scheduler from specified list of task names.\n";
     out_str += "- reload all: Reload all tasks loaded in the Scheduler.\n";
+    return out_str;
+}
+
+std::string CommandLine::help_dump_msg(void){
+    std::string out_str = "";
+    out_str += "- dump output <task_name>: Generates output dump file from specified task name.\n";
+    out_str += "- dump outputs <name1, name2, ...>`: Generates output dump files from specified list of task names.\n";
     return out_str;
 }
 
