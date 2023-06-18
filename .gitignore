@@ -4,12 +4,15 @@ src/test
 src/Scratch.cpp
 src/Scratch
 src/*.gch
+src/dumps
 .vscode
 
 # TESTING 
 testing/*.o
 testing/*.dat
 testing/scheduler
+testing/dumps
+testing/dumps/*
 testing/tasks/TestTask.cl
 testing/Task_constructor
 testing/Task_methods
@@ -60,4 +63,5 @@ testing/CommandLine_verb_check
 testing/CommandLine_verb_remove
 testing/CommandLine_verb_reload
 testing/CommandLine_verb_load
+testing/CommandLine_verb_dump
 testing/CommandLine_verb_help

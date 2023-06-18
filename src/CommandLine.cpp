@@ -38,7 +38,6 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
         }
         else if(split_cmd_input.size() != 3){
             event_message = "The command \"check task <task_name>\" does not take any additional arguments.";
@@ -46,7 +45,6 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
         }
         else{
             this->cmd_output = this->scheduler_ptr->display_task(split_cmd_input[2]);
@@ -63,7 +61,6 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
         }
         else{
             this->cmd_output = this->scheduler_ptr->display_scheduler_status();
@@ -80,7 +77,6 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
         }
         else if(split_cmd_input.size() != 3){
             event_message = "The command \"check output <task_name>\" does not take any additional arguments.";
@@ -88,7 +84,6 @@ void CommandLine::verb_check(std::vector<std::string>& split_cmd_input){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
         }
         else{
             this->cmd_output = this->scheduler_ptr->display_task_output(split_cmd_input[2]);
@@ -205,7 +200,6 @@ void CommandLine::verb_load(std::vector<std::string>& split_cmd_input){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
         }
         else{
             this->scheduler_ptr->load_all_tasks();
@@ -269,7 +263,6 @@ void CommandLine::verb_reload(std::vector<std::string>& split_cmd_input){
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
             #endif
-            return;
         }
         else{
             this->scheduler_ptr->reload_all_tasks();
@@ -278,6 +271,72 @@ void CommandLine::verb_reload(std::vector<std::string>& split_cmd_input){
     }
     else{
         event_message = "An invalid argument was passed for the the \"reload\" verb. Issue the command \"help reload\" for options.";
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+    }
+}
+
+void CommandLine::verb_dump(std::vector<std::string>& split_cmd_input){
+    std::string event_message;
+    std::string option;
+
+    if(split_cmd_input.size() <= 1){
+        event_message = "The \"dump\" verb requires at least 1 argument. Issue the command \"help dump\" for options.";
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+    option = split_cmd_input[1];
+    if(option == "output"){
+        if(split_cmd_input.size() != 3){
+            event_message = "The command \"dump output <name>\" does not take any additional arguments.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+        }
+        else{
+            this->scheduler_ptr->dump_task_output(split_cmd_input[2]);
+            this->cmds_issued++;
+        }
+    }
+    else if(option == "outputs"){
+        if(split_cmd_input.size() < 3){
+            event_message = "The command \"dump outputs <name1, name2, ...>\" requires at least one task name.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+        }
+        else{
+            for(size_t i = 2; i < split_cmd_input.size(); i++){
+                this->scheduler_ptr->dump_task_output(split_cmd_input[i]);
+            }
+            this->cmds_issued++;
+        }
+    }
+    else if(option == "events"){
+        if(split_cmd_input.size() != 2){
+            event_message = "The command \"dump events\" does not take any additional arguments.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+        }
+        else{
+            this->scheduler_ptr->dump_events();
+            this->cmds_issued++;
+            #ifndef SILENT
+            std::cout << this->cmd_output;
+            #endif
+        }
+    }
+    else{
+        event_message = "An invalid argument was passed for the the \"dump\" verb. Issue the command \"help dump\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -296,6 +355,7 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
         out_str += this->help_remove_msg();
         out_str += this->help_load_msg();
         out_str += this->help_reload_msg();
+        out_str += this->help_dump_msg();
         this->cmd_output = out_str;
         this->cmds_issued++;
         #ifndef SILENT
@@ -336,6 +396,14 @@ void CommandLine::verb_help(std::vector<std::string>& split_cmd_input){
             std::cout << this->cmd_output;
             #endif
         }
+        else if(option == "dump"){
+            out_str += this->help_dump_msg();
+            this->cmd_output = out_str;
+            this->cmds_issued++;
+            #ifndef SILENT
+            std::cout << this->cmd_output;
+            #endif
+        }
         else{
             event_message = "An invalid argument was passed for the the \"help\" verb. Issue the command \"help\" for options.";
             this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
@@ -360,6 +428,7 @@ std::string CommandLine::help_msg(void){
     out_str += "- help remove: Displays usage for the \"remove\" verb only.\n";
     out_str += "- help load: Displays usage for the \"load\" verb only.\n";
     out_str += "- help reload: Displays usage for the \"reload\" verb only.\n";
+    out_str += "- help dump: Displays usage for the \"dump\" verb only.\n";
     out_str += "- close: Terminates the scheduler program.\n";
     return out_str;
 }
@@ -376,23 +445,31 @@ std::string CommandLine::help_check_msg(void){
 std::string CommandLine::help_remove_msg(void){
     std::string out_str = ""; 
     out_str += "- remove task <task_name>: Removes the specified task from the scheduler.\n";
-    out_str += "- remove tasks <name1, name2, ...>: Remove multiple tasks in scheduler from specified list of task name attributes.\n";
+    out_str += "- remove tasks <name1, name2, ...>: Remove multiple tasks in scheduler from specified list of task names.\n";
     return out_str;
 }
 
 std::string CommandLine::help_load_msg(void){
     std::string out_str = "";
     out_str += "- load task <config_name>: Load task in scheduler from specified configuration filename.\n";
-    out_str += "- load tasks <config_name1, config_name2...>: Load multiple tasks in scheduler from specified list of configuration filenames.\n";
+    out_str += "- load tasks <config_name1, config_name2, ...>: Load multiple tasks in scheduler from specified list of configuration filenames.\n";
     out_str += "- load all: Load all tasks defined in \"tasks\" directory.\n";
     return out_str;
 }
 
 std::string CommandLine::help_reload_msg(void){
     std::string out_str = "";
-    out_str += "- reload task <name>: Reload task in scheduler from specified task name attribute.\n";
-    out_str += "- reload tasks <name1, name2...>: Reload multiple tasks in scheduler from specified list of task name attributes.\n";
+    out_str += "- reload task <name>: Reload task in scheduler from specified task.\n";
+    out_str += "- reload tasks <name1, name2, ...>: Reload multiple tasks in scheduler from specified list of task names.\n";
     out_str += "- reload all: Reload all tasks loaded in the Scheduler.\n";
+    return out_str;
+}
+
+std::string CommandLine::help_dump_msg(void){
+    std::string out_str = "";
+    out_str += "- dump output <task_name>: Generates output dump file from specified task name.\n";
+    out_str += "- dump outputs <name1, name2, ...>`: Generates output dump files from specified list of task names.\n";
+    out_str += "- dump events: Generates a dump file containing all events recorded in the scheduler.\n";
     return out_str;
 }
 
@@ -458,6 +535,9 @@ void CommandLine::parse_command(void){
     }
     else if(split_cmd_input[0] == "reload"){
         this->verb_reload(split_cmd_input);
+    }
+    else if(split_cmd_input[0] == "dump"){
+        this->verb_dump(split_cmd_input);
     }
     else{
         event_message = "Unrecognized command. Entered: " + this->cmd_input;

@@ -71,8 +71,9 @@ SRC_TESTCASES =	Task_constructor						\
 				CommandLine_methods						\
 				CommandLine_verb_check					\
 				CommandLine_verb_remove					\
-				CommandLine_verb_reload					\
 				CommandLine_verb_load					\
+				CommandLine_verb_reload					\
+				CommandLine_verb_dump					\
 				CommandLine_verb_help
 
 ###################################################################################################
@@ -97,7 +98,11 @@ debug_silent:
 		-lstdc++fs
 
 task_scheduler.o: 
-	g++ -g -c -std=c++17 -pthread -D DEBUG -D SILENT $(SRC_FILES)
+	g++ -g -c -std=c++17 				\
+			  -pthread 					\
+			  -D DEBUG 					\
+			  -D SILENT 				\
+			  $(SRC_FILES)
 
 Task_constructor: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 Task_constructor.cpp
@@ -286,14 +291,18 @@ CommandLine_verb_check: task_scheduler.o
 CommandLine_verb_remove: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 CommandLine_verb_remove.cpp
 	g++ -g -Wall -o CommandLine_verb_remove CommandLine_verb_remove.o $(OBJ_FILES) -pthread -lstdc++fs
-
-CommandLine_verb_reload: task_scheduler.o 
-	g++ -g -Wall -c -std=c++17 CommandLine_verb_reload.cpp
-	g++ -g -Wall -o CommandLine_verb_reload CommandLine_verb_reload.o $(OBJ_FILES) -pthread -lstdc++fs
 	
 CommandLine_verb_load: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 CommandLine_verb_load.cpp
 	g++ -g -Wall -o CommandLine_verb_load CommandLine_verb_load.o $(OBJ_FILES) -pthread -lstdc++fs
+
+CommandLine_verb_reload: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 CommandLine_verb_reload.cpp
+	g++ -g -Wall -o CommandLine_verb_reload CommandLine_verb_reload.o $(OBJ_FILES) -pthread -lstdc++fs
+
+CommandLine_verb_dump: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 CommandLine_verb_dump.cpp
+	g++ -g -Wall -o CommandLine_verb_dump CommandLine_verb_dump.o $(OBJ_FILES) -pthread -lstdc++fs
 
 CommandLine_verb_help: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 CommandLine_verb_help.cpp

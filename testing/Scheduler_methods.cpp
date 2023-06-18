@@ -50,48 +50,7 @@ int test2(lts::Scheduler* s, lts::EventReporter* e){
 
 
 int test3(lts::Scheduler* s, lts::EventReporter* e){
-    // TEST 3: load tasks from tasks directory with Scheduler::load_all_tasks()
-    // Tasks to be loaded: cat_test.cl and ls_test.cl
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-
-    s->obtain_exec_path();
-    s->load_all_tasks();
-    assert(s->get_n_tasks() == 2);
-
-    assert(e->get_n_events() == 2);
-
-    s->Scheduler_delete();
-    e->EventReporter_delete();
-
-    std::cout << ">> Scheduler_methods: 3 done" << std::endl;
-    return 0;
-}
-
-
-int test4(lts::Scheduler* s, lts::EventReporter* e){
-    // TEST 4: load a single task from tasks directory with Scheduler::load_task()
-    std::string task_config_fn = "cat_test.cl";
-
-    e->EventReporter_init();
-    s->Scheduler_init(e);
-
-    s->obtain_exec_path();
-    s->load_task(task_config_fn);
-    assert(s->get_n_tasks() == 1);
-
-    assert(e->get_n_events() == 1);
-
-    s->Scheduler_delete();
-    e->EventReporter_delete();
-
-    std::cout << ">> Scheduler_methods: 4 done" << std::endl;
-    return 0;
-}
-
-
-int test5(lts::Scheduler* s, lts::EventReporter* e){
-    // TEST 5: remove one task from scheduler after loading tasks from tasks directory
+    // TEST 3: remove one task from scheduler after loading tasks from tasks directory
     // Tasks to be loaded: cat_test.cl and ls_test.cl
     // Task to be removed: cat
     std::string t_name = "cat";
@@ -114,13 +73,13 @@ int test5(lts::Scheduler* s, lts::EventReporter* e){
     s->Scheduler_delete();
     e->EventReporter_delete();
 
-    std::cout << ">> Scheduler_methods: 5 done" << std::endl;
+    std::cout << ">> Scheduler_methods: 3 done" << std::endl;
     return 0;
 }
 
 
-int test6(lts::Scheduler* s, lts::EventReporter* e){
-    // TEST 6: remove two tasks from scheduler after loading tasks from tasks directory
+int test4(lts::Scheduler* s, lts::EventReporter* e){
+    // TEST 4: remove two tasks from scheduler after loading tasks from tasks directory
     // Tasks to be loaded: cat_test.cl and ls_test.cl
     // Task to be removed: cat and ls
     std::string t_name1 = "cat";
@@ -150,6 +109,57 @@ int test6(lts::Scheduler* s, lts::EventReporter* e){
     s->Scheduler_delete();
     e->EventReporter_delete();
 
+    std::cout << ">> Scheduler_methods: 4 done" << std::endl;
+    return 0;
+}
+
+
+int test5(lts::Scheduler* s, lts::EventReporter* e){
+    // TEST 5: attempt to remove a task from scheduler that does not exist 
+    // Tasks to be loaded: cat_test.cl and ls_test.cl
+    // Task to be removed: anything
+    std::string t_name = "anything";
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+
+    s->obtain_exec_path();
+    s->load_all_tasks();
+    assert(s->get_n_tasks() == 2);
+    
+    assert(e->get_n_events() == 2);
+
+    s->remove_task(t_name);
+    assert(!s->task_exists(t_name));
+    assert(s->get_n_tasks() == 2);
+
+    assert(e->get_n_events() == 3);
+
+    s->Scheduler_delete();
+    e->EventReporter_delete();
+
+    std::cout << ">> Scheduler_methods: 5 done" << std::endl;
+    return 0;
+}
+
+
+int test6(lts::Scheduler* s, lts::EventReporter* e){
+    // TEST 6: search for a task that does exist in Scheduler
+    std::string t_name = "ls";
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+
+    s->obtain_exec_path();
+    s->load_all_tasks();
+
+    assert(s->task_exists(t_name));
+
+    assert(e->get_n_events() == 2);
+
+    s->Scheduler_delete();
+    e->EventReporter_delete();
+
     std::cout << ">> Scheduler_methods: 6 done" << std::endl;
     return 0;
 }
@@ -162,9 +172,12 @@ int test7(lts::Scheduler* s, lts::EventReporter* e){
     e->EventReporter_init();
     s->Scheduler_init(e);
 
+    s->obtain_exec_path();
+    s->load_all_tasks();
+
     assert(!s->task_exists(t_name));
 
-    assert(e->get_n_events() == 0);
+    assert(e->get_n_events() == 2);
 
     s->Scheduler_delete();
     e->EventReporter_delete();
@@ -359,6 +372,41 @@ int test8(lts::Scheduler* s, lts::EventReporter* e){
 }
 
 
+int test9(lts::Scheduler* s, lts::EventReporter* e){
+    // TEST 9: attempt to get task that does not exist in the scheduler 
+    std::string task_filename;
+    std::string task_name;
+    const lts::Task* ret_task;
+    lts::Event ret_event;
+    time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+
+    s->obtain_exec_path();
+    s->load_all_tasks();
+
+    task_name = "anything";
+    ret_task = s->get_task(task_name);
+
+    ret_event = e->get_last_event();
+    std::time(&time_now);
+
+    assert(s->get_n_tasks() == 2);
+    assert(e->get_n_events() == 3);
+    assert(ret_task == nullptr);
+    assert(ret_event.get_event_time() == time_now);
+    assert(ret_event.get_type() == lts::EventType::ERROR);
+    assert(ret_event.get_message() == "The task \"anything\" does not exist in the scheduler.");
+
+    s->Scheduler_delete();
+    e->EventReporter_delete();
+
+    std::cout << ">> Scheduler_methods: 9 done" << std::endl;
+    return 0;
+}
+
+
 int main(int argc, char* argv[]){
     lts::EventReporter* e = lts::EventReporter::EventReporter_get_instance();
     lts::Scheduler* s = lts::Scheduler::Scheduler_get_instance();
@@ -371,6 +419,7 @@ int main(int argc, char* argv[]){
     test6(s, e);
     test7(s, e);
     test8(s, e);
+    test9(s, e);
 
     s->Scheduler_end_instance();
     e->EventReporter_end_instance();

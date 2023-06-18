@@ -47,4 +47,5 @@
 ./CommandLine_verb_remove
 ./CommandLine_verb_reload
 ./CommandLine_verb_load
+./CommandLine_verb_dump
 ./CommandLine_verb_help
