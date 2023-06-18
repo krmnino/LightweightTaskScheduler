@@ -43,6 +43,8 @@ The scheduler is a command line based program; therefore, there is a set of comm
 - `check task <task_name>`: Displays the full information about the specified task.
 - `check status`: Displays operational information about the scheduler.
 - `check output <task_name>`: Displays output of a specific task.
+- `dump ouput <task_name>`: Generates dump file containing output of the specified task name attribute.
+- `dump ouputs <name1, name2, ...>`: Generates dump files containing output of the specified task name attributes.
 - `help`: Displays usage for all verbs.
 - `help check`: Displays usage for the `check` verb only.
 - `help remove`: Displays usage for the `remove` verb only.
