@@ -97,7 +97,11 @@ debug_silent:
 		-lstdc++fs
 
 task_scheduler.o: 
-	g++ -g -c -std=c++17 -pthread -D DEBUG -D SILENT $(SRC_FILES)
+	g++ -g -c -std=c++17 				\
+			  -pthread 					\
+			  -D DEBUG 					\
+			  -D SILENT 				\
+			  $(SRC_FILES)
 
 Task_constructor: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 Task_constructor.cpp
