@@ -630,6 +630,243 @@ int test7(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
 }
 
 
+int test8(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
+    // TEST 8: Issue the command "dump events invalid" and verify event warning.
+    std::string ret_cmd_output;
+    lts::Event ret_event;
+    time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
+
+    s->obtain_exec_path();
+    s->load_all_tasks();
+
+    c->set_cmd_input("dump events invalid");
+    c->parse_command();
+    ret_event = e->get_last_event();
+    std::time(&time_now);
+    
+    assert(s->get_n_tasks() == 2);
+    assert(e->get_n_events() == 3);
+    assert(c->get_cmds_issued() == 0);
+
+    assert(ret_event.get_event_time() == time_now);
+    assert(ret_event.get_type() == lts::EventType::WARNING);
+    assert(ret_event.get_message() == "The command \"dump events\" does not take any additional arguments.");
+
+    c->CommandLine_delete();
+    s->Scheduler_delete();
+    e->EventReporter_delete();
+
+    std::cout << ">> CommandLine_verb_dump: 8 done" << std::endl;
+    return 0;
+}
+
+
+int test9(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
+    // TEST 9: Dump events recorded by issuing the command "dump events".
+    time_t time_now;
+    time_t time_event;
+    std::tm struct_time_now;
+    std::tm struct_time_event;
+    std::string years;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string ret_cmd_output;
+    lts::Event ret_event;
+    std::string events_dump_filename;
+    std::string events_dump_file_contents;
+    std::string line;
+    std::ifstream events_dump_file;
+    std::string verify_event_line;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
+
+    s->obtain_exec_path();
+    s->load_all_tasks();
+
+    c->set_cmd_input("dump events");
+    c->parse_command();
+
+    // Generate scheduler event dump filename
+    time_now = std::time(&time_now);
+    time_now += (TIMEZONE * 60 * 60);
+    struct_time_now = *std::gmtime(&time_now);
+    years = std::to_string(1900 + struct_time_now.tm_year);
+    months = (struct_time_now.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now.tm_mon + 1) :
+              std::to_string(struct_time_now.tm_mon + 1);  
+    days = (struct_time_now.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now.tm_mday) :
+            std::to_string(struct_time_now.tm_mday);
+    hours = (struct_time_now.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now.tm_hour) :
+             std::to_string(struct_time_now.tm_hour);
+    minutes = (struct_time_now.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now.tm_min) :
+               std::to_string(struct_time_now.tm_min);
+    seconds = (struct_time_now.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now.tm_sec) :
+               std::to_string(struct_time_now.tm_sec);
+
+    events_dump_filename += "SchedulerEventDump[";
+    events_dump_filename += years + "-" + months + "-" + days + "_" + hours + "-" + minutes + "-" + seconds + "]";
+    events_dump_filename += ".dat";
+
+    ret_event = e->get_last_event();
+    std::time(&time_now);
+
+    assert(s->get_n_tasks() == 2);
+    assert(e->get_n_events() == 3);
+    assert(c->get_cmds_issued() == 1);
+
+    assert(ret_event.get_event_time() == time_now);
+    assert(ret_event.get_type() == lts::EventType::INFO);
+    assert(ret_event.get_message() == "Saved scheduler events in \"dumps/" + events_dump_filename + "\"."); 
+
+    // Read events dump file and verify its contents
+    events_dump_file.open("dumps/" + events_dump_filename);
+    while (std::getline(events_dump_file, line)){
+        events_dump_file_contents += line;
+    }
+    events_dump_file.close();
+
+    // Build and verify event line 1
+    ret_event = e->get_event_at(1);
+
+    verify_event_line = "";
+
+    time_event = ret_event.get_event_time();
+    time_event += (TIMEZONE * 60 * 60);
+    struct_time_event = *std::gmtime(&time_event);
+    years = std::to_string(1900 + struct_time_event.tm_year);
+    months = (struct_time_event.tm_mon + 1 < 10) ? 
+            "0" + std::to_string(struct_time_event.tm_mon + 1) :
+            std::to_string(struct_time_event.tm_mon + 1);  
+    days = (struct_time_event.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_event.tm_mday) :
+            std::to_string(struct_time_event.tm_mday);
+    hours = (struct_time_event.tm_hour < 10) ? 
+            "0" + std::to_string(struct_time_event.tm_hour) :
+            std::to_string(struct_time_event.tm_hour);
+    minutes = (struct_time_event.tm_min < 10) ? 
+            "0" + std::to_string(struct_time_event.tm_min) :
+            std::to_string(struct_time_event.tm_min);
+    seconds = (struct_time_event.tm_sec < 10) ? 
+            "0" + std::to_string(struct_time_event.tm_sec) :
+            std::to_string(struct_time_event.tm_sec);
+
+    verify_event_line += "[" + years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds + "] ";
+
+    switch(ret_event.get_type()){
+        case lts::EventType::INFO:
+            verify_event_line += "[INFO] ";
+            break;
+        case lts::EventType::WARNING:
+            verify_event_line += "[WARNING] ";
+            break;
+        case lts::EventType::ERROR:
+            verify_event_line += "[ERROR] ";
+            break;
+        default:
+            break;
+    }
+    verify_event_line += ret_event.get_message();
+
+    assert(events_dump_file_contents.find(verify_event_line) != std::string::npos);
+
+    // Build and verify event line 2
+    ret_event = e->get_event_at(2);
+
+    verify_event_line = "";
+
+    time_event = ret_event.get_event_time();
+    time_event += (TIMEZONE * 60 * 60);
+    struct_time_event = *std::gmtime(&time_event);
+    years = std::to_string(1900 + struct_time_event.tm_year);
+    months = (struct_time_event.tm_mon + 1 < 10) ? 
+            "0" + std::to_string(struct_time_event.tm_mon + 1) :
+            std::to_string(struct_time_event.tm_mon + 1);  
+    days = (struct_time_event.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_event.tm_mday) :
+            std::to_string(struct_time_event.tm_mday);
+    hours = (struct_time_event.tm_hour < 10) ? 
+            "0" + std::to_string(struct_time_event.tm_hour) :
+            std::to_string(struct_time_event.tm_hour);
+    minutes = (struct_time_event.tm_min < 10) ? 
+            "0" + std::to_string(struct_time_event.tm_min) :
+            std::to_string(struct_time_event.tm_min);
+    seconds = (struct_time_event.tm_sec < 10) ? 
+            "0" + std::to_string(struct_time_event.tm_sec) :
+            std::to_string(struct_time_event.tm_sec);
+
+    verify_event_line += "[" + years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds + "] ";
+
+    switch(ret_event.get_type()){
+        case lts::EventType::INFO:
+            verify_event_line += "[INFO] ";
+            break;
+        case lts::EventType::WARNING:
+            verify_event_line += "[WARNING] ";
+            break;
+        case lts::EventType::ERROR:
+            verify_event_line += "[ERROR] ";
+            break;
+        default:
+            break;
+    }
+    verify_event_line += ret_event.get_message();
+
+    assert(events_dump_file_contents.find(verify_event_line) != std::string::npos);
+
+    remove(("dumps/" + events_dump_filename).c_str());
+
+    c->CommandLine_delete();
+    s->Scheduler_delete();
+    e->EventReporter_delete();
+
+    std::cout << ">> CommandLine_verb_dump: 9 done" << std::endl;
+    return 0;
+}
+
+
+int test10(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
+    // TEST 10: Issue command "dump invalid" and verify event warning.
+    std::string ret_cmd_output;
+    lts::Event ret_event;
+    time_t time_now;
+
+    e->EventReporter_init();
+    s->Scheduler_init(e);
+    c->CommandLine_init(e, s);
+
+    c->set_cmd_input("dump invalid");
+    c->parse_command();
+    ret_event = e->get_last_event();
+    std::time(&time_now);
+    
+    assert(ret_event.get_event_time() == time_now);
+    assert(ret_event.get_type() == lts::EventType::WARNING);
+    assert(ret_event.get_message() == "An invalid argument was passed for the the \"dump\" verb. Issue the command \"help dump\" for options.");
+    assert(c->get_cmds_issued() == 0);
+    assert(e->get_n_events() == 1);
+
+    c->CommandLine_delete();
+    s->Scheduler_delete();
+    e->EventReporter_delete();
+
+    std::cout << ">> CommandLine_verb_dump: 10 done" << std::endl;
+    return 0;
+}
+
+
 int main(int argc, char* argv[]){
     lts::EventReporter* e = lts::EventReporter::EventReporter_get_instance();
     lts::CommandLine* c = lts::CommandLine::CommandLine_get_instance();
@@ -642,6 +879,9 @@ int main(int argc, char* argv[]){
     test5(e, s, c);
     test6(e, s, c);
     test7(e, s, c);
+    test8(e, s, c);
+    test9(e, s, c);
+    test10(e, s, c);
 
     e->EventReporter_end_instance();
     c->CommandLine_end_instance();
