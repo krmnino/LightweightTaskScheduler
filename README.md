@@ -59,3 +59,20 @@ The scheduler is a command line based program; therefore, there is a set of comm
 - `reload task <name>`: Reload task in scheduler from specified task.
 - `reload tasks <name1, name2, ...>`: Reload multiple tasks in scheduler from specified list of task names.
 - `reload all`: Reload all tasks loaded in the Scheduler.
+
+## Changelog v1.1
+- Task `Name` attribute is now limited to 32 characters in length.
+- Updated Makefile release compile rule.
+- Implemented new command `check output <task_name>`.
+- Implemented new command `load all`.
+- Implemented new command `load tasks <config_name1, config_name2, ...>`.
+- Implemented new command `remove tasks <name1, name2, ...>`.
+- Implemented new command `reload all`.
+- Implemented new command `reload task <task_name>`.
+- Implemented new command `reload tasks <name1, name2, ...>`.
+- Implemented new command `dump output <task_name>`.
+- Implemented new command `dump outputs <name1, name2, ...>`.
+- Implemented new command `dump events`.
+- Tasks with `Frequency` of `Hourly` now require the `Datetime` attribute of the following formats `HH:MM:SS` or `YYYY-MM-DD HH:MM:SS`.
+- Handle invalid configuration files when attempting to load/reload.
+- Optimizated and refactored code. 
