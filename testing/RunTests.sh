@@ -35,7 +35,9 @@
 ./Scheduler_get_instance
 ./Scheduler_methods
 ./Scheduler_Task_run_task
-./Scheduler_load_tasks_from_dir
+./Scheduler_reload_all_tasks
+./Scheduler_reload_task
+./Scheduler_load_all_tasks
 ./Scheduler_load_task
 ./EventReporter_get_instance
 ./EventReporter_methods
@@ -43,5 +45,7 @@
 ./CommandLine_methods
 ./CommandLine_verb_check
 ./CommandLine_verb_remove
+./CommandLine_verb_reload
 ./CommandLine_verb_load
+./CommandLine_verb_dump
 ./CommandLine_verb_help

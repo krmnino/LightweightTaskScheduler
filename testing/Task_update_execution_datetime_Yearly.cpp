@@ -4,7 +4,7 @@
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing Task::update_execution_datetime(), execution time should 
@@ -55,9 +55,10 @@ int test1(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Yearly";
     std::string t_datetime = years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds;
+    std::string t_config_filename = "config.cl";
 
     // Task's execution datetime is set to be one hour in the future from current time
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
 
     t->update_execution_datetime();
     ret_datetime_str = t->get_execution_datetime_fmt();
@@ -213,9 +214,10 @@ int test2(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Yearly";
     std::string t_datetime = years + "-" + months + "-" + days;
+    std::string t_config_filename = "config.cl";
 
     // Task's execution datetime is set to be one hour in the future from current time
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
 
     t->update_execution_datetime();
     ret_datetime_str = t->get_execution_datetime_fmt();
@@ -224,10 +226,10 @@ int test2(){
     if((1900 + struct_time_now_add.tm_year + 1) % 4 == 0 && 
         (struct_time_now_add.tm_mon >= FEBRUARY || 
         (struct_time_now_add.tm_mon == FEBRUARY && struct_time_now_add.tm_mday > 28))){
-        time_now_add = ts::init_today() + (366 * 24 * 60 * 60);
+        time_now_add = lts::init_today() + (366 * 24 * 60 * 60);
     }
     else{
-        time_now_add = ts::init_today() + (365 * 24 * 60 * 60);
+        time_now_add = lts::init_today() + (365 * 24 * 60 * 60);
     }
 
     // Add timezone offset and 1 day in seconds from initial execution datetime

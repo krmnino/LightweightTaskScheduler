@@ -5,11 +5,11 @@
 #include "../src/EventReporter.hpp"
 #include "../src/CommandLine.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
-ts::EventReporter* ts::EventReporter::event_reporter_ptr = nullptr;
-ts::CommandLine* ts::CommandLine::command_line_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
+lts::EventReporter* lts::EventReporter::event_reporter_ptr = nullptr;
+lts::CommandLine* lts::CommandLine::command_line_ptr = nullptr;
 
-int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test1(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 1: initialize CommandLine and verify its data members were properly zero-out
     e->EventReporter_init();
     s->Scheduler_init(e);
@@ -28,7 +28,7 @@ int test1(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test2(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 2: verify CommandLine::set_cmd_input() and CommandLine::get_cmd_input() methods
     e->EventReporter_init();
     s->Scheduler_init(e);
@@ -46,7 +46,7 @@ int test2(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test3(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 3: verify the command count has increased by 1
     e->EventReporter_init();
     s->Scheduler_init(e);
@@ -66,7 +66,7 @@ int test3(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 }
 
 
-int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
+int test4(lts::EventReporter* e, lts::Scheduler* s, lts::CommandLine* c){
     // TEST 4: verify the command output is set properly after issuing a command
     e->EventReporter_init();
     s->Scheduler_init(e);
@@ -76,6 +76,7 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
     verify_output += "- check registry: Displays relevant information about the tasks loaded in the scheduler.\n";
     verify_output += "- check task <task_name>: Displays the full information about the specified task.\n";
     verify_output += "- check status: Displays operational information about the scheduler.\n";
+    verify_output += "- check output <task_name>: Displays output of a specific task.\n";
 
     c->set_cmd_input("help check");
     c->parse_command();
@@ -91,9 +92,9 @@ int test4(ts::EventReporter* e, ts::Scheduler* s, ts::CommandLine* c){
 
 
 int main(int argc, char* argv[]){
-    ts::EventReporter* e = ts::EventReporter::EventReporter_get_instance();
-    ts::CommandLine* c = ts::CommandLine::CommandLine_get_instance();
-    ts::Scheduler* s = ts::Scheduler::Scheduler_get_instance();
+    lts::EventReporter* e = lts::EventReporter::EventReporter_get_instance();
+    lts::CommandLine* c = lts::CommandLine::CommandLine_get_instance();
+    lts::Scheduler* s = lts::Scheduler::Scheduler_get_instance();
 
     test1(e, s, c);
     test2(e, s, c);

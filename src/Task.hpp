@@ -1,13 +1,6 @@
 #ifndef LTS_TASK
 #define LTS_TASK
 
-#include <string>
-#include <iomanip>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <array>
-#include <memory>
-#include <exception>
 #include <filesystem>
 #include <condition_variable>
 #include <thread>
@@ -16,7 +9,7 @@
 #include "ConfigLoader.hpp"
 #include "EventReporter.hpp"
 
-namespace ts{
+namespace lts{
 
 class Task{
 private:
@@ -30,6 +23,7 @@ private:
         unsigned long second;
     } initial_execution_datetime;
     std::condition_variable cv;
+    std::string config_filename;
     std::string name;
     std::string description;
     std::string script_filename;
@@ -37,7 +31,7 @@ private:
     std::string output;
     std::mutex mtx;
     std::thread thr;
-    ts::EventReporter* event_reporter_ptr;
+    EventReporter* event_reporter_ptr;
     time_t execution_datetime;
     time_t creation_datetime;
     TaskStatus status;
@@ -94,8 +88,7 @@ private:
 
 public:
     Task();
-    Task(std::string, std::string, std::string, std::string, std::string);
-    Task(std::string, std::string, std::string, std::string);
+    Task(std::string, std::string, std::string, std::string, std::string, std::string);
     ~Task();
     void run_task(void);
     void stop_thread(void);
@@ -112,9 +105,10 @@ public:
     TaskStatus get_status(void) const;
     int get_id(void) const;
     DatetimeFormat get_execution_datetime_format_attr(void);
+    std::string get_config_filename(void);
     void set_status(TaskStatus);
     void set_id(int);
-    void set_event_reporter_ptr(ts::EventReporter*);
+    void set_event_reporter_ptr(EventReporter*);
 };
 
 ValidationCode validate_hms(std::string);

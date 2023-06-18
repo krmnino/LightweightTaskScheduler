@@ -1,15 +1,11 @@
 #ifndef LTS_CMD
 #define LTS_CMD
 
-#include <vector>
-
-#include <string>
-
 #include "Constants.hpp"
 #include "Scheduler.hpp"
 #include "EventReporter.hpp"
 
-namespace ts{
+namespace lts{
 
 class CommandLine{
 private:
@@ -26,11 +22,15 @@ private:
     void verb_check(std::vector<std::string>&);
     void verb_remove(std::vector<std::string>&);
     void verb_load(std::vector<std::string>&);
+    void verb_reload(std::vector<std::string>&);
+    void verb_dump(std::vector<std::string>&);
     void verb_help(std::vector<std::string>&);
     std::string help_msg(void);
     std::string help_check_msg(void);
     std::string help_remove_msg(void);
     std::string help_load_msg(void);
+    std::string help_reload_msg(void);
+    std::string help_dump_msg(void);
     
 public:
     static CommandLine* CommandLine_get_instance(){

@@ -4,7 +4,7 @@
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing today_add_hms() function -> PASS
@@ -45,7 +45,7 @@ int test1(){
 
     datetime_str = hours + ":" + minutes + ":" + seconds;
                           
-    ret = ts::today_add_hms(datetime_str);
+    ret = lts::today_add_hms(datetime_str);
 
     to_struct = std::gmtime(&ret);
     struct_ret = *to_struct;
@@ -107,7 +107,7 @@ int test2(){
 
     datetime_str = hours + ":" + minutes + ":" + seconds;
 
-    ret = ts::today_add_hms(datetime_str);
+    ret = lts::today_add_hms(datetime_str);
 
     assert(ret == 0);
        
@@ -121,7 +121,7 @@ int test3(){
     // Invalid hours-minutes-seconds subtring
 
     time_t ret;
-    ret = ts::today_add_hms("120000");
+    ret = lts::today_add_hms("120000");
 
     assert(ret == 0);
        

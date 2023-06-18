@@ -4,12 +4,12 @@
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing validate_yyyymmdd() function. Valid YYYY-MM-DD string.
 
-    ts::ValidationCode ret;
+    lts::ValidationCode ret;
     std::vector<std::string> yyyymmdd = {
         "2022-01-01",
         "2022-01-31",
@@ -39,8 +39,8 @@ int test1(){
     };
 
     for(size_t i = 0; i < yyyymmdd.size(); i++){
-        ret = ts::validate_yyyymmdd(yyyymmdd[i]);
-        assert(ret == ts::ValidationCode::OK);
+        ret = lts::validate_yyyymmdd(yyyymmdd[i]);
+        assert(ret == lts::ValidationCode::OK);
     }
 
     std::cout << ">> validate_yyyymmdd: Test 1 done" << std::endl;
@@ -52,11 +52,11 @@ int test2(){
     // TEST 2: testing validate_yyyymmdd() function. Invalid YYYY-MM-DD string.
 
     std::string yyyymmdd;
-    ts::ValidationCode ret;
+    lts::ValidationCode ret;
 
     yyyymmdd = "2022-31-2222";
-    ret = ts::validate_yyyymmdd(yyyymmdd);
-    assert(ret == ts::ValidationCode::BAD_YYYYMMDD_LENGTH);
+    ret = lts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == lts::ValidationCode::BAD_YYYYMMDD_LENGTH);
 
     std::cout << ">> validate_yyyymmdd: Test 2 done" << std::endl;
     return 0;
@@ -66,7 +66,7 @@ int test2(){
 int test3(){
     // TEST 3: testing validate_yyyymmdd() function. Invalid YYYY-MM-DD string.
 
-    ts::ValidationCode ret;
+    lts::ValidationCode ret;
     std::vector<std::string> yyyymmdd = {
         "2a22-12-31",
         "2022-1a-31",
@@ -74,8 +74,8 @@ int test3(){
     };
 
     for(size_t i = 0; i < yyyymmdd.size(); i++){
-        ret = ts::validate_yyyymmdd(yyyymmdd[i]);
-        assert(ret == ts::ValidationCode::BAD_NUMBER_CHARACTER);
+        ret = lts::validate_yyyymmdd(yyyymmdd[i]);
+        assert(ret == lts::ValidationCode::BAD_NUMBER_CHARACTER);
     }
 
     std::cout << ">> validate_yyyymmdd: Test 3 done" << std::endl;
@@ -86,7 +86,7 @@ int test3(){
 int test4(){
     // TEST 4: testing validate_yyyymmdd() function. Invalid YYYY-MM-DD string.
 
-    ts::ValidationCode ret;
+    lts::ValidationCode ret;
     std::vector<std::string> yyyymmdd = {
         "2022a12a30",
         "2022-12a30",
@@ -94,8 +94,8 @@ int test4(){
     };
 
     for(size_t i = 0; i < yyyymmdd.size(); i++){
-        ret = ts::validate_yyyymmdd(yyyymmdd[i]);
-        assert(ret == ts::ValidationCode::MISSING_DATETIME_DASH);
+        ret = lts::validate_yyyymmdd(yyyymmdd[i]);
+        assert(ret == lts::ValidationCode::MISSING_DATETIME_DASH);
     }
 
     std::cout << ">> validate_yyyymmdd: Test 4 done" << std::endl;
@@ -107,11 +107,11 @@ int test5(){
     // TEST 5: testing validate_yyyymmdd() function. Invalid YYYY-MM-DD string.
 
     std::string yyyymmdd;
-    ts::ValidationCode ret;
+    lts::ValidationCode ret;
 
     yyyymmdd = "2022-25-30";
-    ret = ts::validate_yyyymmdd(yyyymmdd);
-    assert(ret == ts::ValidationCode::MONTH_OUT_OF_RANGE);
+    ret = lts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == lts::ValidationCode::MONTH_OUT_OF_RANGE);
 
     std::cout << ">> validate_yyyymmdd: Test 5 done" << std::endl;
     return 0;
@@ -122,11 +122,11 @@ int test6(){
     // TEST 6: testing validate_yyyymmdd() function. Invalid YYYY-MM-DD string.
 
     std::string yyyymmdd;
-    ts::ValidationCode ret;
+    lts::ValidationCode ret;
 
     yyyymmdd = "2022-01-40";
-    ret = ts::validate_yyyymmdd(yyyymmdd);
-    assert(ret == ts::ValidationCode::DAY_OUT_OF_RANGE);
+    ret = lts::validate_yyyymmdd(yyyymmdd);
+    assert(ret == lts::ValidationCode::DAY_OUT_OF_RANGE);
 
     std::cout << ">> validate_yyyymmdd: Test 6 done" << std::endl;
     return 0;

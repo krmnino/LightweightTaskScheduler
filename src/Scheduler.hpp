@@ -1,22 +1,12 @@
 #ifndef LTS_SCHEDULER
 #define LTS_SCHEDULER
 
-#include <string>
-#include <iostream>
-#include <map>
-#include <thread>
-#include <mutex>
-#include <condition_variable>
-#include <filesystem>
-#include <functional>
-#include <deque>
-
 #include "Constants.hpp"
 #include "ConfigLoader.hpp"
 #include "Task.hpp"
 #include "EventReporter.hpp"
 
-namespace ts{
+namespace lts{
 
 class Scheduler{
 private:
@@ -28,6 +18,7 @@ private:
     
     Scheduler() {}
     unsigned int generate_task_id(Task*);
+    unsigned int get_n_tasks_by_status(TaskStatus);
     Task* get_task_from_registry(std::string&);
 
 public:
@@ -46,17 +37,21 @@ public:
     void Scheduler_init(EventReporter*);
     void Scheduler_delete(void);
     void obtain_exec_path(void);
-    void load_tasks_from_dir(void);
+    void load_all_tasks(void);
     void load_task(std::string&);
+    void reload_all_tasks(void);
+    void reload_task(std::string&);
     void remove_task(std::string&);
     bool task_exists(std::string&);
     std::string display_registry(void);
     std::string display_task(std::string&);
+    std::string display_task_output(std::string&);
     std::string display_scheduler_status(void);
+    void dump_task_output(std::string&);
+    void dump_events(void);
     const std::string& get_current_path(void);
     unsigned int get_n_tasks(void);
     const Task* get_task(std::string&) const;
-    unsigned int get_n_tasks_by_status(ts::TaskStatus);
 };
 
 } // namespace ts

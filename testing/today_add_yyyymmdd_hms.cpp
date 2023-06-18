@@ -4,7 +4,7 @@
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing today_add_yyyymmdd_hms() function -> PASS
@@ -55,7 +55,7 @@ int test1(){
 
     datetime_str = years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds;
 
-    ret = ts::today_add_yyyymmdd_hms(datetime_str);
+    ret = lts::today_add_yyyymmdd_hms(datetime_str);
 
     to_struct = std::gmtime(&ret);
     struct_ret = *to_struct;
@@ -136,7 +136,7 @@ int test2(){
 
     datetime_str = years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds;
         
-    ret = ts::today_add_yyyymmdd_hms(datetime_str);
+    ret = lts::today_add_yyyymmdd_hms(datetime_str);
 
     to_struct = std::gmtime(&ret);
     struct_ret = *to_struct;
@@ -217,7 +217,7 @@ int test3(){
 
     datetime_str = years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds;
         
-    ret = ts::today_add_yyyymmdd_hms(datetime_str);
+    ret = lts::today_add_yyyymmdd_hms(datetime_str);
 
     to_struct = std::gmtime(&ret);
     struct_ret = *to_struct;
@@ -298,7 +298,7 @@ int test4(){
 
     datetime_str = years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds;
         
-    ret = ts::today_add_yyyymmdd_hms(datetime_str);
+    ret = lts::today_add_yyyymmdd_hms(datetime_str);
 
     to_struct = std::gmtime(&ret);
     struct_ret = *to_struct;
@@ -377,7 +377,7 @@ int test5(){
 
     datetime_str = years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds;
         
-    ret = ts::today_add_yyyymmdd_hms(datetime_str);
+    ret = lts::today_add_yyyymmdd_hms(datetime_str);
 
     assert(ret == 0);
     
@@ -391,7 +391,7 @@ int test6(){
     // Invalid years-months-days subtring
 
     time_t ret;
-    ret = ts::today_add_yyyymmdd_hms("20220212 12:00:00");
+    ret = lts::today_add_yyyymmdd_hms("20220212 12:00:00");
 
     assert(ret == 0);
        
@@ -405,7 +405,7 @@ int test7(){
     // Invalid hours-minutes-seconds subtring
 
     time_t ret;
-    ret = ts::today_add_yyyymmdd_hms("2022-02-12 120000");
+    ret = lts::today_add_yyyymmdd_hms("2022-02-12 120000");
 
     assert(ret == 0);
        
@@ -419,7 +419,7 @@ int test8(){
     // Invalid years-months-days subtring
 
     time_t ret;
-    ret = ts::today_add_yyyymmdd_hms("2022-60-12 12:00:00");
+    ret = lts::today_add_yyyymmdd_hms("2022-60-12 12:00:00");
 
     assert(ret == 0);
        
@@ -433,7 +433,7 @@ int test9(){
     // Invalid years-months-days subtring
 
     time_t ret;
-    ret = ts::today_add_yyyymmdd_hms("2022-02-60 12:00:00");
+    ret = lts::today_add_yyyymmdd_hms("2022-02-60 12:00:00");
 
     assert(ret == 0);
        
@@ -447,7 +447,7 @@ int test10(){
     // Invalid hours-minutes-seconds subtring
 
     time_t ret;
-    ret = ts::today_add_yyyymmdd_hms("2022-02-12 60:00:00");
+    ret = lts::today_add_yyyymmdd_hms("2022-02-12 60:00:00");
 
     assert(ret == 0);
        
@@ -461,7 +461,7 @@ int test11(){
     // Invalid hours-minutes-seconds subtring
 
     time_t ret;
-    ret = ts::today_add_yyyymmdd_hms("2022-02-12 12:60:00");
+    ret = lts::today_add_yyyymmdd_hms("2022-02-12 12:60:00");
 
     assert(ret == 0);
        
@@ -475,7 +475,7 @@ int test12(){
     // Invalid hours-minutes-seconds subtring
 
     time_t ret;
-    ret = ts::today_add_yyyymmdd_hms("2022-02-12 12:00:60");
+    ret = lts::today_add_yyyymmdd_hms("2022-02-12 12:00:60");
 
     assert(ret == 0);
        

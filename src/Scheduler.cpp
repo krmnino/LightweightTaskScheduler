@@ -1,6 +1,6 @@
 #include "Scheduler.hpp"
 
-namespace ts{
+namespace lts{
 
 unsigned int Scheduler::generate_task_id(Task* task){
     // Get task attributes
@@ -59,6 +59,20 @@ unsigned int Scheduler::generate_task_id(Task* task){
     return id;
 }
 
+unsigned int Scheduler::get_n_tasks_by_status(TaskStatus status){
+    std::map<std::string, Task*>::iterator it;
+    Task* t;
+    unsigned int counter = 0;
+
+    for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
+        t = it->second;
+        if(t->get_status() == status){
+            counter++;
+        }
+    }
+    return counter;
+}
+
 Task* Scheduler::get_task_from_registry(std::string& key){
     return this->task_registry[key];
 }
@@ -83,19 +97,18 @@ void Scheduler::obtain_exec_path(void){
     this->exec_path = std::filesystem::current_path();
 }
 
-void Scheduler::load_tasks_from_dir(void){
+void Scheduler::load_all_tasks(void){
+    Task* t;
     cl::Config* task_config;
-    ts::ValidationCode ret_task_validate;
-    bool valid_task;
+    ValidationCode ret_task_validate;
+    std::string task_config_filename;
     std::string task_name;
     std::string task_description;
     std::string task_script_name;
     std::string task_frequency;
     std::string task_execution_datetime;
-    std::string event_message;
-    std::string task_filename;
-    Task* t;
     int task_id;
+    std::string event_message;
 
     // Check if tasks directory exists 
     if(!std::filesystem::exists(this->exec_path + "/tasks")){
@@ -117,12 +130,25 @@ void Scheduler::load_tasks_from_dir(void){
         return;
     }
 
+    // Attempt loading all configuration files in tasks directory
     for(const auto & file : std::filesystem::directory_iterator(this->exec_path + "/tasks/")){
-        task_config = new cl::Config(file.path());
-        task_filename = file.path().filename().string();
-        ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
+        // Load the task's configuration file and validate its contents
+        task_config_filename = file.path().filename().string();
+        try{
+            task_config = new cl::Config(file.path());
+        }
+        catch(cl::CL_Error ex){
+            event_message = "Failed to parse \"" + task_config_filename + "\": " + ex.what();
+            this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+            continue;
+        }
+
+        ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
         if(ret_task_validate != ValidationCode::OK){
-            event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_filename, task_config);
+            event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
             this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
             #ifndef SILENT
             this->event_reporter_ptr->publish_last_event();
@@ -140,32 +166,26 @@ void Scheduler::load_tasks_from_dir(void){
             #endif
             continue;
         }
-
         task_description = task_config->get_value("Description")->get_data<std::string>();
         task_script_name = task_config->get_value("ScriptFilename")->get_data<std::string>();
         task_frequency = task_config->get_value("Frequency")->get_data<std::string>();
-        if(task_config->key_exists("Datetime")){
-            task_execution_datetime = task_config->get_value("Datetime")->get_data<std::string>();
-        }
+        task_execution_datetime = task_config->get_value("Datetime")->get_data<std::string>();
         delete task_config;
 
-        // An hourly task does not require execution time parameter
-        if(task_frequency == "Hourly"){
-            t = new Task(task_name, task_description, task_script_name, task_frequency);
-        }
-        else{
-            t = new Task(task_name, task_description, task_script_name, task_frequency, task_execution_datetime);
-        }
+        // Initialize Task object
+        t = new Task(task_name, task_description, task_script_name, task_frequency, task_execution_datetime, task_config_filename);
 
         // Assign task id to task object
         task_id = this->generate_task_id(t);
         t->set_id(task_id);
-        t->set_status(ts::TaskStatus::QUEUED);
+        t->set_status(TaskStatus::QUEUED);
+        t->set_event_reporter_ptr(this->event_reporter_ptr);
 
+        // Add task object to task registry
         this->task_registry.insert(std::make_pair(task_name, t));
         this->n_tasks++;
 
-        event_message = "Successfully loaded task \"" + task_name + "\" from \"" + task_filename + "\".";
+        event_message = "Successfully loaded task \"" + task_name + "\" from \"" + task_config_filename + "\".";
         this->event_reporter_ptr->log_event(EventType::INFO, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -173,18 +193,19 @@ void Scheduler::load_tasks_from_dir(void){
     }
 }
 
-void Scheduler::load_task(std::string& task_filename){
+void Scheduler::load_task(std::string& task_config_filename){
+    Task* t;
     cl::Config* task_config;
-    ts::ValidationCode ret_task_validate;
+    ValidationCode ret_task_validate;
     std::string task_name;
     std::string task_description;
     std::string task_script_name;
     std::string task_frequency;
     std::string task_execution_datetime;
-    std::string event_message;
-    Task* t;
     int task_id;
+    std::string event_message;
 
+    // Check if tasks directory exists
     if(!std::filesystem::exists(this->exec_path + "/tasks")){
         event_message = "Could not find tasks directory.";
         this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
@@ -194,6 +215,7 @@ void Scheduler::load_task(std::string& task_filename){
         return;
     }
 
+    // Check if scripts directory exists
     if(!std::filesystem::exists(this->exec_path + "/scripts")){
         event_message = "Could not find scripts directory.";
         this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
@@ -203,8 +225,9 @@ void Scheduler::load_task(std::string& task_filename){
         return;
     }
 
-    if(!std::filesystem::exists(this->exec_path + "/tasks/" + task_filename)){
-        event_message = "The task file configuration file \"" + task_filename + "\" could not be found.";
+    // Check if task configuration exists in tasks directory
+    if(!std::filesystem::exists(this->exec_path + "/tasks/" + task_config_filename)){
+        event_message = "The task configuration file \"" + task_config_filename + "\" could not be found.";
         this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -212,10 +235,22 @@ void Scheduler::load_task(std::string& task_filename){
         return;
     }
 
-    task_config = new cl::Config(this->exec_path + "/tasks/" + task_filename);
-    ret_task_validate = ts::validate_task_parms(task_config, this->exec_path + "/scripts/");
+    // Load the task's configuration file and validate its contents
+    try{
+        task_config = new cl::Config(this->exec_path + "/tasks/" + task_config_filename);
+    }
+    catch(cl::CL_Error ex){
+        event_message = "Failed to parse \"" + task_config_filename + "\": " + ex.what();
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+
+    ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
     if(ret_task_validate != ValidationCode::OK){
-        event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_filename, task_config);
+        event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
         this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -233,33 +268,263 @@ void Scheduler::load_task(std::string& task_filename){
         #endif
         return;
     }
-
     task_description = task_config->get_value("Description")->get_data<std::string>();
     task_script_name = task_config->get_value("ScriptFilename")->get_data<std::string>();
     task_frequency = task_config->get_value("Frequency")->get_data<std::string>();
-    if(task_config->key_exists("Datetime")){
-        task_execution_datetime = task_config->get_value("Datetime")->get_data<std::string>();
-    }
+    task_execution_datetime = task_config->get_value("Datetime")->get_data<std::string>();
     delete task_config;
 
-    // An hourly task does not require execution time parameter
-    if(task_frequency == "Hourly"){
-        t = new Task(task_name, task_description, task_script_name, task_frequency);
-    }
-    else{
-        t = new Task(task_name, task_description, task_script_name, task_frequency, task_execution_datetime);
-    }
+    // Initialize Task objecxt
+    t = new Task(task_name, task_description, task_script_name, task_frequency, task_execution_datetime, task_config_filename);
 
     // Assign task id to task object
     task_id = this->generate_task_id(t);
     t->set_id(task_id);
-    t->set_status(ts::TaskStatus::QUEUED);
+    t->set_status(TaskStatus::QUEUED);
     t->set_event_reporter_ptr(this->event_reporter_ptr);
 
+    // Add task object to task registry
     this->task_registry.insert(std::make_pair(task_name, t));
     this->n_tasks++;
 
-    event_message = "Successfully loaded task \"" + task_name + "\" from \"" + task_filename + "\".";
+    event_message = "Successfully loaded task \"" + task_name + "\" from \"" + task_config_filename + "\".";
+    this->event_reporter_ptr->log_event(EventType::INFO, event_message);
+    #ifndef SILENT
+    this->event_reporter_ptr->publish_last_event();
+    #endif
+}
+
+void Scheduler::reload_all_tasks(void){
+    std::map<std::string, Task*>::iterator it;
+    std::vector<std::string> registry_task_names;
+    Task* t;
+    cl::Config* task_config;
+    ValidationCode ret_task_validate;
+    std::string task_config_filename;
+    std::string task_name;
+    std::string task_description;
+    std::string task_script_name;
+    std::string task_frequency;
+    std::string task_execution_datetime;
+    int task_id;
+    std::string event_message;
+
+    // Check if tasks directory exists
+    if(!std::filesystem::exists(this->exec_path + "/tasks")){
+        event_message = "Could not find tasks directory.";
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+
+    // Check if scripts directory exists
+    if(!std::filesystem::exists(this->exec_path + "/scripts")){
+        event_message = "Could not find scripts directory.";
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+
+    // Get all task names from registry
+    for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
+        registry_task_names.push_back(it->first);
+    }
+
+    for(size_t i = 0; i < registry_task_names.size(); i++){
+        // Get task form task registry and its configuration filename 
+        t = this->task_registry[registry_task_names[i]];
+        task_config_filename = t->get_config_filename();
+
+        // Check if task configuration exists in tasks directory
+        if(!std::filesystem::exists(this->exec_path + "/tasks/" + task_config_filename)){
+            event_message = "The task configuration file \"" + task_config_filename + 
+                            "\" corresponding to task \"" + registry_task_names[i] +"\" could not be found.";
+            this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+            continue;
+        }
+
+        // Load the task's configuration file and validate its contents
+        try{
+            task_config = new cl::Config(this->exec_path + "/tasks/" + task_config_filename);
+        }
+        catch(cl::CL_Error ex){
+            event_message = "Failed to parse \"" + task_config_filename + "\": " + ex.what();
+            this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+            continue;
+        }
+
+        ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
+        if(ret_task_validate != ValidationCode::OK){
+            event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
+            this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+            continue;
+        }
+
+        // Get task attributes from config file and validate them, check if task name is repeated
+        task_name = task_config->get_value("Name")->get_data<std::string>();
+        task_description = task_config->get_value("Description")->get_data<std::string>();
+        task_script_name = task_config->get_value("ScriptFilename")->get_data<std::string>();
+        task_frequency = task_config->get_value("Frequency")->get_data<std::string>();
+        task_execution_datetime = task_config->get_value("Datetime")->get_data<std::string>();
+        delete task_config;
+
+        // Stop thread if running
+        t->stop_thread();
+        this->task_registry.erase(registry_task_names[i]);
+        delete t;
+        this->n_tasks--;
+
+        // Initialize Task object
+        t = new Task(task_name, task_description, task_script_name, task_frequency, task_execution_datetime, task_config_filename);
+
+        // Assign task id to task object
+        task_id = this->generate_task_id(t);
+        t->set_id(task_id);
+        t->set_status(TaskStatus::QUEUED);
+        t->set_event_reporter_ptr(this->event_reporter_ptr);
+
+        // Add task object to task registry
+        this->task_registry.insert(std::make_pair(task_name, t));
+        this->n_tasks++;
+
+        event_message = "Successfully reloaded task \"" + task_name + "\".";
+        this->event_reporter_ptr->log_event(EventType::INFO, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+    }
+}
+
+void Scheduler::reload_task(std::string& key){
+    Task* t;
+    cl::Config* task_config;
+    ValidationCode ret_task_validate;
+    std::string task_config_filename;
+    std::string task_name;
+    std::string task_description;
+    std::string task_script_name;
+    std::string task_frequency;
+    std::string task_execution_datetime;
+    int task_id;
+    std::string event_message;
+
+    // Check if task exists in scheduler
+    if(!this->task_exists(key)){
+        event_message = "The task \"" + key + "\" does not exist in the scheduler.";
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+
+    // Get task form task registry and its configuration filename 
+    t = this->task_registry[key];
+    task_config_filename = t->get_config_filename();
+
+    // Check if tasks directory exists
+    if(!std::filesystem::exists(this->exec_path + "/tasks")){
+        event_message = "Could not find tasks directory.";
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+
+    // Check if scripts directory exists
+    if(!std::filesystem::exists(this->exec_path + "/scripts")){
+        event_message = "Could not find scripts directory.";
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+
+    // Check if task configuration exists in tasks directory
+    if(!std::filesystem::exists(this->exec_path + "/tasks/" + task_config_filename)){
+        event_message = "The task configuration file \"" + task_config_filename + 
+                            "\" corresponding to task \"" + key +"\" could not be found.";
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+
+    // Load the task's configuration file and validate its contents
+    try{
+        task_config = new cl::Config(this->exec_path + "/tasks/" + task_config_filename);
+    }
+    catch(cl::CL_Error ex){
+        event_message = "Failed to parse \"" + task_config_filename + "\": " + ex.what();
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+
+    ret_task_validate = validate_task_parms(task_config, this->exec_path + "/scripts/");
+    if(ret_task_validate != ValidationCode::OK){
+        event_message = this->event_reporter_ptr->generate_load_task_msg(ret_task_validate, task_config_filename, task_config);
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+
+    // Get task attributes from config file and validate them, check if current task and config file name match
+    task_name = task_config->get_value("Name")->get_data<std::string>();
+    if (task_name != key) {
+        event_message = "The configuration file contains a Name attribute that does not match the current \"" + task_name + "\" task name.";
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+    task_description = task_config->get_value("Description")->get_data<std::string>();
+    task_script_name = task_config->get_value("ScriptFilename")->get_data<std::string>();
+    task_frequency = task_config->get_value("Frequency")->get_data<std::string>();
+    task_execution_datetime = task_config->get_value("Datetime")->get_data<std::string>();
+    delete task_config;
+
+    // Stop thread if running
+    t->stop_thread();
+    this->task_registry.erase(key);
+    delete t;
+    this->n_tasks--;
+
+    // Initialize Task object
+    t = new Task(task_name, task_description, task_script_name, task_frequency, task_execution_datetime, task_config_filename);
+
+    // Assign task id to task object
+    task_id = this->generate_task_id(t);
+    t->set_id(task_id);
+    t->set_status(TaskStatus::QUEUED);
+    t->set_event_reporter_ptr(this->event_reporter_ptr);
+
+    // Add task object to task registry
+    this->task_registry.insert(std::make_pair(task_name, t));
+    this->n_tasks++;
+
+    event_message = "Successfully reloaded task \"" + task_name + "\".";
     this->event_reporter_ptr->log_event(EventType::INFO, event_message);
     #ifndef SILENT
     this->event_reporter_ptr->publish_last_event();
@@ -267,23 +532,29 @@ void Scheduler::load_task(std::string& task_filename){
 }
 
 void Scheduler::remove_task(std::string& key){
+    Task* t;
+    std::string event_message;
+
     // Check if key exists in task registry
     if(!this->task_exists(key)){
-        std::string event_message = "The task \"" + key + "\" does not exist in the scheduler.";
+        event_message = "The task \"" + key + "\" does not exist in the scheduler.";
         this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
         #endif
         return;
     }
-    Task* t = this->task_registry[key];
+
+    // Get task from task registry
+    t = this->task_registry[key];
+
     // Stop thread if running
     t->stop_thread();
     this->task_registry.erase(key);
     delete t;
     this->n_tasks--;
 
-    std::string event_message = "Successfully removed task \"" + key + "\" from the scheduler.";
+    event_message = "Successfully removed task \"" + key + "\" from the scheduler.";
     this->event_reporter_ptr->log_event(EventType::INFO, event_message);
     #ifndef SILENT
     this->event_reporter_ptr->publish_last_event();
@@ -292,6 +563,7 @@ void Scheduler::remove_task(std::string& key){
 
 bool Scheduler::task_exists(std::string& key){
     std::map<std::string, Task*>::iterator it;
+
     for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
         if(it->first == key){
             return true;
@@ -311,12 +583,13 @@ std::string Scheduler::display_registry(void){
         header[0].length(), /* TASK ID CURRENT MAX LENGTH */
         header[1].length(), /* TASK NAME CURRENT MAX LENGTH */
         header[2].length(), /* TASK STATUS CURRENT MAX LENGTH */
-        header[3].length(), /* Task EXECUTION DATETIME CURRENT MAX LENGTH */
+        header[3].length(), /* TASK EXECUTION DATETIME CURRENT MAX LENGTH */
     };
     std::vector<std::string> task_ids;
     std::vector<std::string> task_names;
     std::vector<std::string> task_statuses;
     std::vector<std::string> task_exec_dates;
+    std::string delim;
 
     /* Loop through all tasks in the scheduler and collect all their attributes to be printed */
     for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
@@ -336,19 +609,19 @@ std::string Scheduler::display_registry(void){
 
         /* Collect task status attribute */
         switch(t->get_status()){
-        case ts::TaskStatus::FINISHED:
+        case TaskStatus::FINISHED:
             task_statuses.push_back("FINISHED");
             break;
-        case ts::TaskStatus::INIT_ERROR:
+        case TaskStatus::INIT_ERROR:
             task_statuses.push_back("INIT_ERROR");
             break;
-        case ts::TaskStatus::EXEC_ERROR:
+        case TaskStatus::EXEC_ERROR:
             task_statuses.push_back("EXEC_ERROR");
             break;
-        case ts::TaskStatus::QUEUED:
+        case TaskStatus::QUEUED:
             task_statuses.push_back("QUEUED");
             break;
-        case ts::TaskStatus::RUNNING:
+        case TaskStatus::RUNNING:
             task_statuses.push_back("RUNNING");
             break;
         default:
@@ -357,7 +630,7 @@ std::string Scheduler::display_registry(void){
         }
         /* Update maximum field length for pretty print */
         field_curr_max_len[2] = std::max(field_curr_max_len[2], task_statuses[counter].length());
-        field_curr_max_len[2] = std::min(field_curr_max_len[2], TASK_EXEC_DATE_FIELD_MAX_LEN);
+        field_curr_max_len[2] = std::min(field_curr_max_len[2], TASK_STATUS_FIELD_MAX_LEN);
 
         /* Collect task execution datetime attribute */
         task_exec_dates.push_back(t->get_execution_datetime_fmt());
@@ -388,7 +661,7 @@ std::string Scheduler::display_registry(void){
 
     /* Generate delimiter between header and table body */
     for(size_t i = 0; i < header.size(); i++){
-        std::string delim = "";
+        delim = "";
         for(size_t j = 0; j < header[i].length(); j++){
             delim += "-";
         }
@@ -448,7 +721,7 @@ std::string Scheduler::display_registry(void){
 }
 
 std::string Scheduler::display_task(std::string& key){
-    const Task* t;
+    Task* t;
     std::string task_id;
     std::string task_name;
     std::string task_description;
@@ -456,10 +729,11 @@ std::string Scheduler::display_task(std::string& key){
     std::string task_execution_datetime;
     std::string task_frequency;
     std::string task_status;
+    std::string event_message;
     std::string out_str = "";
 
     if(!this->task_exists(key)){
-        std::string event_message = "The task \"" + key + "\" does not exist in the scheduler.";
+        event_message = "The task \"" + key + "\" does not exist in the scheduler.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
@@ -467,7 +741,7 @@ std::string Scheduler::display_task(std::string& key){
         return out_str;
     }
 
-    t = this->get_task(key);
+    t = this->task_registry[key];
     task_id = std::to_string(t->get_id());
     task_name = t->get_name();
     task_description = t->get_description();
@@ -476,19 +750,19 @@ std::string Scheduler::display_task(std::string& key){
     task_frequency = t->get_frequency();
 
     switch(t->get_status()){
-    case ts::TaskStatus::FINISHED:
+    case TaskStatus::FINISHED:
         task_status = "FINISHED";
         break;
-    case ts::TaskStatus::INIT_ERROR:
+    case TaskStatus::INIT_ERROR:
         task_status = "INIT_ERROR";
         break;
-    case ts::TaskStatus::EXEC_ERROR:
+    case TaskStatus::EXEC_ERROR:
         task_status = "EXEC_ERROR";
         break;
-    case ts::TaskStatus::QUEUED:
+    case TaskStatus::QUEUED:
         task_status = "QUEUED";
         break;
-    case ts::TaskStatus::RUNNING:
+    case TaskStatus::RUNNING:
         task_status = "RUNNING";
         break;
     default:
@@ -507,21 +781,41 @@ std::string Scheduler::display_task(std::string& key){
     return out_str;
 }
 
+std::string Scheduler::display_task_output(std::string& key){
+    Task* t;
+    std::string event_message;
+    std::string out_str = "";
+
+    if(!this->task_exists(key)){
+        event_message = "The task \"" + key + "\" does not exist in the scheduler.";
+        this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return out_str;
+    }
+
+    t = this->task_registry[key];
+    out_str += t->get_output();
+
+    return out_str;
+}
+
 std::string Scheduler::display_scheduler_status(void){
     std::string out_str = "";
     unsigned int ret_counter;
 
     std::string tasks_loaded = std::to_string(this->scheduler_ptr->get_n_tasks());
     std::string events_recorded = std::to_string(this->n_tasks);
-    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::FINISHED);
+    ret_counter = this->get_n_tasks_by_status(TaskStatus::FINISHED);
     std::string finished_tasks = std::to_string(ret_counter);
-    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::INIT_ERROR);
+    ret_counter = this->get_n_tasks_by_status(TaskStatus::INIT_ERROR);
     std::string init_error_tasks = std::to_string(ret_counter);
-    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::INIT_ERROR);
+    ret_counter = this->get_n_tasks_by_status(TaskStatus::INIT_ERROR);
     std::string exec_error_tasks = std::to_string(ret_counter);
-    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::QUEUED);
+    ret_counter = this->get_n_tasks_by_status(TaskStatus::QUEUED);
     std::string queued_tasks = std::to_string(ret_counter);
-    ret_counter = this->get_n_tasks_by_status(ts::TaskStatus::RUNNING);
+    ret_counter = this->get_n_tasks_by_status(TaskStatus::RUNNING);
     std::string running_tasks = std::to_string(ret_counter);
     
     out_str += "-TASKS LOADED: " + tasks_loaded + "\n";
@@ -535,6 +829,175 @@ std::string Scheduler::display_scheduler_status(void){
     return out_str;
 }
 
+void Scheduler::dump_task_output(std::string& key){
+    Task* t;
+    time_t time_now;
+    std::tm struct_time_now;
+    std::string years;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    std::string event_message;
+    std::ofstream task_output;
+    std::string task_output_filename;
+
+    if(!this->task_exists(key)){
+        event_message = "The task \"" + key + "\" does not exist in the scheduler.";
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
+        #ifndef SILENT
+        this->event_reporter_ptr->publish_last_event();
+        #endif
+        return;
+    }
+
+    t = this->task_registry[key];
+
+    time_now = std::time(&time_now);
+    time_now += (TIMEZONE * 60 * 60);
+    struct_time_now = *std::gmtime(&time_now);
+    years = std::to_string(1900 + struct_time_now.tm_year);
+    months = (struct_time_now.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now.tm_mon + 1) :
+              std::to_string(struct_time_now.tm_mon + 1);  
+    days = (struct_time_now.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now.tm_mday) :
+            std::to_string(struct_time_now.tm_mday);
+    hours = (struct_time_now.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now.tm_hour) :
+             std::to_string(struct_time_now.tm_hour);
+    minutes = (struct_time_now.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now.tm_min) :
+               std::to_string(struct_time_now.tm_min);
+    seconds = (struct_time_now.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now.tm_sec) :
+               std::to_string(struct_time_now.tm_sec);
+
+    task_output_filename += t->get_name() + "_";
+    task_output_filename += years + "-" + months + "-" + days + "_" + hours + "-" + minutes + "-" + seconds;
+    task_output_filename += ".dat";
+
+    // Check if dumps directory exists
+    if(!std::filesystem::exists(this->exec_path + "/dumps")){
+        std::filesystem::create_directory(this->exec_path + "/dumps");
+        std::filesystem::permissions(this->exec_path + "/dumps", 
+                                     std::filesystem::perms::owner_read | std::filesystem::perms::owner_write,
+                                     std::filesystem::perm_options::add);
+    }
+
+    task_output.open(this->exec_path + "/dumps/" + task_output_filename);
+    task_output << t->get_output();
+    task_output.close();
+
+    event_message = "Saved task \"" + key + "\" output in \"dumps/" + task_output_filename + "\".";
+    this->event_reporter_ptr->log_event(EventType::INFO, event_message);
+    #ifndef SILENT
+    this->event_reporter_ptr->publish_last_event();
+    #endif
+}
+
+void Scheduler::dump_events(void){
+    std::ofstream events_dump;
+    std::string events_dump_filename;
+    time_t time_now;
+    time_t time_event;
+    std::tm struct_time_now;
+    std::tm struct_time_event;
+    std::string years;
+    std::string months;
+    std::string days;
+    std::string hours;
+    std::string minutes;
+    std::string seconds;
+    size_t n_events;
+    lts::Event ret_event;
+    std::string event_message;
+
+    // Check if dumps directory exists
+    if(!std::filesystem::exists(this->exec_path + "/dumps")){
+        std::filesystem::create_directory(this->exec_path + "/dumps");
+        std::filesystem::permissions(this->exec_path + "/dumps", 
+                                     std::filesystem::perms::owner_read | std::filesystem::perms::owner_write,
+                                     std::filesystem::perm_options::add);
+    }
+
+    // Generate scheduler event dump filename
+    time_now = std::time(&time_now);
+    time_now += (TIMEZONE * 60 * 60);
+    struct_time_now = *std::gmtime(&time_now);
+    years = std::to_string(1900 + struct_time_now.tm_year);
+    months = (struct_time_now.tm_mon + 1 < 10) ? 
+              "0" + std::to_string(struct_time_now.tm_mon + 1) :
+              std::to_string(struct_time_now.tm_mon + 1);  
+    days = (struct_time_now.tm_mday < 10) ? 
+            "0" + std::to_string(struct_time_now.tm_mday) :
+            std::to_string(struct_time_now.tm_mday);
+    hours = (struct_time_now.tm_hour < 10) ? 
+             "0" + std::to_string(struct_time_now.tm_hour) :
+             std::to_string(struct_time_now.tm_hour);
+    minutes = (struct_time_now.tm_min < 10) ? 
+               "0" + std::to_string(struct_time_now.tm_min) :
+               std::to_string(struct_time_now.tm_min);
+    seconds = (struct_time_now.tm_sec < 10) ? 
+               "0" + std::to_string(struct_time_now.tm_sec) :
+               std::to_string(struct_time_now.tm_sec);
+
+    events_dump_filename += "SchedulerEventDump[";
+    events_dump_filename += years + "-" + months + "-" + days + "_" + hours + "-" + minutes + "-" + seconds + "]";
+    events_dump_filename += ".dat";
+
+    events_dump.open(this->exec_path + "/dumps/" + events_dump_filename);
+
+    n_events = this->event_reporter_ptr->get_n_events();
+    for(size_t i = 0; i < this->event_reporter_ptr->get_n_events(); i++){
+        ret_event = this->event_reporter_ptr->get_event_at(i);
+        time_event = ret_event.get_event_time();
+        time_event += (TIMEZONE * 60 * 60);
+        struct_time_event = *std::gmtime(&time_event);
+        years = std::to_string(1900 + struct_time_event.tm_year);
+        months = (struct_time_event.tm_mon + 1 < 10) ? 
+                "0" + std::to_string(struct_time_event.tm_mon + 1) :
+                std::to_string(struct_time_event.tm_mon + 1);  
+        days = (struct_time_event.tm_mday < 10) ? 
+                "0" + std::to_string(struct_time_event.tm_mday) :
+                std::to_string(struct_time_event.tm_mday);
+        hours = (struct_time_event.tm_hour < 10) ? 
+                "0" + std::to_string(struct_time_event.tm_hour) :
+                std::to_string(struct_time_event.tm_hour);
+        minutes = (struct_time_event.tm_min < 10) ? 
+                "0" + std::to_string(struct_time_event.tm_min) :
+                std::to_string(struct_time_event.tm_min);
+        seconds = (struct_time_event.tm_sec < 10) ? 
+                "0" + std::to_string(struct_time_event.tm_sec) :
+                std::to_string(struct_time_event.tm_sec);
+
+        events_dump << "[" << years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds << "] ";
+
+        switch(ret_event.get_type()){
+            case EventType::INFO:
+                events_dump << "[INFO] ";
+                break;
+            case EventType::WARNING:
+                events_dump << "[WARNING] ";
+                break;
+            case EventType::ERROR:
+                events_dump << "[ERROR] ";
+                break;
+            default:
+                break;
+        }
+        events_dump << ret_event.get_message() << "\n";
+    }
+    events_dump.close();
+    
+    event_message = "Saved scheduler events in \"dumps/" + events_dump_filename + "\".";
+    this->event_reporter_ptr->log_event(EventType::INFO, event_message);
+    #ifndef SILENT
+    this->event_reporter_ptr->publish_last_event();
+    #endif
+}
+
 const std::string& Scheduler::get_current_path(void){
     return this->exec_path;
 }
@@ -544,29 +1007,18 @@ unsigned int Scheduler::get_n_tasks(){
 }
 
 const Task* Scheduler::get_task(std::string& key) const{
+    std::string event_message;
+
     // Check if key exists in task registry
     if(!const_cast<Scheduler*>(this)->task_exists(key)){
-        std::string event_message = "The task \"" + key + "\" does not exist in the scheduler.";
-        this->event_reporter_ptr->log_event(EventType::INFO, event_message);
+        event_message = "The task \"" + key + "\" does not exist in the scheduler.";
+        this->event_reporter_ptr->log_event(EventType::ERROR, event_message);
         #ifndef SILENT
         this->event_reporter_ptr->publish_last_event();
         #endif
         return nullptr;
     }
     return const_cast<Scheduler*>(this)->get_task_from_registry(key);
-}
-
-unsigned int Scheduler::get_n_tasks_by_status(ts::TaskStatus status){
-    std::map<std::string, Task*>::iterator it;
-    Task* t;
-    unsigned int counter = 0;
-    for (it = this->task_registry.begin(); it != this->task_registry.end(); it++) {
-        t = it->second;
-        if(t->get_status() == status){
-            counter++;
-        }
-    }
-    return counter;
 }
 
 } // namespace ts

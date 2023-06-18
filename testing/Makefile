@@ -61,7 +61,9 @@ SRC_TESTCASES =	Task_constructor						\
 				Scheduler_get_instance					\
 				Scheduler_methods						\
 				Scheduler_Task_run_task					\
-				Scheduler_load_tasks_from_dir			\
+				Scheduler_reload_all_tasks				\
+				Scheduler_reload_task					\
+				Scheduler_load_all_tasks				\
 				Scheduler_load_task						\
 				EventReporter_get_instance				\
 				EventReporter_methods					\
@@ -70,14 +72,37 @@ SRC_TESTCASES =	Task_constructor						\
 				CommandLine_verb_check					\
 				CommandLine_verb_remove					\
 				CommandLine_verb_load					\
+				CommandLine_verb_reload					\
+				CommandLine_verb_dump					\
 				CommandLine_verb_help
 
 ###################################################################################################
 
 all: task_scheduler.o $(SRC_TESTCASES)
 
+debug:
+	g++ -g -std=c++17 					\
+		-pthread						\
+		-D DEBUG						\
+		$(SRC_FILES)					\
+		../src/Main.cpp -o scheduler 	\
+		-lstdc++fs
+
+debug_silent:
+	g++ -g -std=c++17 					\
+		-pthread						\
+		-D DEBUG						\
+		-D SILENT						\
+		$(SRC_FILES)					\
+		../src/Main.cpp -o scheduler 	\
+		-lstdc++fs
+
 task_scheduler.o: 
-	g++ -g -c -std=c++17 -pthread -D SILENT $(SRC_FILES)
+	g++ -g -c -std=c++17 				\
+			  -pthread 					\
+			  -D DEBUG 					\
+			  -D SILENT 				\
+			  $(SRC_FILES)
 
 Task_constructor: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 Task_constructor.cpp
@@ -227,9 +252,17 @@ Scheduler_Task_run_task: task_scheduler.o
 	g++ -g -Wall -c -std=c++17 Scheduler_Task_run_task.cpp
 	g++ -g -Wall -o Scheduler_Task_run_task Scheduler_Task_run_task.o $(OBJ_FILES) -pthread -lstdc++fs
 
-Scheduler_load_tasks_from_dir: task_scheduler.o 
-	g++ -g -Wall -c -std=c++17 Scheduler_load_tasks_from_dir.cpp
-	g++ -g -Wall -o Scheduler_load_tasks_from_dir Scheduler_load_tasks_from_dir.o $(OBJ_FILES) -pthread -lstdc++fs
+Scheduler_reload_all_tasks: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 Scheduler_reload_all_tasks.cpp
+	g++ -g -Wall -o Scheduler_reload_all_tasks Scheduler_reload_all_tasks.o $(OBJ_FILES) -pthread -lstdc++fs
+
+Scheduler_reload_task: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 Scheduler_reload_task.cpp
+	g++ -g -Wall -o Scheduler_reload_task Scheduler_reload_task.o $(OBJ_FILES) -pthread -lstdc++fs
+
+Scheduler_load_all_tasks: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 Scheduler_load_all_tasks.cpp
+	g++ -g -Wall -o Scheduler_load_all_tasks Scheduler_load_all_tasks.o $(OBJ_FILES) -pthread -lstdc++fs
 
 Scheduler_load_task: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 Scheduler_load_task.cpp
@@ -258,20 +291,29 @@ CommandLine_verb_check: task_scheduler.o
 CommandLine_verb_remove: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 CommandLine_verb_remove.cpp
 	g++ -g -Wall -o CommandLine_verb_remove CommandLine_verb_remove.o $(OBJ_FILES) -pthread -lstdc++fs
-
+	
 CommandLine_verb_load: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 CommandLine_verb_load.cpp
 	g++ -g -Wall -o CommandLine_verb_load CommandLine_verb_load.o $(OBJ_FILES) -pthread -lstdc++fs
 
+CommandLine_verb_reload: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 CommandLine_verb_reload.cpp
+	g++ -g -Wall -o CommandLine_verb_reload CommandLine_verb_reload.o $(OBJ_FILES) -pthread -lstdc++fs
+
+CommandLine_verb_dump: task_scheduler.o 
+	g++ -g -Wall -c -std=c++17 CommandLine_verb_dump.cpp
+	g++ -g -Wall -o CommandLine_verb_dump CommandLine_verb_dump.o $(OBJ_FILES) -pthread -lstdc++fs
+
 CommandLine_verb_help: task_scheduler.o 
 	g++ -g -Wall -c -std=c++17 CommandLine_verb_help.cpp
 	g++ -g -Wall -o CommandLine_verb_help CommandLine_verb_help.o $(OBJ_FILES) -pthread -lstdc++fs
-
+	
 ###################################################################################################
 
 clean:
 	rm *.o 									\
 	*.gch									\
 	../src/*.gch							\
+	scheduler								\
 	tasks/TestTask.cl						\
 	$(SRC_TESTCASES)

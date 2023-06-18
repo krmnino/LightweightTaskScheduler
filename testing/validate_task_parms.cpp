@@ -4,7 +4,7 @@
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: testing validate_task_parms() function -> PASS
@@ -18,7 +18,7 @@ int test1(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    ts::ValidationCode ret;
+    lts::ValidationCode ret;
 
     time_now = std::time(&time_now);
 
@@ -53,9 +53,9 @@ int test1(){
     c->add_entry("Frequency", "Once");
     c->add_entry("Datetime", datetime_str);
 
-    ret = ts::validate_task_parms(c, "scripts/");
+    ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::OK);
+    assert(ret == lts::ValidationCode::OK);
 
     delete c;
 
@@ -76,7 +76,7 @@ int test2(){
     std::string minutes;
     std::string seconds;
     std::string datetime_str;
-    ts::ValidationCode ret;    
+    lts::ValidationCode ret;    
 
     time_now = std::time(&time_now);
 
@@ -112,9 +112,9 @@ int test2(){
     c->add_entry("Frequency", "Once");
     c->add_entry("Datetime", datetime_str);
 
-    ret = ts::validate_task_parms(c, "scripts/");
+    ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::OK);
+    assert(ret == lts::ValidationCode::OK);
 
     delete c;
 
@@ -133,9 +133,9 @@ int test3(){
     c->add_entry("Frequency", "Once");
     c->add_entry("Datetime", "12:00:00");
 
-    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+    lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::MISSING_NAME_KEYVAL);
+    assert(ret == lts::ValidationCode::MISSING_NAME_KEYVAL);
 
     delete c;
 
@@ -154,9 +154,9 @@ int test4(){
     c->add_entry("Frequency", "Once");
     c->add_entry("Datetime", "12:00:00");
 
-    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+    lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::MISSING_SCRIPTFN_KEYVAL);
+    assert(ret == lts::ValidationCode::MISSING_SCRIPTFN_KEYVAL);
 
     delete c;
 
@@ -175,9 +175,9 @@ int test5(){
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Datetime", "12:00:00");
 
-    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+    lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::MISSING_FREQUENCY_KEYVAL);
+    assert(ret == lts::ValidationCode::MISSING_FREQUENCY_KEYVAL);
 
     delete c;
 
@@ -196,9 +196,9 @@ int test6(){
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Once");
 
-    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+    lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::MISSING_DATETIME_KEYVAL);
+    assert(ret == lts::ValidationCode::MISSING_DATETIME_KEYVAL);
 
     delete c;
 
@@ -217,9 +217,9 @@ int test7(){
     c->add_entry("ScriptFilename", "ls_test.sh");
     c->add_entry("Frequency", "Hourly");
 
-    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+    lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::OK);
+    assert(ret == lts::ValidationCode::MISSING_DATETIME_KEYVAL);
 
     delete c;
 
@@ -230,18 +230,17 @@ int test7(){
 
 int test8(){
     // TEST 8: testing validate_task_parms() function -> FAIL
-    // Datetime attribute is ignored with Frequency Hourly
+    // Missing Datetime attribute with Frequency Daily
 
     cl::Config* c = new cl::Config();
     c->add_entry("Name", "Test Title");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
-    c->add_entry("Frequency", "Hourly");
-    c->add_entry("Datetime", "12:00:00");
+    c->add_entry("Frequency", "Daily");
 
-    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+    lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::OK);
+    assert(ret == lts::ValidationCode::MISSING_DATETIME_KEYVAL);
 
     delete c;
 
@@ -252,17 +251,17 @@ int test8(){
 
 int test9(){
     // TEST 9: testing validate_task_parms() function -> FAIL
-    // Missing Datetime attribute with Frequency Daily
+    // Missing Datetime attribute with Frequency Weekly
 
     cl::Config* c = new cl::Config();
     c->add_entry("Name", "Test Title");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
-    c->add_entry("Frequency", "Daily");
+    c->add_entry("Frequency", "Weekly");
 
-    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+    lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::MISSING_DATETIME_KEYVAL);
+    assert(ret == lts::ValidationCode::MISSING_DATETIME_KEYVAL);
 
     delete c;
 
@@ -273,17 +272,17 @@ int test9(){
 
 int test10(){
     // TEST 10: testing validate_task_parms() function -> FAIL
-    // Missing Datetime attribute with Frequency Weekly
+    // Missing Datetime attribute with Frequency Monthly
 
     cl::Config* c = new cl::Config();
     c->add_entry("Name", "Test Title");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
-    c->add_entry("Frequency", "Weekly");
+    c->add_entry("Frequency", "Monthly");
 
-    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+    lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::MISSING_DATETIME_KEYVAL);
+    assert(ret == lts::ValidationCode::MISSING_DATETIME_KEYVAL);
 
     delete c;
 
@@ -294,17 +293,17 @@ int test10(){
 
 int test11(){
     // TEST 11: testing validate_task_parms() function -> FAIL
-    // Missing Datetime attribute with Frequency Monthly
+    // Missing Datetime attribute with Frequency Yearly
 
     cl::Config* c = new cl::Config();
     c->add_entry("Name", "Test Title");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
-    c->add_entry("Frequency", "Monthly");
+    c->add_entry("Frequency", "Yearly");
 
-    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+    lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::MISSING_DATETIME_KEYVAL);
+    assert(ret == lts::ValidationCode::MISSING_DATETIME_KEYVAL);
 
     delete c;
 
@@ -315,17 +314,18 @@ int test11(){
 
 int test12(){
     // TEST 12: testing validate_task_parms() function -> FAIL
-    // Missing Datetime attribute with Frequency Yearly
+    // Script file not found
 
     cl::Config* c = new cl::Config();
     c->add_entry("Name", "Test Title");
     c->add_entry("Description", "A short description");
-    c->add_entry("ScriptFilename", "ls_test.sh");
-    c->add_entry("Frequency", "Yearly");
+    c->add_entry("ScriptFilename", "fakename");
+    c->add_entry("Frequency", "Once");
+    c->add_entry("Datetime", "12:00:00");
 
-    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+    lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::MISSING_DATETIME_KEYVAL);
+    assert(ret == lts::ValidationCode::SCRIPT_NOT_FOUND);
 
     delete c;
 
@@ -336,18 +336,18 @@ int test12(){
 
 int test13(){
     // TEST 13: testing validate_task_parms() function -> FAIL
-    // Script file not found
+    // Bad frequency value
 
     cl::Config* c = new cl::Config();
     c->add_entry("Name", "Test Title");
     c->add_entry("Description", "A short description");
-    c->add_entry("ScriptFilename", "fakename");
-    c->add_entry("Frequency", "Once");
+    c->add_entry("ScriptFilename", "ls_test.sh");
+    c->add_entry("Frequency", "Bad value");
     c->add_entry("Datetime", "12:00:00");
 
-    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+    lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::SCRIPT_NOT_FOUND);
+    assert(ret == lts::ValidationCode::BAD_FREQUENCY_VALUE);
 
     delete c;
 
@@ -358,18 +358,18 @@ int test13(){
 
 int test14(){
     // TEST 14: testing validate_task_parms() function -> FAIL
-    // Bad frequency value
+    // Bad name length
 
     cl::Config* c = new cl::Config();
-    c->add_entry("Name", "Test Title");
+    c->add_entry("Name", "ThisTaskNameIsOver32CharactersLong");
     c->add_entry("Description", "A short description");
     c->add_entry("ScriptFilename", "ls_test.sh");
-    c->add_entry("Frequency", "Bad value");
+    c->add_entry("Frequency", "Hourly");
     c->add_entry("Datetime", "12:00:00");
 
-    ts::ValidationCode ret = ts::validate_task_parms(c, "scripts/");
+    lts::ValidationCode ret = lts::validate_task_parms(c, "scripts/");
 
-    assert(ret == ts::ValidationCode::BAD_FREQUENCY_VALUE);
+    assert(ret == lts::ValidationCode::INVALID_NAME_LENGTH);
 
     delete c;
 

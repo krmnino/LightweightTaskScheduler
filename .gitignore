@@ -4,11 +4,15 @@ src/test
 src/Scratch.cpp
 src/Scratch
 src/*.gch
+src/dumps
 .vscode
 
 # TESTING 
 testing/*.o
 testing/*.dat
+testing/scheduler
+testing/dumps
+testing/dumps/*
 testing/tasks/TestTask.cl
 testing/Task_constructor
 testing/Task_methods
@@ -47,7 +51,9 @@ testing/Task_setting_exec_datetime_Yearly
 testing/Scheduler_get_instance
 testing/Scheduler_methods
 testing/Scheduler_Task_run_task
-testing/Scheduler_load_tasks_from_dir
+testing/Scheduler_reload_all_tasks
+testing/Scheduler_reload_task
+testing/Scheduler_load_all_tasks
 testing/Scheduler_load_task
 testing/EventReporter_get_instance
 testing/EventReporter_methods
@@ -55,5 +61,7 @@ testing/CommandLine_get_instance
 testing/CommandLine_methods
 testing/CommandLine_verb_check
 testing/CommandLine_verb_remove
+testing/CommandLine_verb_reload
 testing/CommandLine_verb_load
+testing/CommandLine_verb_dump
 testing/CommandLine_verb_help

@@ -4,7 +4,7 @@
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: verify that execution datetime is set properly when initializing Task object
@@ -135,8 +135,9 @@ int test1(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Weekly";
     std::string t_datetime = hours + ":" + minutes + ":" + seconds;
+    std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
     
     ret_datetime_str = t->get_execution_datetime_fmt();
 
@@ -243,7 +244,7 @@ int test1(){
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
     assert(time_now_add == t->get_execution_datetime(true));
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
+    assert(t->get_status() == lts::TaskStatus::QUEUED);
 
     delete t;
 
@@ -381,8 +382,9 @@ int test2(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Weekly";
     std::string t_datetime = years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds;
+    std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
     
     ret_datetime_str = t->get_execution_datetime_fmt();
 
@@ -489,7 +491,7 @@ int test2(){
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
     assert(time_now_add == t->get_execution_datetime(true));
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
+    assert(t->get_status() == lts::TaskStatus::QUEUED);
 
     delete t;
 
@@ -627,8 +629,9 @@ int test3(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Weekly";
     std::string t_datetime = wday_full + " " + hours + ":" + minutes + ":" + seconds;
+    std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
     
     ret_datetime_str = t->get_execution_datetime_fmt();
 
@@ -735,7 +738,7 @@ int test3(){
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
     assert(time_now_add == t->get_execution_datetime(true));
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
+    assert(t->get_status() == lts::TaskStatus::QUEUED);
 
     delete t;
 
@@ -873,8 +876,9 @@ int test4(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Weekly";
     std::string t_datetime = wday_abbr + " " + hours + ":" + minutes + ":" + seconds;
+    std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
     
     ret_datetime_str = t->get_execution_datetime_fmt();
 
@@ -981,7 +985,7 @@ int test4(){
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
     assert(time_now_add == t->get_execution_datetime(true));
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
+    assert(t->get_status() == lts::TaskStatus::QUEUED);
 
     delete t;
 
@@ -1119,15 +1123,16 @@ int test5(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Weekly";
     std::string t_datetime = years + "-" + months + "-" + days;
+    std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
     
     ret_datetime_str = t->get_execution_datetime_fmt();
 
     // Obtain current time value with init_today()
     // Add one day to current time value
     // Add timezone offset 
-    time_now_add = ts::init_today() + (TIMEZONE * 60 * 60) + (24 * 60 * 60);
+    time_now_add = lts::init_today() + (TIMEZONE * 60 * 60) + (24 * 60 * 60);
     
     // time_t to std::tm*
     to_struct = std::gmtime(&time_now_add);
@@ -1229,7 +1234,7 @@ int test5(){
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
     assert(time_now_add == t->get_execution_datetime(true));
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
+    assert(t->get_status() == lts::TaskStatus::QUEUED);
 
     delete t;
 
@@ -1248,11 +1253,12 @@ int test6(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Weekly";
     std::string t_datetime = "anything";
+    std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
 
     assert(t->get_execution_datetime(false) == 0);
-    assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
+    assert(t->get_status() == lts::TaskStatus::INIT_ERROR);
 
     delete t;
 
@@ -1262,30 +1268,7 @@ int test6(){
 
 
 int test7(){
-    // TEST 7: verify that execution datetime is set properly when initializing Task object
-    // Use Task constructor Task::Task(std::string, std::string, std::string, std::string)
-    // Frequency: Weekly
-    // Datetime format: n/a
-
-    std::string t_name = "Task Name";
-    std::string t_description = "A short description for this task";
-    std::string t_script_name = "cat_test.sh";
-    std::string t_frequency = "Weekly";
-
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency);
-
-    assert(t->get_execution_datetime(false) == 0);
-    assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
-
-    delete t;
-
-    std::cout << ">> Task_setting_exec_datetime_Weekly: 7 done" << std::endl;
-    return 0;
-}
-
-
-int test8(){
-    // TEST 8: attempt to initialize Task with invalid datetime values
+    // TEST 7: attempt to initialize Task with invalid datetime values
     // Frequency: Weekly
     // Datetime format: HH:MM:SS, YYYY-MM-DD HH:MM:SS, WDAY HH:MM:SS, YYYY-MM-DD
 
@@ -1293,6 +1276,7 @@ int test8(){
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Weekly";
+    std::string t_config_filename = "config.cl";
     std::vector<std::string> datetimes = {
         "60:20:00",
         "12:60:00",
@@ -1356,15 +1340,15 @@ int test8(){
     };
 
     for(size_t i = 0; i < datetimes.size(); i++){
-        ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, datetimes[i]);
+        lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, datetimes[i], t_config_filename);
 
         assert(t->get_execution_datetime(false) == 0);
-        assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
+        assert(t->get_status() == lts::TaskStatus::INIT_ERROR);
 
         delete t;
     }
 
-    std::cout << ">> Task_setting_exec_datetime_Weekly: 8 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Weekly: 7 done" << std::endl;
     return 0;
 }
 
@@ -1377,5 +1361,4 @@ int main(){
     test5();
     test6();
     test7();
-    test8();
 }

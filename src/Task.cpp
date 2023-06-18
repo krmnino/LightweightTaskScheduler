@@ -1,19 +1,21 @@
 #include "Task.hpp"
 
-namespace ts{
+namespace lts{
 
 Task::Task(std::string name, 
            std::string description,
            std::string script_filename,
            std::string frequency,
-           std::string execution_datetime_str){
+           std::string execution_datetime_str,
+           std::string config_filename){
     this->name = name;
     this->description = description;
     this->script_filename = script_filename;
     this->frequency = frequency;
+    this->config_filename = config_filename;
     this->running_thread_flag = false;
     
-    ts::DatetimeFormat format;
+    DatetimeFormat format;
     if(this->frequency == "Once"){
         // Get datetime format, no validation performed at this step
         format = compute_datetime_format(execution_datetime_str);
@@ -38,7 +40,21 @@ Task::Task(std::string name,
         }
     }
     else if(this->frequency == "Hourly"){
-        this->execution_datetime = today_add_hrs(1);
+        // Get datetime format, no validation performed at this step
+        format = compute_datetime_format(execution_datetime_str);
+        // Datetime string validation occurs at Scheduler constructor
+        switch ((int)format){
+        case (int)DatetimeFormat::HHMMSS:
+            this->execution_datetime = today_add_hms(execution_datetime_str);
+            break;
+        case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
+            this->execution_datetime = today_add_yyyymmdd_hms(execution_datetime_str);
+            break;
+        default:
+            this->execution_datetime = 0;
+            this->status = TaskStatus::INIT_ERROR;
+            break;
+        }
     }
     else if(this->frequency == "Daily"){
         // Get datetime format, no validation performed at this step
@@ -149,46 +165,6 @@ Task::Task(std::string name,
     }
 }
 
-Task::Task(std::string name, 
-           std::string description,
-           std::string script_filename,
-           std::string frequency){
-    this->name = name;
-    this->description = description;
-    this->script_filename = script_filename;
-    this->frequency = frequency;
-    this->running_thread_flag = false;
-
-    if(this->frequency == "Hourly"){
-        this->execution_datetime = today_add_hrs(1);
-    }
-    else{
-        this->execution_datetime = 0;
-        this->status = TaskStatus::INIT_ERROR;
-    }
-
-    // Set initial execution datetime struct
-    std::tm* exec_time_struct = std::gmtime(&this->execution_datetime);
-    this->initial_execution_datetime.year = 1900 + exec_time_struct->tm_year;
-    this->initial_execution_datetime.month = exec_time_struct->tm_mon;
-    this->initial_execution_datetime.wday = exec_time_struct->tm_wday;
-    this->initial_execution_datetime.day =  exec_time_struct->tm_mday;
-    this->initial_execution_datetime.hour =  exec_time_struct->tm_hour;
-    this->initial_execution_datetime.minute = exec_time_struct->tm_min;
-    this->initial_execution_datetime.second = exec_time_struct->tm_sec;
-
-    // Store task creation datetime
-    std::time(&this->creation_datetime);
-    this->creation_datetime = this->creation_datetime;
-
-    this->output = "";
-    if(this->status != TaskStatus::INIT_ERROR){
-        this->thr = std::thread(&Task::launch_thread, this);
-        this->running_thread_flag = true;
-        this->status = TaskStatus::QUEUED;
-    }
-}
-
 Task::Task(){}
 
 Task::~Task(){
@@ -245,7 +221,8 @@ void Task::update_execution_datetime(void){
         unsigned long updated_month;
         unsigned long updated_day;
 
-        std::tm* exec_date_struct = std::gmtime(&this->execution_datetime);
+        time_t execution_datetime_timezone = this->execution_datetime + (TIMEZONE * 60 * 60);
+        std::tm* exec_date_struct = std::gmtime(&execution_datetime_timezone);
 
         // If current execution month is december, we need to roll back to January and set next year
         if(exec_date_struct->tm_mon == DECEMBER){
@@ -322,6 +299,7 @@ void Task::update_execution_datetime(void){
                    std::to_string(this->initial_execution_datetime.day);
             break;
         case JUNE:
+            // June has max day count of 30
             if(this->initial_execution_datetime.day > JUNE_DAYS){
                 day = std::to_string(JUNE_DAYS);
             }
@@ -383,7 +361,8 @@ void Task::update_execution_datetime(void){
     }
     else if(this->frequency == "Yearly"){
         // Add necessary days until nth day of next year
-        std::tm* exec_date_struct = std::gmtime(&this->execution_datetime);
+        time_t execution_datetime_timezone = this->execution_datetime + (TIMEZONE * 60 * 60);
+        std::tm* exec_date_struct = std::gmtime(&execution_datetime_timezone);
         // Edge case if case is scheduled to run on February 29th
         // If next year is not a leap year, then run on the 28th (see else statement)
         if(this->initial_execution_datetime.month == FEBRUARY && 
@@ -644,6 +623,10 @@ DatetimeFormat Task::get_execution_datetime_format_attr(void){
     return this->execution_datetime_fmt;
 }
 
+std::string Task::get_config_filename(void){
+    return this->config_filename;
+}
+
 void Task::set_status(TaskStatus status){
     this->status = status;
 }
@@ -652,7 +635,7 @@ void Task::set_id(int id){
     this->id = id;
 }
 
-void Task::set_event_reporter_ptr(ts::EventReporter* er_ptr){
+void Task::set_event_reporter_ptr(EventReporter* er_ptr){
     this->event_reporter_ptr = er_ptr;
 }
 
@@ -1573,19 +1556,31 @@ DatetimeFormat compute_datetime_format(std::string dt){
 
 ValidationCode validate_task_parms(cl::Config* task_config, std::string scripts_dir){
     ValidationCode ret_datetime_validate;
-    // Check if required fields exist
-    if(!task_config->key_exists("Name")){
-           return ValidationCode::MISSING_NAME_KEYVAL;
-    }
-    if(!task_config->key_exists("ScriptFilename")){
-           return ValidationCode::MISSING_SCRIPTFN_KEYVAL;
-    }
-    if(!task_config->key_exists("Frequency")){
-           return ValidationCode::MISSING_FREQUENCY_KEYVAL;
-    }
-    
+    DatetimeFormat format;
+    time_t schedule_datetime;
     std::string value;
     std::string datetime_value;
+
+    // Check if required fields exist
+    if(!task_config->key_exists("Name")){
+        return ValidationCode::MISSING_NAME_KEYVAL;
+    }
+    if(!task_config->key_exists("ScriptFilename")){
+        return ValidationCode::MISSING_SCRIPTFN_KEYVAL;
+    }
+    if(!task_config->key_exists("Frequency")){
+        return ValidationCode::MISSING_FREQUENCY_KEYVAL;
+    }
+    if(!task_config->key_exists("Datetime")){
+        return ValidationCode::MISSING_DATETIME_KEYVAL;
+    }
+
+    // Check if name exceeds 16 characters in length
+    value = task_config->get_value("Name")->get_data<std::string>();
+    if(value.length() > TASK_NAME_FIELD_MAX_LEN){
+        return ValidationCode::INVALID_NAME_LENGTH;
+    }
+
     // Check if script file exists
     value = task_config->get_value("ScriptFilename")->get_data<std::string>();
     if(!std::filesystem::exists(scripts_dir + value)){
@@ -1600,16 +1595,8 @@ ValidationCode validate_task_parms(cl::Config* task_config, std::string scripts_
     }
 
     // Validate datetime depending on frequency value
-    DatetimeFormat format;
-    time_t schedule_datetime;
-    bool datetime_defined = task_config->key_exists("Datetime");
-    if(datetime_defined){
-        datetime_value = task_config->get_value("Datetime")->get_data<std::string>();
-    }
+    datetime_value = task_config->get_value("Datetime")->get_data<std::string>();
     if(value == "Once"){
-        if(!task_config->key_exists("Datetime")){
-           return ValidationCode::MISSING_DATETIME_KEYVAL;
-        }
         // Get datetime format, no validation performed at this step
         format = compute_datetime_format(datetime_value);
         switch ((int)format){
@@ -1646,7 +1633,26 @@ ValidationCode validate_task_parms(cl::Config* task_config, std::string scripts_
         }
     }
     else if(value == "Hourly"){
-        // Datetime value ignored
+        // Get datetime format, no validation performed at this step
+        format = compute_datetime_format(datetime_value);
+        switch ((int)format){
+        case (int)DatetimeFormat::HHMMSS:
+            ret_datetime_validate = validate_hms(datetime_value);
+            if(ret_datetime_validate != ValidationCode::OK){
+                return ret_datetime_validate;
+            }
+            schedule_datetime = today_add_hms(datetime_value);
+            break;
+        case (int)DatetimeFormat::YYYYMMDD_HHMMSS:
+            ret_datetime_validate = validate_yyyymmdd_hms(datetime_value);
+            if(ret_datetime_validate != ValidationCode::OK){
+                return ret_datetime_validate;
+            }
+            schedule_datetime = today_add_yyyymmdd_hms(datetime_value);
+            break;
+        default:
+            return ValidationCode::INCOMPATIBLE_ONCE_FREQ_DATETIME_FORMAT;
+        }
     }
     else if(value == "Daily"){
         if(!task_config->key_exists("Datetime")){
@@ -1778,7 +1784,7 @@ ValidationCode validate_task_parms(cl::Config* task_config, std::string scripts_
     }
 
     // Check if datetime is in the past
-    if(value != "Hourly" && schedule_datetime <= 0){
+    if(schedule_datetime <= 0){
         return ValidationCode::PASSED_DATETIME;
     }
     return ValidationCode::OK;

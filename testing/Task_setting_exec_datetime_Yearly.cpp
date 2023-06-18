@@ -4,7 +4,7 @@
 #include "../src/Task.hpp"
 #include "../src/Scheduler.hpp"
 
-ts::Scheduler* ts::Scheduler::scheduler_ptr = nullptr;
+lts::Scheduler* lts::Scheduler::scheduler_ptr = nullptr;
 
 int test1(){
     // TEST 1: verify that execution datetime is set properly when initializing Task object
@@ -135,8 +135,9 @@ int test1(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Yearly";
     std::string t_datetime = years + "-" + months + "-" + days + " " + hours + ":" + minutes + ":" + seconds;
+    std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
     
     ret_datetime_str = t->get_execution_datetime_fmt();
 
@@ -243,7 +244,7 @@ int test1(){
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
     assert(time_now_add == t->get_execution_datetime(true));
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
+    assert(t->get_status() == lts::TaskStatus::QUEUED);
 
     delete t;
 
@@ -381,15 +382,16 @@ int test2(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Yearly";
     std::string t_datetime = years + "-" + months + "-" + days;
+    std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
     
     ret_datetime_str = t->get_execution_datetime_fmt();
 
     // Obtain current time value with init_today()
     // Add one day to current time value
     // Add timezone offset 
-    time_now_add = ts::init_today() + (TIMEZONE * 60 * 60) + (24 * 60 * 60);
+    time_now_add = lts::init_today() + (TIMEZONE * 60 * 60) + (24 * 60 * 60);
     
     // time_t to std::tm*
     to_struct = std::gmtime(&time_now_add);
@@ -491,7 +493,7 @@ int test2(){
 
     assert(verify_datetime_str.find(ret_datetime_str) != std::string::npos);
     assert(time_now_add == t->get_execution_datetime(true));
-    assert(t->get_status() == ts::TaskStatus::QUEUED);
+    assert(t->get_status() == lts::TaskStatus::QUEUED);
 
     delete t;
 
@@ -510,11 +512,12 @@ int test3(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Yearly";
     std::string t_datetime = "anything";
+    std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
 
     assert(t->get_execution_datetime(false) == 0);
-    assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
+    assert(t->get_status() == lts::TaskStatus::INIT_ERROR);
 
     delete t;
 
@@ -524,30 +527,7 @@ int test3(){
 
 
 int test4(){
-    // TEST 4: verify that execution datetime is set properly when initializing Task object
-    // Use Task constructor Task::Task(std::string, std::string, std::string, std::string)
-    // Frequency: Yearly
-    // Datetime format: n/a
-
-    std::string t_name = "Task Name";
-    std::string t_description = "A short description for this task";
-    std::string t_script_name = "cat_test.sh";
-    std::string t_frequency = "Yearly";
-
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency);
-
-    assert(t->get_execution_datetime(false) == 0);
-    assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
-
-    delete t;
-
-    std::cout << ">> Task_setting_exec_datetime_Yearly: 4 done" << std::endl;
-    return 0;
-}
-
-
-int test5(){
-    // TEST 5: Initializing Task object with incompatible datetime format 
+    // TEST 4: Initializing Task object with incompatible datetime format 
     // Frequency: Yearly
     // Datetime format: HH:MM:SS
 
@@ -675,21 +655,22 @@ int test5(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Yearly";
     std::string t_datetime = hours + ":" + minutes + ":" + seconds;
+    std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
     
     assert(t->get_execution_datetime(false) == 0);
-    assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
+    assert(t->get_status() == lts::TaskStatus::INIT_ERROR);
 
     delete t;
 
-    std::cout << ">> Task_setting_exec_datetime_Yearly: 5 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Yearly: 4 done" << std::endl;
     return 0;
 }
 
 
-int test6(){
-    // TEST 6: Initializing Task object with incompatible datetime format 
+int test5(){
+    // TEST 5: Initializing Task object with incompatible datetime format 
     // Frequency: Yearly
     // Datetime format: WDAY HH:MM:SS (full week day names)
 
@@ -817,21 +798,22 @@ int test6(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Yearly";
     std::string t_datetime = wday_full + " " + hours + ":" + minutes + ":" + seconds;
+    std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
     
     assert(t->get_execution_datetime(false) == 0);
-    assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
+    assert(t->get_status() == lts::TaskStatus::INIT_ERROR);
 
     delete t;
 
-    std::cout << ">> Task_setting_exec_datetime_Yearly: 6 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Yearly: 5 done" << std::endl;
     return 0;
 }
 
 
-int test7(){
-    // TEST 7: Initializing Task object with incompatible datetime format 
+int test6(){
+    // TEST 6: Initializing Task object with incompatible datetime format 
     // Frequency: Yearly
     // Datetime format: WDAY HH:MM:SS (abbreviated week day names)
 
@@ -959,21 +941,22 @@ int test7(){
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Yearly";
     std::string t_datetime = wday_abbr + " " + hours + ":" + minutes + ":" + seconds;
+    std::string t_config_filename = "config.cl";
 
-    ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime);
+    lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, t_datetime, t_config_filename);
     
     assert(t->get_execution_datetime(false) == 0);
-    assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
+    assert(t->get_status() == lts::TaskStatus::INIT_ERROR);
 
     delete t;
 
-    std::cout << ">> Task_setting_exec_datetime_Yearly: 7 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Yearly: 6 done" << std::endl;
     return 0;
 }
 
 
-int test8(){
-    // TEST 8: attempt to initialize Task with invalid datetime values
+int test7(){
+    // TEST 7: attempt to initialize Task with invalid datetime values
     // Frequency: Yearly
     // Datetime format: YYYY-MM-DD HH:MM:SS, YYYY-MM-DD
 
@@ -981,6 +964,7 @@ int test8(){
     std::string t_description = "A short description for this task";
     std::string t_script_name = "cat_test.sh";
     std::string t_frequency = "Yearly";
+    std::string t_config_filename = "config.cl";
     std::vector<std::string> datetimes = {
         "2022-02-15 60:20:00",
         "2022-02-15 12:60:00",
@@ -1011,15 +995,15 @@ int test8(){
     };
 
     for(size_t i = 0; i < datetimes.size(); i++){
-        ts::Task* t = new ts::Task(t_name, t_description, t_script_name, t_frequency, datetimes[i]);
+        lts::Task* t = new lts::Task(t_name, t_description, t_script_name, t_frequency, datetimes[i], t_config_filename);
 
         assert(t->get_execution_datetime(false) == 0);
-        assert(t->get_status() == ts::TaskStatus::INIT_ERROR);
+        assert(t->get_status() == lts::TaskStatus::INIT_ERROR);
 
         delete t;
     }
 
-    std::cout << ">> Task_setting_exec_datetime_Yearly: 8 done" << std::endl;
+    std::cout << ">> Task_setting_exec_datetime_Yearly: 7 done" << std::endl;
     return 0;
 }
 
@@ -1032,5 +1016,4 @@ int main(){
     test5();
     test6();
     test7();
-    test8();
 }
