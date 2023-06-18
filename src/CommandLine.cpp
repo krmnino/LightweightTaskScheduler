@@ -304,6 +304,21 @@ void CommandLine::verb_dump(std::vector<std::string>& split_cmd_input){
             this->cmds_issued++;
         }
     }
+    else if(option == "outputs"){
+        if(split_cmd_input.size() < 3){
+            event_message = "The command \"dump outputs <name1, name2, ...>\" requires at least one task name.";
+            this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
+            #ifndef SILENT
+            this->event_reporter_ptr->publish_last_event();
+            #endif
+        }
+        else{
+            for(size_t i = 2; i < split_cmd_input.size(); i++){
+                this->scheduler_ptr->dump_task_output(split_cmd_input[i]);
+            }
+            this->cmds_issued++;
+        }
+    }
     else{
         event_message = "An invalid argument was passed for the the \"dump\" verb. Issue the command \"help dump\" for options.";
         this->event_reporter_ptr->log_event(EventType::WARNING, event_message);
