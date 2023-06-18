@@ -832,14 +832,13 @@ std::string Scheduler::display_scheduler_status(void){
 void Scheduler::dump_task_output(std::string& key){
     Task* t;
     time_t time_now;
-    time_t time_now_add;
+    std::tm struct_time_now;
     std::string years;
     std::string months;
     std::string days;
     std::string hours;
     std::string minutes;
     std::string seconds;
-    std::tm struct_time_now;
     std::string event_message;
     std::ofstream task_output;
     std::string task_output_filename;
